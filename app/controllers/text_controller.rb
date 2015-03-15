@@ -1,0 +1,27 @@
+require_relative '../../config/lbp/config_globals'
+
+class TextController < ApplicationController
+  def index
+  		
+			url =  "<http://scta.info/text/#{$commentaryid}/commentary>" 
+			@results = query_obj = Lbp::Query.new().collection_query(url)
+			
+	end
+
+	def show
+
+# use query on item here to check status
+# if it has a critical transcription go directly there
+# if it does not give, offer message then choices to existing transcription
+		config_hash = confighash($commentarydirname)
+		url = "http://scta.info/text/#{$commentaryid}/item/#{params[:id]}"
+
+		item = Lbp::Item.new(config_hash, url)
+		source = "origin"
+
+		transcript = item.transcription(source: source)
+		@transform = transcript.transform_main_view
+
+
+	end
+end

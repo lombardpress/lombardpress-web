@@ -1,0 +1,38 @@
+// Place all the styles related to the pages controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+@import "globalvariables";
+
+#lbp-home-picture{background:#ffffff image-url('coverimage.jpg') repeat center top; height: 450px;}
+    
+    /*#statsBar { }
+    .announceBar {margin: 15px 5px 15px 5px; border-top: 7px solid $dark-color; border-bottom: 7px solid $dark-color; text-align: center; padding: 15px 0 15px 0 }
+    .announceBar a {color: gray;}
+    .announceBar a:visited {color: gray;}
+    .coversquare {float: left; width: 400px; padding: 10px; margin: 15px;}
+    #picture {background:#ffffff url('../../coverimage-link.jpg') no-repeat center top; height: 450px; margin: 0;}
+
+    #right {background-color: white;
+        opacity: .8;
+        /*border: 1px solid #BBCEBE;*/
+      
+      /*  -moz-box-shadow:inset 0px 0px 7px black;
+        -webkit-box-shadow:inset 0px 0px 7px black;
+        box-shadow:inset 0px 0px 7px black;
+        -moz-border-radius: 7px;
+        -webkit-border-radius: 7px;
+        border-radius: 7px;
+    }
+*/
+    #lbp-descrip-banner {background-color: black; opacity: .5}
+    #lbp-projectdescription {
+        font-size: 25px;
+        text-align:center;
+        margin: 0 10px 0 10px;
+        color: $dark-color;
+        border-left: 1px solid $dark-color;
+        border-right: 1px solid $dark-color;
+        padding: 3px 3px 3px 3px;
+        font-weight: bold;
+    }
+   

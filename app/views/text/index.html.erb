@@ -1,0 +1,24 @@
+
+
+<div id="main-container" class="container">
+  <div class="row">
+    <div id="sidebar" class="col-xs-3 col-md-3">
+      <h3>Items</h3>
+      <ul>
+	      <% @results.each do |result| %>
+	      <% link = "text/" + result[:item].to_s.split('/').last %>
+	      <li class="itemLink">
+	      	<% if result[:status] != "Not Started" %>
+	      		<%= link_to(result[:title], link) %>
+	      	<% else %>
+	      		<%= result[:title] %>
+					<% end %>
+						<span class="status"><%= result[:status] %><span></li>
+	      <% end %>
+    	</ul>
+    </div>
+    <div id="content" class="col-xs-9 col-md-9">
+      <h3>Outline</h3
+    </div>
+  </div>
+</div>
