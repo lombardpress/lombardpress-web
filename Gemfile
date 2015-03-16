@@ -51,6 +51,7 @@ group :development, :test do
   gem 'pry'
 
   gem 'shotgun'
+  gem 'thin'
 
 end
 

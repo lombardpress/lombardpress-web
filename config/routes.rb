@@ -1,7 +1,18 @@
 Rails.application.routes.draw do
-  get 'text/:id' => 'text#show'
-  resources :text
+  get 'sessions/new'
+
   root 'pages#home'
+  get 'text/:id' => 'text#show'
+  get 'about' => 'pages#about'
+  get 'biography' => 'pages#biography'
+  get 'bibliography' => 'pages#bibliography' 
+  get 'signup' => 'users#new'
+  get 'login' => 'sessions#new'
+  post 'login' => 'sessions#create'
+  delete 'logout' => 'sessions#destroy' 
+
+  resources :text
+  resources :users
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

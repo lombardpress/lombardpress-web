@@ -1,0 +1,38 @@
+<header class="navbar navbar-fixed-top">
+	  <div class="container">
+	    <%= link_to "An Lbp App", '/', id: "logo" %>
+	    <nav>
+	      <ul class="nav navbar-nav navbar-left">
+	      <li><%= link_to "Text",   '#' %></li>
+	        <li><%= link_to "Index",   '/index' %></li>
+	        <li><%= link_to "Biography",   '/biography' %></li>
+	        <li><%= link_to "Bibliography",   '/bibliography' %></li>
+	        <li><%= link_to "About",   '/about' %></li>
+	        <li><%= link_to "Blog",   '/blog' %></li>  
+	      </ul>
+	    </nav>
+	    <nav>
+	      <ul class="nav navbar-nav navbar-right">
+	      	
+	        <% if logged_in? %>
+	          <li><%= link_to "Users", '#' %></li>
+	          <li class="dropdown">
+	            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+	              Account <b class="caret"></b>
+	            </a>
+	            <ul class="dropdown-menu">
+	              <li><%= link_to "Profile", current_user %></li>
+	              <li><%= link_to "Settings", '#' %></li>
+	              <li class="divider"></li>
+	              <li>
+	                <%= link_to "Log out", logout_path, method: "delete" %>
+	              </li>
+	            </ul>
+	          </li>
+        	<% else %>
+          	<li><%= link_to "Log in", login_path %></li>
+        	<% end %>
+	      </ul>
+	    </nav>
+	  </div>
+	</header>

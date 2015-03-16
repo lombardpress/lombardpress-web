@@ -1,9 +1,12 @@
 // Place all the styles related to the pages controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
 @import "globalvariables";
 
-#lbp-home-picture{background:#ffffff image-url('coverimage.jpg') repeat center top; height: 450px;}
+#lbp-home-body{background: #ffffff image-url('coverimage.jpg') repeat center top; height: 100%; padding-bottom: 50px; width: 100%; margin: 0}
+#lbp-home-jumbotron{background-color: $dark-color; opacity: .8; color: black; text-align: center; width: 60%;  margin: 30px auto;}
+#lbp-home-picture{}
     
     /*#statsBar { }
     .announceBar {margin: 15px 5px 15px 5px; border-top: 7px solid $dark-color; border-bottom: 7px solid $dark-color; text-align: center; padding: 15px 0 15px 0 }
@@ -24,11 +27,11 @@
         border-radius: 7px;
     }
 */
-    #lbp-descrip-banner {background-color: black; opacity: .5}
+    #lbp-descrip-banner {background-color: black; opacity: .5; margin-top: 30px; height: 300px; width: 60%; margin: auto}
     #lbp-projectdescription {
-        font-size: 25px;
-        text-align:center;
-        margin: 0 10px 0 10px;
+        font-size: 50px;
+        text-align: center;
+        margin: 50px 10px 0 10px;
         color: $dark-color;
         border-left: 1px solid $dark-color;
         border-right: 1px solid $dark-color;

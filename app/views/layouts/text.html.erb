@@ -5,13 +5,10 @@
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <%= csrf_meta_tags %>
-  <style type="text/css">
-  .status{display: none;}
-  .itemLink:hover .status{display: inline;}
-  </style>
+  
 </head>
 <body>
-<%= render "shared/header" %>	
+<%= render "layouts/header" %>	
 
 <%= yield %>
 

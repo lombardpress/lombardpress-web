@@ -35,8 +35,8 @@ def confighash (projectfiledir)
 						}
 	return confighash
 end
-#$commentaryid = "plaoulcommentary"
-$commentaryid = "wodehamordinatio"
+$commentaryid = "plaoulcommentary"
+#$commentaryid = "wodehamordinatio"
 $commentarydirname = 'pp-projectfiles'
 $commentaries = {
 	wodehamordinatio: confighash("aw-projectfiles"), 

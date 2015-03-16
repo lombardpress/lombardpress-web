@@ -1,14 +1,9 @@
+
 <div id="lbp-home-body" class="container">
-	<div id="lbp-home-picture" >
-    <div id="lbp-descrip-banner">
-        <h2 id="lbp-projectdescription"><%= @banner_message %></h2>
-    </div>
-
-    <div id="left" class="coversquare">
-    </div>
-
-    <div id="right" class="coversquare">
-        
-    </div>
+	<div id="lbp-home-jumbotron" class="jumbotron">
+  	<h1><%= @title %></h1>
+  	<p><%= raw(@banner_message) %></p>
+  	<p><a class="btn btn-primary btn-lg" href="/text" role="button">View the Text</a> <a class="btn btn-primary btn-lg" href="/about" role="button">Learn More</a></p>
+	</div>
 </div>
-</div>
+

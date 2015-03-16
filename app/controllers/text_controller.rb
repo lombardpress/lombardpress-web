@@ -15,12 +15,16 @@ class TextController < ApplicationController
 # if it does not give, offer message then choices to existing transcription
 		config_hash = confighash($commentarydirname)
 		url = "http://scta.info/text/#{$commentaryid}/item/#{params[:id]}"
-
+		
 		item = Lbp::Item.new(config_hash, url)
 		source = "origin"
 
 		transcript = item.transcription(source: source)
+		@title = item.title
+		@fs = item.fs
+
 		@transform = transcript.transform_main_view
+
 
 
 	end
