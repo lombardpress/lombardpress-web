@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  devise_for :users
   get 'sessions/new'
 
   root 'pages#home'
@@ -6,13 +7,13 @@ Rails.application.routes.draw do
   get 'about' => 'pages#about'
   get 'biography' => 'pages#biography'
   get 'bibliography' => 'pages#bibliography' 
-  get 'signup' => 'users#new'
-  get 'login' => 'sessions#new'
-  post 'login' => 'sessions#create'
-  delete 'logout' => 'sessions#destroy' 
+  
+  
+  
+  
 
   resources :text
-  resources :users
+  
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

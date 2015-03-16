@@ -27,6 +27,8 @@ gem 'bootstrap-sass', '~> 3.2.0'
 
 gem 'autoprefixer-rails'
 
+gem 'devise'
+
 gem 'lbp', :git => "https://lombardpress@bitbucket.org/lombardpress/lbp.rb.git", :branch => "master"
 
 # Use ActiveModel has_secure_password
