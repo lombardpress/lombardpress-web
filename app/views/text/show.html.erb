@@ -2,3 +2,27 @@
 <div id="lbp-text-body" class="container">
 	<%= raw(@transform) %>
 </div>
+<div id="lbp-bottom-window">
+	<nav id="lbp-bottom-window-nav-bar">
+		<div class="container-fluid">
+			<div class="navbar-header">
+	      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#lbp-bottom-window-navbar-collapse">
+	        <span class="sr-only">Toggle navigation</span>
+	        <span class="icon-bar"></span>
+	        <span class="icon-bar"></span>
+	        <span class="icon-bar"></span>
+	      </button>
+	    </div>
+			<div class="collapse navbar-collapse" id="lbp-bottom-window-navbar-collapse">
+	    	<ul class="nav navbar-nav">
+					<li><a class="js-expand-para-comment">Maximize<span class="caret"></span></a></li> 
+					<li><a class="js-halfsize-para-comment">Half Height</a></li>
+					<li><a class="js-minimize-para-comment">Minimize<span class="caret"></span></a></li> 
+					<li><a class="js-close-para-comment">Close</span></a></li>
+				</ul>
+			</div>
+		</div>	
+	</nav>
+	<div id="lbp-bottom-window-container" class="container">
+	</div>
+</div>	

@@ -8,7 +8,7 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="/">An LbpApp</a>
+      <a class="navbar-brand" href="/"><%= Rails.configuration.logo %></a>
     </div>
 
     <!-- Collect the nav links, forms, and other content for toggling -->
@@ -33,8 +33,12 @@
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Resources <span class="caret"></span></a>
           <ul class="dropdown-menu" role="menu">
-            <li><a href="/biography">Biography</a></li>
-            <li><a href="/bibliography">Bibliography</a></li>
+            <% if Rails.configuration.biography %> 
+              <li><a href="/biography">Biography</a></li>
+            <% end %>
+            <% if Rails.configuration.bibliography %> 
+              <li><a href="/bibliography">Bibliography</a></li>
+            <% end %>
           </ul>
         </li>
         <li class="dropdown">

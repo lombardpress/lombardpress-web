@@ -1,0 +1,2 @@
+module ParagraphimageHelper
+end

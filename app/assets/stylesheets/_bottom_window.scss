@@ -1,0 +1,16 @@
+#lbp-bottom-window{position: fixed; 
+	top: 60%; 
+	height: 40%; 
+	width: 100%; 
+	background-color: $dark-color; 
+	margin-bottom: 50px; 
+	padding-bottom: 50px; 
+	 
+	display: none;
+	overflow: scroll;}
+
+#lbp-bottom-widow-container{}
+
+#lbp-bottom-window-nav-bar{border-bottom: 2px solid $light-color; margin-bottom: 5px; height: 30px}
+
+#lbp-bottom-window-nav-bar a {height: 20px; padding: 5px;}

@@ -3,7 +3,10 @@ Rails.application.routes.draw do
   get 'sessions/new'
 
   root 'pages#home'
+  
   get 'text/:id' => 'text#show'
+  
+  get 'paragraphimage/:itemid/:msslug/:pid/' => 'paragraphimage#show'
   get 'about' => 'pages#about'
   get 'biography' => 'pages#biography'
   get 'bibliography' => 'pages#bibliography' 
@@ -12,7 +15,8 @@ Rails.application.routes.draw do
   
   
 
-  resources :text
+  
+
   
 
   # The priority is based upon order of creation: first created -> highest priority.

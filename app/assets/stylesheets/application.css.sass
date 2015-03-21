@@ -10,23 +10,46 @@
  * defined in the other CSS/SCSS files in this directory. It is generally better to create a new
  * file per style scope.
  *
- *= require_tree .
- *= require_self
+ * require_tree .
+ * require_self
  */
 
-@import "globalvariables"
-@import "mixins"
+* site theme colors
 
+$dark-color: 					#BBCEBE
+$light-color: 				#E6EDE8
+$text-color: 					black
+$text-bgcolor: 				white
 
+* bootstrap overrides 
+$navbar-default-bg:    $dark-color
+$icon-font-path: "../images/"
+@icon-font-name: "../images/"
 
+* bootstrap imports 
 @import "bootstrap-sprockets"
 @import "bootstrap"
 
+* custom mixins
+@import "mixins"
+
+* global 
 @import "global"
-//@import "custom"
-//@import "header"
+
+* components
+@import "footer"
+@import "bottom_window"
+@import "paragraphmenu"
+
+* pages
+@import "pages"
 @import "text"
-//@import "users"
+
+
+
+
+
+
 
 
 
