@@ -17,12 +17,17 @@ class TextController < ApplicationController
 		
 		item = Lbp::Item.new(config_hash, url)
 		source = "origin"
-
-		transcript = item.transcription(source: source)
+		if params.has_key?(:msslug)
+			wit = params[:msslug]
+		else
+			wit = "critical"
+		end
+		transcript = item.transcription(source: source, wit: wit)
 		@title = item.title
 		@fs = item.fs
-
-		@transform = transcript.transform_main_view
+		
+		xslt_param_array = ["default-ms-image", Rails.application.config.default_ms_image]
+		@transform = transcript.transform_main_view(xslt_param_array)
 
 
 

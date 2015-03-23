@@ -1,9 +1,10 @@
 #These configs need to eventually be put in a yaml find and then pulled out 
 Rails.application.config.logo = "PetrusPlaoul"
-Rails.application.config.title = "The Comment on the Sentences of Peter Plaoul"
+Rails.application.config.title = "The Commentary on the Sentences of Peter Plaoul"
 Rails.application.config.bannermessage = "A working edition of the Commentary on the Sentences of Peter Lombard"
 Rails.application.config.biography = true
 Rails.application.config.bibliography = true
+Rails.application.config.default_ms_image = "'lon'" #single quotes are required here in order to pass a string as parameter into Nokogir
 
 
 
@@ -28,7 +29,8 @@ def confighash (projectfiledir)
 						}
 	return confighash
 end
-commentaryid = "plaoulcommentary"
+#commentaryid = "plaoulcommentary"
+commentaryid = "graciliscommentary"
 Rails.application.config.commentaryid = commentaryid
 commentarydirname = 'pp-projectfiles'
 

@@ -1,17 +1,33 @@
 
 <div id="lbp-image-container" class="container">
 	<div class="row">
-		<div class="col-md-1" style="font: 10px">
-			<p>Paragraph number X</p>
-			<p>Witness: X</p>
-			<p>Folio: x</p>
-			<p>See also: x</p>
+		<div id="lbp-paragraph-info" class="col-md-1">
+			<h3>Paragraph Image Info</h3>
+				<p>Paragraph number: <%= @paragraph_number %></p>
+				<p>Witness: X</p>
+				<p>Folio: x</p>
+				<p>See also: x</p>
 		</div>
 		<div class="col-xs-12 col-md-7">
-			<img src="http://res.cloudinary.com/djrre1fk1/image/upload/c_crop,x_<%= @paraimage.ulx %>,y_<%= @paraimage.uly %>,w_<%= @paraimage.width %>,h_<%= @paraimage.height %>,q_30/<%= @paraimage.url %>" alt="paragraphimg" class="msimage" id="order_reims_1" style="width: 100%">
+			<img src="http://res.cloudinary.com/djrre1fk1/image/upload/c_crop,x_<%= @paraimage.ulx %>,y_<%= @paraimage.uly %>,w_<%= @paraimage.width %>,h_<%= @paraimage.height %>,q_30/<%= @paraimage.url %>" alt="paragraphimg" class="msimage" style="width: 100%">
 		</div>
-		<div class="col-xs-12 col-md-4">
-			Text goes here
+		<div id="lbp-paragraph-ms-text" class="col-xs-12 col-md-3">
+			<% unless @next_para == nil  %>
+				<% next_pid = @next_para.pid %>
+				<a href="<%= "/paragraphimage/#{params[:itemid]}/#{params[:msslug]}/#{next_pid}" %>" class="js-show-alt-para-image" data-itemid="<%= params[:itemid] %>" data-alt-pid="<%= next_pid %>" data-msslug="<%= params[:msslug] %>">Next</a>
+			<% end %>	
+			<% unless @previous_para == nil %>
+				<% previous_pid = @previous_para.pid %>
+				<a href="<%= "/paragraphimage/#{params[:itemid]}/#{params[:msslug]}/#{previous_pid}" %>" class="js-show-alt-para-image" data-itemid="<%= params[:itemid] %>" data-alt-pid="<%= previous_pid %>" data-msslug="<%= params[:msslug] %>">Previous</a>
+			<% end %>	
+			<%= raw(@paragraph_text) %>
+		</div>
+		<div id="lbp-ms-selection" class="col-xs-12 col-md-1">
+				<h3>Select Image</h3>
+				<% @ms_slugs.each do |slug| %>
+					<a href="<%= "/paragraphimage/#{params[:itemid]}/#{slug}/#{params[:pid]}" %>" class="js-show-para-image" data-itemid="<%= params[:itemid] %>" data-pid="<%= params[:pid] %>" data-msslug="<%= slug %>" ><%= slug %></a> <br/>
+				<% end %>
+
 		</div>
 
 	</div>

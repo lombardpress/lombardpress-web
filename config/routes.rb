@@ -4,9 +4,9 @@ Rails.application.routes.draw do
 
   root 'pages#home'
   
-  get 'text/:id' => 'text#show'
+  get 'text/:id/:msslug' => 'text#show'
   
-  get 'paragraphimage/:itemid/:msslug/:pid/' => 'paragraphimage#show'
+  get 'paragraphimage/:itemid/:msslug/:pid' => 'paragraphimage#show'
   get 'about' => 'pages#about'
   get 'biography' => 'pages#biography'
   get 'bibliography' => 'pages#bibliography' 
