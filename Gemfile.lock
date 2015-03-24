@@ -1,6 +1,6 @@
 GIT
-  remote: https://lombardpress@bitbucket.org/lombardpress/lbp.rb.git
-  revision: 964f1366f99649951571ce189817f8aa72dcc64f
+  remote: https://jeffreycwitt@bitbucket.org/jeffreycwitt/lbp.rb.git
+  revision: 817bdcbb24c2fc7fd57c5080159238ed31a7975e
   branch: master
   specs:
     lbp (0.0.2)
@@ -80,6 +80,8 @@ GEM
       responders
       thread_safe (~> 0.1)
       warden (~> 1.2.3)
+    domain_name (0.5.23)
+      unf (>= 0.0.5, < 1.0.0)
     ebnf (0.3.7)
       haml (~> 4.0)
       rdf (~> 1.1)
@@ -93,6 +95,8 @@ GEM
       tilt
     hike (1.2.3)
     htmlentities (4.3.3)
+    http-cookie (1.0.2)
+      domain_name (~> 0.5)
     i18n (0.7.0)
     jbuilder (2.2.12)
       activesupport (>= 3.0.0, < 5)
@@ -169,7 +173,8 @@ GEM
     rdoc (4.2.0)
     responders (2.1.0)
       railties (>= 4.2.0, < 5)
-    rest-client (1.7.3)
+    rest-client (1.8.0)
+      http-cookie (>= 1.0.2, < 2.0)
       mime-types (>= 1.16, < 3.0)
       netrc (~> 0.7)
     rugged (0.21.4)
@@ -223,6 +228,9 @@ GEM
     uglifier (2.7.1)
       execjs (>= 0.3.0)
       json (>= 1.8.0)
+    unf (0.1.4)
+      unf_ext
+    unf_ext (0.0.6)
     warden (1.2.3)
       rack (>= 1.0)
     web-console (2.1.2)
