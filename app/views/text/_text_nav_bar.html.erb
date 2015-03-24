@@ -14,9 +14,16 @@
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
-        <li><li><a href="#">Next</a></li>
-        <li><a href="#">Previous</a></li>
-        <li><a href="#">List</a></li>
+        <% if @previous_itemid != nil %>
+          <li><a href="/text/<%= @previous_itemid %>">Previous</a></li>
+        <% end %>
+        <% if @previous_itemid != nil %>
+          <li><a href="/text/<%= @next_itemid %>">Next</a></li>
+        <% end %>
+        
+        
+          
+        
       </ul>
       
       <ul class="nav navbar-nav navbar-right">

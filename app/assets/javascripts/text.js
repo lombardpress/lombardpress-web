@@ -1,21 +1,26 @@
-$(document).ready(function(){
-  
- //events
-  $("a.paragraphmenu").click(showParagraphMenu);
-	$("a.js-show-para-comment").click(showBottomWindow);
-	$("a.js-expand-para-comment").click(expandBottomWindow);
-	$("a.js-minimize-para-comment").click(minimizeBottomWindow);
-	$("a.js-halfsize-para-comment").click(halfSizeBottomWindow);
-	$("a.js-close-para-comment").click(hideBottomWindow);
-	
-	
 
-	$("a.js-show-para-image-window").click(function(){
-		halfSizeBottomWindow();
-		var msslug = $(this).attr("data-msslug");
-		var fs = $(this).attr("data-itemid");
-		var pid = $(this).attr("data-pid");
-		showParaImage(fs, msslug, pid);	
+$(document).on('ready page:load', function () {
+  // Actions to do
+
+	$(document).ready(function(){
+	  
+	 //events
+	  $("a.paragraphmenu").click(showParagraphMenu);
+		$("a.js-show-para-comment").click(showBottomWindow);
+		$("a.js-expand-para-comment").click(expandBottomWindow);
+		$("a.js-minimize-para-comment").click(minimizeBottomWindow);
+		$("a.js-halfsize-para-comment").click(halfSizeBottomWindow);
+		$("a.js-close-para-comment").click(hideBottomWindow);
+		
+		
+
+		$("a.js-show-para-image-window").click(function(){
+			halfSizeBottomWindow();
+			var msslug = $(this).attr("data-msslug");
+			var fs = $(this).attr("data-itemid");
+			var pid = $(this).attr("data-pid");
+			showParaImage(fs, msslug, pid);	
+		});
 	});
 });
 

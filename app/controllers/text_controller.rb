@@ -1,9 +1,13 @@
 class TextController < ApplicationController
   def index
-  		
-			url =  "<http://scta.info/text/#{$commentaryid}/commentary>" 
-			@results = query_obj = Lbp::Query.new().collection_query(url)
-			
+  		commentaryid = Rails.application.config.commentaryid
+			url =  "<http://scta.info/text/#{commentaryid}/commentary>" 
+			@results = Lbp::Query.new().collection_query(url)
+	end
+	def questions
+			commentaryid = Rails.application.config.commentaryid
+			url =  "<http://scta.info/text/#{commentaryid}/commentary>" 
+			@results = Lbp::Query.new().collection_query(url)
 	end
 
 	def show
@@ -27,6 +31,9 @@ class TextController < ApplicationController
 		@fs = item.fs
 		
 		xslt_param_array = ["default-ms-image", Rails.application.config.default_ms_image]
+		@next_itemid = item.next.split("/").last
+		@previous_itemid = item.previous.split("/").last
+		
 		@transform = transcript.transform_main_view(xslt_param_array)
 
 

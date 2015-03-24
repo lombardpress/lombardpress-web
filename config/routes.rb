@@ -4,12 +4,16 @@ Rails.application.routes.draw do
 
   root 'pages#home'
   
-  get 'text/:id/:msslug' => 'text#show'
+  get 'text' => 'text#index'
+  get 'text/questions' => 'text#questions'
+  get 'text/:id(/:msslug)' => 'text#show'
   
   get 'paragraphimage/:itemid/:msslug/:pid' => 'paragraphimage#show'
-  get 'about' => 'pages#about'
   get 'biography' => 'pages#biography'
   get 'bibliography' => 'pages#bibliography' 
+
+  get 'articles/:articleid' => 'articles#show'
+  get 'articles' => 'articles#index'
   
   
   

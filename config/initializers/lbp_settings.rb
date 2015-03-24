@@ -4,10 +4,31 @@ Rails.application.config.title = "The Commentary on the Sentences of Peter Plaou
 Rails.application.config.bannermessage = "A working edition of the Commentary on the Sentences of Peter Lombard"
 Rails.application.config.biography = true
 Rails.application.config.bibliography = true
-Rails.application.config.default_ms_image = "'lon'" #single quotes are required here in order to pass a string as parameter into Nokogir
+Rails.application.config.timeline = true
+Rails.application.config.about = true
+Rails.application.config.blog = false
+Rails.application.config.default_ms_image = "'reims'" #single quotes are required here in order to pass a string as parameter into Nokogir
 
 
+article_config_hash = {biography: 
+												{xml: "https://bitbucket.org/jeffreycwitt/biography/raw/master/PlaoulBiography.xml",
+												 xslt: "/Users/JCWitt/WebPages/lbpwrapper/lombardpress/public/pl_xslt_stylesheets/BiographyXSLTstylesheet.xsl"
+												},
+											timeline: 
+												{xml: "https://bitbucket.org/jeffreycwitt/biography/raw/master/PlaoulTimeLineTEI.xml", 
+												 xslt: "/Users/JCWitt/WebPages/lbpwrapper/lombardpress/public/pl_xslt_stylesheets/TEITimeLineList.xsl"
+												 },
+											bibliography: 
+												{xml: "https://bitbucket.org/jeffreycwitt/bibliography/raw/master/bibliography.xml", 
+												 xslt: "/Users/JCWitt/WebPages/lbpwrapper/lombardpress/public/pl_xslt_stylesheets/bibliography.xsl"
+												},
+											about: 	
+												{xml: "https://bitbucket.org/jeffreycwitt/pp-about/raw/master/pp-about.xml", 
+												 xslt: "/Users/JCWitt/WebPages/lbpwrapper/lombardpress/public/pl_xslt_stylesheets/about_stylesheet.xsl"
+												}
+											}
 
+Rails.application.config.article_config_hash = article_config_hash
 
 def confighash (projectfiledir)
 	confighash = {local_texts_dir: "/Users/JCWitt/WebPages/lbplib-testfiles/#{projectfiledir}/GitTextfiles/", 
@@ -29,8 +50,9 @@ def confighash (projectfiledir)
 						}
 	return confighash
 end
-#commentaryid = "plaoulcommentary"
-commentaryid = "graciliscommentary"
+commentaryid = "plaoulcommentary"
+#commentaryid = "wodehamordinatio"
+#commentaryid = "graciliscommentary"
 Rails.application.config.commentaryid = commentaryid
 commentarydirname = 'pp-projectfiles'
 

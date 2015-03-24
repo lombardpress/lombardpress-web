@@ -1,0 +1,27 @@
+<style type="text/css">
+  .status{display: none;}
+  .itemLink:hover .status{display: inline;}
+</style>
+<div>
+  <h1>Question List</h1>
+</div>
+<div id="lbp-question-container" class="container">
+  <% @results.each do |result| %>
+  <% link = "/text/" + result[:item].to_s.split('/').last %>
+  <div>
+    <h2>
+      <% if result[:status] != "Not Started" %>
+        <span><%= link_to(result[:title], link) %> </span> 
+        <% if result[:questiontitle] != nil %>
+          <span><%= result[:questiontitle] %></span>
+        <% end %>
+      <% else %>
+        <span><%= result[:title] %></span>
+        <% if result[:questiontitle] != nil %>
+          <span><%= result[:questiontitle] %></span>
+        <% end %> 
+      <% end %>
+    </h2>
+  </div>
+  <% end %>
+</div>
