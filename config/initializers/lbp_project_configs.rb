@@ -9,7 +9,8 @@ def set_plaoul_config
 	Rails.application.config.about = true
 	Rails.application.config.blog = false
 	Rails.application.config.default_ms_image = "'reims'" #single quotes are required here in order to pass a string as parameter into Nokogir
-
+	Rails.application.config.dark_color = "#BBCEBE"
+	Rails.application.config.light_color = "#E6EDE8"
 
 	article_config_hash = {biography: 
 													{xml: "https://bitbucket.org/jeffreycwitt/biography/raw/master/PlaoulBiography.xml",
@@ -47,7 +48,8 @@ def set_gracilis_config
 	Rails.application.config.about = true
 	Rails.application.config.blog = false
 	Rails.application.config.default_ms_image = "'lon'" #single quotes are required here in order to pass a string as parameter into Nokogir
-
+	Rails.application.config.dark_color = "#F2D5D9"
+	Rails.application.config.light_color = "#F9EFF1"
 
 	article_config_hash = {biography: 
 													{xml: "https://bitbucket.org/jeffreycwitt/pg-biography/raw/master/pg-biography.xml",
@@ -85,7 +87,8 @@ def set_wodeham_config
 	Rails.application.config.about = true
 	Rails.application.config.blog = false
 	Rails.application.config.default_ms_image = "'sorb'" #single quotes are required here in order to pass a string as parameter into Nokogir
-
+	Rails.application.config.dark_color = "#bbbbce"
+	Rails.application.config.light_color = "#e6e6ed"
 
 	article_config_hash = {biography: 
 													{xml: "https://bitbucket.org/jeffreycwitt/aw-biography/raw/master/aw-biography.xml",

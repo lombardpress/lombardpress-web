@@ -5,10 +5,8 @@ class PagesController < ApplicationController
 		#@banner_message = "A working edition of the <br/> Commentary on the Sentences by Peter Plaoul";
 
 	end
-	def biography
+	def permissions
+		
 	end
-	def bibliography
-	end
-	def about
-	end
+	
 end

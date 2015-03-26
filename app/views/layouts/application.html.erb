@@ -9,9 +9,11 @@
 <body>
 	<%= render "layouts/header" %> 
 	<% flash.each do |key, value| %>
-	 	<p class="notice"><%= value %></p>
-    <!-- <p class="alert"><%= alert %></p> -->
-  <% end %>
+
+	<div class="alert alert-info alert-dismissible" role="alert">
+		<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+		<%= key + " : " + value %></div>
+	<% end %>
 	
 	 
 	<%= yield %>

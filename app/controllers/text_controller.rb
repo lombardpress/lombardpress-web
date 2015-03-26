@@ -1,4 +1,6 @@
 class TextController < ApplicationController
+	
+  
   def index
   		commentaryid = Rails.application.config.commentaryid
 			url =  "<http://scta.info/text/#{commentaryid}/commentary>" 
@@ -18,8 +20,17 @@ class TextController < ApplicationController
 		config_hash = Rails.application.config.confighash
 		commentaryid = Rails.application.config.commentaryid
 		url = "http://scta.info/text/#{commentaryid}/item/#{params[:id]}"
-		
 		item = Lbp::Item.new(config_hash, url)
+		
+		if  item.status == "In Progress" || item.status == "draft"
+			if current_user.nil?
+				redirect_to "/permissions#draftview", :alert => "Access denied: This text is a draft. It requires permission to be viewed."
+			elsif !current_user.admin? 
+				redirect_to "/permissions#draftview", :alert => "Access denied: This text is a draft. It requires permission to be viewed."
+			end
+		end
+
+
 		source = "origin"
 		if params.has_key?(:msslug)
 			wit = params[:msslug]
