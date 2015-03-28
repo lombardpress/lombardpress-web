@@ -12,11 +12,15 @@ class TextController < ApplicationController
 			@results = Lbp::Query.new().collection_query(url)
 	end
 
+	def info
+	end
+
 	def show
 
 # use query on item here to check status
 # if it has a critical transcription go directly there
-# if it does not give, offer message then choices to existing transcription
+# if it does not give, redirect to #info
+
 		config_hash = @config.confighash
 		commentaryid = @config.commentaryid
 		url = "http://scta.info/text/#{commentaryid}/item/#{params[:id]}"
@@ -25,6 +29,12 @@ class TextController < ApplicationController
 		if item.status == "In Progress" || item.status == "draft"
 			if current_user.nil?
 				redirect_to "/permissions#draftview", :alert => "Access denied: This text is a draft. It requires permission to be viewed."
+			elsif current_user.draft_reader? || current_user.draft_img_reader?
+				allowed_texts = current_user.texts.map {|text| text.itemid}
+				unless allowed_texts.include? params[:id]
+					redirect_to "/permissions#draftview", :alert => "Access denied: This text is a draft. It requires permission to be viewed."
+				end
+
 			elsif !current_user.admin? 
 				redirect_to "/permissions#draftview", :alert => "Access denied: This text is a draft. It requires permission to be viewed."
 			end

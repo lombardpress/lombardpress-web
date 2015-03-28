@@ -20,5 +20,10 @@
 
 <%= render "shared/footer" %> 
 <%= debug(params) if Rails.env.development? %>
+<%= "User Loggied in: " + user_signed_in?.to_s if Rails.env.development? %>
+<%= "id: " + current_user.id.to_s + " username/email: " + current_user.email + " role: " + current_user.role if Rails.env.development? && user_signed_in?%>
+
+
+
 </body>
 </html>
