@@ -70,8 +70,7 @@
               Account <b class="caret"></b>
             </a>
             <ul class="dropdown-menu">
-              <!-- <li><%= link_to "Profile", '' %></li> -->
-              <li><%= link_to "Settings", '/users/edit' %></li>
+              <li><%= link_to "Profile", '/users/profiles/' + current_user[:id].to_s %></li>
               <li class="divider"></li>
               <li>
                 <%= link_to "Log out", "/users/sign_out", method: "delete" %>

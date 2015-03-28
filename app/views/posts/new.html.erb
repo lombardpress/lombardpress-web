@@ -1,0 +1,39 @@
+<div class="container center">
+	
+	
+
+<h1>New Post</h1>
+
+<%= form_for :post, url: posts_path do |f| %>
+
+	<% if @post.errors.any? %>
+    <div id="error_explanation">
+      <h2>
+        <%= pluralize(@post.errors.count, "error") %> prohibited
+        this article from being saved:
+      </h2>
+      <ul>
+        <% @post.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+	<p>
+		<%= f.label :title %><br/>
+		<%= f.text_field :title %><br/>
+	</p>
+	<p>
+		<%= f.label :body %><br/>
+		<%= f.text_area :body %><br/>
+
+	</p>
+
+	<%= f.hidden_field :user_id, value: params[:user] %>
+	<%= f.hidden_field :commentaryid, value: params[:commentaryid] %>
+	<button type="submit" class="btn btn-default">submit</button>
+	<% end %>
+
+
+<div>

@@ -1,9 +1,12 @@
 Rails.application.routes.draw do
   
   devise_for :users, controllers: { sessions: "users/sessions", profiles: "users/profiles"}
-  # i think session new can be deleted
-  #get 'sessions/new'
-
+  
+  get 'posts/list' => 'posts#list'
+  
+  resources :posts
+  
+  
   root 'pages#home'
 
   get '/permissions' => 'pages#permissions'
@@ -19,9 +22,11 @@ Rails.application.routes.draw do
   get 'articles/:articleid' => 'articles#show'
   get 'articles' => 'articles#index'
   
-  
   get 'users/profiles' => 'users/profiles#index'
-  get 'users/profiles/show/:id' => 'users/profiles#show'
+  get 'users/profiles/:id' => 'users/profiles#show'
+
+
+
   
 
   

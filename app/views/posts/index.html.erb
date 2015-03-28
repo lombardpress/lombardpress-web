@@ -1,0 +1,25 @@
+<div class="container center">
+	<h1>Research Notes</h1>
+	<% @posts.each do |post| %>
+	<div class="container" style="border-bottom: 1px solid black;">
+		<p>
+		  <strong><%= link_to post.title, post_path(post) %></strong>
+		  
+		</p>
+		 
+		<p>
+		  <strong>Text:</strong>
+		  <%= post.body %>
+		</p>
+		<p>
+		  <strong>Posted by:</strong>
+		  <%= post.user.email %>
+		</p>
+		<% if user_signed_in? %>
+			<% if current_user.admin? %>
+				<%= link_to 'Edit', edit_post_path(post) %>
+			<% end %>
+		<% end %>
+	</div>
+	<% end %>
+</div>

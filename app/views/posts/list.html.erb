@@ -1,0 +1,27 @@
+<div class="container">
+	<h1>Posts</h1>
+	<table class="table table-striped table-hover">
+		<thead>
+			<tr>
+				<td>Title</td>
+				<td>Date</td>
+				<td>Posted By</td>
+				<td>Edit</td>
+				<td>Destroy</td>
+			</tr>
+		</thead>
+		<tbody>
+			<% @posts.each do |post| %>
+				<tr>
+					<td><%= link_to post.title, post_path(post) %></td>
+					<td><%= post.created_at %></td>
+					<td><%= post.user.email %></td>
+					<td><%= link_to "edit", edit_post_path(post) %></td>
+					<td><%= link_to "remove", post_path(post), :method => :delete, :confirm => "are you sure?" %></td>
+				</tr>
+			<% end %>
+		</tbody>
+	</table>
+	<p><%= link_to "Create New Post", new_post_path %></p>
+	
+</div>
