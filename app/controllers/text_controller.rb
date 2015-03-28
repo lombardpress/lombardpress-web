@@ -2,12 +2,12 @@ class TextController < ApplicationController
 	
   
   def index
-  		commentaryid = Rails.application.config.commentaryid
+  		commentaryid = @config.commentaryid
 			url =  "<http://scta.info/text/#{commentaryid}/commentary>" 
 			@results = Lbp::Query.new().collection_query(url)
 	end
 	def questions
-			commentaryid = Rails.application.config.commentaryid
+			commentaryid = @config.commentaryid
 			url =  "<http://scta.info/text/#{commentaryid}/commentary>" 
 			@results = Lbp::Query.new().collection_query(url)
 	end
@@ -17,8 +17,8 @@ class TextController < ApplicationController
 # use query on item here to check status
 # if it has a critical transcription go directly there
 # if it does not give, offer message then choices to existing transcription
-		config_hash = Rails.application.config.confighash
-		commentaryid = Rails.application.config.commentaryid
+		config_hash = @config.confighash
+		commentaryid = @config.commentaryid
 		url = "http://scta.info/text/#{commentaryid}/item/#{params[:id]}"
 		item = Lbp::Item.new(config_hash, url)
 		
@@ -40,7 +40,7 @@ class TextController < ApplicationController
 		@title = item.title
 		@fs = item.fs
 		
-		xslt_param_array = ["default-ms-image", Rails.application.config.default_ms_image]
+		xslt_param_array = ["default-ms-image", @config.default_ms_image]
 		@next_itemid = item.next.split("/").last
 		@previous_itemid = item.previous.split("/").last
 		

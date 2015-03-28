@@ -1,7 +1,7 @@
 class ParagraphimageController < ApplicationController
 	def show
-		config_hash = Rails.application.config.confighash
-		commentaryid = Rails.application.config.commentaryid
+		config_hash = @config.confighash
+		commentaryid = @config.commentaryid
 		url = "http://scta.info/text/#{commentaryid}/item/#{params[:itemid]}"
 
 

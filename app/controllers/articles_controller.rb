@@ -3,7 +3,7 @@ class ArticlesController < ApplicationController
 	end
 	def show
 		#this logic needs to be moved outside the controller
-		article = Article.new()
+		article = Article.new(@config)
 		
 		xslt_file_path = article.xslt_file(params[:articleid].to_sym)
 		xml_file_path = article.xml_file(params[:articleid].to_sym)

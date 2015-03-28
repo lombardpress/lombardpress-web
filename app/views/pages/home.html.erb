@@ -1,8 +1,8 @@
 
 <div id="lbp-home-body" class="container">
 	<div id="lbp-home-jumbotron" class="jumbotron">
-  	<h1><%= raw(Rails.application.config.title) %></h1>
-  	<p><%= raw(Rails.application.config.bannermessage) %></p>
+  	<h1><%= raw(@config.title) %></h1>
+  	<p><%= raw(@config.bannermessage) %></p>
   	<p><a class="btn btn-primary btn-lg" href="/text" role="button">View the Text</a> <a class="btn btn-primary btn-lg" href="/about" role="button">Learn More</a></p>
 	</div>
 </div>
