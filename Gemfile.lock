@@ -1,6 +1,6 @@
 GIT
   remote: https://jeffreycwitt@bitbucket.org/jeffreycwitt/lbp.rb.git
-  revision: 0a56519246645563c52542b0493ab6a39961cc8f
+  revision: 9163068be0c8af31072335d1909508846690c7ab
   branch: without-rugged
   specs:
     lbp (0.0.2)

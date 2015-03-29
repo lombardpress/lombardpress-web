@@ -19,6 +19,6 @@ class ApplicationController < ActionController::Base
   end
   def set_conf
     host = request.host_with_port
-    @config = Config.new(host)
+    @config = LbpConfig.new(host)
   end
 end

@@ -1,4 +1,4 @@
-class Config 
+class LbpConfig 
 	attr_reader :logo, 
 	:title, 
 	:bannermessage, 
