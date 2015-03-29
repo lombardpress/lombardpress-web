@@ -1,14 +1,13 @@
 GIT
   remote: https://jeffreycwitt@bitbucket.org/jeffreycwitt/lbp.rb.git
-  revision: c4c30e3f221bff0062f433cd251261b2ff02a55b
-  branch: master
+  revision: 0a56519246645563c52542b0493ab6a39961cc8f
+  branch: without-rugged
   specs:
     lbp (0.0.2)
       nokogiri
       rdf
       rdf-rdfxml
       rest-client
-      rugged
       sparql
       thor
 
@@ -179,7 +178,6 @@ GEM
       http-cookie (>= 1.0.2, < 2.0)
       mime-types (>= 1.16, < 3.0)
       netrc (~> 0.7)
-    rugged (0.21.4)
     sass (3.4.13)
     sass-rails (5.0.1)
       railties (>= 4.0.0, < 5.0)

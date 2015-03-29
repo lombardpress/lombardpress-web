@@ -22,6 +22,8 @@ class Config
 			self.set_wodeham_config
 		elsif url == "localhost:3002"
 			self.set_gracilis_config
+		else
+			self.set_plaoul_config
 		end
 	end
 

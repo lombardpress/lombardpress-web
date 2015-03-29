@@ -29,7 +29,7 @@ gem 'autoprefixer-rails'
 
 gem 'devise'
 
-gem 'lbp', :git => "https://jeffreycwitt@bitbucket.org/jeffreycwitt/lbp.rb.git", :branch => "master"
+gem 'lbp', :git => "https://jeffreycwitt@bitbucket.org/jeffreycwitt/lbp.rb.git", :branch => "without-rugged"
 
 # Use ActiveModel has_secure_password
  gem 'bcrypt', '~> 3.1.7'
