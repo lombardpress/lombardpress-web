@@ -9,7 +9,10 @@ class ApplicationController < ActionController::Base
   
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
-  before_filter :set_conf
+  before_filter :set_conf, :check_for_user
+
+  # I wish I could do this in a policy but currently can't figure out how
+  
 
 
   
@@ -22,5 +25,12 @@ class ApplicationController < ActionController::Base
   def set_conf
     host = request.host_with_port
     @config = LbpConfig.new(host)
+  end
+  def check_for_user
+    unless request.path == "/users/sign_in"
+      if current_user.nil?
+        redirect_to "/users/sign_in", :alert => "This site is currently in alpha development. It is currently accessible by invitation only."
+      end
+  end
   end
 end
