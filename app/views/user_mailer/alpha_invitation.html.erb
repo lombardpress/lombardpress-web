@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  </head>
+  <body>
+    <h1><%= @user.email %> You've been invited to alpha test the new LombardPress rebuild</h1>
+    <p>You can sign into the site at <a href="<%= @url %>"><%= @url %></a>. Your username is <%= @user.email %> and your password is "changeme". Your permission level is <%= @user.role %> which means can view both public texts and individual drafts that you have been approved for. I have approved you to view <a href="https://lombardpress2.herokuapp.com/text/lectio1">Petrus Plaoul, Lectio 1</a>. At the present time you will not be availble to view other drafts without requesting and receiving permission from the editor.
+
+    <p>The site is still in development so there may be many problems. But I would love your feedback, ideas, and suggestions. If you have time to look at the site, please send your comments to <a href="mailto:jeffreycwitt.@gmail.com">jeffreycwitt@gmail.com</a>
+      
+      
+  </body>
+</html>
