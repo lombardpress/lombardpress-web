@@ -16,24 +16,25 @@ class PostsController < ApplicationController
 	def new
 
 		params[:user] = current_user[:id]
- 		params[:commentaryid] = Rails.application.config.commentaryid
+ 		params[:commentaryid] = @config.commentaryid
  		@post = Post.new
  		authorize @post
 	end
 	def edit
 		params[:user] = current_user[:id]
- 		params[:commentaryid] = Rails.application.config.commentaryid
+ 		params[:commentaryid] = @config.commentaryid
 		@post = Post.find(params[:id])
 		authorize @post
 	end
 	def create
 		@post = Post.new(post_params)
+		authorize @post
 		if @post.save
     	redirect_to @post, :notice => "Post successfully created"
   	else
   		# note that without resending this params, they are not available.
   		params[:user] = current_user[:id]
- 			params[:commentaryid] = Rails.application.config.commentaryid
+ 			params[:commentaryid] = @config.commentaryid
     	render 'new'
   	end
 	end

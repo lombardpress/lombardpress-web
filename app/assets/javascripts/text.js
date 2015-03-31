@@ -17,10 +17,25 @@ $(document).on('ready page:load', function () {
 		$("a.js-show-para-image-window").click(function(){
 			halfSizeBottomWindow();
 			var msslug = $(this).attr("data-msslug");
-			var fs = $(this).attr("data-itemid");
+			var itemid = $(this).attr("data-itemid");
 			var pid = $(this).attr("data-pid");
-			showParaImage(fs, msslug, pid);	
+			showParaImage(itemid, msslug, pid);	
 		});
+
+		$("a.js-view-comments").click(function(){
+			halfSizeBottomWindow();
+			var itemid = $(this).attr("data-itemid");
+			var pid = $(this).attr("data-pid");
+			showComments(itemid, pid);	
+		});
+		$("a.js-new-comment").click(function(){
+			halfSizeBottomWindow();
+			var itemid = $(this).attr("data-itemid");
+			var pid = $(this).attr("data-pid");
+			newComment(itemid, pid);	
+		});
+
+
 	});
 });
 
@@ -40,7 +55,15 @@ $(document).on("click", ".js-show-alt-para-image", function(event){
 		console.log(msslug, fs, pid)
 		showParaImage(fs, msslug, pid);	
 });
+$(document).on("submit", "#lbp-new-comment-form", function(event){
+	alert("TEST")
+    event.preventDefault();
+    postComment();
+});
 
+//end of event bindings
+
+// begin functions
 
 
 var showParagraphMenu = function(){
@@ -71,16 +94,75 @@ var halfSizeBottomWindow = function(){
 
 //image functions
 
-var showParaImage = function(fs, msslug, pid){
+var showParaImage = function(itemid, msslug, pid){
 	showBottomWindow();
 	showSpinner("#lbp-bottom-window-container");
-	$("#lbp-bottom-window-container").load("/paragraphimage/" + fs + "/" + msslug + "/" + pid + " #lbp-image-container", function( response, status, xhr) {
+	$("#lbp-bottom-window-container").load("/paragraphimage/" + itemid + "/" + msslug + "/" + pid + " #lbp-image-container", function( response, status, xhr) {
   	if ( status == "error" ) {
     	var msg = "Sorry but images for this paragraph are not presently available ";
     	$("#lbp-bottom-window-container").html( msg + "(" + xhr.status + " " + xhr.statusText + ")");
     }
   });
 }
+// end image functions
+
+
+// comment functions
+var showComments = function(itemid, pid){
+	showBottomWindow();
+	showSpinner("#lbp-bottom-window-container");
+	$("#lbp-bottom-window-container").load("/comments/list/" + itemid + "/" + pid + " #lbp-comments-list-container", function( response, status, xhr) {
+  	if ( status == "error" ) {
+    	var msg = "Sorry but images for this paragraph are not presently available ";
+    	$("#lbp-bottom-window-container").html( msg + "(" + xhr.status + " " + xhr.statusText + ")");
+    }
+  });
+}
+var newComment = function(itemid, pid){
+	showBottomWindow();
+	showSpinner("#lbp-bottom-window-container");
+	$("#lbp-bottom-window-container").load("/comments/new/" + itemid + "/" + pid + " #lbp-comment-new-container", function( response, status, xhr) {
+  	if ( status == "error" ) {
+    	var msg = "Sorry but images for this paragraph are not presently available ";
+    	$("#lbp-bottom-window-container").html( msg + "(" + xhr.status + " " + xhr.statusText + ")");
+    }
+  });
+}
+
+var postComment = function(itemid, pid){
+	showBottomWindow();
+
+	var form = $("form#lbp-new-comment-form");
+	
+	var comment_text = form.find("#comment_comment").val(),
+	user_id = form.find("#comment_user_id").val(),
+	commentaryid = form.find("#comment_commentaryid").val(),
+	itemid = form.find("#comment_itemid").val(),
+	pid = form.find("#comment_pid").val();
+	
+	var comment = {comment: comment_text, user_id: user_id, pid: pid, itemid: itemid, commentaryid: commentaryid,}
+	$.ajax({
+      type: "POST",
+      url: "/comments",
+      data: { "comment": 
+      	{ "comment": comment_text, "user_id": user_id, "pid": pid, "itemid": itemid, "commentaryid": commentaryid} 
+      },
+      success:function(data, status, xhr){
+      	showSpinner("#lbp-bottom-window-container");
+        showComments(itemid, pid)
+      },
+      error:function(data, status, xhr){
+      	//I want this error work when a user is not signed in.
+      	alert('error');
+      	console.log(status);
+      	var msg = "Sorry, you need to be logged in to post a comment. <a href='/users/sign_in'>Create one here.</a>";
+    	$("#lbp-bottom-window-container").html( msg + "(" + data.status + " " + xhr.statusText + ")");
+      }
+    });
+	}
+
+
+
 
 var showSpinner = function(target){
 	$(target).html("<img src='/spiffygif_150x150.gif'><img>");

@@ -1,0 +1,15 @@
+<div id="lbp-comment-new-container" class="container center">
+<h1>Comment for <%= @item.title %>, paragraph <%= @paragraph.number %></h1>
+
+<%= form_for :comment, url: comments_path, :html => { id: "lbp-new-comment-form" } do |f| %>
+	<p>
+		<%= f.label :comment %><br/>
+		<%= f.text_field :comment %><br/>
+	</p>
+	<%= f.hidden_field :user_id, value: params[:user] %>
+	<%= f.hidden_field :pid, value: params[:pid] %>
+	<%= f.hidden_field :itemid, value: params[:itemid] %>
+	<%= f.hidden_field :commentaryid, value: params[:commentaryid] %>
+	<button type="submit" class="btn btn-default">submit</button>
+	<% end %>
+</div>

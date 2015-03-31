@@ -61,7 +61,13 @@
         </div>
         <div class="collapse navbar-collapse" id="para-navbar-collapse-{$pid}">
           <ul class="nav navbar-nav">
-            <li><a class="js-show-comments-window">Comments</a></li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Comments<span class="caret"></span></a>
+              <ul class="dropdown-menu" role="menu">
+                <li><a class='js-view-comments' data-itemid="{$itemid}" data-pid="{@xml:id}">View Comments</a></li>
+                <li><a class='js-new-comment' data-itemid="{$itemid}" data-pid="{@xml:id}">Leave a Comment</a></li>
+              </ul>
+            </li>
             <li><a class="js-show-para-image-window" data-itemid="{$itemid}" data-pid="{@xml:id}" data-msslug="{$default-ms-image}">Ms Images</a></li>
             <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Paragraph Text Tools<span class="caret"></span></a>

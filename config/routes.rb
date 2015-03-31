@@ -1,11 +1,16 @@
 Rails.application.routes.draw do
   
+  
+
   devise_for :users, controllers: { sessions: "users/sessions", profiles: "users/profiles"}
   
   get 'posts/list' => 'posts#list'
   
   resources :posts
-  
+  resources :comments, except: [:new]
+
+  get "comments/new/:itemid(/:pid)" => 'comments#new', as: :new_comment
+  get "comments/list/:itemid(/:pid)" => 'comments#list', as: :list_comments
   
   root 'pages#home'
 
