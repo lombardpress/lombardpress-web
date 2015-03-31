@@ -3,3 +3,17 @@
   -webkit-box-sizing: border-box;
   box-sizing:         border-box;
 }
+
+@mixin border-radius($radius) {
+  -webkit-border-radius: $radius;
+     -moz-border-radius: $radius;
+      -ms-border-radius: $radius;
+          border-radius: $radius;
+}
+
+@mixin box-shadow{
+	-webkit-box-shadow: 0px 0px 30px #888888;
+     -moz-box-shadow: 0px 0px 30px #888888;
+      -ms-box-shadow: 0px 0px 30px #888888;
+			box-shadow: 0px 0px 30px #888888;
+	}

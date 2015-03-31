@@ -28,18 +28,13 @@
     </xsl:template>
     
     <xsl:template name="teiHeaderInfo">
-        <div id="title" style="text-align: center;">
-            <h1 style="margin-bottom: 5px; font-size: 24px; font-weight: bold;"><xsl:value-of select="//tei:teiHeader/tei:fileDesc/tei:titleStmt/tei:title"/></h1>
-            <p style="margin: 1px;">By <xsl:value-of select="//tei:teiHeader/tei:fileDesc/tei:titleStmt/tei:author"/></p>
-            <p style="font-size: 12px; margin: 0;"><a id="viewFullPubInfo">View full publication statement</a></p>
-        </div>
         
-        <div id="pubInfo">
-            <p>Title: <xsl:value-of select="//tei:teiHeader/tei:fileDesc/tei:titleStmt/tei:title"/></p>
-            <p>By: <xsl:value-of select="//tei:teiHeader/tei:fileDesc/tei:titleStmt/tei:author"/></p>
-            <p>Edition: <xsl:value-of select="//tei:teiHeader/tei:fileDesc/tei:editionStmt/tei:edition/@n"/> | <xsl:value-of select="//tei:teiHeader/tei:fileDesc/tei:editionStmt/tei:edition/tei:date"/></p>
-            <p>Original Publication: <xsl:value-of select="//tei:teiHeader/tei:fileDesc/tei:publicationStmt/tei:publisher"/>, <xsl:value-of select="//tei:teiHeader/tei:fileDesc/tei:publicationStmt/tei:pubPlace"/>, <xsl:value-of select="//tei:teiHeader/tei:fileDesc/tei:publicationStmt/tei:date"/></p>
-            <p>License Availablity: <xsl:value-of select="//tei:teiHeader/tei:fileDesc/tei:publicationStmt/tei:availability/@status"/>, <xsl:value-of select="//tei:teiHeader/tei:fileDesc/tei:publicationStmt/tei:availability/tei:p"/> </p>
+        <div id="lbp-pub-info">
+            <h2><xsl:value-of select="/tei:TEI/tei:teiHeader/tei:fileDesc/tei:titleStmt/tei:title"/></h2>
+            <h4>By <xsl:value-of select="/tei:TEI/tei:teiHeader/tei:fileDesc/tei:titleStmt/tei:author"/></h4>
+            <p>Edition: <xsl:value-of select="/tei:TEI/tei:teiHeader/tei:fileDesc/tei:editionStmt/tei:edition/@n"/> | <xsl:value-of select="/tei:TEI/tei:teiHeader/tei:fileDesc/tei:editionStmt/tei:edition/tei:date"/></p>
+            <p>Original Publication: <xsl:value-of select="/tei:TEI/tei:teiHeader/tei:fileDesc/tei:publicationStmt/tei:publisher"/>, <xsl:value-of select="/tei:TEI/tei:teiHeader/tei:fileDesc/tei:publicationStmt/tei:pubPlace"/>, <xsl:value-of select="/tei:TEI/tei:teiHeader/tei:fileDesc/tei:publicationStmt/tei:date"/></p>
+            <p>License Availablity: <xsl:value-of select="/tei:TEI/tei:teiHeader/tei:fileDesc/tei:publicationStmt/tei:availability/@status"/>, <xsl:value-of select="/tei:TEI/tei:teiHeader/tei:fileDesc/tei:publicationStmt/tei:availability/tei:p"/> </p>
             
         </div>
             
