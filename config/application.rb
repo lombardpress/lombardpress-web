@@ -31,10 +31,12 @@ module Lombardpress2
         ENV[key.to_s] = value
         end if File.exists?(env_file)
     end
-
-
-
+    
     config.active_record.raise_in_transactional_callbacks = true
+
+    config.action_dispatch.default_headers = do
+        'X-Frame-Options' => 'ALLOWALL'
+    end
     
     
 
