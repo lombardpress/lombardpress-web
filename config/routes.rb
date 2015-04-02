@@ -18,7 +18,10 @@ Rails.application.routes.draw do
   
   get 'text' => 'text#index'
   get 'text/questions' => 'text#questions'
-  get 'text/:id(/:msslug)' => 'text#show'
+  get 'text/info/:itemid' => 'text#info'
+  get 'text/status/:itemid' => 'text#status'
+  get 'text/xml/:itemid(:/msslug)' => 'text#xml'
+  get 'text/:itemid(/:msslug)' => 'text#show'
   
   get 'paragraphimage/:itemid/:msslug/:pid' => 'paragraphimage#show'
   get 'biography' => 'pages#biography'

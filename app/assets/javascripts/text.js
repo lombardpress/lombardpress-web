@@ -3,8 +3,8 @@ $(document).on('ready page:load', function () {
   // Actions to do
 
 	$(document).ready(function(){
-	  
-	 //events
+
+		//events
 	  $("a.paragraphmenu").click(showParagraphMenu);
 		$("a.js-show-para-comment").click(showBottomWindow);
 		$("a.js-expand-para-comment").click(expandBottomWindow);
@@ -15,7 +15,10 @@ $(document).on('ready page:load', function () {
 		
 
 		$("a.js-show-para-image-window").click(function(){
+			showSpinner("#lbp-bottom-window-container");
+			showBottomWindow();
 			halfSizeBottomWindow();
+			
 			var msslug = $(this).attr("data-msslug");
 			var itemid = $(this).attr("data-itemid");
 			var pid = $(this).attr("data-pid");
@@ -23,16 +26,36 @@ $(document).on('ready page:load', function () {
 		});
 
 		$("a.js-view-comments").click(function(){
+			showSpinner("#lbp-bottom-window-container");
+			showBottomWindow();
 			halfSizeBottomWindow();
+			
 			var itemid = $(this).attr("data-itemid");
 			var pid = $(this).attr("data-pid");
 			showComments(itemid, pid);	
 		});
 		$("a.js-new-comment").click(function(){
+			showBottomWindow();
 			halfSizeBottomWindow();
+			
 			var itemid = $(this).attr("data-itemid");
 			var pid = $(this).attr("data-pid");
 			newComment(itemid, pid);	
+		});
+
+		$("a.js-show-item-xml").click(function(){
+			showSpinner("#lbp-bottom-window-container");
+			showBottomWindow();
+			expandBottomWindow();
+			var itemid = $(this).attr("data-itemid");
+			showItemXML(itemid)
+		});
+		$("a.js-show-item-info").click(function(){
+			showSpinner("#lbp-bottom-window-container");
+			showBottomWindow();
+			expandBottomWindow();
+			var itemid = $(this).attr("data-itemid");
+			showItemInfo(itemid)
 		});
 
 
@@ -56,10 +79,10 @@ $(document).on("click", ".js-show-alt-para-image", function(event){
 		showParaImage(fs, msslug, pid);	
 });
 $(document).on("submit", "#lbp-new-comment-form", function(event){
-	alert("TEST")
-    event.preventDefault();
+	 event.preventDefault();
     postComment();
 });
+
 
 //end of event bindings
 
@@ -95,8 +118,6 @@ var halfSizeBottomWindow = function(){
 //image functions
 
 var showParaImage = function(itemid, msslug, pid){
-	showBottomWindow();
-	showSpinner("#lbp-bottom-window-container");
 	$("#lbp-bottom-window-container").load("/paragraphimage/" + itemid + "/" + msslug + "/" + pid + " #lbp-image-container", function( response, status, xhr) {
   	if ( status == "error" ) {
     	var msg = "Sorry but images for this paragraph are not presently available ";
@@ -109,29 +130,23 @@ var showParaImage = function(itemid, msslug, pid){
 
 // comment functions
 var showComments = function(itemid, pid){
-	showBottomWindow();
-	showSpinner("#lbp-bottom-window-container");
 	$("#lbp-bottom-window-container").load("/comments/list/" + itemid + "/" + pid + " #lbp-comments-list-container", function( response, status, xhr) {
   	if ( status == "error" ) {
-    	var msg = "Sorry but images for this paragraph are not presently available ";
+    	var msg = "Sorry, but comments for this paragraph are not presently available ";
     	$("#lbp-bottom-window-container").html( msg + "(" + xhr.status + " " + xhr.statusText + ")");
     }
   });
 }
 var newComment = function(itemid, pid){
-	showBottomWindow();
-	showSpinner("#lbp-bottom-window-container");
 	$("#lbp-bottom-window-container").load("/comments/new/" + itemid + "/" + pid + " #lbp-comment-new-container", function( response, status, xhr) {
   	if ( status == "error" ) {
-    	var msg = "Sorry but images for this paragraph are not presently available ";
+    	var msg = "Sorry, but posting comments for this paragraph is not presently possible";
     	$("#lbp-bottom-window-container").html( msg + "(" + xhr.status + " " + xhr.statusText + ")");
     }
   });
 }
 
 var postComment = function(itemid, pid){
-	showBottomWindow();
-
 	var form = $("form#lbp-new-comment-form");
 	
 	var comment_text = form.find("#comment_comment").val(),
@@ -161,8 +176,26 @@ var postComment = function(itemid, pid){
     });
 	}
 
+var showItemXML = function(itemid){
+	$("#lbp-bottom-window-container").load("/text/xml/" + itemid + " #lbp-xml-container", function(response, status, xhr) {
+		// this is required to apply style after ajax load
+		$("pre.xmlCode").snippet("xml", {style: "bright"});
+  	
+  	if ( status == "error" ) {
+    	var msg = "Sorry but XML for this text is not presently available";
+    	$("#lbp-bottom-window-container").html( msg + "(" + xhr.status + " " + xhr.statusText + ")");
+    }
+  });
+}
 
-
+var showItemInfo = function(itemid){
+	$("#lbp-bottom-window-container").load("/text/info/" + itemid + " #lbp-info-container", function(response, status, xhr) {
+		if ( status == "error" ) {
+    	var msg = "Sorry but info and stats for this text is not presently available";
+    	$("#lbp-bottom-window-container").html( msg + "(" + xhr.status + " " + xhr.statusText + ")");
+    }
+  });
+}
 
 var showSpinner = function(target){
 	$(target).html("<img src='/spiffygif_150x150.gif'><img>");

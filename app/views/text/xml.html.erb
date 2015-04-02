@@ -1,0 +1,10 @@
+<div id="lbp-xml-container">
+<script type="text/javascript">
+$(document).ready(function(){
+	$("pre.xmlCode").snippet("xml", {style: "acid"});
+});
+</script>
+<!-- cant figure out why this won't work through asset pipeline -->
+
+<pre id="lbp-xml" class="xmlCode"><%= @nokogiri %></pre>
+</div>

@@ -1,0 +1,42 @@
+<div id="lbp-info-container" class="container">
+	<h1>Text Info/Stats for <%= @title %></h1>
+	<div class="row">
+		<div class="col-md-6">
+			<div class="panel panel-default">
+			  <div class="panel-heading">
+			  	<h3 class="panel-title">Mentions</h3>
+			  </div>
+			  <div class="panel-body">
+			    <table class="table table-striped table-hover">
+			    	<% @name_results.each do |result| %>
+			    	<tr>
+			    		<td><%= result[:nameTitle].to_s %></td>
+			    		<td>Count: </td>
+			    	</tr>
+			    	<% end %>
+			    </table>
+			  </div>
+			</div>
+		</div>
+		<div class="col-md-6">
+			<div class="panel-heading">
+			  	<h3 class="panel-title">Quotations Used</h3>
+			  </div>
+			  <div class="panel-body">
+			    <table class="table table-striped table-hover">
+			    	<% @quote_results.each do |result| %>
+			    	<tr>
+			    		<td><%= result[:quoteText].to_s %></td>
+			    		<td><%= result[:quoteCitation].to_s %></td>
+			    	</tr>
+			    	<% end %>
+			    </table>
+			  </div>
+			</div>
+		</div>
+	</div>
+</div>
+
+	
+
+		
