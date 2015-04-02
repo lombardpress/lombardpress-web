@@ -48,7 +48,7 @@ class TextController < ApplicationController
 		# need to fix database to include critical transcript as object of hasTranscription
 		# then uncomment below
 
-		#check_transcript_existence(item, params)
+		check_transcript_existence(item, params)
 
 		@title = item.title
 		#remove @fs after check for use. use itemid instead
