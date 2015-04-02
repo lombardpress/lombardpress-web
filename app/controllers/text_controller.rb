@@ -49,7 +49,7 @@ class TextController < ApplicationController
 		# then uncomment below
 
 		# I don't quite understand the return if performed - got things to work following this http://blog.arkency.com/2014/07/4-ways-to-early-return-from-a-rails-controller/								
-		#check_transcript_existence(item, params); return if performed?
+		check_transcript_existence(item, params); return if performed?
 		
 
 		
