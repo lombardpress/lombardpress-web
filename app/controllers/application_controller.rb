@@ -23,8 +23,8 @@ class ApplicationController < ActionController::Base
     redirect_to(request.referrer || permissions_path)
   end
   def set_conf
-    host = request.host_with_port
-    @config = LbpConfig.new(host)
+    url = request.url
+    @config = LbpConfig.new(url)
   end
   def check_for_user
     unless request.path == "/users/sign_in"
