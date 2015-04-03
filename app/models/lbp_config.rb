@@ -16,11 +16,11 @@ class LbpConfig
 
 
 	def initialize url
-		if url == "localhost:3000"
+		if url.include? "localhost:3000" or url.include? "plaoulcommentary" or url.include? "petrusplaoul"
 			self.set_plaoul_config
-		elsif url == "localhost:3001"
+		elsif url.include? "localhost:3001" or url.include? "wodehamordinatio" or url.include? "adamwodeham"
 			self.set_wodeham_config
-		elsif url == "localhost:3002"
+		elsif url.include? "localhost:3002" or url.include? "graciliscommentary"
 			self.set_gracilis_config
 		else
 			self.set_plaoul_config
