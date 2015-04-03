@@ -48,8 +48,19 @@ $(document).on('ready page:load', function () {
 			showBottomWindow();
 			expandBottomWindow();
 			var itemid = $(this).attr("data-itemid");
-			showItemXML(itemid)
+			showItemXML(itemid);
 		});
+		$("a.js-show-paragraph-xml").click(function(){
+			showSpinner("#lbp-bottom-window-container");
+			showBottomWindow();
+			expandBottomWindow();
+			var itemid = $(this).attr("data-itemid");
+			var pid = $(this).attr("data-pid");
+			var msslug = $(this).attr("data-msslug");
+			showParagraphXML(itemid, pid, msslug);
+		});
+
+		
 		$("a.js-show-item-info").click(function(){
 			showSpinner("#lbp-bottom-window-container");
 			showBottomWindow();
@@ -65,17 +76,19 @@ $(document).on('ready page:load', function () {
 //document binds required for events triggered after ajax load 
 $(document).on("click", ".js-show-para-image", function(event){
 		event.preventDefault();
+		showSpinner("#lbp-bottom-window-container");
 		var msslug = $(this).attr("data-msslug");
 		var fs = $(this).attr("data-itemid");
 		var pid = $(this).attr("data-pid");
 		showParaImage(fs, msslug, pid);	
 });
+
 $(document).on("click", ".js-show-alt-para-image", function(event){
 		event.preventDefault();
+		showSpinner("#lbp-bottom-window-container");
 		var msslug = $(this).attr("data-msslug");
 		var fs = $(this).attr("data-itemid");
-		var pid = $(this).attr("data-alt-pid");
-		console.log(msslug, fs, pid)
+		var pid = $(this).attr("data-pid");
 		showParaImage(fs, msslug, pid);	
 });
 $(document).on("submit", "#lbp-new-comment-form", function(event){
@@ -125,6 +138,18 @@ var showParaImage = function(itemid, msslug, pid){
     }
   });
 }
+var showParaAltImage = function(itemid, msslug, pid){
+	$.get("/paragraphimage/" + itemid + "/" + msslug + "/" + pid + " #lbp-image-text-container", function(data, status, xhr) {
+		if ( status == "error" ) {
+    	var msg = "Sorry but images for this paragraph are not presently available ";
+    	$("#lbp-bottom-window-container").html( msg + "(" + xhr.status + " " + xhr.statusText + ")");
+    }
+    else{
+     $("#lbp-image-text-container").replaceWith(data);
+   	}
+	});
+}
+
 // end image functions
 
 
@@ -176,6 +201,7 @@ var postComment = function(itemid, pid){
     });
 	}
 
+//show xml functions for Item and paragraph
 var showItemXML = function(itemid){
 	$("#lbp-bottom-window-container").load("/text/xml/" + itemid + " #lbp-xml-container", function(response, status, xhr) {
 		// this is required to apply style after ajax load
@@ -187,7 +213,20 @@ var showItemXML = function(itemid){
     }
   });
 }
+var showParagraphXML = function(itemid, pid, msslug){
+	$("#lbp-bottom-window-container").load("/paragraphs/xml/" + itemid + "/" + pid + "/" + msslug + " #lbp-xml-container", function(response, status, xhr) {
+		// this is required to apply style after ajax load
+		$("pre.xmlCode").snippet("xml", {style: "bright"});
+  	
+  	if ( status == "error" ) {
+    	var msg = "Sorry but XML for this paragraph is not presently available";
+    	$("#lbp-bottom-window-container").html( msg + "(" + xhr.status + " " + xhr.statusText + ")");
+    }
+  });
+}
+/// end show xml functions for Item and paragraph
 
+//begin show Info/Statistics
 var showItemInfo = function(itemid){
 	$("#lbp-bottom-window-container").load("/text/info/" + itemid + " #lbp-info-container", function(response, status, xhr) {
 		if ( status == "error" ) {

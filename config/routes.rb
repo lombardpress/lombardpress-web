@@ -2,6 +2,14 @@ Rails.application.routes.draw do
   
   
 
+  get 'paragraphs/index'
+  get 'paragraphs/xml/:itemid/:pid(/:msslug)' => 'paragraphs#xml'
+  get 'paragraphs/info'
+  get 'paragraphs/plaintext'
+  get 'paragraphs/:itemid/:pid(/:msslug)' => 'paragraphs#show'
+  
+  
+
   devise_for :users, controllers: { sessions: "users/sessions", profiles: "users/profiles"}
   
   get 'posts/list' => 'posts#list'

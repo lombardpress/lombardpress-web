@@ -10,3 +10,15 @@ h1, h2, h3, h4, h5, h6 {font-size: 20px; text-align: center;}
 ///test index page styles
 #lbp-toc-container {max-width: 60%;}
 #lbp-question-container {max-width: 60%; text-align: left; h2 {text-align: left;}}
+
+
+//span styles
+.lbp-folionumber {border-left: 2px solid gray; 
+	border-right: 2px solid gray; 
+	padding-right: 3px; padding-left: 3px; color: gray; }
+
+.lbp-title {font-style: italic}
+.lbp-name {font-variant: small-caps}
+.lbp-unclear {font-color: gray;}
+.lbp-add {color: blue;}
+.lbp-del {color: red; text-decoration: line-through}

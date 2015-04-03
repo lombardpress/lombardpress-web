@@ -7,7 +7,8 @@ class ParagraphimageController < ApplicationController
 
 		item = Lbp::Item.new(config_hash, url)
 		paragraph = item.transcription(wit: params[:msslug], source: "origin").paragraph(params[:pid])
-		@paragraph_text = paragraph.transform_plain_text
+		@paragraph_text = paragraph.transform("#{Rails.root}/xslt/default/documentary/documentary_simple.xsl")
+
 		@next_para = paragraph.next
 		@previous_para = paragraph.previous
 		@paragraph_number = paragraph.number
@@ -16,7 +17,7 @@ class ParagraphimageController < ApplicationController
 		# like item.transcription.paragraph.paragraphImage
 		file_hash = item.file_hash(source: 'origin', wit: params[:msslug], ed: 'master')
 
-		@ms_slugs = item.transcription_slugs.map {|slug| slug.split("_").first}
+		@ms_slugs = item.transcription_slugs.map {|slug| unless slug == params[:itemid] then slug.split("_").first end}
 		@paraimage = Lbp::ParagraphImage.new(config_hash, file_hash, params[:pid])
 		
 	end

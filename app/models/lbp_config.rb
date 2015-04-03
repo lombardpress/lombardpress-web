@@ -146,7 +146,7 @@ class LbpConfig
 					citation_lists_dir: "#{Rails.root}/projectfiles/#{projectfiledir}/citationlists/", 
 					xslt_dirs: { "default" => {
 						critical: "#{Rails.root}/xslt/default/critical/",
-						documentary: "#{Rails.root}/xslt/default/critical/", 
+						documentary: "#{Rails.root}/xslt/default/documentary/", 
 						main_view: "main_view.xsl",
 						index_view: "text_display_index.xsl", 
 						clean_view: "clean_view.xsl",

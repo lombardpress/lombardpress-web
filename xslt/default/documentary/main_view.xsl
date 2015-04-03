@@ -19,15 +19,9 @@
     <xsl:apply-templates/>
     
     <!-- prepare footnotes -->
-    <div class="footnotes">
-      <h1>Apparatus Fontium</h1>
-      <xsl:call-template name="footnotes"/>
-    </div>
+    
     <!-- prepare variants -->
-    <div class="variants">
-      <h1>Apparatus Criticus</h1>
-      <xsl:call-template name="variants"/>
-    </div>
+    
   </xsl:template>
   
   <!-- clear teiHeader -->
@@ -35,12 +29,7 @@
   
   <!-- heading template -->
   <xsl:template match="tei:head">
-    <xsl:variable name="number" select="count(ancestor::tei:div)" />
-    <xsl:variable name="id"><xsl:value-of select="@xml:id"/></xsl:variable>
-    
-    <xsl:element name="h{$number}"><xsl:attribute name="id"><xsl:value-of select="$id"/></xsl:attribute>
-      <xsl:apply-templates/>
-    </xsl:element>
+    <!-- no supplied headers in documentary transcription; need to specifiy supplied if there are headers present in the text -->
   </xsl:template>
 
   <xsl:template match="tei:div">
@@ -92,20 +81,20 @@
   <xsl:template match="tei:name">
     <xsl:variable name="ref"><xsl:value-of select="./@ref"/></xsl:variable>
     <xsl:variable name="refID"><xsl:value-of select="substring-after($ref, '#')"/></xsl:variable>
-    <span class="lbp-name" data-name="{$refID}"><xsl:apply-templates/></span>
+    <span class="lbp-documentary-name" data-name="{$refID}"><xsl:apply-templates/></span>
   </xsl:template>
   
   <!-- title template -->
   <xsl:template match="tei:title">
     <xsl:variable name="ref"><xsl:value-of select="./@ref"/></xsl:variable>
     <xsl:variable name="refID"><xsl:value-of select="substring-after($ref, '#')"/></xsl:variable>
-    <span class="lbp-title" data-title="{$refID}"><xsl:apply-templates/></span>
+    <span class="lbp-documentary-title" data-title="{$refID}"><xsl:apply-templates/></span>
   </xsl:template>
   
   <!-- quote template -->
   <xsl:template match="tei:quote">
       <xsl:variable name="quoterefid" select="translate(./@ana, '#', '')"/>
-    <span id="{@xml:id}" class="lbp-quote" data-quoterefid="{$quoterefid}">
+    <span id="{@xml:id}" class="lbp-documentary-quote" data-quoterefid="{$quoterefid}">
       <xsl:text/>
       <xsl:apply-templates/>
       <xsl:text/>
@@ -115,7 +104,7 @@
   <!-- ref template -->
   <xsl:template match="tei:ref">
     <xsl:variable name="refid" select="translate(./@ana, '#', '')"/>
-    <span id="{@xml:id}" class="lbp-ref" data-quoterefid="{$refid}">
+    <span id="{@xml:id}" class="lbp-documentary-ref" data-quoterefid="{$refid}">
       <xsl:text/>
       <xsl:apply-templates/>
       <xsl:text/>
@@ -125,19 +114,70 @@
   <!-- unclear template -->
   <xsl:template match="tei:unclear">
     <xsl:variable name="text"><xsl:value-of select="./text()"/></xsl:variable>
-    <span class="lbp-unclear" data-text="{$text}"><xsl:apply-templates/></span>
+    <span  class="lbp-unclear" data-text="{$text}"><xsl:apply-templates/></span>
   </xsl:template>
   
-  <!-- app template -->
-  <xsl:template match="tei:app">
-    <xsl:apply-templates/>
+  <!-- templates to deal with orig vs normalized -->
+  <xsl:template match="tei:choice">
+    <span class="lbp-choice">
+      <xsl:apply-templates/>
+    </span>
+  </xsl:template>
+  <xsl:template match="tei:orig">
+    <span class="lbp-orig">
+      <xsl:apply-templates/>
+    </span>
+  </xsl:template>
+  <xsl:template match="tei:reg">
+    <span class="lbp-reg" style="display: none;">
+      <xsl:apply-templates/>
+    </span>
+  </xsl:template>
+
+  <!-- templates to deal with corrections -->
+  <xsl:template match="tei:corr">
+    <span class="lbp-corr">
+      <xsl:apply-templates/>
+    </span>
+  </xsl:template>
+  <xsl:template match="tei:add">
+    <span class="lbp-add">
+      <xsl:apply-templates/>
+    </span>
+  </xsl:template>
+  <xsl:template match="tei:del">
+    <span class="lbp-del">
+      <xsl:apply-templates/>
+    </span>
+  </xsl:template>
+
+  <!-- templates for glypsh -->
+  <xsl:template match="tei:g[@ref='#dbslash']">
+    <span class="lbp-glyph lbp-dbslash">//</span><xsl:text> </xsl:text>
+  </xsl:template>
+  <xsl:template match="tei:g[@ref='#slash']">
+    <span class="lbp-glyph lbp-slash">/</span><xsl:text> </xsl:text>
+  </xsl:template>
+
+  <xsl:template match="tei:g[@ref='#dbdash']">
+    <span class="lbp-glyph lbp-dbdash">=</span><xsl:text> </xsl:text>
+  </xsl:template>
+  <xsl:template match="tei:g[@ref='#dash']">
+    <span class="lbp-glyph lbp-dash">=</span><xsl:text> </xsl:text>
+  </xsl:template>
+  <xsl:template match="tei:g[@ref='#pilcrow']">
+    <span class="lbp-glyph lbp-pilcrow">&amp;para;</span><xsl:text> </xsl:text>
+  </xsl:template>
+  <xsl:template match="tei:lb">
+    <br/>
   </xsl:template>
   
-  <!-- clear rdg template -->
-  <xsl:template match="tei:rdg"></xsl:template>
   
+  
+
+
   <!-- clear note desc bib template -->
-  <xsl:template match=" tei:note | tei:desc | tei:bibl"></xsl:template>
+  <xsl:template match="tei:note | tei:desc | tei:bibl"></xsl:template>
   
   <xsl:template match="tei:cb">
     <xsl:variable name="hashms"><xsl:value-of select="@ed"/></xsl:variable>
@@ -170,35 +210,10 @@
       <xsl:value-of select="$ms"/>
       <xsl:value-of select="$folionumber"/>
       <xsl:value-of select="$justSide"/>
-    </span><xsl:text> </xsl:text>
-  </xsl:template>
-  
-  <xsl:template match="tei:supplied">
-    <span class="lbp-supplied">[<xsl:apply-templates></xsl:apply-templates>]</span>
-  </xsl:template>
-    
-  <!-- notes template -->
-  <xsl:template match="tei:bibl">
-    <xsl:variable name="id">
-      <xsl:number count="//tei:bibl" level="any" format="a"/></xsl:variable>
-      <xsl:text> </xsl:text>
-      <a href="#footnote{$id}" name="footnotereference{$id}" class="footnote">
-        <sup>[<xsl:value-of select="$id"/>]</sup>
-      </a>
+    </span>
     <xsl:text> </xsl:text>
   </xsl:template>
   
-  <!-- app template -->
-  <xsl:template match="tei:app">
-    <span class="lemma"><xsl:apply-templates select="tei:lem"/></span>
-    <xsl:variable name="id"><xsl:number count="//tei:app" level="any" format="1"/></xsl:variable>
-    <xsl:text> </xsl:text>
-    <sup><a href="#variant{$id}" name="variantreference{$id}" class="appnote">[<xsl:value-of select="$id"/>]</a></sup>
-    <xsl:text> </xsl:text>
-  </xsl:template>
-  
-  <!-- clear apparatus editorial notes -->
-  <xsl:template match="tei:app/tei:note"></xsl:template>
       
   <!-- named templates -->
   
@@ -206,6 +221,7 @@
   <xsl:template name="teiHeaderInfo">
     <div id="lbp-pub-info">
       <h2><span id="sectionTitle" class="sectionTitle"><xsl:value-of select="//tei:titleStmt/tei:title"/></span></h2>
+      <h3>Diplomatic Transcription</h3>
       <h4>By <xsl:value-of select="//tei:titleStmt/tei:author"/></h4>
       <p>Edited by: 
         <xsl:for-each select="//tei:titleStmt/tei:editor">
@@ -220,77 +236,8 @@
     </div>
   </xsl:template>  
   
-  <xsl:template name="footnotes">
-    <ul>
-      <xsl:for-each select="//tei:bibl">
-      <xsl:variable name="id"><xsl:number count="//tei:bibl" level="any" format="a"/></xsl:variable>
-      <li id="lbp-footnote{$id}">
-        <a href="#lbp-footnotereference{$id}">
-          <xsl:copy-of select="$id"/>
-        </a> -- <xsl:apply-templates/>
-      </li>
-      </xsl:for-each>
-    </ul>
-  </xsl:template>
   
-  <xsl:template name="variants">
-    <ul class="variantlist">
-      <xsl:for-each select="//tei:app">
-        <xsl:variable name="id">
-          <xsl:number count="//tei:app" level="any" format="1"/>
-        </xsl:variable>
-        
-        <li id="lbp-variant{$id}">
-          <a href="#lbp-variantreference{$id}">
-            <xsl:copy-of select="$id"/>
-          </a>
-          <text> -- </text>
-          
-          <xsl:value-of select="tei:lem"/>
-            <xsl:text> ] </xsl:text>                         
-          <xsl:for-each select="tei:rdg">
-            <xsl:choose>
-              <xsl:when test="contains(@type, 'om.')">
-                <xsl:value-of select="."/><xsl:text> </xsl:text>
-                <em>om.</em><xsl:text> </xsl:text>
-                <xsl:value-of select="translate(@wit, '#', '')"/><xsl:text>   </xsl:text>
-              </xsl:when>
-              <xsl:when test="./@type='corrAddition'"> <!-- eventually the "contains" options should be removed as "corrDeletion, corrAddition" becomes the standard in the app schema -->
-                <xsl:value-of select="."/><xsl:text> </xsl:text>
-                <em>add.</em><xsl:text> </xsl:text>
-                <xsl:value-of select="translate(@wit, '#', '')"/><xsl:text>   </xsl:text>
-              </xsl:when>
-              <xsl:when test="./@type='corrDeletion'">
-                <xsl:value-of select="tei:corr/tei:del"/><xsl:text> </xsl:text>
-                <em>add. sed del.</em><xsl:text> </xsl:text>
-                <xsl:value-of select="translate(@wit, '#', '')"/><xsl:text>   </xsl:text>
-              </xsl:when>
-              <xsl:when test="./@type='corrReplace'">
-                <xsl:value-of select="tei:corr/tei:add"/><xsl:text> </xsl:text>
-                <em>corr. ex</em><xsl:text> </xsl:text>
-                <xsl:value-of select="tei:corr/tei:del"/><xsl:text> </xsl:text>
-                <xsl:value-of select="translate(@wit, '#', '')"/><xsl:text>   </xsl:text>
-              </xsl:when>
-              <xsl:when test="contains(@type, 'rep.')">
-                <xsl:text> </xsl:text>
-                <em>rep.</em>
-                <xsl:value-of select="translate(@wit, '#', '')"/><xsl:text> </xsl:text>
-              </xsl:when>
-              <xsl:when test="contains(@type, 'intextu')">
-                <xsl:text> </xsl:text>
-                <xsl:value-of select="."/><xsl:text> </xsl:text>
-                <em>in textu</em><xsl:text> </xsl:text>
-                <xsl:value-of select="translate(@wit, '#', '')"/><xsl:text> </xsl:text>
-              </xsl:when>
-              <xsl:otherwise>
-                <xsl:value-of select="."/><xsl:text> </xsl:text>
-                <xsl:value-of select="translate(@wit, '#', '')"/><xsl:text>   </xsl:text>
-              </xsl:otherwise>
-            </xsl:choose>
-          </xsl:for-each>
-        </li>  
-      </xsl:for-each>
-    </ul>
-  </xsl:template>
+  
+  
 
 </xsl:stylesheet>
