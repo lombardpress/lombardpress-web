@@ -166,7 +166,7 @@
     <span class="lbp-glyph lbp-dash">=</span><xsl:text> </xsl:text>
   </xsl:template>
   <xsl:template match="tei:g[@ref='#pilcrow']">
-    <span class="lbp-glyph lbp-pilcrow">&amp;para;</span><xsl:text> </xsl:text>
+    <span class="lbp-glyph lbp-pilcrow">&#182;</span><xsl:text> </xsl:text>
   </xsl:template>
   <xsl:template match="tei:lb">
     <br/>

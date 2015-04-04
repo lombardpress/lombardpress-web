@@ -152,7 +152,7 @@ class LbpConfig
 						clean_view: "clean_view.xsl",
 						plain_text: "plaintext.xsl",
 						json: "LbpToJson.xsl", 
-						toc: "lectio_outline.xsl"
+						toc: "toc.xsl"
 						}
 					},
 				git_repo: "bitbucket.org/jeffreycwitt/",

@@ -28,6 +28,7 @@ Rails.application.routes.draw do
   get 'text/questions' => 'text#questions'
   get 'text/info/:itemid' => 'text#info'
   get 'text/status/:itemid' => 'text#status'
+  get 'text/toc/:itemid(:/msslug)' => 'text#toc'
   get 'text/xml/:itemid(:/msslug)' => 'text#xml'
   get 'text/:itemid(/:msslug)' => 'text#show'
   

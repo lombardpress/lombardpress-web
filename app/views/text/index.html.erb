@@ -1,27 +1,32 @@
-<style type="text/css">
-  .status{display: none;}
-  .itemLink:hover .status{display: inline;}
-</style>
+<div class="container">
+  <h1>Table of Contents</h1>
 
-<div id="lbp-toc-container" class="container">
-  <div class="row">
-    <div id="sidebar" class="col-xs-3 col-md-3">
-      <h3>Items</h3>
-      <ul>
-	      <% @results.each do |result| %>
-	      <% link = "text/" + result[:item].to_s.split('/').last %>
-	      <li class="itemLink">
-	      	<% if result[:status] != "Not Started" %>
-	      		<%= link_to(result[:title], link) %>
-	      	<% else %>
-	      		<%= result[:title] %>
-					<% end %>
-						<span class="status"><%= result[:status] %><span></li>
-	      <% end %>
-    	</ul>
-    </div>
-    <div id="content" class="col-xs-9 col-md-9">
-      <h3>Outline</h3
+  <div id="lbp-toc-container" class="container">
+    <div class="row">
+      <div class="col-xs-3 col-md-4">
+        <h3>Items</h3>
+          <div id="lbp-toc-sidebar">
+            <ul class="list-group">
+      	      <% @results.each do |result| %>
+        	      <% link = "text/" + result[:item].to_s.split('/').last %>
+        	      <li class="list-group-item">
+        	      	<span class="lbp-item-name"><% if result[:status] != "Not Started" %>
+        	      		<%=  link_to result[:title], link %></span></br>
+                    <span class="small"><%= link_to "Outline", "#", :class => "js-show-toc", "data-itemid" => result[:item].to_s.split("/").last %></span>
+                    
+        	      	<% else %>
+        	      		<%= result[:title] %>
+        					<% end %>
+        				</li> 
+  	         <% end %>
+      	   </ul>
+         </div>
+      </div>
+      <div id="lbp-toc-mainwindow">
+        <h3>Outline</h3>
+        <div id="lbp-toc-window" class="col-xs-9 col-md-8">
+        </div>
+      </div>
     </div>
   </div>
 </div>

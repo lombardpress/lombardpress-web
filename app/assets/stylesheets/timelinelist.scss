@@ -1,0 +1,74 @@
+
+
+
+        .timelineList {margin:  1%; padding:  2%;}
+        .Political {color: Red;}
+        .Benefices {color: Blue;}
+        .Life {color: Green;}
+        .Education {color: Purple;}
+        .timeline-band-0 .timeline-ether-bg { background-color: $light-color }
+        .timeline-band-1 .timeline-ether-bg { background-color: #528252 }
+        .t-highlight1 {font-size: 16px; font-color: black;}
+        #history-timeline {height: 400px; width: 700px; margin: auto;}
+        .bib {margin: 4px; font-size:14px;}
+        .bibLive {cursor: pointer; margin: 4px; font-size:14px;}
+        .bibLive:hover {text-decoration: underline;}
+        a.bibLive {cursor: pointer; color: blue;}
+        .timeline-event-label{font-size: 12px;}
+
+    #bioCommentBox{
+        display: none;
+        position: absolute;
+        width: 400px;
+        max-height: 300px;
+        scroll: auto;
+        overflow: scroll;
+        padding:  5px;
+        font-size: 12px;
+        
+
+        /*rounded corners */
+
+        -moz-border-radius: 2px;
+        -webkit-border-radius: 2px;
+        border-radius: 2px;
+
+    /* Background color and gradients */
+
+    background: $dark-color;
+    background: -moz-linear-gradient(top, $dark-color, $light-color);
+    background: -webkit-gradient(linear, 0% 0%, 0% 100%, from($dark-color), to($light-color));
+
+    /* Borders */
+
+    border: 2px solid $dark-color;
+
+    -moz-box-shadow:inset 0px 0px 1px #edf9ff;
+    -webkit-box-shadow:inset 0px 0px 1px #edf9ff;
+    box-shadow:inset 0px 0px 1px #edf9ff;}
+
+        .showComment {font-size: 12px; cursor: pointer}
+        .hideCommentBox, .shrinkCommentBox
+        {
+            font-size: 12px; cursor: pointer; color: blue;
+        }
+
+
+textarea.bioComInput,
+input.bioComInput
+        {}
+
+.bibentry, .googlelink
+{
+    font-size: 14px;
+}
+
+.eventHeader {margin: 0; padding: 4px; margin: 0; cursor: pointer}
+.eventViewing {background-color: $dark-color; font-weight: bolder;}
+.eventHeader:hover {background-color:$dark-color;}
+.eventBody{display: none; border-bottom:  1px solid gray; padding: 0px; border-left:  1px dotted gray;}
+.event{border-bottom: 1px solid gray; margin-bottom: 0px; padding: 0;}
+.eventDesc{padding:  5px; margin: 0; background-color:$light-color}
+.eventComments{padding:  0; margin: 0; background-color: lighten($dark-color, 10%); font-size: 12px;}
+.eventDescPara {margin-bottom: 2px; padding-bottom: 4px; border-bottom: 2px dashed white;}
+a.timelineCrossReference {color: blue;}

@@ -1,0 +1,16 @@
+div.tocdiv h1{counter-reset:h2; font-size: 18px; text-align:left; font-weight:normal;}
+div.tocdiv h2{counter-reset:h3; font-size: 16px; text-align:left; font-weight:normal;}
+div.tocdiv h2:before{content:counter(h2, upper-roman) ". "; counter-increment:h2;}
+div.tocdiv h3{counter-reset:h4; font-size: 14px; text-align:left; font-weight:normal;}
+div.tocdiv h3:before{content:counter(h2, upper-roman) "." counter(h3) " "; counter-increment:h3;}
+div.tocdiv h4{counter-reset:h5; font-size: 14px; text-align:left; font-weight:normal;}
+div.tocdiv h4:before{content:counter(h2, upper-roman) "." counter(h3) "." counter(h4, lower-latin) " "; counter-increment:h4;}
+div.tocdiv h5{counter-reset:h6; font-size: 14px; text-align:left; font-weight:normal;}
+div.tocdiv h5:before{content:counter(h2, upper-roman) "." counter(h3) "." counter(h4, lower-latin) "." counter(h5) " "; counter-increment:h5;}
+div.tocdiv h6{counter-reset:h7; font-size: 14px; text-align:left; font-weight:normal;}
+div.tocdiv h6:before{content:counter(h2, upper-roman) "." counter(h3) "." counter(h4, lower-latin) "." counter(h5) "." counter(h6) " "; counter-increment:h6;}
+
+#lbp-toc-container {margin-bottom: 50px;}
+#lbp-toc-sidebar{height: 400px; overflow-y: scroll; overflow-x: hidden; ul li{text-align: center}}
+#lbp-toc-window {height: 400px; overflow-y: scroll; overflow-x: hidden;}
+.lbp-item-name{font-weight: bold;}
