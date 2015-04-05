@@ -1,0 +1,17 @@
+<div class="container lbp-index-container">
+		<h1>Index results for <%= @commentary_results.first[:titleTitle] %></h1>
+		<div class="lbp-index-breadcrumbs">
+			<%= link_to "Back", :back %>
+			<%= link_to "Return to Index", "/index" %>
+		</div>
+	<table class="table table-striped table-hover">
+		<% @commentary_results.each do |result| %>
+
+			<% itemid = result[:item].to_s.split("/").last %>
+			<tr>
+				<td><%= link_to result[:itemTitle],  "/text/#{itemid}" %></td>
+				<td><%= link_to "SCTA Entry",  result[:item].to_s %></td>
+			</tr>
+		<% end %>	
+	</table>
+</div>

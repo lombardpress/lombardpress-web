@@ -2,28 +2,42 @@ Rails.application.routes.draw do
   
   
 
+  
+  
+  root 'pages#home'
+
+  devise_for :users, controllers: { sessions: "users/sessions", profiles: "users/profiles"}
+  
+  resources :posts
+  resources :comments, except: [:new]
+
+  get 'articles/:articleid' => 'articles#show'
+  get 'articles' => 'articles#index'
+  
+  get 'biography' => 'pages#biography'
+  get 'bibliography' => 'pages#bibliography' 
+
+  get "comments/new/:itemid(/:pid)" => 'comments#new', as: :new_comment
+  get "comments/list/:itemid(/:pid)" => 'comments#list', as: :list_comments
+  
+  get "index" => 'indices/indices#index'
+  get "index/names/list(/:category)" => 'indices/names#list'
+  get "index/names/show(/:nameid)" => 'indices/names#show'
+  get "index/names/categories" => 'indices/names#categories'
+  get "index/titles/list(/:category)" => 'indices/titles#list'
+  get "index/titles/show(/:titleid)" => 'indices/titles#show'
+  get "index/titles/categories" => 'indices/titles#categories'
+
   get 'paragraphs/index'
   get 'paragraphs/xml/:itemid/:pid(/:msslug)' => 'paragraphs#xml'
   get 'paragraphs/info'
   get 'paragraphs/plaintext'
   get 'paragraphs/:itemid/:pid(/:msslug)' => 'paragraphs#show'
   
-  
-
-  devise_for :users, controllers: { sessions: "users/sessions", profiles: "users/profiles"}
+  get 'permissions' => 'pages#permissions'
   
   get 'posts/list' => 'posts#list'
-  
-  resources :posts
-  resources :comments, except: [:new]
 
-  get "comments/new/:itemid(/:pid)" => 'comments#new', as: :new_comment
-  get "comments/list/:itemid(/:pid)" => 'comments#list', as: :list_comments
-  
-  root 'pages#home'
-
-  get '/permissions' => 'pages#permissions'
-  
   get 'text' => 'text#index'
   get 'text/questions' => 'text#questions'
   get 'text/info/:itemid' => 'text#info'
@@ -33,11 +47,6 @@ Rails.application.routes.draw do
   get 'text/:itemid(/:msslug)' => 'text#show'
   
   get 'paragraphimage/:itemid/:msslug/:pid' => 'paragraphimage#show'
-  get 'biography' => 'pages#biography'
-  get 'bibliography' => 'pages#bibliography' 
-
-  get 'articles/:articleid' => 'articles#show'
-  get 'articles' => 'articles#index'
   
   get 'users/profiles' => 'users/profiles#index'
   get 'users/profiles/:id' => 'users/profiles#show'
