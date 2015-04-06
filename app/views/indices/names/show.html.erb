@@ -9,7 +9,7 @@
 
 			<% itemid = result[:item].to_s.split("/").last %>
 			<tr>
-				<td><%= link_to result[:itemTitle],  "/text/#{itemid}" %></td>
+				<td><%= link_to result[:itemTitle],  "/text/#{itemid}?search=name&searchid=#{params[:nameid]}" %></td>
 				<td><%= link_to "SCTA Entry",  result[:item].to_s %></td>
 			</tr>
 		<% end %>	

@@ -35,7 +35,10 @@ class TextController < ApplicationController
 	end
 
 	def show
-		
+		if params.has_key?(:search)
+			flash[:notice] = "Search results for instances of #{params[:searchid]} (#{params[:search]}) are highlighted in yellow below." 
+		end
+
 		item = get_item(params)
 		
 		check_permission(item); return if performed?

@@ -94,7 +94,7 @@
   <!-- quote template -->
   <xsl:template match="tei:quote">
       <xsl:variable name="quoterefid" select="translate(./@ana, '#', '')"/>
-    <span id="{@xml:id}" class="lbp-documentary-quote" data-quoterefid="{$quoterefid}">
+    <span id="{@xml:id}" class="lbp-documentary-quote" data-quote="{$quoterefid}">
       <xsl:text/>
       <xsl:apply-templates/>
       <xsl:text/>
@@ -104,7 +104,7 @@
   <!-- ref template -->
   <xsl:template match="tei:ref">
     <xsl:variable name="refid" select="translate(./@ana, '#', '')"/>
-    <span id="{@xml:id}" class="lbp-documentary-ref" data-quoterefid="{$refid}">
+    <span id="{@xml:id}" class="lbp-documentary-ref" data-ref="{$refid}">
       <xsl:text/>
       <xsl:apply-templates/>
       <xsl:text/>

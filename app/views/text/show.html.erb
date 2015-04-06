@@ -1,5 +1,9 @@
 <%= render "text_nav_bar" %>
-<div id="lbp-text-body" class="container">
+<% if params[:search] != nil %>
+	<div id="lbp-text-body" class="container" data-search="<%= params[:search] %>" data-searchid="<%= params[:searchid] %>">
+<% else %>
+	<div id="lbp-text-body" class="container">
+<% end %>
 	<%= raw(@transform) %>
 </div>
 <div id="lbp-bottom-window" style="background-color: <%= @config.dark_color %>;">

@@ -3,8 +3,15 @@ $(document).on('ready page:load', function () {
   // Actions to do
 
 	$(document).ready(function(){
+		
+		if ($("[data-search]").length && $("[data-searchid]").length) {
+			var search = $('[data-search]').attr("data-search");
+			var searchid = $('[data-searchid]').attr("data-searchid");
+			highlight(search, searchid);
+		};
 
 		//events
+
 	  $("a.paragraphmenu").click(showParagraphMenu);
 		$("a.js-show-para-comment").click(showBottomWindow);
 		$("a.js-expand-para-comment").click(expandBottomWindow);
@@ -238,4 +245,9 @@ var showItemInfo = function(itemid){
 
 var showSpinner = function(target){
 	$(target).html("<img src='/spiffygif_150x150.gif'><img>");
+}
+
+//index search funciton
+var highlight = function(search, id){
+	$("[data-" + search + "='" + id + "']").css({"background-color": "yellow"});
 }

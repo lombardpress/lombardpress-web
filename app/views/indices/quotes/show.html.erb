@@ -1,5 +1,7 @@
 <div class="container lbp-index-container">
-		<h1>Index results for <%= @commentary_results.first[:titleTitle] %></h1>
+		<h1>Index results for: <br/> 
+			<%= @commentary_results.first[:quoteTitle] %></h1>
+
 		<div class="lbp-index-breadcrumbs">
 			<%= link_to "Back", :back %>
 			<%= link_to "Return to Index", "/index" %>
@@ -9,7 +11,7 @@
 
 			<% itemid = result[:item].to_s.split("/").last %>
 			<tr>
-				<td><%= link_to result[:itemTitle],  "/text/#{itemid}?search=title&searchid=#{params[:titleid]}" %></td>
+				<td><%= link_to result[:itemTitle],  "/text/#{itemid}?search=quote&searchid=#{params[:quoteid]}" %></td>
 				<td><%= link_to "SCTA Entry",  result[:item].to_s %></td>
 			</tr>
 		<% end %>	

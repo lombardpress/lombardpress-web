@@ -27,7 +27,7 @@ class ApplicationController < ActionController::Base
     @config = LbpConfig.new(url)
   end
   def check_for_user
-    unless request.path == "/users/sign_in"
+    unless request.path == "/users/sign_in" or request.path == "/users/password/new"
       if current_user.nil?
         redirect_to "/users/sign_in", :alert => "This site is currently in alpha development. It is currently accessible by invitation only."
       end

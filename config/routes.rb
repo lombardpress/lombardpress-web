@@ -21,12 +21,18 @@ Rails.application.routes.draw do
   get "comments/list/:itemid(/:pid)" => 'comments#list', as: :list_comments
   
   get "index" => 'indices/indices#index'
+  
   get "index/names/list(/:category)" => 'indices/names#list'
   get "index/names/show(/:nameid)" => 'indices/names#show'
   get "index/names/categories" => 'indices/names#categories'
+  
   get "index/titles/list(/:category)" => 'indices/titles#list'
   get "index/titles/show(/:titleid)" => 'indices/titles#show'
   get "index/titles/categories" => 'indices/titles#categories'
+
+  get "index/quotes/list(/:category)" => 'indices/quotes#list'
+  get "index/quotes/show(/:quoteid)" => 'indices/quotes#show'
+  get "index/quotes/categories" => 'indices/quotes#categories'
 
   get 'paragraphs/index'
   get 'paragraphs/xml/:itemid/:pid(/:msslug)' => 'paragraphs#xml'
