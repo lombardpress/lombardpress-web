@@ -22,6 +22,8 @@ class LbpConfig
 			self.set_wodeham_config
 		elsif url.include? "localhost:3002" or url.include? "graciliscommentary"
 			self.set_gracilis_config
+		elsif url.include? "localhost:3003" or url.include? "anconacommentary"
+			self.set_ancona_config
 		else
 			self.set_plaoul_config
 		end
@@ -137,6 +139,34 @@ class LbpConfig
 		commentaryid = "wodehamordinatio"
 		@commentaryid = commentaryid
 		commentarydirname = 'aw-projectfiles'
+		@confighash = self.set_confighash(commentarydirname)
+	end
+
+	def set_ancona_config
+
+		@logo = "Augustinus de Ancona"
+		@title = "The Commentary on the Sentences of Augustinus de Ancona"
+		@bannermessage = "A working edition of Augustinus de Ancona's Commentary on the Sentences of Peter Lombard"
+		@biography = false
+		@bibliography = false
+		@timeline = false
+		@about = false
+		@blog = false
+		@default_ms_image = "'troyes'" #single quotes are required here in order to pass a string as parameter into Nokogir
+		@dark_color = "#bbbbce"
+		@light_color = "#e6e6ed"
+
+		@article_config_hash = {
+			about: 	
+				{xml: "https://bitbucket.org/jeffreycwitt/aw-about/raw/master/aw-about.xml", 
+				 xslt: "#{Rails.root}/xslt/articles/standard.xsl"
+				}
+			}
+
+
+		commentaryid = "anconacommentary"
+		@commentaryid = commentaryid
+		commentarydirname = 'ada-projectfiles'
 		@confighash = self.set_confighash(commentarydirname)
 	end
 

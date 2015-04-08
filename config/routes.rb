@@ -35,7 +35,8 @@ Rails.application.routes.draw do
   get "index/quotes/categories" => 'indices/quotes#categories'
 
   get 'paragraphs/index'
-  get 'paragraphs/xml/:itemid/:pid(/:msslug)' => 'paragraphs#xml'
+  get 'paragraphs/collation/:itemid/:pid' => 'paragraphs#collation', as: :paragraphs_collation
+  get 'paragraphs/xml/:itemid/:pid(/:msslug)' => 'paragraphs#xml', as: :paragraphs_xml
   get 'paragraphs/info'
   get 'paragraphs/plaintext'
   get 'paragraphs/:itemid/:pid(/:msslug)' => 'paragraphs#show'

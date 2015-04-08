@@ -1,0 +1,53 @@
+<!-- <script type="text/javascript" src="javascriptfiles/google-diff-match-patch/diff_match_patch_uncompressed.js"></script> -->
+ <div id="lbp-collation-viewer">   
+  
+  <div id="lbp-collation-selector">
+    
+    <form id="lbp-collation-selector-form" action="/paragraphs/collation/<%= params[:itemid]%>/<%= params[:pid]%>" method="get" data-itemid="<%= params[:itemid] %>" data-pid="<%=params[:pid] %>">
+      <select id="base" name="base">
+        <option value="<%= @base_text_name %>" selected='selected'>Base Text</option>
+        <option>--</option>
+        <% @parts.each do |part| %>
+          <option value="<%= part %>"><%= part %></option>
+        <% end %>
+      </select>
+      <select id="comp" name="comp">
+        <option value="<%= @comp_text_name %>" selected='selected'>Comparison Text</option>
+        <option>--</option>
+        <% @parts.each do |part| %>
+          <option value="<%= part %>"><%= part %></option>
+        <% end %>
+      </select>
+        
+
+      <input id="compGenerate" type="submit" value="Generate"/>
+    </form>
+  </div>
+  <div class="container">
+    <div class="row">
+      <div id="BaseWrapper" class="col-md-6">
+          <h3 style="margin: 2px;">Base Text: <%= @base_text_name %></h3>
+          <div id="base"><%= @para_base %></div>
+      </div>
+
+      <div id="CompWrapper" class="col-md-6">
+        <h3 style="margin: 2px;">Comparison: <%= @comp_text_name %></h3>
+        <div id="viewer"></div>
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript">
+    var dmp = new diff_match_patch();
+    var text1 = "<%= raw(@para_base).gsub(/\n/," ") %>";
+    var text2 = "<%= raw(@para_comp).gsub(/\n/," ") %>";
+    var differences = dmp.diff_main(text1, text2);
+    dmp.diff_cleanupSemantic(differences);
+    var ds = dmp.diff_prettyHtml(differences);
+
+    $(document).ready(function(){
+      console.log("test");
+        $("#viewer").html(ds);
+
+    });
+</script>
+</div>

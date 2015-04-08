@@ -22,3 +22,6 @@ h1, h2, h3, h4, h5, h6 {font-size: 20px; text-align: center;}
 .lbp-unclear {font-color: gray;}
 .lbp-add {color: blue;}
 .lbp-del {color: red; text-decoration: line-through}
+.lbp-paragraphmenu {cursor: pointer; padding-left: 5px;}
+#lbp-collation-selector-form {text-align: center; select {height: 30px; background-color: white;} input {height: 30px;}}
+#lbp-collation-selector {border-bottom: 1px dashed black; margin-bottom: 7px; padding-bottom: 7px;}

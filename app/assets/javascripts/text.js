@@ -12,7 +12,7 @@ $(document).on('ready page:load', function () {
 
 		//events
 
-	  $("a.paragraphmenu").click(showParagraphMenu);
+	  $("a.lbp-paragraphmenu").click(showParagraphMenu);
 		$("a.js-show-para-comment").click(showBottomWindow);
 		$("a.js-expand-para-comment").click(expandBottomWindow);
 		$("a.js-minimize-para-comment").click(minimizeBottomWindow);
@@ -22,6 +22,7 @@ $(document).on('ready page:load', function () {
 		
 
 		$("a.js-show-para-image-window").click(function(){
+			event.preventDefault();
 			showSpinner("#lbp-bottom-window-container");
 			showBottomWindow();
 			halfSizeBottomWindow();
@@ -33,6 +34,7 @@ $(document).on('ready page:load', function () {
 		});
 
 		$("a.js-view-comments").click(function(){
+			event.preventDefault();
 			showSpinner("#lbp-bottom-window-container");
 			showBottomWindow();
 			halfSizeBottomWindow();
@@ -42,6 +44,7 @@ $(document).on('ready page:load', function () {
 			showComments(itemid, pid);	
 		});
 		$("a.js-new-comment").click(function(){
+			event.preventDefault();
 			showBottomWindow();
 			halfSizeBottomWindow();
 			
@@ -51,6 +54,7 @@ $(document).on('ready page:load', function () {
 		});
 
 		$("a.js-show-item-xml").click(function(){
+			event.preventDefault();
 			showSpinner("#lbp-bottom-window-container");
 			showBottomWindow();
 			expandBottomWindow();
@@ -58,6 +62,7 @@ $(document).on('ready page:load', function () {
 			showItemXML(itemid);
 		});
 		$("a.js-show-paragraph-xml").click(function(){
+			event.preventDefault();
 			showSpinner("#lbp-bottom-window-container");
 			showBottomWindow();
 			expandBottomWindow();
@@ -69,11 +74,22 @@ $(document).on('ready page:load', function () {
 
 		
 		$("a.js-show-item-info").click(function(){
+			event.preventDefault();
 			showSpinner("#lbp-bottom-window-container");
 			showBottomWindow();
 			expandBottomWindow();
 			var itemid = $(this).attr("data-itemid");
 			showItemInfo(itemid)
+		});
+
+		$("a.js-show-paragraph-collation").click(function(){
+			event.preventDefault();
+			showSpinner("#lbp-bottom-window-container");
+			showBottomWindow();
+			expandBottomWindow();
+			var itemid = $(this).attr("data-itemid");
+			var pid = $(this).attr("data-pid");
+			showParagraphCollation(itemid, pid, "", "");
 		});
 
 
@@ -101,6 +117,16 @@ $(document).on("click", ".js-show-alt-para-image", function(event){
 $(document).on("submit", "#lbp-new-comment-form", function(event){
 	 event.preventDefault();
     postComment();
+});
+
+$(document).on("submit", "#lbp-collation-selector-form", function(event){
+	 event.preventDefault();
+	 var form = $('#lbp-collation-selector-form');
+	 var itemid = form.attr("data-itemid");
+	 var pid = form.attr("data-pid");
+	 var base = form.find("#base").val();
+   var comp = form.find("#comp").val(); 
+   showParagraphCollation(itemid, pid, base, comp);
 });
 
 
@@ -242,12 +268,27 @@ var showItemInfo = function(itemid){
     }
   });
 }
+// paragraph collation functions 
+var showParagraphCollation = function(itemid, pid, base, comp){
+	$("#lbp-bottom-window-container").load("/paragraphs/collation/" + itemid + "/" + pid + "?base=" + base + "&comp=" + comp, function(response, status, xhr) {
 
-var showSpinner = function(target){
-	$(target).html("<img src='/spiffygif_150x150.gif'><img>");
+		if ( status == "error" ) {
+    	var msg = "Sorry but collation comparison is not currently available for this paragraph";
+    	$("#lbp-bottom-window-container").html( msg + "(" + xhr.status + " " + xhr.statusText + ")");
+    }
+  });
 }
+
 
 //index search funciton
 var highlight = function(search, id){
 	$("[data-" + search + "='" + id + "']").css({"background-color": "yellow"});
 }
+
+//UTILITY FUNCTIONS
+
+var showSpinner = function(target){
+	$(target).html("<img src='/spiffygif_150x150.gif'><img>");
+}
+
+

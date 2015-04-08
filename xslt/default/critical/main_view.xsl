@@ -52,39 +52,45 @@
     <xsl:variable name="pid"><xsl:value-of select="@xml:id"/></xsl:variable>
     
     <div class='para_wrap' id='pwrap_{@xml:id}' style="clear: both; float: none;">
-      <p id="{@xml:id}" class="plaoulparagraph"><span id="pn{$pn}" class="paragraphnumber"><xsl:number level="any" from="tei:text"/></span><xsl:apply-templates/><span class="paragraphmenu"><a class="paragraphmenu"><span class="glyphicon glyphicon-menu-hamburger"/> Menu</a></span></p>
-      <nav class="navbar navbar-default paradiv" id="menu_{@xml:id}" style="display: none;">
-        <div class="navbar-header navbar-right">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#para-navbar-collapse-{@xml:id}">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-        </div>
-        <div class="collapse navbar-collapse" id="para-navbar-collapse-{@xml:id}">
-          <ul class="nav navbar-nav">
-            <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Comments<span class="caret"></span></a>
-              <ul class="dropdown-menu" role="menu">
-                <li><a class='js-view-comments' data-itemid="{$itemid}" data-pid="{@xml:id}">View Comments</a></li>
-                <li><a class='js-new-comment' data-itemid="{$itemid}" data-pid="{@xml:id}">Leave a Comment</a></li>
-              </ul>
-            </li>
-            <li><a class="js-show-para-image-window" data-itemid="{$itemid}" data-pid="{@xml:id}" data-msslug="{$default-ms-image}">Ms Images</a></li>
-            <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Paragraph Text Tools<span class="caret"></span></a>
-              <ul class="dropdown-menu" role="menu">
-                <li><a class='js-show-collation' data-itemid="{$itemid}" data-pid="{@xml:id}">Collation</a></li>
-                <li><a class='js-show-paragraph-xml' data-itemid="{$itemid}" data-pid="{@xml:id}" data-msslug="{$default-msslug}">XML</a></li>
-                <li><a class='js-show-paragraph-info' data-itemid="{$itemid}" data-pid="{@xml:id}">Paragraph Info</a></li>
-                <li><a class='js-show-variants' data-itemid="{$itemid}" data-pid="{@xml:id}">Variants</a></li>
-              </ul>
-            </li>
-            <li><a>How To Cite</a></li>
-          </ul>
-        </div>
-      </nav>
+      <p id="{@xml:id}" class="plaoulparagraph"><span id="pn{$pn}" class="paragraphnumber"><xsl:number level="any" from="tei:text"/></span><xsl:apply-templates/>
+      <xsl:if test="./@xml:id">
+        <span><a class="lbp-paragraphmenu">Menu</a></span>
+      </xsl:if>
+      </p>
+      <xsl:if test="./@xml:id">
+        <nav class="navbar navbar-default paradiv" id="menu_{@xml:id}" style="display: none;">
+          <div class="navbar-header navbar-right">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#para-navbar-collapse-{@xml:id}">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+          </div>
+          <div class="collapse navbar-collapse" id="para-navbar-collapse-{@xml:id}">
+            <ul class="nav navbar-nav">
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Comments<span class="caret"></span></a>
+                <ul class="dropdown-menu" role="menu">
+                  <li><a href="#" class='js-view-comments' data-itemid="{$itemid}" data-pid="{@xml:id}">View Comments</a></li>
+                  <li><a href="#" class='js-new-comment' data-itemid="{$itemid}" data-pid="{@xml:id}">Leave a Comment</a></li>
+                </ul>
+              </li>
+              <li><a href="#" class="js-show-para-image-window" data-itemid="{$itemid}" data-pid="{@xml:id}" data-msslug="{$default-ms-image}">Ms Images</a></li>
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Paragraph Text Tools<span class="caret"></span></a>
+                <ul class="dropdown-menu" role="menu">
+                  <li><a href="#" class='js-show-paragraph-collation' data-itemid="{$itemid}" data-pid="{@xml:id}">Collation</a></li>
+                  <li><a href="#" class='js-show-paragraph-xml' data-itemid="{$itemid}" data-pid="{@xml:id}" data-msslug="{$default-msslug}">XML</a></li>
+                  <!-- <li><a href="#" class='js-show-paragraph-info' data-itemid="{$itemid}" data-pid="{@xml:id}">Paragraph Info</a></li> -->
+                  <!-- <li><a class='js-show-variants' data-itemid="{$itemid}" data-pid="{@xml:id}">Variants</a></li> -->
+                </ul>
+              </li>
+              <!--<li><a>How To Cite</a></li> -->
+            </ul>
+          </div>
+        </nav>
+      </xsl:if>
     </div>
   </xsl:template>
   
