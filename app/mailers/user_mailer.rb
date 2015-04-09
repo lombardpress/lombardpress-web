@@ -7,6 +7,6 @@ class UserMailer < ApplicationMailer
   def alpha_invitation(user)
 
   	@user = user
-    jmail(to: @user.email, from: 'jeffreycwitt@gmail.com', subject: "You've been invited to alpha test the new LombardPress2 rebuild")
+    mail(to: @user.email, from: 'jeffreycwitt@gmail.com', subject: "You've been invited to alpha test the new LombardPress2 rebuild")
   end
 end
