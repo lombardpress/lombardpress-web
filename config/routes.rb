@@ -51,7 +51,7 @@ Rails.application.routes.draw do
   get 'text/status/:itemid' => 'text#status'
   get 'text/toc/:itemid(:/msslug)' => 'text#toc'
   get 'text/xml/:itemid(:/msslug)' => 'text#xml'
-  get 'text/:itemid(/:msslug)' => 'text#show'
+  get 'text/:itemid(/:msslug)' => 'text#show', as: :show_text
   
   get 'paragraphimage/:itemid/:msslug/:pid' => 'paragraphimage#show'
   

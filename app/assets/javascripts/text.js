@@ -65,7 +65,7 @@ $(document).on('ready page:load', function () {
 			event.preventDefault();
 			showSpinner("#lbp-bottom-window-container");
 			showBottomWindow();
-			expandBottomWindow();
+			halfSizeBottomWindow();
 			var itemid = $(this).attr("data-itemid");
 			var pid = $(this).attr("data-pid");
 			var msslug = $(this).attr("data-msslug");
@@ -86,7 +86,7 @@ $(document).on('ready page:load', function () {
 			event.preventDefault();
 			showSpinner("#lbp-bottom-window-container");
 			showBottomWindow();
-			expandBottomWindow();
+			halfSizeBottomWindow();
 			var itemid = $(this).attr("data-itemid");
 			var pid = $(this).attr("data-pid");
 			showParagraphCollation(itemid, pid, "", "");
@@ -288,7 +288,7 @@ var highlight = function(search, id){
 //UTILITY FUNCTIONS
 
 var showSpinner = function(target){
-	$(target).html("<img src='/spiffygif_150x150.gif'><img>");
+	$(target).html("<img style='margin: auto;' src='/spiffygif_150x150.gif'><img>");
 }
 
 

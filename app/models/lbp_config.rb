@@ -12,7 +12,8 @@ class LbpConfig
 	:light_color,
 	:article_config_hash,
 	:commentaryid,
-	:confighash
+	:confighash,
+	:commentary_host
 
 
 	def initialize url
@@ -43,6 +44,7 @@ class LbpConfig
 		@default_ms_image = "'reims'" #single quotes are required here in order to pass a string as parameter into Nokogir
 		@dark_color = "#BBCEBE"
 		@light_color = "#E6EDE8"
+		@commentary_host = 'http://plaoulcommentary.lombardpress.org'
 
 		@article_config_hash = {
 		biography: 
