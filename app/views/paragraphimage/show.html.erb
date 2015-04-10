@@ -20,7 +20,9 @@
 	<div id="lbp-image-text-container" class="container">
 		<div class="row">
 			<div class="col-xs-12 col-md-6">
-				<img src="http://res.cloudinary.com/djrre1fk1/image/upload/c_crop,x_<%= @paraimage.ulx %>,y_<%= @paraimage.uly %>,w_<%= @paraimage.width %>,h_<%= @paraimage.height %>,q_30/<%= @paraimage.url %>" alt="paragraphimg" class="msimage" style="width: 100%">
+				<% @para_images.each do |paraimage| %>
+				<img src="http://res.cloudinary.com/djrre1fk1/image/upload/c_crop,x_<%= paraimage.ulx %>,y_<%= paraimage.uly %>,w_<%= paraimage.width %>,h_<%= paraimage.height %>,q_30/<%= paraimage.url %>" alt="paragraphimg" class="msimage" style="width: 100%">
+				<% end %>
 			</div>
 			<div id="lbp-paragraph-ms-text" class="col-xs-12 col-md-6">
 				
