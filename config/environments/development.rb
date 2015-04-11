@@ -15,7 +15,7 @@ Rails.application.configure do
 
   # Don't care if the mailer can't send.
   #config.action_mailer.raise_delivery_errors = false
-  config.action_mailer.default_url_options = {host: 'localhost', port: 3000}
+  config.action_mailer.default_url_options = {host: 'localhost', port: '3000'}
   config.action_mailer.smtp_settings = {
     :address   => ENV["MAIL_ADDRESS"], 
     :port      => ENV["MAIL_PORT"], # ports 587 and 2525 are also supported with STARTTLS
