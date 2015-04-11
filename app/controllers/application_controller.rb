@@ -25,7 +25,7 @@ class ApplicationController < ActionController::Base
   def set_conf
     url = request.url
     @config = LbpConfig.new(url)
-    Rails.application.config.action_mailer.default_url_options[:host] = request.subdomain + request.host
+    Rails.application.config.action_mailer.default_url_options[:host] = request.host
   end
   def check_for_user
     unless request.path == "/users/sign_in" or request.path == "/users/password/new" or request.path == "/users/password" or request.path == "/users/password/edit"
