@@ -5,7 +5,7 @@
   </head>
   <body>
     <h1><%= @user.email %> You've been invited to alpha test the new LombardPress rebuild</h1>
-    <p>To visit the site you will need to create a password <%= link_to "here", new_user_password_url %>. You will receive an email when the password has been created. Then you can <%= link_to "sign in here", user_session_url %> with your username (<%= @user.email %>) and the password you created.</p>
+    <p>To visit the site you will need to create a password <%= link_to "here", "http://" + @host_link + "/users/password/new" %>. You will receive an email when the password has been created. Then you can <%= link_to "sign in here", "http://" + @host_link + "/users/sign_in"  %> with your username (<%= @user.email %>) and the password you created.</p>
 
     	<p>Your permission level is <%= @user.role %> which means can view both public texts and individual drafts that you have been approved for.</p>
 
