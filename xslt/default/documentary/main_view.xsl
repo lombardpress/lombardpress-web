@@ -43,7 +43,9 @@
     <div class='para_wrap' id='pwrap_{@xml:id}' style="clear: both; float: none;">
       <p id="{@xml:id}" class="plaoulparagraph"><span id="pn{$pn}" class="paragraphnumber"><xsl:number level="any" from="tei:text"/></span><xsl:apply-templates/>
       <xsl:if test="./@xml:id">
-        <span><a class="lbp-paragraphmenu">Menu</a></span>
+        <span class="lbp-paragraphmenu">
+          <span class="glyphicon glyphicon-wrench" aria-hidden="true"></span>
+        </span>
       </xsl:if>
       </p>
       <xsl:if test="./@xml:id">

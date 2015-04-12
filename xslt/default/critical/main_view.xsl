@@ -52,9 +52,15 @@
     <xsl:variable name="pid"><xsl:value-of select="@xml:id"/></xsl:variable>
     
     <div class='para_wrap' id='pwrap_{@xml:id}' style="clear: both; float: none;">
-      <p id="{@xml:id}" class="plaoulparagraph"><span id="pn{$pn}" class="paragraphnumber"><xsl:number level="any" from="tei:text"/></span><xsl:apply-templates/>
+      <p id="{@xml:id}" class="plaoulparagraph">
+      <span id="pn{$pn}" class="paragraphnumber">
+        <xsl:number level="any" from="tei:text"/>
+      </span>
+      <xsl:apply-templates/>
       <xsl:if test="./@xml:id">
-        <span><a class="lbp-paragraphmenu">Menu</a></span>
+        <span class="lbp-paragraphmenu">
+          <span class="glyphicon glyphicon-wrench" aria-hidden="true"></span>
+        </span>
       </xsl:if>
       </p>
       <xsl:if test="./@xml:id">
@@ -188,7 +194,7 @@
     <xsl:variable name="id">
       <xsl:number count="//tei:bibl" level="any" format="a"/></xsl:variable>
       <xsl:text> </xsl:text>
-      <a href="#footnote{$id}" name="footnotereference{$id}" class="footnote">
+      <a href="#lbp-footnote{$id}" name="lbp-footnotereference{$id}" class="footnote">
         <sup>[<xsl:value-of select="$id"/>]</sup>
       </a>
     <xsl:text> </xsl:text>
@@ -199,7 +205,7 @@
     <span class="lemma"><xsl:apply-templates select="tei:lem"/></span>
     <xsl:variable name="id"><xsl:number count="//tei:app" level="any" format="1"/></xsl:variable>
     <xsl:text> </xsl:text>
-    <sup><a href="#variant{$id}" name="variantreference{$id}" class="appnote">[<xsl:value-of select="$id"/>]</a></sup>
+    <sup><a href="#lbp-variant{$id}" name="lbp-variantreference{$id}" class="appnote">[<xsl:value-of select="$id"/>]</a></sup>
     <xsl:text> </xsl:text>
   </xsl:template>
   

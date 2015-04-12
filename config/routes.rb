@@ -11,8 +11,8 @@ Rails.application.routes.draw do
   resources :posts
   resources :comments, except: [:new]
 
-  get 'articles/:articleid' => 'articles#show'
-  get 'articles' => 'articles#index'
+  get 'articles/:articleid' => 'articles#show', as: :show_article
+  get 'articles' => 'articles#index', as: :articles
   
   get 'biography' => 'pages#biography'
   get 'bibliography' => 'pages#bibliography' 

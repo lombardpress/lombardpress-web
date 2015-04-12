@@ -9,10 +9,10 @@
 <body>
 	<%= render "layouts/header" %> 
 	<% flash.each do |key, value| %>
-
-	<div class="alert alert-info alert-dismissible" role="alert">
+	<% @class = if key == "alert" then "alert-warning" else "alert-info" end %> 
+	<div class="alert <%= @class %> alert-dismissible" role="alert">
 		<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-		<%= key + " : " + value %></div>
+		<%= value %></div>
 	<% end %>
 	
 	 

@@ -5,13 +5,12 @@
     <xsl:output method="xml"/>
     
     <xsl:template match="/">
-        <html>
-            <head></head>
-            <body>
-                <xsl:call-template name="about-toc"/>
+        
+        <xsl:call-template name="about-toc"/>
+        <div>
         <xsl:apply-templates/>
-            </body>
-        </html>
+    </div>
+        
     </xsl:template>
     <xsl:template match="tei:teiHeader">
         
@@ -39,7 +38,7 @@
     
     <xsl:template name="about-toc">
         <div id="about-toc">
-        <xsl:for-each select="//tei:div[@type='aboutsection']">
+        <xsl:for-each select="//tei:div">
             <xsl:variable name="sectionid" select="concat('#', @xml:id)"/>
             <h2 class="about-toc-item"><a href="{$sectionid}"><xsl:value-of select="./tei:head"/></a></h2>
         </xsl:for-each>

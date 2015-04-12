@@ -62,6 +62,10 @@ class LbpConfig
 		about: 	
 			{xml: "https://bitbucket.org/jeffreycwitt/pp-about/raw/master/pp-about.xml", 
 			 xslt: "#{Rails.root}/xslt/articles/standard.xsl"
+			},
+		manuscripts: 	
+			{xml: "https://bitbucket.org/jeffreycwitt/bibliography/raw/master/PlaoulTexts.xml", 
+			 xslt: "#{Rails.root}/xslt/articles/bibliography.xsl"
 			}
 		}
 
@@ -133,6 +137,10 @@ class LbpConfig
 				},
 			about: 	
 				{xml: "https://bitbucket.org/jeffreycwitt/aw-about/raw/master/aw-about.xml", 
+				 xslt: "#{Rails.root}/xslt/articles/standard.xsl"
+				},
+			manuscripts: 	
+				{xml: "https://bitbucket.org/jeffreycwitt/aw-manuscripts/raw/master/aw-manuscripts.xml", 
 				 xslt: "#{Rails.root}/xslt/articles/standard.xsl"
 				}
 			}
