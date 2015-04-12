@@ -12,7 +12,7 @@ $(document).on('ready page:load', function () {
 
 		//events
 
-	  $("a.lbp-paragraphmenu").click(showParagraphMenu);
+	  $("span.lbp-paragraphmenu span").click(showParagraphMenu);
 		$("a.js-show-para-comment").click(showBottomWindow);
 		$("a.js-expand-para-comment").click(expandBottomWindow);
 		$("a.js-minimize-para-comment").click(minimizeBottomWindow);
