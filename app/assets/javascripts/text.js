@@ -33,6 +33,14 @@ $(document).on('ready page:load', function () {
 			showParaImage(itemid, msslug, pid);	
 		});
 
+		$("a.js-show-para-image-zoom-window").click(function(){
+			event.preventDefault();
+			showSpinner("#lbp-bottom-window-container");
+			showBottomWindow();
+			halfSizeBottomWindow();
+			showParaZoomImage();
+		});
+
 		$("a.js-view-comments").click(function(){
 			event.preventDefault();
 			showSpinner("#lbp-bottom-window-container");
@@ -170,6 +178,20 @@ var showParaImage = function(itemid, msslug, pid){
     	$("#lbp-bottom-window-container").html( msg + "(" + xhr.status + " " + xhr.statusText + ")");
     }
   });
+}
+var showParaZoomImage = function(){
+	var scale = .5;
+	var bottom = 1288 * scale,
+			right = 1634 * scale,
+			top = 636 * scale,
+			left = 8 * scale,
+			width = right - left, 
+			height = bottom - top,
+			totalW = 2070 * scale,
+			totalH = 2862 * scale;
+			id = Math.random()
+	$("#lbp-bottom-window-container").html("<div id='openseadragon-" + id + "' style='width: " + width + "px; height: " + height + "px; margin: auto;'>")
+		showOpenseadragon(id);
 }
 var showParaAltImage = function(itemid, msslug, pid){
 	$.get("/paragraphimage/" + itemid + "/" + msslug + "/" + pid + " #lbp-image-text-container", function(data, status, xhr) {

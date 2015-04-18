@@ -26,11 +26,18 @@ class ParagraphimageController < ApplicationController
 			 @para_images << paragraphurl = Lbp::ParagraphImage.new(paragraphurl, @i)
 			 @i = @i + 1
 		end
-		
-		
-
-
-
+	
+	end
+	def showzoom
+		scale = 0.5
+		@bottom = 1288 * scale
+		@right = 1634 * scale
+		@top = 636 * scale
+		@left = 8 * scale
+		@width = @right - @left
+		@height = @bottom - @top
+		@totalW = 2070 * scale
+		@totalH = 2862 * scale
 		
 	end
 end

@@ -58,7 +58,9 @@ Rails.application.routes.draw do
   get 'text/xml/:itemid(:/msslug)' => 'text#xml'
   get 'text/:itemid(/:msslug)' => 'text#show', as: :show_text
   
+  get 'paragraphimage/showzoom' => 'paragraphimage#showzoom'
   get 'paragraphimage/:itemid/:msslug/:pid' => 'paragraphimage#show'
+
   
   get 'users/profiles/:id' => 'users/profiles#show', as: :users_profile
   delete 'users/profiles/:id' => 'users/profiles#destroy', as: :destroy_users_profile
