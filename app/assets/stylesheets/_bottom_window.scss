@@ -6,7 +6,8 @@
 	padding-bottom: 50px; 
 	background-color: $dark-color; 
 	display: none;
-	overflow: scroll;}
+	overflow: scroll;
+	z-index: 1;}
 
 #lbp-bottom-window-container{margin-bottom: 50px;}
 

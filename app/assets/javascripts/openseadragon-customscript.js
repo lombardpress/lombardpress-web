@@ -1,4 +1,4 @@
-function showOpenseadragon(id){
+function showOpenseadragon(id, data){
 	var viewer = OpenSeadragon({
 		id: "openseadragon-" + id,
     prefixUrl: "/openseadragon/images/",
@@ -7,11 +7,13 @@ function showOpenseadragon(id){
 		minZoomLevel:       1,
 		defaultZoomLevel:   1,
 		tileSources: [{"@context":"http://iiif.io/api/image/2/context.json",
-									"@id":"http://images.scta.info:3000/pg-lon/L51r.jpg", 
+										//"@context": "http://iiif.io/api/image/1/context.json", # use for plaoul sorb text
+									"@id": data.image_url, 
 									"height":2862, 
 									"width": 2070, 
 									"profile": [
 										"http://iiif.io/api/image/2/level2.json", 
+										//"http://iiif.io/api/image/1/level2.json", //use for plaoul sorb text 
 										{
 											"formats": ["gif", "tif", "pdf"], 
 											"qualities": ["color", "gray"], 
@@ -21,27 +23,16 @@ function showOpenseadragon(id){
 									"protocol": "http://iiif.io/api/image", 
 									"tiles": [{"scaleFactors": [1, 2, 4, 8], "width": 300}], 
 								}]
-							});
+	});
+
 
 
 	viewer.addHandler("open", function() {
-	  var scale = .5
-		var bottom = 1288 * scale,
-				right = 1634 * scale,
-				top = 636 * scale,
-				left = 8 * scale,
-				width = right - left, 
-				height = bottom - top,
-				totalW = 2070 * scale,
-				totalH = 2862 * scale,
-				aspectratio = totalH / totalW,
-				xcomp = left / totalW,
-				ycomp = (top / totalH) * aspectratio,
-				heightcomp = (height / totalH) * aspectratio,
-				widthcomp = width / totalW;
+	 
 		
+		console.log(data);
 		
-		var rect = new OpenSeadragon.Rect(xcomp, ycomp, widthcomp, heightcomp)
+		var rect = new OpenSeadragon.Rect(data.xcomp, data.ycomp, data.widthcomp, data.heightcomp)
 		
 		var myBounds = viewer.viewport.fitBounds(rect, false);
 
@@ -54,6 +45,7 @@ function showOpenseadragon(id){
 			
 		*/
 		viewer.viewport.setHomeBounds(rect, viewer.viewport.contentSize.x);
+		
 
 		
 	});

@@ -47,7 +47,7 @@
       <p id="{@xml:id}" class="plaoulparagraph"><span id="pn{$pn}" class="paragraphnumber"><xsl:number level="any" from="tei:text"/></span><xsl:apply-templates/>
       <xsl:if test="./@xml:id">
         <span class="lbp-paragraphmenu">
-          <span class="glyphicon glyphicon-wrench" aria-hidden="true"></span>
+          <span class="glyphicon glyphicon-tasks" aria-hidden="true"></span>
         </span>
       </xsl:if>
       </p>
@@ -70,9 +70,8 @@
                   <li><a href="#" class='js-new-comment' data-itemid="{$itemid}" data-pid="{@xml:id}">Leave a Comment</a></li>
                 </ul>
               </li>
-              <xsl:if test="$show-images = 'true'">
-                <li><a href="#" class="js-show-para-image-window" data-itemid="{$itemid}" data-pid="{@xml:id}" data-msslug="{$default-ms-image}">Ms Images</a></li>
-              </xsl:if>
+              <li><a href="#" class="js-show-para-image-window" data-itemid="{$itemid}" data-pid="{@xml:id}" data-msslug="{$default-ms-image}">Ms Images</a></li>
+              <li><a href="#" class="js-show-para-image-zoom-window" data-itemid="{$itemid}" data-pid="{@xml:id}" data-msslug="{$default-ms-image}">Ms Images Zoom</a></li>
               <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Paragraph Text Tools<span class="caret"></span></a>
                 <ul class="dropdown-menu" role="menu">

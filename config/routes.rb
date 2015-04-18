@@ -58,7 +58,7 @@ Rails.application.routes.draw do
   get 'text/xml/:itemid(:/msslug)' => 'text#xml'
   get 'text/:itemid(/:msslug)' => 'text#show', as: :show_text
   
-  get 'paragraphimage/showzoom' => 'paragraphimage#showzoom'
+  get 'paragraphimage/showzoom/:itemid/:msslug/:pid' => 'paragraphimage#showzoom'
   get 'paragraphimage/:itemid/:msslug/:pid' => 'paragraphimage#show'
 
   

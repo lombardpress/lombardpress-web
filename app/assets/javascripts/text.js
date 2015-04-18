@@ -38,7 +38,10 @@ $(document).on('ready page:load', function () {
 			showSpinner("#lbp-bottom-window-container");
 			showBottomWindow();
 			halfSizeBottomWindow();
-			showParaZoomImage();
+			var itemid = $(this).attr("data-itemid");
+			var msslug = $(this).attr("data-msslug");
+			var pid = $(this).attr("data-pid");
+			showParaZoomImage(itemid, msslug, pid);
 		});
 
 		$("a.js-view-comments").click(function(){
@@ -179,19 +182,22 @@ var showParaImage = function(itemid, msslug, pid){
     }
   });
 }
-var showParaZoomImage = function(){
-	var scale = .5;
-	var bottom = 1288 * scale,
-			right = 1634 * scale,
-			top = 636 * scale,
-			left = 8 * scale,
-			width = right - left, 
-			height = bottom - top,
-			totalW = 2070 * scale,
-			totalH = 2862 * scale;
+var showParaZoomImage = function(itemid, msslug, pid){
+	$.get("/paragraphimage/showzoom/" + itemid + "/" + msslug + "/" + pid, function(data){
+		console.log(data);
+		var i = 1
+		for(var zone of data){
 			id = Math.random()
-	$("#lbp-bottom-window-container").html("<div id='openseadragon-" + id + "' style='width: " + width + "px; height: " + height + "px; margin: auto;'>")
-		showOpenseadragon(id);
+			if (i == 1){
+				$("#lbp-bottom-window-container").html("<div id='openseadragon-" + id + "' style='width: " + zone.width + "px; height: " + zone.height + "px; margin: auto; padding-bottom: 5px;'></div>")
+			}
+			else{
+				$("#lbp-bottom-window-container").append("<div id='openseadragon-" + id + "' style='width: " + zone.width + "px; height: " + zone.height + "px; margin: auto; padding-bottom: 5px;'></div>") 
+			}
+			showOpenseadragon(id, zone);
+			i = i + 1
+		};
+	});
 }
 var showParaAltImage = function(itemid, msslug, pid){
 	$.get("/paragraphimage/" + itemid + "/" + msslug + "/" + pid + " #lbp-image-text-container", function(data, status, xhr) {

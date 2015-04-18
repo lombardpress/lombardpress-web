@@ -63,7 +63,7 @@
       <xsl:apply-templates/>
       <xsl:if test="./@xml:id">
         <span class="lbp-paragraphmenu">
-          <span class="glyphicon glyphicon-wrench" aria-hidden="true"></span>
+          <span class="glyphicon glyphicon-tasks" aria-hidden="true"></span>
         </span>
       </xsl:if>
       </p>
