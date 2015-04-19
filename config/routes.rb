@@ -8,7 +8,9 @@ Rails.application.routes.draw do
 
   devise_for :users, controllers: { sessions: "users/sessions", profiles: "users/profiles"}
   
+  get 'posts/list' => 'posts#list'
   resources :posts
+  
   resources :comments, except: [:new]
 
   get 'articles/:articleid' => 'articles#show', as: :show_article
@@ -43,7 +45,7 @@ Rails.application.routes.draw do
   
   get 'permissions' => 'pages#permissions'
   
-  get 'posts/list' => 'posts#list'
+  
 
   get 'text' => 'text#index'
   get 'text/questions' => 'text#questions'

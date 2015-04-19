@@ -1,25 +1,22 @@
 
-<div class="container center">
-	<h1>Research Notes</h1>
-	<p>
-	  <strong>Title:</strong>
-	  <%= @post.title %>
-	</p>
-	 
-	<p>
-	  <strong>Text:</strong>
-	  <%= @post.body %>
-	</p>
-	<p>
-	  <strong>Posted by:</strong>
-	  <%= @post.user.email %>
-	</p>
-	<%= link_to 'All Posts', posts_path %>
-	<% if user_signed_in? %>
-		<% if current_user.admin? %>
-			<%= link_to 'Edit', edit_post_path(@post) %>
-			<%= link_to 'List', posts_list_path %>
+<div class="container lbp-post-show-container">
+	<div class="lbp-post-header">
+		<h1><%= @post.title %></h1>
+		<p>By <%= @post.user.email %></p>
+		<p>Post on <%= @post.created_at %> | 
+		Last update <%= @post.updated_at %></p> 
+	</div>
+	<div class="lbp-post-body">
+		<%= raw(@post.body) %>
+	</div>
+	<div class="lbp-post-footer">
+		<%= link_to 'All Posts', posts_path %>
+		<% if user_signed_in? %>
+			<% if current_user.admin? %>
+				<%= link_to 'Edit', edit_post_path(@post) %>
+				<%= link_to 'List', posts_list_path %>
+			<% end %>
 		<% end %>
-	<% end %>
+	</div>
 	
 </div>

@@ -9,6 +9,9 @@ class PostPolicy < ApplicationPolicy
   def new?
     user.admin?
   end
+  def create?
+    user.admin?
+  end
 
   def list?
   	user.admin?
