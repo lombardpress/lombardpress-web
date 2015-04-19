@@ -1,4 +1,3 @@
-<script src="//cdn.ckeditor.com/4.4.7/standard/ckeditor.js"></script>
 <div class="container center">
 <h1>New Post</h1>
 
@@ -24,7 +23,7 @@
 	</p>
 	<p>
 		<%= f.label :body %><br/>
-		<%= f.text_area :body, :id => "post_text_area" %><br/>
+		<%= f.text_area :body, :class => 'ckeditor' %><br/>
 
 	</p>
 
@@ -35,6 +34,3 @@
 
 
 </div>
-<script>
- CKEDITOR.replace( 'post_text_area' );
-</script>

@@ -197,6 +197,16 @@ var showComments = function(itemid, pid){
 }
 var newComment = function(itemid, pid){
 	$("#lbp-bottom-window-container").load("/comments/new/" + itemid + "/" + pid + " #lbp-comment-new-container", function( response, status, xhr) {
+		
+		//apply rich text editor to ajax loaded text_area
+		$('.ckeditor').ckeditor({
+				height: 200,
+				toolbarGroups: [
+				{ name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ] },
+ 				{ name: 'links' }
+				]
+			});
+  	
   	if ( status == "error" ) {
     	var msg = "Sorry, but posting comments for this paragraph is not presently possible";
     	$("#lbp-bottom-window-container").html( msg + "(" + xhr.status + " " + xhr.statusText + ")");

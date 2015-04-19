@@ -3,8 +3,7 @@
 
 <%= form_for :comment, url: comments_path, :html => { id: "lbp-new-comment-form" } do |f| %>
 	<p>
-		<%= f.label :comment %><br/>
-		<%= f.text_field :comment %><br/>
+		<%= f.text_area :comment, :class => 'ckeditor' %><br/>
 	</p>
 	<%= f.hidden_field :user_id, value: params[:user] %>
 	<%= f.hidden_field :pid, value: params[:pid] %>

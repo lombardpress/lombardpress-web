@@ -7,8 +7,8 @@
 			<% @comments.each do |comment| %>
 				<tr>
 					<td><%= comment.created_at %></td>
-					<td><%= comment.user.email %></td>
-					<td style="width: 70%"><%= comment.comment %></td>
+					<td><p><%= comment.user.email %><p></td>
+					<td style="width: 70%"><%= raw(comment.comment) %></td>
 				</tr>
 			<% end %>
 		</tbody>
