@@ -199,10 +199,13 @@
     <xsl:variable name="side_column"><xsl:value-of select="substring($fullcn, $length+1)"/></xsl:variable>
     <xsl:variable name="just_column"><xsl:value-of select="substring($fullcn, $length+2, 1)"/></xsl:variable>
     <xsl:variable name="justSide"><xsl:value-of select="substring($fullcn, $length+1, 1)"/></xsl:variable>
+    <xsl:variable name="canvasid" select="concat($ms, $folionumber, $justSide)"/>
     <span class="lbp-folionumber">
-      <xsl:value-of select="$ms"/>
-      <xsl:value-of select="$folionumber"/>
-      <xsl:value-of select="$side_column"/>
+      <a href="#" class="js-show-folio-image" data-canvasid="{$canvasid}">
+        <xsl:value-of select="$ms"/>
+        <xsl:value-of select="$folionumber"/>
+        <xsl:value-of select="$side_column"/>
+      </a>
     </span>
     <xsl:text> </xsl:text>
   </xsl:template>
@@ -216,11 +219,15 @@
     <!-- this variable separates isolates folio number by skipping msAbbrev and then not including side designation -->
     <xsl:variable name="folionumber"><xsl:value-of select="substring($fullcn,1, $length)"/></xsl:variable>
     <!-- this desgination gets side by skipping lenghth of msAbbrev and folio number and then getting the first character that occurs -->
+    
     <xsl:variable name="justSide"><xsl:value-of select="substring($fullcn, $length+1, 1)"/></xsl:variable>
+    <xsl:variable name="canvasid" select="concat($ms, $folionumber, $justSide)"/>
     <span class="lbp-folionumber">
+      <a href="#" class="js-show-folio-image" data-canvasid="{$canvasid}">
       <xsl:value-of select="$ms"/>
       <xsl:value-of select="$folionumber"/>
       <xsl:value-of select="$justSide"/>
+      </a>
     </span>
     <xsl:text> </xsl:text>
   </xsl:template>

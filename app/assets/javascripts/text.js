@@ -43,6 +43,16 @@ $(document).on('ready page:load', function () {
 			var pid = $(this).attr("data-pid");
 			showParaZoomImage(itemid, msslug, pid);
 		});
+		$("a.js-show-folio-image").click(function(){
+			event.preventDefault();
+			showSpinner("#lbp-bottom-window-container");
+			showBottomWindow();
+			halfSizeBottomWindow();
+			var canvasid = $(this).attr("data-canvasid");
+			var image_url = "http://images.scta.info:3000/pg-lon/" + canvasid + ".jpg";
+			showFolioImage(image_url);
+		
+		});
 
 		$("a.js-view-comments").click(function(){
 			event.preventDefault();
@@ -199,6 +209,13 @@ var showParaZoomImage = function(itemid, msslug, pid){
 		};
 	});
 }
+var showFolioImage = function(image_url){
+	id = Math.random()
+	$("#lbp-bottom-window-container").html("<div id='openseadragon-" + id + "' style='width: 1000px; height: 1400px; margin: auto;'></div>");
+	showOpenseadragonFolio(id, image_url)
+
+}
+
 var showParaAltImage = function(itemid, msslug, pid){
 	$.get("/paragraphimage/" + itemid + "/" + msslug + "/" + pid + " #lbp-image-text-container", function(data, status, xhr) {
 		if ( status == "error" ) {

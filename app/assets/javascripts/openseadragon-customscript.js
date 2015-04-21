@@ -50,3 +50,32 @@ function showOpenseadragon(id, data){
 		
 	});
 }
+
+function showOpenseadragonFolio(id, image_url){
+	var viewer = OpenSeadragon({
+		id: "openseadragon-" + id,
+    prefixUrl: "/openseadragon/images/",
+    preserveViewport: true,
+		visibilityRatio:    1,
+		minZoomLevel:       1,
+		defaultZoomLevel:   1,
+		tileSources: [{"@context":"http://iiif.io/api/image/2/context.json",
+										//"@context": "http://iiif.io/api/image/1/context.json", # use for plaoul sorb text
+									"@id": image_url, 
+									"height":2862, 
+									"width": 2070, 
+									"profile": [
+										"http://iiif.io/api/image/2/level2.json", 
+										//"http://iiif.io/api/image/1/level2.json", //use for plaoul sorb text 
+										{
+											"formats": ["gif", "tif", "pdf"], 
+											"qualities": ["color", "gray"], 
+											"supports": ["canonicalLinkHeader", "profileLinkHeader", "mirroring", "rotationArbitrary", "sizeAboveFull"]
+										}
+									], 
+									"protocol": "http://iiif.io/api/image", 
+									"tiles": [{"scaleFactors": [1, 2, 4, 8], "width": 300}], 
+								}]
+	});
+	console.log(viewer);
+}
