@@ -2,14 +2,13 @@
 	top: 60%; 
 	height: 40%; 
 	width: 100%; 
-	background-color: $dark-color; 
-	margin-bottom: 50px; 
+
 	padding-bottom: 50px; 
-	 
+	background-color: $dark-color; 
 	display: none;
 	overflow: scroll;}
 
-#lbp-bottom-widow-container{}
+#lbp-bottom-window-container{margin-bottom: 50px;}
 
 #lbp-bottom-window-nav-bar{border-bottom: 2px solid $light-color; margin-bottom: 5px;}
 
