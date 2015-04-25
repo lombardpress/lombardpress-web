@@ -17,11 +17,9 @@ module TextMethods
 					unless allowed_texts.include? params[:itemid] => @config.commentaryid or allowed_texts.include? "all" => @config.commentaryid
 						redirect_to "/permissions#draftview", :alert => "Access denied: This text is a draft. It requires permission to be viewed." and return
 					end
-
 				elsif !current_user.admin? 
 					redirect_to "/permissions#draftview", :alert => "Access denied: This text is a draft. It requires permission to be viewed." and return
 				end
-				flash[:alert] = "Please remember: the status of this text is draft. You have been granted access through the generosity of the editor. Please use the comments to help make suggestions or corrections."
 			end
 		end
 		def default_wit(params)
