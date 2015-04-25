@@ -15,7 +15,9 @@ class TextController < ApplicationController
 	def info
 		item = get_item(params)
 		check_permission(item)
-		
+		if item.status == "In Progress" || item.status == "draft"
+			flash[:alert] = "Please remember: the status of this text is draft. You have been granted access through the generosity of the editor. Please use the comments to help make suggestions or corrections."
+		end
 		@title = item.title
 		@itemid = item.fs
 		commentaryid = @config.commentaryid

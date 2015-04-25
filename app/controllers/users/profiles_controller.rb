@@ -7,15 +7,45 @@ class Users::ProfilesController < ApplicationController
 		 #	redirect_to "/permissions", :alert => "Access denied."
     #end
     @users = User.all
-    authorize @users
+    @profile = User.new
+    authorize @profile
+
 	end
 	def show
 		@user = User.find(params[:id])
-    unless current_user.admin?
-      unless @user == current_user
-        redirect_to "/permissions", :alert => "Access denied."
-      end
+		@profile = @user
+		#not that user in the authorize method is actually the second arg
+		#corresponding to the @profile arg in the pundit policy
+		authorize @profile
+  end
+  def create
+  	@profile = User.new(profile_params)
+    authorize @profile
+    if @profile.save
+      redirect_to users_profiles_path, :notice => "Profile successfully added"
     end
-	end
+  end
+  def update
+
+  	@profile = User.find(params[:id])
+    authorize @profile
+    if @profile.update(profile_params)
+			redirect_to users_profile_path(@profile), :notice => "Profile successfully update"
+		end
+  end
+  def destroy 
+
+  	@profile = User.find(params[:id])
+    authorize @profile
+    if @profile.destroy
+			redirect_to users_profiles_path, :notice => "Profile successfully deleted"
+		end
+  end
+  
+
+  private 
+	  def profile_params
+	    params.require(:profile).permit(:email, :password, :role)
+	  end
 
 end
