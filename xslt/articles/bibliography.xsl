@@ -2,19 +2,14 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:tei="http://www.tei-c.org/ns/1.0" version="1.0">
     <xsl:param name="type">all</xsl:param>
     <xsl:param name="subtype">all</xsl:param>
-    <xsl:param name="projectfilesbase">../../projectfiles/</xsl:param>
-    <xsl:param name="projectdata">projectdata.xml</xsl:param>
-    <xsl:param name="biodir">Biography/</xsl:param>
-    <xsl:param name="timelineuse">true</xsl:param>
-    <xsl:param name="timelinename">PlaoulTimeLineTEI.xml</xsl:param>
+    
 <xsl:output method="html"/>
     
    <xsl:param name="id">all</xsl:param>
     
 <xsl:template match="/">
-<style type="text/css">
-    .journalTitle, .bookTitle {font-style: italic;}
-</style>
+
+  
 <div>
       
       <xsl:choose>
@@ -166,13 +161,7 @@
         </div>
         <div class="bibMenu">
             <xsl:if test="./tei:note">
-                <a class="viewNotes">View Notes</a>
-            </xsl:if>
-            <xsl:variable name="correspId" select="./@xml:id"></xsl:variable>
-            <xsl:if test="$timelineuse = 'true'">
-                <xsl:if test="document(concat($projectfilesbase, $biodir, $timelinename))//tei:bibl[@corresp[contains(., $correspId)]]">
-                    <a class="timelineCitationsSearch" target="Petrus Plaoul - Biography Timeline" href="../biography/timelinelist.php?bibQueryId={@xml:id}" title="Click here to search all citations of this source in the biographical time line event list">Event List Citations</a>
-                </xsl:if>
+                <p><a class="viewNotes">View Notes</a></p>
             </xsl:if>
         </div>
         <xsl:if test="./tei:note">
@@ -201,11 +190,7 @@
             
     </div>
 </xsl:template>
-    <xsl:template match="tei:note/tei:ref">
-        <xsl:variable name="eid" select="substring-after(@target, '#')"></xsl:variable>
-        <a class="BibEventLink" target="Biography Timeline" href="../biography/timelinelist.php?eid={$eid}"><xsl:apply-templates/></a>
-        
-    </xsl:template>
+    
     
 
 </xsl:stylesheet>

@@ -5,29 +5,16 @@
     <xsl:param name="bibQueryId">none</xsl:param>
     <xsl:param name="category">All</xsl:param>
     <xsl:param name="from">1300-00-00</xsl:param>
-    <xsl:param name="to">1400-00-00</xsl:param>
+    <xsl:param name="to">1900-00-00</xsl:param>
     <xsl:param name="projectfilesbase">../../projectfiles/</xsl:param>
     <xsl:param name="projectdata">projectdata.xml</xsl:param>
     <xsl:param name="biodir">Biography/</xsl:param>
     <xsl:param name="timelinename">PlaoulTimeLineTEI.xml</xsl:param>
     <xsl:template match="/">
-        <html>
-            <head>
-                <style>
-                    a.eventList {font-size: 16px;}
-                    a.bibentry, a.googlelink {padding: 0 3px 0 3px;}
-                    span.Category {color: white; padding: 0 3px 0 3px; font-size: 12px; background-color: black; opacity: .7}
-                    span.Education {background-color: green;}
-                    span.Political {background-color: red;}
-                    span.Benefices {background-color: blue;}
-                    span.Sentences {background-color: purple;}
-                    span.BlanchardAffair {background-color: orange;}
-                    span.Life {background-color: gray;}
-                    p {margin: 2px;}
-                    h1, h2 {margin: 5px;}
-                </style>
-            </head>
-            <body>
+        
+            
+            <div>
+              <h1>Event Timeline</h1>
                 <xsl:choose>
                     <xsl:when test="not($eid = 'none')">
                         <xsl:apply-templates select="//t:event[@xml:id=$eid]"/>
@@ -54,8 +41,8 @@
                         
                     
 
-            </body>
-        </html>
+            </div>
+        
     </xsl:template>
     <xsl:template match="t:teiHeader">
         
@@ -63,42 +50,39 @@
     <xsl:template match="t:event">
         <div class="event" id="{@xml:id}">
             <div class="eventHeader" data-eid="{@xml:id}">
-            <p>
-                <xsl:value-of select="./@when | ./@from | ./@notBefore"/>
-                <xsl:if test="./@notBefore"> (Not Before) </xsl:if>
-                <xsl:if test="./@to">
-                    -- <xsl:value-of select="./@to"/>
-                </xsl:if>
-                
-                <xsl:if test="./@notAfter">
-                    -- <xsl:value-of select="./@notAfter"/> (Not After)
-                </xsl:if>
-                
-                | <xsl:element name="span">
-                    <xsl:attribute name="class">label</xsl:attribute>
-                    <xsl:value-of select="./t:label"/>
-                </xsl:element>
-                |
-                <xsl:element name="span">
-                <xsl:attribute name="class"><xsl:value-of select="./@type"/> Category</xsl:attribute>
-                <xsl:value-of select="./@type"/>
-            </xsl:element>
-            <xsl:if test="./@subtype">
-                | <xsl:element name="span">
-                    <xsl:attribute name="class"><xsl:value-of select="./@subtype"/> Category</xsl:attribute>
-                    <xsl:value-of select="./@subtype"/>
-                </xsl:element>
-            </xsl:if>
-            </p></div>
-            <div class="eventBody">
-<div class="eventDesc">
-            <xsl:apply-templates/>
-</div>
-                <div class="eventComments">
+                <p>
+                    <xsl:value-of select="./@when | ./@from | ./@notBefore"/>
+                    <xsl:if test="./@notBefore"> (Not Before) </xsl:if>
+                    <xsl:if test="./@to">
+                        -- <xsl:value-of select="./@to"/>
+                    </xsl:if>
                     
+                    <xsl:if test="./@notAfter">
+                        -- <xsl:value-of select="./@notAfter"/> (Not After)
+                    </xsl:if>
+                    
+                    | <xsl:element name="span">
+                        <xsl:attribute name="class">lbp-label</xsl:attribute>
+                        <xsl:value-of select="./t:label"/>
+                    </xsl:element>
+                    |
+                    <xsl:element name="span">
+                    <xsl:attribute name="class"><xsl:value-of select="./@type"/> Category</xsl:attribute>
+                    <xsl:value-of select="./@type"/>
+                </xsl:element>
+                <xsl:if test="./@subtype">
+                    | <xsl:element name="span">
+                        <xsl:attribute name="class"><xsl:value-of select="./@subtype"/> Category</xsl:attribute>
+                        <xsl:value-of select="./@subtype"/>
+                    </xsl:element>
+                </xsl:if>
+                </p>
+            </div>
+            <div class="eventBody">
+                <div class="eventDesc">
+                <xsl:apply-templates/>
                 </div>
             </div>
-
         </div>
     </xsl:template>
     <xsl:template match="t:label">
@@ -115,7 +99,7 @@
             <span class="sourceType"><xsl:value-of select="@type"/>: </span>
             <xsl:choose>
             <xsl:when test="./@facs">
-                <xsl:element name="a">
+                <xsl:element name="span">
                     <xsl:attribute name="class">bibLive eventList <xsl:value-of select="./@type"/></xsl:attribute>
                     <xsl:attribute name="data-facs"><xsl:value-of select="$facs"/></xsl:attribute>
                     <xsl:attribute name="data-bibid"><xsl:value-of select="./@xml:id"/></xsl:attribute>
@@ -125,7 +109,7 @@
                 
             </xsl:when>
             <xsl:otherwise>
-                <xsl:element name="a">
+                <xsl:element name="span">
                     <xsl:attribute name="class">bib eventList <xsl:value-of select="./@type"/></xsl:attribute>
                     <xsl:apply-templates/>
                 </xsl:element>
@@ -137,7 +121,7 @@
                 <xsl:variable name="bibid"><xsl:value-of select="substring-after($bibref, '#')"/></xsl:variable>
                 <xsl:text> </xsl:text><xsl:element name="a">
                     <xsl:attribute name="class">bibentry</xsl:attribute>
-                    <xsl:attribute name="href">../bibliography/?target=<xsl:value-of select="$bibid"/></xsl:attribute>
+                    <xsl:attribute name="href">/articles/bibliography/#<xsl:value-of select="$bibid"/></xsl:attribute>
                     <xsl:attribute name="target">Petrus Plaoul - Bibliography</xsl:attribute>
                     <xsl:attribute name="title">Full Bibliographical Information</xsl:attribute>BE</xsl:element>
             </xsl:if>
