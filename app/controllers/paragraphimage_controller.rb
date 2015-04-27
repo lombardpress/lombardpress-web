@@ -15,15 +15,15 @@ class ParagraphimageController < ApplicationController
 		@previous_para = paragraph.previous
 		@paragraph_number = paragraph.number
 		
-		# it would be best to be able to build a paragraph image from the Item, 
-		# like item.transcription.paragraph.paragraphImage
-		file_hash = item.file_hash(source: 'origin', wit: params[:msslug], ed: 'master')
+		
 
 		@ms_slugs = item.transcription_slugs.map {|slug| unless slug == params[:itemid] then slug.split("_").first end}
 		@para_images = []
 		@i = 1
 		while @i < number_of_zones + 1 
-			 @para_images << Lbp::ParagraphImage.new(config_hash, file_hash, params[:pid], @i)
+			 #@para_images << Lbp::ParagraphImage.new(config_hash, file_hash, params[:pid], @i)
+			 paragraphurl = "http://scta.info/text/#{commentaryid}/transcription/#{params[:msslug]}_#{params[:itemid]}/paragraph/#{params[:pid]}"
+			 @para_images << paragraphurl = Lbp::ParagraphImage.new(paragraphurl, @i)
 			 @i = @i + 1
 		end
 		

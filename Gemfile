@@ -31,7 +31,7 @@ gem 'devise'
 ## rails to include rich text editor in asset pipeline
 gem 'ckeditor_rails'
 
-gem 'lbp', :git => "https://jeffreycwitt@bitbucket.org/jeffreycwitt/lbp.rb.git", :branch => "without-rugged"
+gem 'lbp', :git => "https://jeffreycwitt@bitbucket.org/jeffreycwitt/lbp.rb.git", :branch => "sparql-only"
 
 # Use ActiveModel has_secure_password
  gem 'bcrypt', '~> 3.1.7'
