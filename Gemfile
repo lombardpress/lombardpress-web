@@ -40,11 +40,14 @@ gem 'lbp', :git => "https://jeffreycwitt@bitbucket.org/jeffreycwitt/lbp.rb.git",
 
 # Use Unicorn as the app server
 # gem 'unicorn'
+# Using Puma as web server
+gem 'puma'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 group :production do
   gem 'pg'
+
 end
 
 group :development, :test do
@@ -61,7 +64,6 @@ group :development, :test do
   
   gem 'pry'
 
-  gem 'shotgun'
   gem 'thin'
 
 end
