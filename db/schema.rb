@@ -11,7 +11,22 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150406130316) do
+ActiveRecord::Schema.define(version: 20150502143718) do
+
+  create_table "access_points", force: :cascade do |t|
+    t.string   "itemid"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+    t.string   "commentaryid"
+  end
+
+  create_table "access_points_users", id: false, force: :cascade do |t|
+    t.integer "user_id"
+    t.integer "access_point_id"
+  end
+
+  add_index "access_points_users", ["access_point_id"], name: "index_access_points_users_on_access_point_id"
+  add_index "access_points_users", ["user_id"], name: "index_access_points_users_on_user_id"
 
   create_table "comments", force: :cascade do |t|
     t.integer  "user_id"
@@ -35,21 +50,6 @@ ActiveRecord::Schema.define(version: 20150406130316) do
   end
 
   add_index "posts", ["user_id"], name: "index_posts_on_user_id"
-
-  create_table "texts", force: :cascade do |t|
-    t.string   "itemid"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
-    t.string   "commentaryid"
-  end
-
-  create_table "texts_users", id: false, force: :cascade do |t|
-    t.integer "user_id"
-    t.integer "text_id"
-  end
-
-  add_index "texts_users", ["text_id"], name: "index_texts_users_on_text_id"
-  add_index "texts_users", ["user_id"], name: "index_texts_users_on_user_id"
 
   create_table "users", force: :cascade do |t|
     t.string   "email",                  default: "", null: false

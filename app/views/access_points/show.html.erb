@@ -1,0 +1,13 @@
+<div class="container">
+	<h1>Permitted Users</h1>
+	<table class="table table-striped table-hover">
+		<tbody>
+			<% @access_point.users.each do |user| %>
+				<tr>
+					<td><%= link_to user.email, users_profile_path(user) %></td>
+					<td><%= user.role %></td>
+				</tr>
+			<% end %>
+		</tbody>
+	</table>
+</div>

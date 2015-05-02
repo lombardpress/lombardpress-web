@@ -12,8 +12,8 @@ module TextMethods
 			if item.status == "In Progress" || item.status == "draft"
 				if current_user.nil?
 					redirect_to "/permissions#draftview", :alert => "Access denied: This text is a draft. It requires permission to be viewed." and return
-				elsif current_user.draft_reader? || current_user.draft_img_reader?
-					allowed_texts = current_user.texts.map {|text| {text.itemid =>text.commentaryid} }
+				elsif current_user.draft_reader? 
+					allowed_texts = current_user.access_points.map {|access_point| {access_point.itemid =>access_point.commentaryid} }
 					unless allowed_texts.include? params[:itemid] => @config.commentaryid or allowed_texts.include? "all" => @config.commentaryid
 						redirect_to "/permissions#draftview", :alert => "Access denied: This text is a draft. It requires permission to be viewed." and return
 					end

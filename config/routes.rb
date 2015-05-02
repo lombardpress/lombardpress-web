@@ -57,14 +57,15 @@ Rails.application.routes.draw do
   
   get 'paragraphimage/:itemid/:msslug/:pid' => 'paragraphimage#show'
   
-  
-  
-  
   get 'users/profiles/:id' => 'users/profiles#show', as: :users_profile
   delete 'users/profiles/:id' => 'users/profiles#destroy', as: :destroy_users_profile
   put 'users/profiles/:id' => 'users/profiles#update', as: :update_users_profile
   post 'users/profiles' => 'users/profiles#create', as: :create_users_profile
   get 'users/profiles' => 'users/profiles#index'
+
+  get 'accesspoints/:commentaryid/:itemid' => 'access_points#show', as: :access_point
+  post 'accesspoints/:id' => 'access_points#create', as: :create_access_point
+  delete 'accesspoints/:id' => 'access_points#destroy', as: :delete_access_point
   
 
 
