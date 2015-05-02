@@ -1,7 +1,9 @@
-$(document).ready(function(){
-	$(".viewNotes").click(function(){
+$(document).on('ready page:load', function () {
+	$(document).ready(function(){
+		$(".viewNotes").click(function(){
 
-		$(this).parent().parent().next("div.bibNotes").slideToggle();
+			$(this).parent().parent().next("div.bibNotes").slideToggle();
+		});
 	});
 });
   
