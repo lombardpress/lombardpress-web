@@ -62,6 +62,12 @@ class ParagraphimageController < ApplicationController
 				:ycomp => (result[:uly].to_s.to_i / totalH) * aspectratio,
 				:heightcomp => (result[:height].to_s.to_i / totalH) * aspectratio,
 				:widthcomp => result[:width].to_s.to_i / totalW,
+				# image_url should come from a request to manifest and of image for particular canvas
+				# using Osullivan gem; query would look something like this
+					#seed = open("http://scta.info/iiif/pg-lon/manifest").read
+					#obj = IIIF::Service.parse(seed)
+					#canvas = obj.sequences[0].canvases.select {|canvas| canvas['@id'] == 'http://scta.info/iiif/pg-lon/canvas/L3r'}
+					# then reqquest from canvas, image annotations, and image id
 				:image_url => "http://images.scta.info:3000/pg-lon/" + result[:canvasurl].to_s.split("/").last + ".jpg"
 				#:image_url => "http://gallica.bnf.fr/iiif/ark:/12148/btv1b52000459k/f5" # test for sorb fol. 2
 
