@@ -32,6 +32,8 @@ gem 'ckeditor_rails'
 
 gem 'lbp', :git => "https://jeffreycwitt@bitbucket.org/jeffreycwitt/lbp.rb.git", :branch => "sparql-only"
 
+gem 'osullivan'
+
 # Use ActiveModel has_secure_password
  gem 'bcrypt', '~> 3.1.7'
 
