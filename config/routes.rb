@@ -47,7 +47,7 @@ Rails.application.routes.draw do
   
   get 'permissions' => 'pages#permissions'
   
-  
+  get 'search' => 'search#show', as: :show_search
 
   get 'text' => 'text#index'
   get 'text/draft_permissions/:itemid' => 'text#draft_permissions'
