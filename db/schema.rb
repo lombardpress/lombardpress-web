@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150502143718) do
+ActiveRecord::Schema.define(version: 20150514212941) do
 
   create_table "access_points", force: :cascade do |t|
     t.string   "itemid"
@@ -27,6 +27,18 @@ ActiveRecord::Schema.define(version: 20150502143718) do
 
   add_index "access_points_users", ["access_point_id"], name: "index_access_points_users_on_access_point_id"
   add_index "access_points_users", ["user_id"], name: "index_access_points_users_on_user_id"
+
+  create_table "access_requests", force: :cascade do |t|
+    t.integer  "user_id"
+    t.string   "itemid"
+    t.string   "commentaryid"
+    t.string   "note"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+    t.integer  "status"
+  end
+
+  add_index "access_requests", ["user_id"], name: "index_access_requests_on_user_id"
 
   create_table "comments", force: :cascade do |t|
     t.integer  "user_id"

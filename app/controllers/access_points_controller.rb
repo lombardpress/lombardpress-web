@@ -10,13 +10,17 @@ class AccessPointsController < ApplicationController
 		
 		if ap = AccessPoint.find_by(access_params)
 			authorize ap
-			user.access_points << ap
+			unless user.access_points.include?(ap)
+				user.access_points << ap
+			end
 		else
 			ap = AccessPoint.new(access_params)
 			authorize ap
 			ap.save
 			user.access_points << ap
 		end
+		ar = AccessRequest.find_by(user_id: user.id, itemid: access_params[:itemid], commentaryid: access_params[:commentaryid])
+		ar.closed!
 		redirect_to users_profile_path(user), :notice => "Access Point successfully added"
   	
   end

@@ -39,7 +39,7 @@ class TextController < ApplicationController
 		end
 		
 		item = get_item(params)
-		check_permission(item); return if performed?
+		check_permission(item, params); return if performed?
 		check_transcript_existence(item, params); return if performed?
 
 		if item.status == "In Progress" || item.status == "draft"
@@ -76,6 +76,10 @@ class TextController < ApplicationController
 		transcript = get_transcript(item, params)
 		@toc = transcript.transform_toc
 		render :layout => false
+	end
+
+	def draft_permissions
+		
 	end
 
 	private

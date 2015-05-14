@@ -4,6 +4,8 @@ Rails.application.routes.draw do
 
   
   
+  resources :access_requests
+
   root 'pages#home'
 
   devise_for :users, controllers: { sessions: "users/sessions", profiles: "users/profiles"}
@@ -48,6 +50,7 @@ Rails.application.routes.draw do
   
 
   get 'text' => 'text#index'
+  get 'text/draft_permissions/:itemid' => 'text#draft_permissions'
   get 'text/questions' => 'text#questions'
   get 'text/info/:itemid' => 'text#info'
   get 'text/status/:itemid' => 'text#status'

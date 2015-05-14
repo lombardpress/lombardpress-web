@@ -5,29 +5,54 @@
 		<p><%= @user.created_at %></p>
 		<p><%= link_to "Edit Profile", '/users/edit' %></p>
 	</div>
+	<div>
+		<% if @user.access_points.count > 0  %>
+			<p>Has individual access to</p>
+			<table class="table table-striped table-hover">
+				<% @user.access_points.each do |access_point| %>
+					<tr>
+						<td><%= access_point.itemid %></td>
+						<td><%= access_point.commentaryid %></td>
+						<% if current_user.admin? %>
+							<td>
+								<%= form_for(:access_point, url: delete_access_point_path, method: :delete) do |f| %>
+								<%= f.hidden_field :itemid, value: access_point.itemid %>
+								<%= f.hidden_field :commentaryid, value: access_point.commentaryid %>
+								<%= f.submit "Remove" %>
+							<% end %>
+						</td>
+					<% end %>
+					</tr>
+				<% end %>
+			</table>
+		<% end %>
+	</div>
+	<div>
+	<% if @user.access_requests.count > 0  %>
+		<p>Has open requests for </p>
+		<table class="table table-striped table-hover">
+			<% @user.access_requests.take_while{|r| r.open?}.each do |access_request| %>
+				<tr>
+					<td><%= access_request.itemid %></td>
+					<td><%= access_request.commentaryid %></td>
+					<% if current_user.admin? %>
+						<td>
+							<%= form_for(:access_point, url: create_access_point_path(access_request.user.id), method: :post) do |f| %>
+							<%= f.hidden_field :itemid, value: access_request.itemid %>
+							<%= f.hidden_field :commentaryid, value: access_request.commentaryid %>
+							<%= f.submit "Add Access Point" %>
+							<% end %>
+						</td>
+					<% end %>
+				</tr>
+			<% end %>
+		</table>
+	<% end %>
 
 	<% if current_user.admin? %>
 		<div style="border-top: 1px solid black">
 			<h3>Admin Options</h3>
-			<div>
-				<% if @user.access_points.count > 0  %>
-					<p>Has individual access to</p>
-					<table class="table table-striped table-hover">
-						<% @user.access_points.each do |access_point| %>
-							<tr>
-								<td><%= access_point.itemid %></td>
-								<td><%= access_point.commentaryid %></td>
-								<td>
-									<%= form_for(:access_point, url: delete_access_point_path, method: :delete) do |f| %>
-									<%= f.hidden_field :itemid, value: access_point.itemid %>
-									<%= f.hidden_field :commentaryid, value: access_point.commentaryid %>
-									<%= f.submit "Remove" %>
-								<% end %></td>
-							</tr>
-						<% end %>
-					</table>
-				<% end %>
-			</div>
+			
 			<div style="margin: 10px; border-top: 1px dotted gray;">
 				<%= form_for(:access_point, url: create_access_point_path, method: :post) do |f| %>
 					<p>Add Access Point</p>
