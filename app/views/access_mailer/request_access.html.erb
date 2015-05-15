@@ -1,0 +1,10 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  </head>
+  <body>
+    <h3><%= @user.email %> has requested access to <%= @itemid %> in <%= @commentaryid %></h3> 
+    <p><%= link_to "Visit the User's Profile Page to Accept", "http://#{@commentaryid}.lombardpress.org/users/profiles/#{@user.id}" %>
+  </body>
+ </html>

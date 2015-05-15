@@ -31,24 +31,26 @@
 	<% if @user.access_requests.count > 0  %>
 		<p>Has open requests for </p>
 		<table class="table table-striped table-hover">
-			<% @user.access_requests.take_while{|r| r.open?}.each do |access_request| %>
-				<tr>
-					<td><%= access_request.itemid %></td>
-					<td><%= access_request.commentaryid %></td>
-					<% if current_user.admin? %>
-						<td>
-							<%= form_for(:access_point, url: create_access_point_path(access_request.user.id), method: :post) do |f| %>
-							<%= f.hidden_field :itemid, value: access_request.itemid %>
-							<%= f.hidden_field :commentaryid, value: access_request.commentaryid %>
-							<%= f.submit "Add Access Point" %>
-							<% end %>
-						</td>
-					<% end %>
-				</tr>
+			<% @user.access_requests.each do |access_request| %>
+				<% if access_request.open? %>
+					<tr>
+						<td><%= access_request.itemid %></td>
+						<td><%= access_request.commentaryid %></td>
+						<% if current_user.admin? %>
+							<td>
+								<%= form_for(:access_point, url: create_access_point_path(access_request.user.id), method: :post) do |f| %>
+								<%= f.hidden_field :itemid, value: access_request.itemid %>
+								<%= f.hidden_field :commentaryid, value: access_request.commentaryid %>
+								<%= f.submit "Add Access Point" %>
+								<% end %>
+							</td>
+						<% end %>
+					</tr>
+				<% end %>
 			<% end %>
 		</table>
 	<% end %>
-
+	</div>
 	<% if current_user.admin? %>
 		<div style="border-top: 1px solid black">
 			<h3>Admin Options</h3>
