@@ -1,0 +1,35 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Status</strong>
+  <%= @access_request.status %>
+</p>
+<p>
+  <strong>User:</strong>
+  <%= @access_request.user.email %>
+</p>
+
+<p>
+  <strong>Itemid:</strong>
+  <%= @access_request.itemid %>
+</p>
+
+<p>
+  <strong>Commentaryid:</strong>
+  <%= @access_request.commentaryid %>
+</p>
+
+<p>
+  <strong>Note:</strong>
+  <%= raw(@access_request.note) %>
+</p>
+
+<% if current_user.admin? %>
+	<div style="margin: 10px; border-top: 1px dotted gray;">
+			<%= form_for(:access_point, url: create_access_point_path(@access_request.user.id), method: :post) do |f| %>
+				<%= f.hidden_field :itemid, value: @access_request.itemid %>
+				<%= f.hidden_field :commentaryid, value: @access_request.commentaryid %>
+				<%= f.submit "Add Access Point" %>
+			<% end %>
+		</div>
+<% end %>

@@ -1,0 +1,33 @@
+<%= form_for(@access_request) do |f| %>
+  <% if @access_request.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@access_request.errors.count, "error") %> prohibited this access_request from being saved:</h2>
+
+      <ul>
+      <% @access_request.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :user_id %><br>
+    <%= f.hidden_field :user_id, :value => current_user.id %>
+  </div>
+  <div class="field">
+    <%= f.label :itemid %><br>
+    <%= f.text_field :itemid %>
+  </div>
+  <div class="field">
+    <%= f.label :commentaryid %><br>
+    <%= f.text_field :commentaryid %>
+  </div>
+  <div class="field">
+    <%= f.label :note %><br>
+    <%= f.text_field :note %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

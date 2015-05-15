@@ -15,9 +15,6 @@ class TextController < ApplicationController
 	def info
 		item = get_item(params)
 		check_permission(item)
-		if item.status == "In Progress" || item.status == "draft"
-			flash[:alert] = "Please remember: the status of this text is draft. You have been granted access through the generosity of the editor. Please use the comments to help make suggestions or corrections."
-		end
 		@title = item.title
 		@itemid = item.fs
 		commentaryid = @config.commentaryid
@@ -38,21 +35,24 @@ class TextController < ApplicationController
 
 	def show
 		if params.has_key?(:search)
-			flash[:notice] = "Search results for instances of #{params[:searchid]} (#{params[:search]}) are highlighted in yellow below." 
+			flash.now[:notice] = "Search results for instances of #{params[:searchid]} (#{params[:search]}) are highlighted in yellow below." 
 		end
-
+		
 		item = get_item(params)
-		
 		check_permission(item); return if performed?
-		
 		check_transcript_existence(item, params); return if performed?
+
+		if item.status == "In Progress" || item.status == "draft"
+			flash.now[:alert] = "Please remember: the status of this text is draft. You have been granted access through the generosity of the editor. Please use the comments to help make suggestions or corrections."
+		end
 		
 		@title = item.title
 		#remove @fs after check for use. use itemid instead
 		@fs = item.fs
 		@itemid = item.fs
-		@next_itemid = item.next.split("/").last
-		@previous_itemid = item.previous.split("/").last
+		@next_itemid = if item.next != nil then item.next.split("/").last else nil end
+		@previous_itemid = if item.previous != nil then item.previous.split("/").last else nil end
+
 		transcript = get_transcript(item, params)
 		
 		#always remember single quotes for paramater value
@@ -76,6 +76,10 @@ class TextController < ApplicationController
 		transcript = get_transcript(item, params)
 		@toc = transcript.transform_toc
 		render :layout => false
+	end
+
+	def draft_permissions
+		
 	end
 
 	private
