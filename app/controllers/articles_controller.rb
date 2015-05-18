@@ -3,10 +3,10 @@ class ArticlesController < ApplicationController
 	end
 	def show
 		#this logic needs to be moved outside the controller
-		article = Article.new(@config)
+		article = @config.articles.select{|article| article.article_name == params[:articleid]}.first
 		
-		xslt_file_path = article.xslt_file(params[:articleid].to_sym)
-		xml_file_path = article.xml_file(params[:articleid].to_sym)
+		xslt_file_path = "#{Rails.root}/#{article.xslt_file}"
+		xml_file_path = article.xml_file
 
 		xml_file = open(xml_file_path, {:http_basic_authentication => [ENV["GUN"], ENV["GPW"]]})
 		nokogiri_doc = Nokogiri::XML(xml_file)

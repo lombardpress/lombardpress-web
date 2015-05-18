@@ -23,8 +23,19 @@ class ApplicationController < ActionController::Base
     redirect_to(request.referrer || permissions_path)
   end
   def set_conf
-    url = request.url
-    @config = LbpConfig.new(url)
+    if Rails.env.development?
+      # only needed for developement
+      cid = (request.port + 1).to_s.split('').last.to_i
+      commentaryid = Setting.find(cid).commentaryid
+    elsif request.host == "petrusplaoul.org" || request.host == "www.petrusplaoul.org" 
+      commentaryid = "plaoulcommentary"
+    elsif request.host == "adamwodeham.org" || request.host == "www.adamwodeham.org"
+      commentaryid = "wodehamordinatio"  
+    elsif request.subdomains.any?
+      commentaryid = request.subdomains.first
+    end
+    #@config = LbpConfig.new(url)
+    @config = Setting.find_by(commentaryid: commentaryid)
     Rails.application.config.action_mailer.default_url_options[:host] = request.host
   end
   def check_for_user

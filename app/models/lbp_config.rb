@@ -1,3 +1,4 @@
+
 class LbpConfig 
 	attr_reader :logo, 
 	:title, 

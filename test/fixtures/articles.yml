@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  article_id: MyString
+  xml_file: MyString
+  xslt_file: MyString
+  setting_id_id: 
+
+two:
+  article_id: MyString
+  xml_file: MyString
+  xslt_file: MyString
+  setting_id_id: 

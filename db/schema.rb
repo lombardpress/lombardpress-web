@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150514212941) do
+ActiveRecord::Schema.define(version: 20150518204814) do
 
   create_table "access_points", force: :cascade do |t|
     t.string   "itemid"
@@ -40,6 +40,17 @@ ActiveRecord::Schema.define(version: 20150514212941) do
 
   add_index "access_requests", ["user_id"], name: "index_access_requests_on_user_id"
 
+  create_table "articles", force: :cascade do |t|
+    t.string   "article_name"
+    t.string   "xml_file"
+    t.string   "xslt_file"
+    t.integer  "setting_id"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+  end
+
+  add_index "articles", ["setting_id"], name: "index_articles_on_setting_id"
+
   create_table "comments", force: :cascade do |t|
     t.integer  "user_id"
     t.string   "comment"
@@ -62,6 +73,23 @@ ActiveRecord::Schema.define(version: 20150514212941) do
   end
 
   add_index "posts", ["user_id"], name: "index_posts_on_user_id"
+
+  create_table "settings", force: :cascade do |t|
+    t.string   "commentaryid"
+    t.string   "logo"
+    t.text     "title"
+    t.text     "bannermessage"
+    t.boolean  "blog"
+    t.string   "default_ms_image"
+    t.string   "dark_color"
+    t.string   "light_color"
+    t.string   "commentarydirname"
+    t.integer  "article_id"
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
+  end
+
+  add_index "settings", ["article_id"], name: "index_settings_on_article_id"
 
   create_table "users", force: :cascade do |t|
     t.string   "email",                  default: "", null: false
