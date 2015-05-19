@@ -26,9 +26,10 @@ class AccessPointsController < ApplicationController
 			#sends email only if a new access point is made
 			AccessMailer.grant_access(user, access_params[:itemid], access_params[:commentaryid], @config.confighash).deliver_now
 		end
-		#change status of request to closed
-		ar = AccessRequest.find_by(user_id: user.id, itemid: access_params[:itemid], commentaryid: access_params[:commentaryid], status: 0)
-		ar.closed!
+		#change status of request to closed if an request was opened
+		if ar = AccessRequest.find_by(user_id: user.id, itemid: access_params[:itemid], commentaryid: access_params[:commentaryid], status: 0)
+			ar.closed!
+		end
 		# redirect user
 		redirect_to users_profile_path(user), :notice => "Access Point successfully added"
   	
