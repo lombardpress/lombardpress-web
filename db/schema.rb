@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150518204814) do
+ActiveRecord::Schema.define(version: 20150519180401) do
 
   create_table "access_points", force: :cascade do |t|
     t.string   "itemid"
@@ -87,6 +87,7 @@ ActiveRecord::Schema.define(version: 20150518204814) do
     t.integer  "article_id"
     t.datetime "created_at",        null: false
     t.datetime "updated_at",        null: false
+    t.boolean  "images"
   end
 
   add_index "settings", ["article_id"], name: "index_settings_on_article_id"
