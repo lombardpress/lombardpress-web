@@ -6,22 +6,16 @@
   <h1>Question List</h1>
 </div>
 <div id="lbp-question-container" class="container">
-  <% @results.each do |result| %>
-  <% link = "/text/" + result[:item].to_s.split('/').last %>
-  <div>
-    <h2>
-      <% if result[:status] != "Not Started" %>
-        <span><%= link_to(result[:title], link) %> </span> 
-        <% if result[:questiontitle] != nil %>
-          <span><%= result[:questiontitle] %></span>
-        <% end %>
-      <% else %>
-        <span><%= result[:title] %></span>
-        <% if result[:questiontitle] != nil %>
-          <span><%= result[:questiontitle] %></span>
-        <% end %> 
-      <% end %>
-    </h2>
-  </div>
-  <% end %>
+  <table class="table table-striped table-hover">
+    <% @results.each do |result| %>
+    <% link = "/text/" + result[:item].to_s.split('/').last %>
+    <tr>
+      <td><%= unless result[:status] == "Not Started" then link_to result[:title], link else result[:title]  end %></td>
+      <td><%= unless result[:status] == "Not Started" || result[:questiontitle] == nil  then link_to result[:questiontitle], link else result[:questiontitle]  end %></td>
+      <td><%= result[:status] %></td>
+    </tr>
+
+        
+    <% end %>
+  </table>
 </div>
