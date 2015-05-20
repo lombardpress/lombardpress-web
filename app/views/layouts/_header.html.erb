@@ -65,8 +65,8 @@
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">About <span class="caret"></span></a>
           <ul class="dropdown-menu" role="menu">
-            <% if @config.articles.select {|article| article.article_name == "about"} %>
-            <li><a href="/articles/about">About this Project</a></li>
+            <% if @config.articles.select {|article| article.article_name == "about"}.count != 0 %>
+              <li><a href="/articles/about">About this Project</a></li>
             <% end %>  
             <% if @config.blog %>
               <li><a href="/blog">Blog/News</a></li>

@@ -31,6 +31,9 @@ class TextController < ApplicationController
 		results = Lbp::Query.new.item_query(url)
 		@itemid = params[:itemid]
 		@results = results.order_by(:transcript_type)
+		if @results.count == 0
+			flash.clear
+		end
 	end
 
 	def show

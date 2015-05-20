@@ -16,7 +16,6 @@
   
   <!-- root template -->
   <xsl:template match="/">
-    <xsl:value-of select="$show-images"/>
     <!-- title/publication info -->
     <xsl:call-template name="teiHeaderInfo"/>
     
