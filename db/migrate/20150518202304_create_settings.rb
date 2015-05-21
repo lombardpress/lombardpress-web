@@ -10,10 +10,9 @@ class CreateSettings < ActiveRecord::Migration
       t.string :dark_color
       t.string :light_color
       t.string :commentarydirname
-      t.references :article_id, index: true
-
       t.timestamps null: false
+      t.boolean :images
     end
-    add_foreign_key :settings, :article_ids
+    
   end
 end
