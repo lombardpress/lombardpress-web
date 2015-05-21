@@ -1,4 +1,4 @@
-
+=begin
 class LbpConfig 
 	attr_reader :logo, 
 	:title, 
@@ -203,3 +203,4 @@ class LbpConfig
 	return confighash
 	end
 end
+=end

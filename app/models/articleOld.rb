@@ -1,3 +1,4 @@
+=begin
 class Article
 	attr_reader :config
 	def initialize(config)
@@ -11,3 +12,4 @@ class Article
 	end
 	
 end
+=end
