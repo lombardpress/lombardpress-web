@@ -48,9 +48,10 @@ $(document).on('ready page:load', function () {
 			showSpinner("#lbp-bottom-window-container");
 			showBottomWindow();
 			halfSizeBottomWindow();
+			var msslug = $(this).attr("data-msslug");
 			var canvasid = $(this).attr("data-canvasid");
-			var image_url = "http://images.scta.info:3000/pg-lon/" + canvasid + ".jpg";
-			showFolioImage(image_url);
+			
+			showFolioImage(msslug, canvasid);
 		
 		});
 
@@ -193,6 +194,8 @@ var showParaImage = function(itemid, msslug, pid){
   });
 }
 var showParaZoomImage = function(itemid, msslug, pid){
+	console.log(itemid, msslug, pid)
+
 	$.get("/paragraphimage/showzoom/" + itemid + "/" + msslug + "/" + pid, function(data){
 		console.log(data);
 		var i = 1
@@ -209,10 +212,12 @@ var showParaZoomImage = function(itemid, msslug, pid){
 		};
 	});
 }
-var showFolioImage = function(image_url){
-	id = Math.random()
-	$("#lbp-bottom-window-container").html("<div id='openseadragon-" + id + "' style='width: 1000px; height: 1400px; margin: auto;'></div>");
-	showOpenseadragonFolio(id, image_url)
+var showFolioImage = function(msslug, canvasid){
+	$.get("/paragraphimage/showfoliozoom/" + msslug + "/" + canvasid, function(data){
+		id = Math.random();
+		$("#lbp-bottom-window-container").html("<div id='openseadragon-" + id + "' style='width: 1000px; height: 1400px; margin: auto;'></div>");
+		showOpenseadragonFolio(id, data)
+	});
 
 }
 

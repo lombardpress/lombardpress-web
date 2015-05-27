@@ -201,7 +201,7 @@
     <xsl:variable name="justSide"><xsl:value-of select="substring($fullcn, $length+1, 1)"/></xsl:variable>
     <xsl:variable name="canvasid" select="concat($ms, $folionumber, $justSide)"/>
     <span class="lbp-folionumber">
-      <a href="#" class="js-show-folio-image" data-canvasid="{$canvasid}">
+      <a href="#" class="js-show-folio-image" data-canvasid="{$canvasid}" data-msslug="{$default-ms-image}">
         <xsl:value-of select="$ms"/>
         <xsl:value-of select="$folionumber"/>
         <xsl:value-of select="$side_column"/>
@@ -223,7 +223,7 @@
     <xsl:variable name="justSide"><xsl:value-of select="substring($fullcn, $length+1, 1)"/></xsl:variable>
     <xsl:variable name="canvasid" select="concat($ms, $folionumber, $justSide)"/>
     <span class="lbp-folionumber">
-      <a href="#" class="js-show-folio-image" data-canvasid="{$canvasid}">
+      <a href="#" class="js-show-folio-image" data-canvasid="{$canvasid}" data-msslug="{$default-ms-image}">
       <xsl:value-of select="$ms"/>
       <xsl:value-of select="$folionumber"/>
       <xsl:value-of select="$justSide"/>

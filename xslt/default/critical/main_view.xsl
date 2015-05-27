@@ -88,6 +88,7 @@
               </li>
               <xsl:if test="$show-images = 'true'">
                 <li><a href="#" class="js-show-para-image-window" data-itemid="{$itemid}" data-pid="{@xml:id}" data-msslug="{$default-ms-image}">Ms Images</a></li>
+                <li><a href="#" class="js-show-para-image-zoom-window" data-itemid="{$itemid}" data-pid="{@xml:id}" data-msslug="{$default-ms-image}">Ms Images Zoom</a></li>
               </xsl:if>
               <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Paragraph Text Tools<span class="caret"></span></a>
@@ -168,7 +169,8 @@
     <xsl:variable name="justSide"><xsl:value-of select="substring($fullcn, $length+1, 1)"/></xsl:variable>
     <xsl:variable name="canvasid" select="concat($ms, $folionumber, $justSide)"/>
     <span class="lbp-folionumber">
-      <a href="#" class="js-show-folio-image" data-canvasid="{$canvasid}">
+      <!-- data-msslug needs to get info directly from final; default will not work -->
+      <a href="#" class="js-show-folio-image" data-canvasid="{$canvasid}" data-msslug="{$default-ms-image}">
         <xsl:value-of select="$ms"/>
         <xsl:value-of select="$folionumber"/>
         <xsl:value-of select="$side_column"/>
@@ -189,7 +191,8 @@
     <xsl:variable name="justSide"><xsl:value-of select="substring($fullcn, $length+1, 1)"/></xsl:variable>
     <xsl:variable name="canvasid" select="concat($ms, $folionumber, $justSide)"/>
     <span class="lbp-folionumber">
-      <a href="#" class="js-show-folio-image" data-canvasid="{$canvasid}">
+      <!-- data-msslug needs to get info directly from final; default will not work -->
+      <a href="#" class="js-show-folio-image" data-canvasid="{$canvasid}" data-msslug="{$default-ms-image}">
       <xsl:value-of select="$ms"/>
       <xsl:value-of select="$folionumber"/>
       <xsl:value-of select="$justSide"/>

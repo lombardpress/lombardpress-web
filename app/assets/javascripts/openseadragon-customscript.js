@@ -1,5 +1,6 @@
 function showOpenseadragon(id, data){
-	$.get(data.image_url, function(infojson){
+	console.log("data:", data)
+	$.get(data.image_url.scheme + "://" + data.image_url.authority + data.image_url.path + "/info.json", function(infojson){
 		infojson["tiles"] = [{"scaleFactors": [1, 2, 4, 8], "width": 300}]
 		var viewer = OpenSeadragon({
 			id: "openseadragon-" + id,
@@ -57,11 +58,9 @@ function showOpenseadragon(id, data){
 }
 
 //like above image_url should be replaced with "data" which contains the image url; data results from a previous call to a manifest which finds the canvas and gets the desire image url
-function showOpenseadragonFolio(id, image_url){
-	
-	$.get(image_url, function(infojson){
+function showOpenseadragonFolio(id, data){
+	$.get(data.image_url + "/info.json", function(infojson){
 		infojson["tiles"] = [{"scaleFactors": [1, 2, 4, 8], "width": 300}]
-		console.log(infojson);
 		var viewer = OpenSeadragon({
 			id: "openseadragon-" + id,
 	    prefixUrl: "/openseadragon/images/",
