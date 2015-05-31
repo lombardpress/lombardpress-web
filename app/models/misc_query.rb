@@ -2,7 +2,7 @@ class MiscQuery < Lbp::Query
 	def zone_info(paragraphurl)
 		nameurl = "<#{nameurl}>"
 		query = "#{@prefixes}
-			SELECT DISTINCT ?zone ?ulx ?uly ?lry ?lrx ?position ?height ?width ?canvasurl ?imageurl
+			SELECT DISTINCT ?zone ?ulx ?uly ?lry ?lrx ?position ?height ?width ?canvasurl ?imageurl ?totalHeight ?totalWidth
       {
         <#{paragraphurl}> <http://scta.info/property/hasZone> ?zone .
          ?zone <http://scta.info/property/ulx> ?ulx .
@@ -13,7 +13,10 @@ class MiscQuery < Lbp::Query
          ?zone <http://scta.info/property/height> ?height .
          ?zone <http://scta.info/property/width> ?width .
          ?zone <http://scta.info/property/isZoneOn> ?canvasurl .
+         ?canvasurl <http://www.w3.org/2003/12/exif/ns#height> ?totalHeight .
+         ?canvasurl <http://www.w3.org/2003/12/exif/ns#width> ?totalWidth .
          ?canvasurl <http://iiif.io/api/presentation/2#hasImageAnnotations> ?blank . 
+
          ?blank <http://www.w3.org/1999/02/22-rdf-syntax-ns#first> ?o . 
          ?o <http://www.w3.org/ns/oa#hasBody> ?o2 . 
          ?o2 <http://rdfs.org/sioc/services#has_service> ?imageurl .

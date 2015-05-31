@@ -38,39 +38,32 @@ class ParagraphimageController < ApplicationController
 		
 		@para_images = []
 		
-		scale = 0.5
-		# not yet sure where to get this informations besides the IIIF manifest.
-		totalW = 2070.0 # use for Plaoul test
-		#totalW = 1865.0
-		totalH = 2862.0
-		#totalH = 2401.0 #use for Plaoul test
-		aspectratio = totalH / totalW
-
-
+		scale = 1
+		
 		results.each do |result|
-			
-		#image_url = "http://images.scta.info:3000/pg-lon/" + result[:canvasurl].to_s.split("/").last + ".jpg"
-		#:image_url => "http://gallica.bnf.fr/iiif/ark:/12148/btv1b52000459k/f5" # test for sorb fol. 2
-			
-		@image_info = {
-			:scale => scale,
-			:bottom => result[:lry].to_s.to_i * scale,
-			:right => result[:lrx].to_s.to_i * scale,
-			:top => result[:uly].to_s.to_i * scale,
-			:left => result[:ulx].to_s.to_i * scale,
-			:width => result[:width].to_s.to_i * scale,
-			:height => result[:height].to_s.to_i * scale,
-			:totalW => totalW * scale,
-			:totalH => totalH * scale,
-			:aspectratio => aspectratio,
-			:xcomp => (result[:ulx].to_s.to_i / totalW),
-			:ycomp => (result[:uly].to_s.to_i / totalH) * aspectratio,
-			:heightcomp => (result[:height].to_s.to_i / totalH) * aspectratio,
-			:widthcomp => result[:width].to_s.to_i / totalW,
-			:image_url => result[:imageurl]
-			
-		}
-		@para_images << @image_info
+			totalW = result[:totalWidth].to_s.to_f
+			totalH = result[:totalHeight].to_s.to_f
+			aspectratio = totalH / totalW
+
+			@image_info = {
+				:scale => scale,
+				:bottom => result[:lry].to_s.to_i * scale,
+				:right => result[:lrx].to_s.to_i * scale,
+				:top => result[:uly].to_s.to_i * scale,
+				:left => result[:ulx].to_s.to_i * scale,
+				:width => result[:width].to_s.to_i * scale,
+				:height => result[:height].to_s.to_i * scale,
+				:totalW => totalW * scale,
+				:totalH => totalH * scale,
+				:aspectratio => aspectratio,
+				:xcomp => (result[:ulx].to_s.to_i / totalW),
+				:ycomp => (result[:uly].to_s.to_i / totalH) * aspectratio,
+				:heightcomp => (result[:height].to_s.to_i / totalH) * aspectratio,
+				:widthcomp => result[:width].to_s.to_i / totalW,
+				:image_url => result[:imageurl]
+				
+			}
+			@para_images << @image_info
 
 		end
 		render :json => @para_images
@@ -78,7 +71,8 @@ class ParagraphimageController < ApplicationController
 	end
 	def showfoliozoom
 		#add commentaryslug to Settings config; then this will be fully automated
-		manifest_slug = "pg-" + params[:msslug]
+		commentary_slug = Lbp::Collection.new(@config.confighash, "http://scta.info/text/#{@config.commentaryid}/commentary").slug
+		manifest_slug = commentary_slug + "-" + params[:msslug]
 		canvasid = "http://scta.info/iiif/#{manifest_slug}/canvas/#{params[:canvas_id]}"
 		
 		results = MiscQuery.new.folio_info(canvasid)
