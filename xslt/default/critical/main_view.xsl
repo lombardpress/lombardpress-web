@@ -87,8 +87,7 @@
                 </ul>
               </li>
               <xsl:if test="$show-images = 'true'">
-                <li><a href="#" class="js-show-para-image-window" data-itemid="{$itemid}" data-pid="{@xml:id}" data-msslug="{$default-ms-image}">Ms Images</a></li>
-                <li><a href="#" class="js-show-para-image-zoom-window" data-itemid="{$itemid}" data-pid="{@xml:id}" data-msslug="{$default-ms-image}">Ms Images Zoom</a></li>
+                <li><a href="#" class="js-show-para-image-zoom-window" data-itemid="{$itemid}" data-pid="{@xml:id}" data-msslug="{$default-ms-image}">Manuscript Images</a></li>
               </xsl:if>
               <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Paragraph Text Tools<span class="caret"></span></a>
@@ -168,9 +167,11 @@
     <xsl:variable name="just_column"><xsl:value-of select="substring($fullcn, $length+2, 1)"/></xsl:variable>
     <xsl:variable name="justSide"><xsl:value-of select="substring($fullcn, $length+1, 1)"/></xsl:variable>
     <xsl:variable name="canvasid" select="concat($ms, $folionumber, $justSide)"/>
+    <!-- this variable gets the msslug associated with ms initial in the teiHeader -->
+    <xsl:variable name="break-ms-slug" select="/tei:TEI/tei:teiHeader/tei:fileDesc/tei:sourceDesc/tei:listWit/tei:witness[@xml:id=$ms]/@n"/>
     <span class="lbp-folionumber">
       <!-- data-msslug needs to get info directly from final; default will not work -->
-      <a href="#" class="js-show-folio-image" data-canvasid="{$canvasid}" data-msslug="{$default-ms-image}">
+      <a href="#" class="js-show-folio-image" data-canvasid="{$canvasid}" data-msslug="{$break-ms-slug}">
         <xsl:value-of select="$ms"/>
         <xsl:value-of select="$folionumber"/>
         <xsl:value-of select="$side_column"/>
@@ -190,9 +191,12 @@
     <!-- this desgination gets side by skipping lenghth of msAbbrev and folio number and then getting the first character that occurs -->
     <xsl:variable name="justSide"><xsl:value-of select="substring($fullcn, $length+1, 1)"/></xsl:variable>
     <xsl:variable name="canvasid" select="concat($ms, $folionumber, $justSide)"/>
+    <!-- this variable gets the msslug associated with ms initial in the teiHeader -->
+    <xsl:variable name="break-ms-slug" select="/tei:TEI/tei:teiHeader[1]/tei:fileDesc[1]/tei:sourceDesc[1]/tei:listWit[1]/tei:witness[1][@xml:id=$ms]/@n"/>
+
     <span class="lbp-folionumber">
       <!-- data-msslug needs to get info directly from final; default will not work -->
-      <a href="#" class="js-show-folio-image" data-canvasid="{$canvasid}" data-msslug="{$default-ms-image}">
+      <a href="#" class="js-show-folio-image" data-canvasid="{$canvasid}" data-msslug="{$break-ms-slug}">
       <xsl:value-of select="$ms"/>
       <xsl:value-of select="$folionumber"/>
       <xsl:value-of select="$justSide"/>

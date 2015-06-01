@@ -70,8 +70,7 @@
                   <li><a href="#" class='js-new-comment' data-itemid="{$itemid}" data-pid="{@xml:id}">Leave a Comment</a></li>
                 </ul>
               </li>
-              <li><a href="#" class="js-show-para-image-window" data-itemid="{$itemid}" data-pid="{@xml:id}" data-msslug="{$default-ms-image}">Ms Images</a></li>
-              <li><a href="#" class="js-show-para-image-zoom-window" data-itemid="{$itemid}" data-pid="{@xml:id}" data-msslug="{$default-ms-image}">Ms Images Zoom</a></li>
+              <li><a href="#" class="js-show-para-image-zoom-window" data-itemid="{$itemid}" data-pid="{@xml:id}" data-msslug="{$default-ms-image}">Manuscript Images</a></li>
               <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Paragraph Text Tools<span class="caret"></span></a>
                 <ul class="dropdown-menu" role="menu">

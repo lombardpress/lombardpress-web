@@ -198,52 +198,66 @@ var showParaImage = function(itemid, msslug, pid){
   });
 }
 var showParaZoomImage = function(itemid, msslug, pid){
-	// get image
-	$.get("/paragraphimage/showzoom/" + itemid + "/" + msslug + "/" + pid, function(data){
-		console.log(data);
-		var i = 1
-		for(var zone of data){
-			id = Math.random()
-			if (i == 1){
-				$("#lbp-bottom-window-container").html("<div id='openseadragon-" + id + "' style='width: " + zone.width + "px; height: " + zone.height + "px; margin: auto; padding-bottom: 5px; float: left;'></div>")
-			}
-			else{
-				$("#lbp-bottom-window-container").append("<div id='openseadragon-" + id + "' style='width: " + zone.width + "px; height: " + zone.height + "px; margin: auto; padding-bottom: 5px; float: left;'></div>") 
-			}
-			showOpenseadragon(id, zone);
-			i = i + 1
-		};
-	});
+	$("#lbp-bottom-window-container").html("<div id='lbp-para-zoom-container'>");
+	var $zoomcontainer = $("div#lbp-para-zoom-container");
+	
+	//create windows
+	var $para_zoom_navbar = $("<div>", {id: 'lbp-para-zoom-navbar'});
+	var $para_picture_window = $("<div>", {id: 'lbp-para-picture-window',})
+	var $para_text_window = $("<div>", {id: 'lbp-para-text-window'});
+
+	//arange append order
+	$para_zoom_navbar.appendTo($zoomcontainer);
+	$para_picture_window.appendTo($zoomcontainer);
+	$para_text_window.appendTo($zoomcontainer);
+	
 	// get text and navbar info
 	$.get("/paragraphs/json/" + itemid + "/" + pid + "/" + msslug, function(data){
-		$("#lbp-bottom-window-container")
-			.append(
-				"<div style='float: left; padding-left: 5px;'><p id='lbp-paragraph-ms-text'>" + data.paragraph_text + "<p></div>"
-				);
+		//create navbar
+		$("<span>", {text: "Paragraph no. " + data.paragraph_number, style: "margin-right: 3px;"}).appendTo($para_zoom_navbar);
+		$("<span>", {text: " | Navigate:", style: "margin-right: 3px;"}).appendTo($para_zoom_navbar);
 		
-		var $navbar = $("<div>");
-		
-		$("<span>", {text: "Paragraph no. " + data.paragraph_number, style: "margin-right: 3px;"}).appendTo($navbar);
-		console.log(data);
-		$("<span>", {text: " | Navigate:", style: "margin-right: 3px;"}).appendTo($navbar);
 		if (data.previous_para != null){
-			$("<a>", {text: "previous", style: "margin-right: 3px;", class: "js-show-alt-para-image", "data-msslug": msslug, "data-pid": data.previous_para, "data-itemid": itemid}).appendTo($navbar);
+			$("<a>", {text: "Previous", style: "margin-right: 3px;", class: "js-show-alt-para-image", "data-msslug": msslug, "data-pid": data.previous_para, "data-itemid": itemid}).appendTo($para_zoom_navbar);
 		}
-		if (data.next_para != null){
-			$("<a>", {text: "next",  style: "margin-right: 3px;", class: "js-show-alt-para-image", "data-msslug": msslug, "data-pid": data.next_para, "data-itemid": itemid}).appendTo($navbar);
-		}
-		$("<span>", {text: " | Select another Witness: ", style: "margin-right: 3px;"}).appendTo($navbar);
-		$.each(data.ms_slugs, function(k, new_slug){
-				if (new_slug != null){
-					
-					$("<a>", {text: new_slug, style: "margin-right: 3px;", class: "js-show-alt-para-image", "data-msslug": new_slug, "data-pid": pid, "data-itemid": itemid}).appendTo($navbar);
-				}
-			});
 		
-
-		$("#lbp-bottom-window-container")	
-			.prepend($navbar)
+		if (data.next_para != null){
+			$("<a>", {text: "Next",  style: "margin-right: 3px;", class: "js-show-alt-para-image", "data-msslug": msslug, "data-pid": data.next_para, "data-itemid": itemid}).appendTo($para_zoom_navbar);
+		}
+		
+		// condition is set to > 2 because it assumes "null" is included and only wants to list more if there are more than one option besides "null". When "null" is removed the condition should be changed to > 1
+		
+		if (data.ms_slugs.length > 2){
+			$("<span>", {text: " | Select Another Witness: ", style: "margin-right: 3px;"}).appendTo($para_zoom_navbar);
+			$.each(data.ms_slugs, function(k, new_slug){
+					if (new_slug != null){
+						
+						$("<a>", {text: new_slug, style: "margin-right: 3px;", class: "js-show-alt-para-image", "data-msslug": new_slug, "data-pid": pid, "data-itemid": itemid}).appendTo($para_zoom_navbar);
+					}
+				});
+		}
+		
+		//second add paragraph text
+		$para_text_window.append("<p id='lbp-paragraph-ms-text'>" + data.paragraph_text + "</p>");
+		
 	});
+
+	// third: get image
+		$.get("/paragraphimage/showzoom/" + itemid + "/" + msslug + "/" + pid, function(data){
+			console.log(data);
+			var i = 1
+			for(var zone of data){
+				id = Math.random()
+				if (i == 1){
+					$("#lbp-para-picture-window").append("<div id='openseadragon-" + id + "' style='width: " + zone.width + "px; height: " + zone.height + "px; margin: auto; padding-bottom: 5px;'></div>")
+				}
+				else{
+					$("#lbp-para-picture-window").append("<div id='openseadragon-" + id + "' style='width: " + zone.width + "px; height: " + zone.height + "px; margin: auto; padding-bottom: 5px;'></div>") 
+				}
+				showOpenseadragon(id, zone);
+				i = i + 1
+			};
+		});
 }
 var showFolioImage = function(msslug, canvasid){
 	$.get("/paragraphimage/showfoliozoom/" + msslug + "/" + canvasid, function(data){

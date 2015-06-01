@@ -34,7 +34,7 @@ class ParagraphsController < ApplicationController
     ms_slugs = item.transcription_slugs.map {|slug| unless slug == params[:itemid] then slug.split("_").first end}
       
     paragraph_hash = {
-        :paragraph_text => paragraph_text.text.to_s.gsub(/\n/, '<br/>'),
+        :paragraph_text => paragraph_text.text.to_s.gsub(/\n/, '<br/> *'),
         :next_para => if paragraph.next != nil then paragraph.next.pid else nil end,
         :previous_para => if paragraph.previous != nil then paragraph.previous.pid else nil end,
         :paragraph_number => paragraph.number,
