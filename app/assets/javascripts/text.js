@@ -134,8 +134,12 @@ $(document).on("click", ".js-show-alt-para-image", function(event){
 		var msslug = $(this).attr("data-msslug");
 		var fs = $(this).attr("data-itemid");
 		var pid = $(this).attr("data-pid");
-		showParaImage(fs, msslug, pid);	
+		//showParaImage(fs, msslug, pid);	
+		showParaZoomImage(fs, msslug, pid)
 });
+
+
+
 $(document).on("submit", "#lbp-new-comment-form", function(event){
 	 event.preventDefault();
     postComment();
@@ -194,22 +198,51 @@ var showParaImage = function(itemid, msslug, pid){
   });
 }
 var showParaZoomImage = function(itemid, msslug, pid){
-	console.log(itemid, msslug, pid)
-
+	// get image
 	$.get("/paragraphimage/showzoom/" + itemid + "/" + msslug + "/" + pid, function(data){
 		console.log(data);
 		var i = 1
 		for(var zone of data){
 			id = Math.random()
 			if (i == 1){
-				$("#lbp-bottom-window-container").html("<div id='openseadragon-" + id + "' style='width: " + zone.width + "px; height: " + zone.height + "px; margin: auto; padding-bottom: 5px;'></div>")
+				$("#lbp-bottom-window-container").html("<div id='openseadragon-" + id + "' style='width: " + zone.width + "px; height: " + zone.height + "px; margin: auto; padding-bottom: 5px; float: left;'></div>")
 			}
 			else{
-				$("#lbp-bottom-window-container").append("<div id='openseadragon-" + id + "' style='width: " + zone.width + "px; height: " + zone.height + "px; margin: auto; padding-bottom: 5px;'></div>") 
+				$("#lbp-bottom-window-container").append("<div id='openseadragon-" + id + "' style='width: " + zone.width + "px; height: " + zone.height + "px; margin: auto; padding-bottom: 5px; float: left;'></div>") 
 			}
 			showOpenseadragon(id, zone);
 			i = i + 1
 		};
+	});
+	// get text and navbar info
+	$.get("/paragraphs/json/" + itemid + "/" + pid + "/" + msslug, function(data){
+		$("#lbp-bottom-window-container")
+			.append(
+				"<div style='float: left; padding-left: 5px;'><p id='lbp-paragraph-ms-text'>" + data.paragraph_text + "<p></div>"
+				);
+		
+		var $navbar = $("<div>");
+		
+		$("<span>", {text: "Paragraph no. " + data.paragraph_number, style: "margin-right: 3px;"}).appendTo($navbar);
+		console.log(data);
+		$("<span>", {text: " | Navigate:", style: "margin-right: 3px;"}).appendTo($navbar);
+		if (data.previous_para != null){
+			$("<a>", {text: "previous", style: "margin-right: 3px;", class: "js-show-alt-para-image", "data-msslug": msslug, "data-pid": data.previous_para, "data-itemid": itemid}).appendTo($navbar);
+		}
+		if (data.next_para != null){
+			$("<a>", {text: "next",  style: "margin-right: 3px;", class: "js-show-alt-para-image", "data-msslug": msslug, "data-pid": data.next_para, "data-itemid": itemid}).appendTo($navbar);
+		}
+		$("<span>", {text: " | Select another Witness: ", style: "margin-right: 3px;"}).appendTo($navbar);
+		$.each(data.ms_slugs, function(k, new_slug){
+				if (new_slug != null){
+					
+					$("<a>", {text: new_slug, style: "margin-right: 3px;", class: "js-show-alt-para-image", "data-msslug": new_slug, "data-pid": pid, "data-itemid": itemid}).appendTo($navbar);
+				}
+			});
+		
+
+		$("#lbp-bottom-window-container")	
+			.prepend($navbar)
 	});
 }
 var showFolioImage = function(msslug, canvasid){

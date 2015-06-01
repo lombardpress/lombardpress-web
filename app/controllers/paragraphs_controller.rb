@@ -24,6 +24,30 @@ class ParagraphsController < ApplicationController
 
   def plaintext
   end
+  def json
+    item = get_item(params)
+    check_permission(item); return if performed?
+    check_transcript_existence(item, params); return if performed?
+    paragraph = item.transcription(wit: params[:msslug], source: "origin").paragraph(params[:pid])
+    paragraph_text = paragraph.transform("#{Rails.root}/xslt/default/documentary/documentary_simple.xsl")
+    next_pid = 
+    ms_slugs = item.transcription_slugs.map {|slug| unless slug == params[:itemid] then slug.split("_").first end}
+      
+    paragraph_hash = {
+        :paragraph_text => paragraph_text.text.to_s.gsub(/\n/, '<br/>'),
+        :next_para => if paragraph.next != nil then paragraph.next.pid else nil end,
+        :previous_para => if paragraph.previous != nil then paragraph.previous.pid else nil end,
+        :paragraph_number => paragraph.number,
+        :ms_slugs => ms_slugs,
+        :pid => params[:pid],
+        :itemid => params[:itemid],
+        :commentaryid => @config.commentaryid,
+      }
+
+    
+    render :json => paragraph_hash
+  
+  end
 
   def collation
     item = get_item(params)

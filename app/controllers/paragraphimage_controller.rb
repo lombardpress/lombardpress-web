@@ -38,12 +38,13 @@ class ParagraphimageController < ApplicationController
 		
 		@para_images = []
 		
-		scale = 1
+		
 		
 		results.each do |result|
 			totalW = result[:totalWidth].to_s.to_f
 			totalH = result[:totalHeight].to_s.to_f
 			aspectratio = totalH / totalW
+			scale = 600 / result[:width].to_s.to_f 
 
 			@image_info = {
 				:scale => scale,
