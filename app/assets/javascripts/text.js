@@ -203,10 +203,10 @@ var showParaZoomImage = function(itemid, msslug, pid){
 	
 	//create windows
 	var $para_zoom_navbar = $("<div>", {id: 'lbp-para-zoom-navbar'});
-	var $para_picture_window = $("<div>", {id: 'lbp-para-picture-window',})
+	var $para_picture_window = $("<div>", {id: 'lbp-para-picture-window'})
 	var $para_text_window = $("<div>", {id: 'lbp-para-text-window'});
 
-	//arange append order
+	//arrange append order
 	$para_zoom_navbar.appendTo($zoomcontainer);
 	$para_picture_window.appendTo($zoomcontainer);
 	$para_text_window.appendTo($zoomcontainer);
@@ -245,8 +245,9 @@ var showParaZoomImage = function(itemid, msslug, pid){
 	// third: get image
 		$.get("/paragraphimage/showzoom/" + itemid + "/" + msslug + "/" + pid, function(data){
 			console.log(data);
-			var i = 1
-			for(var zone of data){
+            var i = 1;
+			data.forEach(function(zone){
+                console.log("test", zone);
 				id = Math.random()
 				if (i == 1){
 					$("#lbp-para-picture-window").append("<div id='openseadragon-" + id + "' style='width: " + zone.width + "px; height: " + zone.height + "px; margin: auto; padding-bottom: 5px;'></div>")
@@ -256,7 +257,7 @@ var showParaZoomImage = function(itemid, msslug, pid){
 				}
 				showOpenseadragon(id, zone);
 				i = i + 1
-			};
+			});
 		});
 }
 var showFolioImage = function(msslug, canvasid){
