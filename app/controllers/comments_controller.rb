@@ -55,9 +55,15 @@ class CommentsController < ApplicationController
     params[:commentaryid] = @config.commentaryid
     
     @item = Lbp::Item.new(config_hash, url)
+    
     # Lbp should create a separate class for Paragraph and TranscriptParagraph
     # I should be able to retrieve paragraph number from SCTA rather than having to count it from the file
-    @paragraph = @item.transcription(source: "origin").paragraph(params[:pid])
+    # since paragraphs numbers are currently being counted from critical file, we need to check and see if there is a critical file
+    # this would no longer be needed if paragraph number was coming from the SCTA databse.
+    if @item.transcription?("critical")
+      @paragraph = @item.transcription(source: "origin").paragraph(params[:pid])
+    end
+    
   end
 
 end

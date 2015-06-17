@@ -41,7 +41,7 @@
     <p id="{@xml:id}"><xsl:apply-templates/></p>
     </xsl:template>
     
-    <xsl:template match="tei:app | tei:index | tei:note | tei:reg | tei:desc ">
+    <xsl:template match="tei:note | tei:rdg | tei:bibl ">
         
     </xsl:template>
     

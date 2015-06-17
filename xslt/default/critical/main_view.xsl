@@ -124,9 +124,9 @@
   <xsl:template match="tei:quote">
       <xsl:variable name="quoterefid" select="translate(./@ana, '#', '')"/>
     <span id="{@xml:id}" class="lbp-quote" data-quote="{$quoterefid}">
-      <xsl:text/>
+      <xsl:text>"</text>
       <xsl:apply-templates/>
-      <xsl:text/>
+      <xsl:text>"</text>
     </span>
   </xsl:template>
   
@@ -240,7 +240,15 @@
       <h4>By <xsl:value-of select="//tei:titleStmt/tei:author"/></h4>
       <p>Edited by: 
         <xsl:for-each select="//tei:titleStmt/tei:editor">
-          <span><xsl:value-of select="//tei:titleStmt/tei:editor"/></span><xsl:text/>  
+          <xsl:choose>
+            <xsl:when test="position() = last()">
+              <span><xsl:value-of select="."/></span><xsl:text/>  
+            </xsl:when>
+            <xsl:otherwise>
+              <span><xsl:value-of select="."/></span><xsl:text>, </xsl:text>  
+            </xsl:otherwise>
+          </xsl:choose>
+
         </xsl:for-each>
       </p>
       <p>Edition: <span id="editionNumber"><xsl:value-of select="//tei:teiHeader/tei:fileDesc/tei:editionStmt/tei:edition/@n"/></span> | <xsl:value-of select="//tei:teiHeader/tei:fileDesc/tei:editionStmt/tei:edition/tei:date"/></p>

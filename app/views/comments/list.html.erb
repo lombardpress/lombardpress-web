@@ -1,5 +1,11 @@
 <div id="lbp-comments-list-container" class="container" >
-	<h1>Comments for <%= @item.title %>, paragraph <%= @paragraph.number %></h1>
+	<% if @paragraph != nil %>
+		<h1>Comments for <%= @item.title %>, paragraph <%= @paragraph.number %></h1>
+	<% else %>
+		<h1>Comments for <%= @item.title %>, paragraph <%= params[:pid] %></h1>
+	<% end %>
+		
+	 
 
 	
 	<table class="table table-striped table-hover">

@@ -30,8 +30,8 @@ class ParagraphsController < ApplicationController
     check_transcript_existence(item, params); return if performed?
     paragraph = item.transcription(wit: params[:msslug], source: "origin").paragraph(params[:pid])
     paragraph_text = paragraph.transform("#{Rails.root}/xslt/default/documentary/documentary_simple.xsl")
-    next_pid = 
-    ms_slugs = item.transcription_slugs.map {|slug| unless slug == params[:itemid] then slug.split("_").first end}
+    #add compact at the end to exlude nil result for critical text
+    ms_slugs = item.transcription_slugs.map {|slug| unless slug == params[:itemid] then slug.split("_").first end}.compact
       
     paragraph_hash = {
         :paragraph_text => paragraph_text.text.to_s.gsub(/\n/, '<br/> *'),

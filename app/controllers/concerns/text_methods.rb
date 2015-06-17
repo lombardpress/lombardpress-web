@@ -6,10 +6,10 @@ module TextMethods
 			commentaryid = @config.commentaryid
 			url = "http://scta.info/text/#{commentaryid}/item/#{params[:itemid]}"
 			item = Lbp::Item.new(config_hash, url)
+
 		end
 
 		def check_permission(item)
-			
 			if item.status == "In Progress" || item.status == "draft"
 				if current_user.nil?
 					redirect_to "/text/draft_permissions/#{params[:itemid]}", :alert => "Access denied: This text is a draft. It requires permission to be viewed." and return

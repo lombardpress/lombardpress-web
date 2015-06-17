@@ -225,16 +225,11 @@ var showParaZoomImage = function(itemid, msslug, pid){
 			$("<a>", {text: "Next",  style: "margin-right: 3px;", class: "js-show-alt-para-image", "data-msslug": msslug, "data-pid": data.next_para, "data-itemid": itemid}).appendTo($para_zoom_navbar);
 		}
 		
-		// condition is set to > 2 because it assumes "null" is included and only wants to list more if there are more than one option besides "null". When "null" is removed the condition should be changed to > 1
-		
-		if (data.ms_slugs.length > 2){
+		if (data.ms_slugs.length > 1){
 			$("<span>", {text: " | Select Another Witness: ", style: "margin-right: 3px;"}).appendTo($para_zoom_navbar);
 			$.each(data.ms_slugs, function(k, new_slug){
-					if (new_slug != null){
-						
-						$("<a>", {text: new_slug, style: "margin-right: 3px;", class: "js-show-alt-para-image", "data-msslug": new_slug, "data-pid": pid, "data-itemid": itemid}).appendTo($para_zoom_navbar);
-					}
-				});
+				$("<a>", {text: new_slug, style: "margin-right: 3px;", class: "js-show-alt-para-image", "data-msslug": new_slug, "data-pid": pid, "data-itemid": itemid}).appendTo($para_zoom_navbar);
+			});
 		}
 		
 		//second add paragraph text
