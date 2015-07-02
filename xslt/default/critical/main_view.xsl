@@ -213,9 +213,11 @@
     <xsl:variable name="id">
       <xsl:number count="//tei:bibl" level="any" format="a"/></xsl:variable>
       <xsl:text> </xsl:text>
-      <a href="#lbp-footnote{$id}" name="lbp-footnotereference{$id}" class="footnote">
-        <sup>[<xsl:value-of select="$id"/>]</sup>
-      </a>
+      <sup>
+        <a href="#lbp-footnote{$id}" name="lbp-footnotereference{$id}" class="footnote">
+        [<xsl:value-of select="$id"/>]
+        </a>
+      </sup>
     <xsl:text> </xsl:text>
   </xsl:template>
   
