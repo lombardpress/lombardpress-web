@@ -1,0 +1,14 @@
+#lbp-side-window{ 
+	position: fixed;
+	margin-top:50px;
+	margin-bottom:50px;
+	top: 0;
+	height: 100%; 
+	width: 0; 
+	//display: none;
+	overflow: scroll;
+	z-index: 1;
+
+}
+#lbp-max-side-window{display: none}
+

@@ -6,6 +6,21 @@
 <% end %>
 	<%= raw(@transform) %>
 </div>
+<!-- side window -->
+<div id="lbp-side-window" style="background-color: <%= @config.light_color %>;">
+	<nav id="lbp-bottom-window-nav-bar">
+		<div class="container-fluid">
+			<ul class="nav navbar-nav">
+				<li><a class="js-close-side-window">Close</span></a></li>
+				<li id="lbp-min-side-window"><a class="js-minimize-side-window">Min</span></a></li> 
+				<li id="lbp-max-side-window"><a class="js-maximize-side-window">Max</span></a></li> 
+			</ul>
+		</div>
+	</nav>
+	<div id="lbp-side-window-container" style="">
+	</div>
+</div>
+<!-- bottom window -->
 <div id="lbp-bottom-window" style="background-color: <%= @config.dark_color %>;">
 	<nav id="lbp-bottom-window-nav-bar">
 		<div class="container-fluid">
