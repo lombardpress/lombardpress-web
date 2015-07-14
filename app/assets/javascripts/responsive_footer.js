@@ -19,10 +19,10 @@ function positionFooter(){
   	var footer_height = $("#lbp-footer").height();
   	var expected_top = window_height - footer_height;
   	
-  	console.log("window height" + window_height);
-  	console.log("footer position" + footer_position.top);
-  	console.log("footer height" + footer_height);
-  	console.log("expecte top" + expected_top);
+  	//console.log("window height" + window_height);
+  	//console.log("footer position" + footer_position.top);
+  	//console.log("footer height" + footer_height);
+  	//console.log("expecte top" + expected_top);
 
   	if (footer_position.top < expected_top){
   		// not sure why -20 is necessary -- could because of 10 padding on top and bottom

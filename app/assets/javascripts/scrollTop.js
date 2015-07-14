@@ -1,25 +1,39 @@
- (function($, window) {
-        var adjustAnchor = function() {
+function adjustAnchor(){
 
-            var $anchor = $(':target'),
-                    fixedElementHeight = 100;
+    var $anchor = $(':target'),
+    fixedElementHeight = 100;
 
-            if ($anchor.length > 0) {
+    
+    $anchor.css({backgroundColor: "yellow"});
+    $anchor.animate({backgroundColor: "none"}, 5000);
+    
 
-                $('html, body')
-                    .stop()
-                    .animate({
-                        scrollTop: $anchor.offset().top - fixedElementHeight
-                    }, 500);
+    if ($anchor.length > 0) {
 
-            }
+        $('html, body')
+            .stop()
+            .animate({
+                scrollTop: $anchor.offset().top - fixedElementHeight
+                //scrollTop: $anchor.offset().top
+            }, 500);
 
-        };
+    }
 
-        $(window).on('hashchange load', function() {
-            adjustAnchor();
-        });
+}
 
-    })(jQuery, window);
+
+
+$(document).on('ready page:load', function () {
+  $(document).ready(function(){
+    if(window.location.hash){
+        adjustAnchor();
+    }
+    });
+});
+
+$(window).on('hashchange load', function() {
+        adjustAnchor();
+    });
+
 
     
