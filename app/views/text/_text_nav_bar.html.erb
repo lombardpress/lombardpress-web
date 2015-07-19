@@ -14,7 +14,7 @@
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div id="lbp-text-tool-bar-collapse" class="collapse navbar-collapse" >
       <ul class="nav navbar-nav">
-        <li><a href="#" class="js-show-outline" data-itemid="<%= @itemid %>">Text Outline</a></li>
+        <li><a class="js-show-outline" data-itemid="<%= @itemid %>">Text Outline</a></li>
         <% if @previous_itemid != nil  %>
           <li><%= link_to "Previous", show_text_path(@previous_itemid, params[:msslug]) %></li> 
         <% end %>
