@@ -57,10 +57,14 @@ var showSideWindow = function(element){
 
 var hideSideWindow = function(element){
 	
-	$("div#lbp-side-window").animate({"width": "0"}, function(){
-		$("div#lbp-side-window").css("display", "none").promise().done(function(){
-			$("div#lbp-text-body").css({"margin-left": "auto"}).promise().done(function(){
-				$("div#lbp-text-body").css({"width": "60%"}).promise().done(scrollToParagraph(element));
+	$("li#lbp-max-side-window").css("display", "none").promise().done(function(){
+		$("li#lbp-min-side-window").css("display", "block").promise().done(function(){
+			$("div#lbp-side-window").animate({"width": "0"}, function(){
+				$("div#lbp-side-window").css("display", "none").promise().done(function(){
+					$("div#lbp-text-body").css({"margin-left": "auto"}).promise().done(function(){
+						$("div#lbp-text-body").css({"width": "60%"}).promise().done(scrollToParagraph(element));
+					});
+				});
 			});
 		});
 	});
