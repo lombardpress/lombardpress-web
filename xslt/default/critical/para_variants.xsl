@@ -7,7 +7,7 @@
   
   <xsl:template match="/">
     <xsl:variable name="pn"><xsl:number level="any" from="tei:text"/></xsl:variable>
-    <h3>Variants for paragraph <xsl:value-of select="count(//tei:body//tei:p) - count(//tei:p[@xml:id=$pid]//following::tei:p)"/></h3>
+    <h3 class="lbp-side-bar-paragraph-heading"><a class="js-side-bar-scroll-to-paragraph" data-pid="{$pid}">Variants for paragraph <xsl:value-of select="count(//tei:body//tei:p) - count(//tei:p[@xml:id=$pid]//following::tei:p)"/></a></h3>
     <ul id="{$pid}-variant-list" class="lbp-paragraph-variant-list">
     <xsl:variable name="test" select="$pid"/>  
       <xsl:apply-templates select="//tei:p[@xml:id=$pid]//tei:app"/>
@@ -59,9 +59,18 @@
           </xsl:otherwise>
         </xsl:choose>
       </xsl:for-each>
+      <xsl:if test="./tei:note">
+        <ul>
+        <xsl:for-each select="./tei:note">
+          <xsl:call-template name="app-notes"/>
+        </xsl:for-each>
+        </ul>
+      </xsl:if>
     </li>    
     
   </xsl:template>
-  
+  <xsl:template match="tei:note" name="app-notes">
+    <li><xsl:apply-templates/></li>
+  </xsl:template>
   
 </xsl:stylesheet>

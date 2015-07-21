@@ -1,3 +1,5 @@
+/////////event bindings related to side window /////////
+
 $(document).on('ready page:load', function () {
   // Actions to do
 
@@ -29,23 +31,52 @@ $(document).on('ready page:load', function () {
 			showSideWindow($paragraph);
 			showParagraphVariants(itemid, pid);
 		});
+		$("a.js-show-paragraph-notes").click(function(){
+			event.preventDefault();
+			var itemid = $(this).attr("data-itemid");
+			var pid = $(this).attr("data-pid");
+			$paragraph = $("p#" + pid);
+			showSideWindow($paragraph);
+			showParagraphNotes(itemid, pid);
+		});
 
 	});
 });
 
+///////document event bindings //////////////
 $(document).on("mouseover", ".lbp-side-window-variant", function(event){
 			var lem_ref = $(this).attr("data-lem-ref");
-			console.log(lem_ref);
 			$(this).css({backgroundColor: "yellow"});
 			$("span#" + lem_ref).css({backgroundColor: "yellow"});
 		});
 $(document).on("mouseout", ".lbp-side-window-variant", function(event){
 			var lem_ref = $(this).attr("data-lem-ref");
-			console.log(lem_ref);
 			$(this).css({backgroundColor: "transparent"});
 			$("span#" + lem_ref).css({backgroundColor: "transparent"});
 		});
+$(document).on("mouseover", ".lbp-side-window-note", function(event){
+			var note = $(this).attr("data-note");
+			$(this).css({backgroundColor: "yellow"});
+			$("span#" + note).css({backgroundColor: "yellow"});
+		});
+$(document).on("mouseout", ".lbp-side-window-note", function(event){
+			var note = $(this).attr("data-note");
+			$(this).css({backgroundColor: "transparent"});
+			$("span#" + note).css({backgroundColor: "transparent"});
+		});
 
+
+
+$(document).on("click", ".js-side-bar-scroll-to-paragraph", function(event){
+			var pid = $(this).attr("data-pid");
+			$paragraph = $("p#" + pid);
+			scrollToParagraph($paragraph);
+			
+			
+		});
+
+
+///////////FUNCTIONS////////////////////
 
 var scrollToParagraph = function(element){
 	if (element.length > 0) {
@@ -124,6 +155,16 @@ var showOutline = function(itemid){
 
 var showParagraphVariants = function(itemid, pid){
 	$("#lbp-side-window-container").load("/paragraphs/variants/" + itemid + "/" + pid + "#lbp-" + pid + "-variant-list", function( response, status, xhr) {
+		console.log(status);
+  	if ( status == "error" ) {
+    	var msg = "<h3>Sorry, but there are no variants for this paragraph.</h3>";
+    	$("#lbp-side-window-container").html( msg);
+    		console.log(xhr.status + " " + xhr.statusText);
+    }	
+	});
+}
+var showParagraphNotes = function(itemid, pid){
+	$("#lbp-side-window-container").load("/paragraphs/notes/" + itemid + "/" + pid + "#lbp-" + pid + "-notes-list", function( response, status, xhr) {
 		console.log(status);
   	if ( status == "error" ) {
     	var msg = "<h3>Sorry, but there are no variants for this paragraph.</h3>";

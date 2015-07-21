@@ -5,10 +5,14 @@
 	top: 0;
 	height: 100%; 
 	width: 0; 
-	//display: none;
+	display: none;
 	overflow: scroll;
 	z-index: 1;
+	padding: 1%
 
 }
 #lbp-max-side-window{display: none}
 
+#lbp-side-window-container{padding-bottom: 100px}
+
+.lbp-side-bar-paragraph-heading a{cursor: pointer}
