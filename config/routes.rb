@@ -44,7 +44,9 @@ Rails.application.routes.draw do
   get 'paragraphs/json/:itemid/:pid(/:msslug)' => 'paragraphs#json', as: :paragraphs_json
   get 'paragraphs/info'
   get 'paragraphs/plaintext'
+  get 'paragraphs/variants/:itemid/:pid' => 'paragraphs#variants', as: :paragraphs_variants
   get 'paragraphs/:itemid/:pid(/:msslug)' => 'paragraphs#show'
+
   
   get 'permissions' => 'pages#permissions'
   

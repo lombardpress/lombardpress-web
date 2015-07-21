@@ -92,6 +92,7 @@
               <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Paragraph Text Tools<span class="caret"></span></a>
                 <ul class="dropdown-menu" role="menu">
+                  <li><a href="#" class='js-show-paragraph-variants' data-itemid="{$itemid}" data-pid="{@xml:id}">Variants</a></li>
                   <li><a href="#" class='js-show-paragraph-collation' data-itemid="{$itemid}" data-pid="{@xml:id}">Collation</a></li>
                   <li><a href="#" class='js-show-paragraph-xml' data-itemid="{$itemid}" data-pid="{@xml:id}" data-msslug="{$default-msslug}">XML</a></li>
                   <!-- <li><a href="#" class='js-show-paragraph-info' data-itemid="{$itemid}" data-pid="{@xml:id}">Paragraph Info</a></li> -->
@@ -223,8 +224,9 @@
   
   <!-- app template -->
   <xsl:template match="tei:app">
-    <span class="lemma"><xsl:apply-templates select="tei:lem"/></span>
     <xsl:variable name="id"><xsl:number count="//tei:app" level="any" format="1"/></xsl:variable>
+    <span id="lbp-app-lem-{$id}" class="lemma"><xsl:apply-templates select="tei:lem"/></span>
+    
     <xsl:text> </xsl:text>
     <sup><a href="#lbp-variant{$id}" name="lbp-variantreference{$id}" class="appnote">[<xsl:value-of select="$id"/>]</a></sup>
     <xsl:text> </xsl:text>

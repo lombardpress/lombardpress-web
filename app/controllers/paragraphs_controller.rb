@@ -79,4 +79,13 @@ class ParagraphsController < ApplicationController
     render :layout => false
 
   end
+  def variants
+    item = get_item(params)
+    check_permission(item); return if performed?
+    check_transcript_existence(item, params); return if performed?
+    transcript = get_transcript(item, params)
+    xslt_param_array = ["pid", "'#{params[:pid]}'"]
+    @para_variants = transcript.transform("#{Rails.root}/xslt/default/critical/para_variants.xsl", xslt_param_array)
+    render :layout => false
+  end
 end
