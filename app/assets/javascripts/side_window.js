@@ -39,6 +39,14 @@ $(document).on('ready page:load', function () {
 			showSideWindow($paragraph);
 			showParagraphNotes(itemid, pid);
 		});
+		$("a.js-show-paragraph-info").click(function(){
+			$paragraph = $("p#" + pid);
+			showSideWindow($paragraph)
+			var itemid = $(this).attr("data-itemid");
+			var pid = $(this).attr("data-pid");
+			var msslug = "reims"
+			showParagraphInfo(itemid, pid, msslug)
+		});
 
 	});
 });
@@ -92,9 +100,7 @@ var scrollToParagraph = function(element){
 var getCurrentViewingParagraph = function(){
 	var $paragraphs = $('p.plaoulparagraph');
 	var viewerMidPoint = $(window).height()/2;
-	console.log(viewerMidPoint);
 	$paragraph = ($paragraphs.nearest({y: $(window).scrollTop() + viewerMidPoint, x: 0})); 
-	console.log($paragraphs.nearest({y: $(window).scrollTop() + viewerMidPoint, x: 0}));
 	return $paragraph;
 }
 
@@ -172,4 +178,13 @@ var showParagraphNotes = function(itemid, pid){
     		console.log(xhr.status + " " + xhr.statusText);
     }	
 	});
+}
+
+var showParagraphInfo = function(itemid, pid, msslug){
+	$.get("/paragraphs/json/" + itemid + "/" + pid + "/" + msslug, function(data){
+		var content = HandlebarsTemplates['textinfo'](data);
+		$("#lbp-side-window-container").html(content);
+
+	});
+
 }

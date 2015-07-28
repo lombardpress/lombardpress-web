@@ -29,6 +29,9 @@ gem 'devise'
 
 ## rails to include rich text editor in asset pipeline
 gem 'ckeditor_rails'
+#handle bars assets allows me to call HandlebarsTemplates['template'](data) in javascript files 
+gem 'handlebars_assets'
+
 
 gem 'lbp', :git => "https://jeffreycwitt@bitbucket.org/jeffreycwitt/lbp.rb.git", :branch => "sparql-only"
 
@@ -67,5 +70,9 @@ group :development, :test do
 
   gem 'thin'
 
+end
+
+#rails-assets
+source 'https://rails-assets.org' do 
 end
 

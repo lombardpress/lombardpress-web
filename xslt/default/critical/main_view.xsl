@@ -96,8 +96,8 @@
                   <li><a href="#" class='js-show-paragraph-notes' data-itemid="{$itemid}" data-pid="{@xml:id}">Notes</a></li>
                   <li><a href="#" class='js-show-paragraph-collation' data-itemid="{$itemid}" data-pid="{@xml:id}">Collation</a></li>
                   <li><a href="#" class='js-show-paragraph-xml' data-itemid="{$itemid}" data-pid="{@xml:id}" data-msslug="{$default-msslug}">XML</a></li>
-                  <!-- <li><a href="#" class='js-show-paragraph-info' data-itemid="{$itemid}" data-pid="{@xml:id}">Paragraph Info</a></li> -->
-                  <!-- <li><a class='js-show-variants' data-itemid="{$itemid}" data-pid="{@xml:id}">Variants</a></li> -->
+                  <li><a href="#" class='js-show-paragraph-info' data-itemid="{$itemid}" data-pid="{@xml:id}">Paragraph Info</a></li>
+                  
                 </ul>
               </li>
               <!--<li><a>How To Cite</a></li> -->
