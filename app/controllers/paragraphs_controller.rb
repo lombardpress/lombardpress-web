@@ -10,7 +10,7 @@ class ParagraphsController < ApplicationController
     transcript = get_transcript(item, params)
     @p = transcript.paragraph(params[:pid]).transform_plain_text
   end
-
+  
   def xml
     item = get_item(params)
     check_permission(item)

@@ -40,12 +40,12 @@ $(document).on('ready page:load', function () {
 			showParagraphNotes(itemid, pid);
 		});
 		$("a.js-show-paragraph-info").click(function(){
-			$paragraph = $("p#" + pid);
-			showSideWindow($paragraph)
+			event.preventDefault();
 			var itemid = $(this).attr("data-itemid");
 			var pid = $(this).attr("data-pid");
-			var msslug = "reims"
-			showParagraphInfo(itemid, pid, msslug)
+			$paragraph = $("p#" + pid);
+			showSideWindow($paragraph)
+			showParagraphInfo(itemid, pid)
 		});
 
 	});
@@ -73,14 +73,10 @@ $(document).on("mouseout", ".lbp-side-window-note", function(event){
 			$("span#" + note).css({backgroundColor: "transparent"});
 		});
 
-
-
 $(document).on("click", ".js-side-bar-scroll-to-paragraph", function(event){
 			var pid = $(this).attr("data-pid");
 			$paragraph = $("p#" + pid);
 			scrollToParagraph($paragraph);
-			
-			
 		});
 
 
@@ -180,8 +176,8 @@ var showParagraphNotes = function(itemid, pid){
 	});
 }
 
-var showParagraphInfo = function(itemid, pid, msslug){
-	$.get("/paragraphs/json/" + itemid + "/" + pid + "/" + msslug, function(data){
+var showParagraphInfo = function(itemid, pid){
+	$.get("/paragraphexemplar/json/" + itemid + "/" + pid, function(data){
 		var content = HandlebarsTemplates['textinfo'](data);
 		$("#lbp-side-window-container").html(content);
 

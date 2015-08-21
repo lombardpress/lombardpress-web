@@ -48,7 +48,8 @@ Rails.application.routes.draw do
   get 'paragraphs/notes/:itemid/:pid' => 'paragraphs#notes', as: :paragraphs_notes
   get 'paragraphs/:itemid/:pid(/:msslug)' => 'paragraphs#show'
 
-  
+  get 'paragraphexemplar/json/:itemid/:pid' => 'paragraphexemplar#json'
+
   get 'permissions' => 'pages#permissions'
   
   get 'search' => 'search#show', as: :show_search

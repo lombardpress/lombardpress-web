@@ -1,6 +1,56 @@
 {{!-- this is handlebars template for text info --}}
 
-<h1>Paragraph {{paragraph_number}}</h1>
-<p>is part of text {{itemid}}</p>
-<p>is part of commentary {{commentaryid}}</p>
-<p>text {{{paragraph_text}}}</p>
+<div style="width:100%">
+<div>
+<h1>Paragraph {{number}}</h1>
+{{#if next}}
+	<p><a href="#{{next}}">Next</a></p>
+{{/if}}
+{{#if previous}}
+	<p><a href="#{{previous}}">Previous</a></p>
+{{/if}}	
+</div>
+<div>
+<h2>Paragraph Info</h2>
+{{#if abbreviates}}
+	{{#each abbreviates}}
+		<p>Abbreviates <a href="{{this}}">{{this}}</a></p>
+	{{/each}}
+{{/if}}
+{{#if abbreviatedBy}}
+	{{#each abbreviateBy}}
+		<p>Abbreviated By <a href="{{this}}">{{this}}</a></p>
+	{{/each}}
+{{/if}}
+{{#if references}}
+	{{#each references}}
+		<p>References <a href="{{this}}">{{this}}</a></p>
+		<p style="padding-left: 20px"><a class="js-show-reference-paragraph" href="#" data-url="{{this}}">View Text</a><p>
+	{{/each}}
+{{/if}}
+{{#if copies}}
+	{{#each copies}}
+		<p>Copies <a href="{{this}}">{{this}}</a></p>
+	{{/each}}
+{{/if}}
+{{#if quotes}}
+	{{#each quotes}}
+		<p>Quotes <a href="{{this}}">{{this}}</a></p>
+	{{/each}}
+{{/if}}
+{{#if mentions}}
+	{{#each mentions}}
+		<p>Mentions <a href="{{this}}">{{this}}</a></p>
+	{{/each}}
+{{/if}}
+</div>
+<div>
+{{#if transcriptions}}
+	<h2>Available Transcriptions</h2>
+	{{#each transcriptions}}
+		<p><a href="{{this}}">{{this}}</a></p>
+	{{/each}}
+{{/if}}
+
+</div>
+</div>
