@@ -10,6 +10,22 @@ class ParagraphsController < ApplicationController
     transcript = get_transcript(item, params)
     @p = transcript.paragraph(params[:pid]).transform_plain_text
   end
+  def show2
+    url = params[:url]
+    para = Lbp::ParagraphExemplar.new(@config.confighash, url)
+    itemid = para.itemid
+    commentaryid = para.cid
+    pid = para.pid
+
+    itemurl = "http://scta.info/text/#{commentaryid}/item/#{itemid}"
+    item = Lbp::Item.new(@config.confighash, itemurl)
+
+    canonicalwit = item.canonical_transcription_slug
+
+    transcript = item.transcription(source: "origin", wit: canonicalwit)
+    @p = transcript.paragraph(pid).transform_plain_text
+    render :layout => false
+  end
   
   def xml
     item = get_item(params)

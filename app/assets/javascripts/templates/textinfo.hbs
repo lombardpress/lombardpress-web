@@ -1,6 +1,6 @@
 {{!-- this is handlebars template for text info --}}
 
-<div style="width:100%">
+<div style="font-size: 12px;">
 <div>
 <h1>Paragraph {{number}}</h1>
 {{#if next}}
@@ -26,6 +26,7 @@
 	{{#each references}}
 		<p>References <a href="{{this}}">{{this}}</a></p>
 		<p style="padding-left: 20px"><a class="js-show-reference-paragraph" href="#" data-url="{{this}}">View Text</a><p>
+		
 	{{/each}}
 {{/if}}
 {{#if copies}}

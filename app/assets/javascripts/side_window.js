@@ -78,6 +78,13 @@ $(document).on("click", ".js-side-bar-scroll-to-paragraph", function(event){
 			$paragraph = $("p#" + pid);
 			scrollToParagraph($paragraph);
 		});
+$(document).on("click", ".js-show-reference-paragraph", function(event){
+			showSpinner("#lbp-bottom-window-container");
+			showBottomWindow();
+			halfSizeBottomWindow();
+			var url = $(this).attr("data-url");
+			showParagraphReference(url);
+		});
 
 
 ///////////FUNCTIONS////////////////////
@@ -182,5 +189,12 @@ var showParagraphInfo = function(itemid, pid){
 		$("#lbp-side-window-container").html(content);
 
 	});
-
 }
+var showParagraphReference = function(url){
+	$("#lbp-bottom-window-container").load("/paragraphs/show2/?url=" + url, function(response, status, xhr){
+		if ( status == "error" ) {
+    	var msg = "Sorry but something went wrong";
+    	$("#lbp-bottom-window-container").html( msg + "(" + xhr.status + " " + xhr.statusText + ")");
+    }
+  });
+}	

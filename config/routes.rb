@@ -46,6 +46,7 @@ Rails.application.routes.draw do
   get 'paragraphs/plaintext'
   get 'paragraphs/variants/:itemid/:pid' => 'paragraphs#variants', as: :paragraphs_variants
   get 'paragraphs/notes/:itemid/:pid' => 'paragraphs#notes', as: :paragraphs_notes
+  get 'paragraphs/show2' => 'paragraphs#show2'
   get 'paragraphs/:itemid/:pid(/:msslug)' => 'paragraphs#show'
 
   get 'paragraphexemplar/json/:itemid/:pid' => 'paragraphexemplar#json'
