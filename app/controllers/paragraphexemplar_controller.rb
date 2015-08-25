@@ -7,7 +7,22 @@ class ParagraphexemplarController < ApplicationController
 		pid = params[:pid]
 		
 		para = Lbp::ParagraphExemplar.new(@config.confighash, "http://scta.info/text/#{commentaryid}/paragraph/#{pid}")
+        
+#begin test
+    
+    itemid = para.itemid
+    commentaryid = para.cid
+    pid = para.pid
 
+    itemurl = "http://scta.info/text/#{commentaryid}/item/#{itemid}"
+    item = Lbp::Item.new(@config.confighash, itemurl)
+
+    canonicalwit = item.canonical_transcription_slug
+
+    transcript = item.transcription(source: "origin", wit: canonicalwit)
+    paratranscript = transcript.paragraph(pid)
+    
+#end test
 		
 		paragraph_hash = {
         :next => if para.next != nil then para.next.split("/").last else nil end, 
@@ -20,8 +35,11 @@ class ParagraphexemplarController < ApplicationController
         :copies => para.copies.map {|item| item[:o].to_s},
         :quotes => para.quotes.map {|item| item[:o].to_s},
         :mentions => para.mentions.map {|item| item[:o].to_s},
+        :wordcount => paratranscript.word_count,
+        :wordfrequency => paratranscript.word_frequency
 
       }
+
 			
     
     render :json => paragraph_hash

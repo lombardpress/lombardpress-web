@@ -15,11 +15,13 @@
 {{#if abbreviates}}
 	{{#each abbreviates}}
 		<p>Abbreviates <a href="{{this}}">{{this}}</a></p>
+		<p style="padding-left: 20px"><a class="js-show-reference-paragraph" href="#" data-url="{{this}}">View Text</a><p>
 	{{/each}}
 {{/if}}
 {{#if abbreviatedBy}}
-	{{#each abbreviateBy}}
+	{{#each abbreviatedBy}}
 		<p>Abbreviated By <a href="{{this}}">{{this}}</a></p>
+		<p style="padding-left: 20px"><a class="js-show-reference-paragraph" href="#" data-url="{{this}}">View Text</a><p>
 	{{/each}}
 {{/if}}
 {{#if references}}
@@ -44,6 +46,16 @@
 		<p>Mentions <a href="{{this}}">{{this}}</a></p>
 	{{/each}}
 {{/if}}
+</div>
+<div>
+	<h2>Paragraph Statistics</h2>
+	<p>Word Count: {{wordcount}}</p>
+	<p>Word Frequency</p>
+	<ul>
+		{{#each wordfrequency}}
+			<li>{{@key}}: {{this}}</li>
+		{{/each}}
+	</ul>
 </div>
 <div>
 {{#if transcriptions}}
