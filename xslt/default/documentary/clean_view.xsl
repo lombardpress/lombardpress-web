@@ -44,5 +44,9 @@
     <xsl:template match="tei:app | tei:index | tei:note | tei:reg | tei:desc ">
         
     </xsl:template>
+
+    <!-- default to regularized words -->
+    <xsl:template match="tei:orig">
+    </xsl:template>
     
 </xsl:stylesheet>

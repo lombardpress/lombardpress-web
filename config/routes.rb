@@ -1,9 +1,5 @@
 Rails.application.routes.draw do
   
-  
-
-  
-  
   resources :access_requests
 
   root 'pages#home'
@@ -38,32 +34,38 @@ Rails.application.routes.draw do
   get "index/quotes/show(/:quoteid)" => 'indices/quotes#show'
   get "index/quotes/categories" => 'indices/quotes#categories'
 
-  get 'paragraphs/index'
-  get 'paragraphs/collation/:itemid/:pid' => 'paragraphs#collation', as: :paragraphs_collation
-  get 'paragraphs/xml/:itemid/:pid(/:msslug)' => 'paragraphs#xml', as: :paragraphs_xml
-  get 'paragraphs/json/:itemid/:pid(/:msslug)' => 'paragraphs#json', as: :paragraphs_json
-  get 'paragraphs/info'
-  get 'paragraphs/plaintext'
-  get 'paragraphs/variants/:itemid/:pid' => 'paragraphs#variants', as: :paragraphs_variants
-  get 'paragraphs/notes/:itemid/:pid' => 'paragraphs#notes', as: :paragraphs_notes
-  get 'paragraphs/show2' => 'paragraphs#show2'
-  get 'paragraphs/:itemid/:pid(/:msslug)' => 'paragraphs#show'
+scope 'paragraphs' do
+  get 'index' => 'paragraphs#index'
+  get 'info' => 'paragraphs#info'
+  get 'plaintext' => 'paragraphs#plaintext'
+  get 'show2' => 'paragraphs#show2'
 
+  get 'collation/:itemid/:pid' => 'paragraphs#collation', as: :paragraphs_collation
+  get 'xml/:itemid/:pid(/:msslug)' => 'paragraphs#xml', as: :paragraphs_xml
+  get 'json/:itemid/:pid(/:msslug)' => 'paragraphs#json', as: :paragraphs_json
+  get 'variants/:itemid/:pid' => 'paragraphs#variants', as: :paragraphs_variants
+  get 'notes/:itemid/:pid' => 'paragraphs#notes', as: :paragraphs_notes
+  
+  get ':itemid/:pid(/:msslug)' => 'paragraphs#show'
+end
+  
   get 'paragraphexemplar/json/:itemid/:pid' => 'paragraphexemplar#json'
 
   get 'permissions' => 'pages#permissions'
   
   get 'search' => 'search#show', as: :show_search
 
-  get 'text' => 'text#index'
-  get 'text/draft_permissions/:itemid' => 'text#draft_permissions'
-  get 'text/questions' => 'text#questions'
-  get 'text/info/:itemid' => 'text#info'
-  get 'text/status/:itemid' => 'text#status'
-  get 'text/toc/:itemid(:/msslug)' => 'text#toc'
-  get 'text/xml/:itemid(:/msslug)' => 'text#xml'
-  get 'text/:itemid(/:msslug)' => 'text#show', as: :show_text
-  
+scope "text" do
+  get '' => 'text#index'
+  get 'draft_permissions/:itemid' => 'text#draft_permissions'
+  get 'questions' => 'text#questions'
+  get 'info/:itemid' => 'text#info'
+  get 'status/:itemid' => 'text#status'
+  get 'toc/:itemid(:/msslug)' => 'text#toc'
+  get 'xml/:itemid(:/msslug)' => 'text#xml'
+  get ':itemid(/:msslug)' => 'text#show', as: :show_text
+end 
+
   get 'paragraphimage/showfoliozoom/:msslug/:canvas_id' => 'paragraphimage#showfoliozoom'
   get 'paragraphimage/showzoom/:itemid/:msslug/:pid' => 'paragraphimage#showzoom'
   get 'paragraphimage/:itemid/:msslug/:pid' => 'paragraphimage#show'
