@@ -85,6 +85,16 @@ $(document).on("click", ".js-show-reference-paragraph", function(event){
 			var url = $(this).attr("data-url");
 			showParagraphReference(url);
 		});
+//note redundancy here; copying document ready functions
+$(document).on("click", "a.js-show-paragraph-info", function(event){
+			event.preventDefault();
+			var itemid = $(this).attr("data-itemid");
+			var pid = $(this).attr("data-pid");
+			$paragraph = $("p#" + pid);
+			showSpinner("div#lbp-side-window-container");
+			showSideWindow($paragraph)
+			showParagraphInfo(itemid, pid)
+		});
 
 
 ///////////FUNCTIONS////////////////////

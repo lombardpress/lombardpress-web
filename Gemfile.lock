@@ -1,6 +1,6 @@
 GIT
   remote: https://jeffreycwitt@bitbucket.org/jeffreycwitt/lbp.rb.git
-  revision: ef36497506444b822ffe767b3c7733a3b2e39159
+  revision: 0372c2d3b89f8f60ab6eaf182404b06ba4e57e75
   branch: sparql-only
   specs:
     lbp (0.0.2)

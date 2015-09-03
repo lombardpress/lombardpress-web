@@ -126,9 +126,9 @@
   <xsl:template match="tei:quote">
       <xsl:variable name="quoterefid" select="translate(./@ana, '#', '')"/>
     <span id="{@xml:id}" class="lbp-quote" data-quote="{$quoterefid}">
-      <xsl:text>"</text>
+      <xsl:text>"</xsl:text>
       <xsl:apply-templates/>
-      <xsl:text>"</text>
+      <xsl:text>"</xsl:text>
     </span>
   </xsl:template>
   
@@ -140,6 +140,17 @@
       <xsl:apply-templates/>
       <xsl:text/>
     </span>
+  </xsl:template>
+
+  <xsl:template match="tei:bibl/tei:ref">
+    <xsl:choose>
+      <xsl:when test="./@type = 'commentary'">
+        <a href="{@target}" data-url="{@target}" class='js-show-reference-paragraph'><xsl:apply-templates/></a> <a href="{@target}" target="_blank"> [SCTA Entry] </a>
+      </xsl:when>
+      <xsl:otherwise>
+        <a href="{@target}"><xsl:apply-templates/></a>
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
   
   <!-- unclear template -->
@@ -173,11 +184,20 @@
     <xsl:variable name="break-ms-slug" select="/tei:TEI/tei:teiHeader/tei:fileDesc/tei:sourceDesc/tei:listWit/tei:witness[@xml:id=$ms]/@n"/>
     <span class="lbp-folionumber">
       <!-- data-msslug needs to get info directly from final; default will not work -->
-      <a href="#" class="js-show-folio-image" data-canvasid="{$canvasid}" data-msslug="{$break-ms-slug}">
-        <xsl:value-of select="$ms"/>
-        <xsl:value-of select="$folionumber"/>
-        <xsl:value-of select="$side_column"/>
-      </a>
+      <xsl:choose>
+        <xsl:when test="$show-images = 'true'">
+          <a href="#" class="js-show-folio-image" data-canvasid="{$canvasid}" data-msslug="{$break-ms-slug}">
+            <xsl:value-of select="$ms"/>
+            <xsl:value-of select="$folionumber"/>
+            <xsl:value-of select="$side_column"/>
+          </a>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:value-of select="$ms"/>
+          <xsl:value-of select="$folionumber"/>
+          <xsl:value-of select="$side_column"/>
+        </xsl:otherwise>
+      </xsl:choose>
     </span>
     <xsl:text> </xsl:text>
   </xsl:template>
@@ -198,11 +218,20 @@
 
     <span class="lbp-folionumber">
       <!-- data-msslug needs to get info directly from final; default will not work -->
-      <a href="#" class="js-show-folio-image" data-canvasid="{$canvasid}" data-msslug="{$break-ms-slug}">
-      <xsl:value-of select="$ms"/>
-      <xsl:value-of select="$folionumber"/>
-      <xsl:value-of select="$justSide"/>
-      </a>
+      <xsl:choose>
+        <xsl:when test="$show-images = 'true'">
+          <a href="#" class="js-show-folio-image" data-canvasid="{$canvasid}" data-msslug="{$break-ms-slug}">
+          <xsl:value-of select="$ms"/>
+          <xsl:value-of select="$folionumber"/>
+          <xsl:value-of select="$justSide"/>
+          </a>
+          </xsl:when>
+        <xsl:otherwise>
+          <xsl:value-of select="$ms"/>
+          <xsl:value-of select="$folionumber"/>
+          <xsl:value-of select="$justSide"/>
+        </xsl:otherwise>
+      </xsl:choose>
     </span><xsl:text> </xsl:text>
   </xsl:template>
   

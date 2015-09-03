@@ -50,7 +50,7 @@ class ParagraphsController < ApplicationController
     ms_slugs = item.transcription_slugs.map {|slug| unless slug == params[:itemid] then slug.split("_").first end}.compact
       
     paragraph_hash = {
-        :paragraph_text => paragraph_text.text.to_s.gsub(/\n/, '<br/> *'),
+        :paragraph_text => paragraph_text.text.to_s.gsub(/\n/, '<br/> *').gsub(/\s+/, ' '),
         :next_para => if paragraph.next != nil then paragraph.next.pid else nil end,
         :previous_para => if paragraph.previous != nil then paragraph.previous.pid else nil end,
         :paragraph_number => paragraph.number,
@@ -81,7 +81,8 @@ class ParagraphsController < ApplicationController
     else
       @base_text_name = params[:base]
       base_transcript = item.transcription(source: "origin", wit: @base_text_name)
-      @para_base = base_transcript.paragraph(params[:pid]).transform_plain_text.text
+      #gsum is added to remove extra spaces; ideally this would happen at XSLT level
+      @para_base = base_transcript.paragraph(params[:pid]).transform_plain_text.text.gsub(/\s+/, ' ')
     end
     if params[:comp].nil? or params[:comp] == ""
       @comp_text_name = nil
@@ -89,7 +90,8 @@ class ParagraphsController < ApplicationController
     else
       @comp_text_name = params[:comp]
       comp_transcript = item.transcription(source: "origin", wit: @comp_text_name)
-      @para_comp = comp_transcript.paragraph(params[:pid]).transform_plain_text.text
+      #gsum is added to remove extra spaces; ideally this would happen at XSLT level
+      @para_comp = comp_transcript.paragraph(params[:pid]).transform_plain_text.text.gsub(/\s+/, ' ')
     end
 
     render :layout => false

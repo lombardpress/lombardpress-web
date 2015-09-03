@@ -90,12 +90,14 @@
     </span>
   </xsl:template>
   <xsl:template match="tei:orig">
-    <span class="lbp-orig">
+    <!--<span class="lbp-orig" style="display: none;">
       <xsl:apply-templates/>
     </span>
+  -->
+  
   </xsl:template>
   <xsl:template match="tei:reg">
-    <span class="lbp-reg" style="display: none;">
+    <span class="lbp-reg">
       <xsl:apply-templates/>
     </span>
   </xsl:template>

@@ -24,11 +24,11 @@
         <xsl:variable name="number" select="count(ancestor::tei:div)" />
         <xsl:variable name="id"><xsl:value-of select="@xml:id"/></xsl:variable>
         <xsl:variable name="fs"><xsl:value-of select="//tei:text/tei:body/tei:div/@xml:id"/></xsl:variable>
-        <xsl:element name="h{$number}"><xsl:attribute name="id"><xsl:value-of select="$id"/></xsl:attribute><xsl:element
-                name="a"><xsl:attribute name="href">../text/textdisplay.php?fs=<xsl:value-of
-                select="$fs"/>#<xsl:value-of
-                select="$id"/></xsl:attribute>
-            <xsl:apply-templates select="node()" /></xsl:element>
+        <xsl:element name="h{$number}">
+            <xsl:attribute name="id">
+                <xsl:value-of select="$id"/>
+            </xsl:attribute>
+                <xsl:apply-templates select="node()"/>
         </xsl:element>
     </xsl:template>
 
