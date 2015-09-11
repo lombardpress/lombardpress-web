@@ -1,1 +1,12 @@
+<p>
+	<% url = "http://#{@para.cid}.lombardpress.org/text/#{@para.itemid}##{@para.pid}" %>
+	<a href="<%= url %>">
+	<% if @para.type.include? 'paragraphExemplar' %> 
+		Paragraph <%= @para.paragraph_number %>
+	<% else %>
+		<%= @para.type.split("/").last.capitalize	%>
+	<% end %> 
+	from <%= @item.title %> in 
+	<%= @commentary_title %> <a/>
+</p>
 <%= raw(@p) %>

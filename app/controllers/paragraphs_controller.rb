@@ -12,17 +12,21 @@ class ParagraphsController < ApplicationController
   end
   def show2
     url = params[:url]
-    para = Lbp::ParagraphExemplar.new(@config.confighash, url)
-    itemid = para.itemid
-    commentaryid = para.cid
-    pid = para.pid
-
+    @para = Lbp::ParagraphExemplar.new(@config.confighash, url)
+    itemid = @para.itemid
+    commentaryid = @para.cid
+    pid = @para.pid
+    commentaryurl = "http://scta.info/text/#{commentaryid}/commentary"
+    commentary = Lbp::Collection.new(@config.confighash, commentaryurl)
+    @commentary_title = commentary.title
     itemurl = "http://scta.info/text/#{commentaryid}/item/#{itemid}"
-    item = Lbp::Item.new(@config.confighash, itemurl)
+    @item = Lbp::Item.new(@config.confighash, itemurl)
 
-    canonicalwit = item.canonical_transcription_slug
+    canonicalwit = @item.canonical_transcription_slug
 
-    transcript = item.transcription(source: "origin", wit: canonicalwit)
+    transcript = @item.transcription(source: "origin", wit: canonicalwit)
+    
+
     @p = transcript.paragraph(pid).transform_plain_text
     render :layout => false
   end
