@@ -1,0 +1,36 @@
+<div class="container">
+  <h1>Editing Setting</h1>
+
+  <%= form_for :setting, url: setting_path(@setting), method: :patch do |f| %>
+   
+    <% if @setting.errors.any? %>
+      <div id="error_explanation">
+        <h2>
+          <%= pluralize(@setting.errors.count, "error") %> prohibited
+          this article from being saved:
+        </h2>
+        <ul>
+          <% @setting.errors.full_messages.each do |msg| %>
+            <li><%= msg %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+   
+   <% @setting.attributes.each do |key, value| %>
+    <p>
+      <% #check to see if value is boolean 
+      if [true, false].include? value %>
+        <%= f.label key %><br/>
+        <%= f.text_field key, value: value %><br/>
+      <% else  %>
+        <%= f.label key %><br/>
+        <%= f.text_field key %><br/>
+      <% end %>
+    </p>
+    <% end %>
+    <button type="submit" class="btn btn-default">submit</button>
+    <% end %>
+   
+  <%= link_to 'Settings List', settings_path %>
+</div>

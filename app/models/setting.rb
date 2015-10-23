@@ -1,5 +1,6 @@
 class Setting < ActiveRecord::Base
 	attr_reader :confighash
+	serialize :properties, JSON
   has_many :articles, dependent: :destroy
   after_initialize :set_confighash
 

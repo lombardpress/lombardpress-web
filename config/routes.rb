@@ -11,6 +11,9 @@ Rails.application.routes.draw do
   
   resources :comments, except: [:new]
 
+  resources :settings
+  
+
   get 'articles/:articleid' => 'articles#show', as: :show_article
   get 'articles' => 'articles#index', as: :articles
   

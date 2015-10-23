@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150518202746) do
+ActiveRecord::Schema.define(version: 20151023184719) do
 
   create_table "access_points", force: :cascade do |t|
     t.string   "itemid"
@@ -87,6 +87,7 @@ ActiveRecord::Schema.define(version: 20150518202746) do
     t.datetime "created_at",        null: false
     t.datetime "updated_at",        null: false
     t.boolean  "images"
+    t.text     "properties"
   end
 
   create_table "users", force: :cascade do |t|
