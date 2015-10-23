@@ -25,7 +25,14 @@ class ApplicationController < ActionController::Base
   def set_conf
     if Rails.env.development?
       # only needed for developement
-      cid = (request.port + 1).to_s.split('').last.to_i
+      port = request.port
+      if port + 1 == 3009 
+        cid = port.to_s.split('').last().to_i + 1
+      elsif port + 1 >= 3010
+        cid = port.to_s.split('').last(2).join.to_i + 1
+      else
+        cid = port.to_s.split('').last.to_i
+      end
       commentaryid = Setting.find(cid).commentaryid
     elsif request.host == "petrusplaoul.org" || request.host == "www.petrusplaoul.org" 
       commentaryid = "plaoulcommentary"
