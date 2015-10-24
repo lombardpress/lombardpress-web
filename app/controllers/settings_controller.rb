@@ -31,6 +31,7 @@ class SettingsController < ApplicationController
 	  	#here I'm making sure these value get set as booleans.
 	  	params[:setting][:blog] = to_boolean(params[:setting][:blog])
 	  	params[:setting][:images] = to_boolean(params[:setting][:images])
+	  	params[:setting][:properties] = eval(params[:setting][:properties])
 	  
 	  	params.require(:setting).permit!
 	  end

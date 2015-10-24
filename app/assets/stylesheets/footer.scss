@@ -1,2 +1,7 @@
 #lbp-footer {background-color: $light-color; 
 	color: black; margin: 0; width: 100%; padding: 10px;}
+
+//this is for an <a> element that should contain a child image
+.lbp-footer-logo-link{margin: 10px;}
+.lbp-footer-logo-image{width: 75px;}
+.lbp-footer-div-label{font-weight: bold;}

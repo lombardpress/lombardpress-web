@@ -1,12 +1,29 @@
 <div id="lbp-footer" class="container" style="background-color: <%= @config.dark_color %>;">
 	<div class="row">
-		<div class="col-xs-11 col-md-4">
-	  	<%= link_to "A Lombard Press Project", "http://lombardpress.org" %><br/>
-	  	<%= link_to "Data powered by the Sentences Commentary Text Archive", "http://scta.info" %>
+		<% if @config.properties != nil %>
+			<div class="col-xs-11 col-md-6 center">
+		<% else %>
+			<div class="col-xs-11 col-md-12 center">
+		<% end %>
+			<p class="lbp-footer-div-label">Powered by:</p>
+			<div class="row">
+				<div class="col-md-6">
+			  	<p><%= link_to "LombardPress", "http://lombardpress.org" %></p>
+			  	<p><%= link_to "The Sentences Commentary Text Archive", "http://scta.info" %></p>
+		  	</div>
+		  	<div class="col-md-6">
+		  	<%= link_to image_tag("http://www.tei-c.org/About/Logos/TEI-600.jpg", class: "lbp-footer-logo-image"), "http://www.tei-c.org/index.xml", {target: "_blank", class: "lbp-footer-logo-link"}  %>
+		  		<%= link_to image_tag("https://www.bodleian.ox.ac.uk/__data/assets/image/0004/189886/350x323_IIIF-logo.jpg", class: "lbp-footer-logo-image"), "http://iiif.io", {target: "_blank", class: "lbp-footer-logo-link"}  %>
+		  	</div>
+		  </div>
   	</div>
-  	<div class="col-xs-11 col-md-4">
+  	<% if @config.properties != nil %>
+  	<div class="col-xs-11 col-md-6 center" style="border-left: 1px dashed lightgray;">
+  		<p class="lbp-footer-div-label">Supported by:</p>
+  			<% @config.properties["partners"].each do |partner| %>
+	  			<%= link_to image_tag(partner["logo"], class: "lbp-footer-logo-image"), partner["link"], {target: "_blank", class: "lbp-footer-logo-link"}  %>
+	  		<% end %>
   	</div>
-  	<div class="col-xs-11 col-md-4">
-  	</div>
+  	<% end %>
 	</div>
 </div>

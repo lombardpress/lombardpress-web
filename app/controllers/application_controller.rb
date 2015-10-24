@@ -31,7 +31,7 @@ class ApplicationController < ActionController::Base
       elsif port + 1 >= 3010
         cid = port.to_s.split('').last(2).join.to_i + 1
       else
-        cid = port.to_s.split('').last.to_i
+        cid = port.to_s.split('').last.to_i + 1
       end
       commentaryid = Setting.find(cid).commentaryid
     elsif request.host == "petrusplaoul.org" || request.host == "www.petrusplaoul.org" 
