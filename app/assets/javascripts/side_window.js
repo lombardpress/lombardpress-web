@@ -5,25 +5,29 @@ $(document).on('ready page:load', function () {
 
 	$(document).ready(function(){
 
-		$("a.js-show-outline").click(function(){
+		$("a.js-show-outline").click(function(event){
+			event.preventDefault();
 			$paragraph = getCurrentViewingParagraph();
 			showSideWindow($paragraph);
 			var itemid = $(this).attr("data-itemid");
 			showOutline(itemid);
 		});
-		$("a.js-close-side-window").click(function(){
+		$("a.js-close-side-window").click(function(event){
+			event.preventDefault();
 			$paragraph = getCurrentViewingParagraph();
 			hideSideWindow($paragraph);
 		});
-		$("a.js-minimize-side-window").click(function(){
+		$("a.js-minimize-side-window").click(function(event){
+			event.preventDefault();
 			$paragraph = getCurrentViewingParagraph();
 			minimizeSideWindow($paragraph);
 		});
-		$("a.js-maximize-side-window").click(function(){
+		$("a.js-maximize-side-window").click(function(event){
+			event.preventDefault();
 			$paragraph = getCurrentViewingParagraph();
 			maximizeSideWindow($paragraph);
 		});
-		$("a.js-show-paragraph-variants").click(function(){
+		$("a.js-show-paragraph-variants").click(function(event){
 			event.preventDefault();
 			var itemid = $(this).attr("data-itemid");
 			var pid = $(this).attr("data-pid");
@@ -31,7 +35,7 @@ $(document).on('ready page:load', function () {
 			showSideWindow($paragraph);
 			showParagraphVariants(itemid, pid);
 		});
-		$("a.js-show-paragraph-notes").click(function(){
+		$("a.js-show-paragraph-notes").click(function(event){
 			event.preventDefault();
 			var itemid = $(this).attr("data-itemid");
 			var pid = $(this).attr("data-pid");
@@ -39,7 +43,7 @@ $(document).on('ready page:load', function () {
 			showSideWindow($paragraph);
 			showParagraphNotes(itemid, pid);
 		});
-		$("a.js-show-paragraph-info").click(function(){
+		$("a.js-show-paragraph-info").click(function(event){
 			event.preventDefault();
 			var itemid = $(this).attr("data-itemid");
 			var pid = $(this).attr("data-pid");
@@ -53,32 +57,38 @@ $(document).on('ready page:load', function () {
 
 ///////document event bindings //////////////
 $(document).on("mouseover", ".lbp-side-window-variant", function(event){
+			event.preventDefault();
 			var lem_ref = $(this).attr("data-lem-ref");
 			$(this).css({backgroundColor: "yellow"});
 			$("span#" + lem_ref).css({backgroundColor: "yellow"});
 		});
 $(document).on("mouseout", ".lbp-side-window-variant", function(event){
+			event.preventDefault();
 			var lem_ref = $(this).attr("data-lem-ref");
 			$(this).css({backgroundColor: "transparent"});
 			$("span#" + lem_ref).css({backgroundColor: "transparent"});
 		});
 $(document).on("mouseover", ".lbp-side-window-note", function(event){
+			event.preventDefault();
 			var note = $(this).attr("data-note");
 			$(this).css({backgroundColor: "yellow"});
 			$("span#" + note).css({backgroundColor: "yellow"});
 		});
 $(document).on("mouseout", ".lbp-side-window-note", function(event){
+			event.preventDefault();
 			var note = $(this).attr("data-note");
 			$(this).css({backgroundColor: "transparent"});
 			$("span#" + note).css({backgroundColor: "transparent"});
 		});
 
 $(document).on("click", ".js-side-bar-scroll-to-paragraph", function(event){
+			event.preventDefault();
 			var pid = $(this).attr("data-pid");
 			$paragraph = $("p#" + pid);
 			scrollToParagraph($paragraph);
 		});
 $(document).on("click", ".js-show-reference-paragraph", function(event){
+			event.preventDefault();
 			showSpinner("#lbp-bottom-window-container");
 			showBottomWindow();
 			halfSizeBottomWindow();
