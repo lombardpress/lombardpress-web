@@ -6,6 +6,14 @@ class SettingsController < ApplicationController
 		#binding.pry @settings
     authorize @settings
 	end
+	def show
+		if params[:id] == "current"
+			@setting = Setting.find_by(commentaryid: @config.commentaryid)
+		else
+			@setting = Setting.find(params[:id])
+		end
+		authorize @setting
+	end
 	def edit
 		
  		@setting = Setting.find(params[:id])
