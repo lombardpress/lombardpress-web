@@ -10,7 +10,8 @@ commentary_list = [
 	{
   commentaryid: "plaoulcommentary",
   blog: true,
-  images: true
+  images: true,
+  logo: "Petrus Plaoul"
   }
 ]
 
@@ -18,6 +19,7 @@ commentary_list.each do |commentary|
   Setting.create(commentaryid: commentary[:commentaryid], blog: commentary[:blog], images: commentary[:images])
 end
 
-User.create(email: "admin@admin.com", password: "admin")
+
+User.create(email: "admin@admin.com", password: "changeme", role: 0)
 
 
