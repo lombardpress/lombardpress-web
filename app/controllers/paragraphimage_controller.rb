@@ -75,8 +75,10 @@ class ParagraphimageController < ApplicationController
 		commentary_slug = Lbp::Collection.new(@config.confighash, "http://scta.info/text/#{@config.commentaryid}/commentary").slug
 		manifest_slug = commentary_slug + "-" + params[:msslug]
 		canvasid = "http://scta.info/iiif/#{manifest_slug}/canvas/#{params[:canvas_id]}"
+
 		
 		results = MiscQuery.new.folio_info(canvasid)
+		
 		@image_info = {
 			:image_url => results.first[:imageurl].to_s
 		}
