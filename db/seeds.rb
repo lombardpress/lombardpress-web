@@ -11,12 +11,13 @@ commentary_list = [
   commentaryid: "plaoulcommentary",
   blog: true,
   images: true,
-  logo: "Petrus Plaoul"
+  logo: "Petrus Plaoul",
+  default_ms_image:	'reims'
   }
 ]
 
 commentary_list.each do |commentary|
-  Setting.create(commentaryid: commentary[:commentaryid], blog: commentary[:blog], images: commentary[:images])
+  Setting.create(commentaryid: commentary[:commentaryid], blog: commentary[:blog], images: commentary[:images], logo: commentary[:logo], default_ms_image: commentary[:default_ms_image])
 end
 
 
