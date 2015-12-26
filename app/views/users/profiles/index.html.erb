@@ -6,6 +6,8 @@
 			<tr>
 				<td>Email</td>
 				<td>Role</td>
+				<td>Preferred Language</td>
+				<td>Created at</td>
 			</tr>
 		</thead>
 		<tbody>
@@ -13,8 +15,8 @@
 				<tr>
 					<td><%= link_to user.email, users_profile_path(user) %></td>
 					<td><%= user.role %></td>
+					<td><%= user.language %></td>
 					<td><%= user.created_at %></td>
-					
 					<td><%= link_to "Destroy", destroy_users_profile_path(user), method: :delete %></td>
 				</tr>
 			<% end %>
@@ -38,6 +40,7 @@
 	    <br />
 	    <%= f.text_field :role, autocomplete: "off" %>
 	  </div>
+	  
 		<div class="actions">
 			<br />
 	    <%= f.submit "Create User" %>

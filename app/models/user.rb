@@ -1,6 +1,7 @@
 class User < ActiveRecord::Base
   
-	enum role: [:admin, :editor, :draft_img_reader, :draft_reader, :public_reader]
+  enum role: [:admin, :editor, :draft_img_reader, :draft_reader, :public_reader]
+  enum language: { en: 'en', de: 'de', fr: 'fr', la: 'la'}
 	has_many :comments, dependent: :destroy
 	has_many :posts, dependent: :destroy
   has_many :access_requests, dependent: :destroy

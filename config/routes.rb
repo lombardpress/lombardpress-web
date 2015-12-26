@@ -4,7 +4,7 @@ Rails.application.routes.draw do
 
   root 'pages#home'
 
-  devise_for :users, controllers: { sessions: "users/sessions", profiles: "users/profiles"}
+  devise_for :users, controllers: { sessions: "users/sessions", profiles: "users/profiles", registrations: "users/registrations"}
   
   get 'posts/list' => 'posts#list'
   resources :posts

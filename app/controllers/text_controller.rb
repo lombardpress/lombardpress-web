@@ -62,7 +62,9 @@ class TextController < ApplicationController
 		#specify if global image setting is true or false
 		xslt_param_array = ["default-ms-image", if default_wit(params) == "critical" then @config.default_ms_image else "'#{default_wit(params)}'" end, 
 				"default-msslug", "'#{default_wit(params)}'", 
-				"show-images", "'#{@config.images.to_s}'"]
+				"show-images", "'#{@config.images.to_s}'",
+				"by_phrase", "'#{t(:by)}'", 
+				"edited_by_phrase", "'#{t(:edited_by)}'"]
 		
 		@transform = transcript.transform_main_view(xslt_param_array)
 

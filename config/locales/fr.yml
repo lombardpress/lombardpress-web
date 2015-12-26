@@ -37,5 +37,15 @@ fr:
   powered_by: "Propulsé par"
   profile: "Profil"
   edit_profile: "Modifier le profil"
+  text_tool_bar: "Barre d'outils Texte"
+  text_outline: "Contour du texte"
+  next: "Prochaine"
+  previous: "Précédent"
+  available_transcriptions: "Transcriptions disponibles"
+  text_tools: "Outils de texte"
+  draft_reminder: "Please remember: the status of this text is draft. You have been granted access through the generosity of the editor. Please use the comments to help make suggestions or corrections."
+  by: "Par"
+  edited_by: "Édité par"
 
   
+

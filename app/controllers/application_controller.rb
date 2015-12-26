@@ -15,7 +15,11 @@ class ApplicationController < ActionController::Base
   
 
   def set_locale
-    I18n.locale = params[:locale] || I18n.default_locale
+    if current_user.nil?
+      I18n.locale = I18n.default_locale
+    else
+      I18n.locale = params[:locale] || current_user.language 
+    end
   end
 
   private
@@ -24,7 +28,14 @@ class ApplicationController < ActionController::Base
       redirect_to(request.referrer || permissions_path)
     end
     def set_conf
-      if Rails.env.development?
+      
+      if request.host.include? "petrusplaoul"
+        commentaryid = "plaoulcommentary"
+      elsif request.host.include? "adamwodeham"
+        commentaryid = "wodehamordinatio"
+      elsif request.subdomains.any?
+        commentaryid = request.subdomains.first
+      elsif Rails.env.development?
         # only needed for developement
         port = request.port
         if port + 1 == 3009 
@@ -35,12 +46,6 @@ class ApplicationController < ActionController::Base
           cid = port.to_s.split('').last.to_i + 1
         end
         commentaryid = Setting.find(cid).commentaryid
-      elsif request.host == "petrusplaoul.org" || request.host == "www.petrusplaoul.org" 
-        commentaryid = "plaoulcommentary"
-      elsif request.host == "adamwodeham.org" || request.host == "www.adamwodeham.org"
-        commentaryid = "wodehamordinatio"  
-      elsif request.subdomains.any?
-        commentaryid = request.subdomains.first
       end
       #@config = LbpConfig.new(url)
       @config = Setting.find_by(commentaryid: commentaryid)

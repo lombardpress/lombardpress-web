@@ -10,6 +10,10 @@
   <!-- this param needs to change if, for example, you want the show xml function to display XML for something other than "critical"; Alternatively, this slug could be found somewhere in the TEI document being processed -->
   <xsl:param name="default-msslug">critical</xsl:param>
   
+  <!-- these params provide different language locales inherited from rails app -->  
+  <xsl:param name="by_phrase">By</xsl:param>
+  <xsl:param name="edited_by_phrase">By</xsl:param>
+  
   
   <!-- variables-->
   <xsl:variable name="itemid"><xsl:value-of select="/tei:TEI/tei:text/tei:body/tei:div/@xml:id"/></xsl:variable>
@@ -271,8 +275,8 @@
   <xsl:template name="teiHeaderInfo">
     <div id="lbp-pub-info">
       <h2><span id="sectionTitle" class="sectionTitle"><xsl:value-of select="//tei:titleStmt/tei:title"/></span></h2>
-      <h4>By <xsl:value-of select="//tei:titleStmt/tei:author"/></h4>
-      <p>Edited by: 
+      <h4><xsl:value-of select="$by_phrase"/><xsl:text> </xsl:text><xsl:value-of select="//tei:titleStmt/tei:author"/></h4>
+      <p><xsl:value-of select="$edited_by_phrase"/><xsl:text> </xsl:text>
         <xsl:for-each select="//tei:titleStmt/tei:editor">
           <xsl:choose>
             <xsl:when test="position() = last()">
@@ -365,5 +369,4 @@
       </xsl:for-each>
     </ul>
   </xsl:template>
-
 </xsl:stylesheet>

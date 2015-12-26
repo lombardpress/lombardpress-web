@@ -14,7 +14,7 @@ class Users::ProfilesController < ApplicationController
 	def show
 		@user = User.find(params[:id])
 		@profile = @user
-		#not that user in the authorize method is actually the second arg
+		#note that user in the authorize method is actually the second arg
 		#corresponding to the @profile arg in the pundit policy
 		authorize @profile
   end
