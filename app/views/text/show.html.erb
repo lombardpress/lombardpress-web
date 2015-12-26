@@ -1,4 +1,11 @@
+<!-- style override for body to prevent overlap with bottom tool bar -->
+<style type="text/css">
+body {padding-bottom: 50px;}
+</style>
+<!-- end of style override -->
+ 
 <%= render "text_nav_bar" %>
+
 <% if params[:search] != nil %>
 	<div id="lbp-text-body" class="container" data-search="<%= params[:search] %>" data-searchid="<%= params[:searchid] %>">
 <% else %>
