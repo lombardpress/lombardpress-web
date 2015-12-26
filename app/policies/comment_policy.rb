@@ -7,10 +7,10 @@ class CommentPolicy < ApplicationPolicy
   end
 
   def new?
-    user.admin? or user.editor? or user.draft_reader? or user.public_reader?
+    user.admin? or user.reader?
   end
   def create?
-    user.admin? or user.editor? or user.draft_reader? or user.public_reader?
+    user.admin? or user.reader?
   end
 
   def edit?

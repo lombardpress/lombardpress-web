@@ -7,6 +7,7 @@ class Users::ProfilesController < ApplicationController
 		 #	redirect_to "/permissions", :alert => "Access denied."
     #end
     @users = User.all
+    @sorted_users = @users.sort_by {|row| row[:email]}
     @profile = User.new
     authorize @profile
 

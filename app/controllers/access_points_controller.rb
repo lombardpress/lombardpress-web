@@ -1,8 +1,15 @@
 class AccessPointsController < ApplicationController
 	before_filter :authenticate_user!
-	def show
+	def index
 
-		@access_point = AccessPoint.find_by(access_params)
+		@access_points = AccessPoint.all
+		@sorted_access_points = @access_points.sort_by do |row| 
+				row[:itemid]
+			end
+		authorize @access_points
+	end
+	def show
+		@access_point = AccessPoint.find_by(itemid: params[:itemid], commentaryid: params[:commentaryid], role: params[:role])
 		authorize @access_point
 	end
 	def create
@@ -44,6 +51,6 @@ class AccessPointsController < ApplicationController
 
   private 
 	  def access_params
-	    params.require(:access_point).permit(:itemid, :commentaryid)
-	  end
+	  	params.require(:access_point).permit(:itemid, :commentaryid, :role)
+		end
 end

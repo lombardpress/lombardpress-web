@@ -13,14 +13,14 @@ module TextMethods
 			if item.status == "In Progress" || item.status == "draft"
 				if current_user.nil?
 					redirect_to "/text/draft_permissions/#{params[:itemid]}", :alert => "Access denied: This text is a draft. It requires permission to be viewed." and return
-				elsif current_user.draft_reader? 
+				elsif !current_user.admin? 
 					allowed_texts = current_user.access_points.map {|access_point| {access_point.itemid =>access_point.commentaryid} }
 					unless allowed_texts.include? params[:itemid] => @config.commentaryid or allowed_texts.include? "all" => @config.commentaryid
 						redirect_to "/text/draft_permissions/#{params[:itemid]}", :alert => "Access denied: This text is a draft. It requires permission to be viewed." and return
 					end
-				elsif !current_user.admin? 
+				else
 					redirect_to "/text/draft_permissions/#{params[:itemid]}", :alert => "Access denied: This text is a draft. It requires permission to be viewed." and return
-				end
+				end 
 			end
 		end
 		def default_wit(params)

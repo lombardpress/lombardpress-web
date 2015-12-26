@@ -79,8 +79,9 @@ end
   put 'users/profiles/:id' => 'users/profiles#update', as: :update_users_profile
   post 'users/profiles' => 'users/profiles#create', as: :create_users_profile
   get 'users/profiles' => 'users/profiles#index'
-
-  get 'accesspoints/:commentaryid/:itemid' => 'access_points#show', as: :access_point
+  
+  get 'accesspoints' => 'access_points#index', as: :access_points
+  get 'accesspoints/:commentaryid/:itemid/:role' => 'access_points#show', as: :access_point
   post 'accesspoints/:id' => 'access_points#create', as: :create_access_point
   delete 'accesspoints/:id' => 'access_points#destroy', as: :delete_access_point
   

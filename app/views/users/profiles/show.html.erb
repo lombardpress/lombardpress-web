@@ -10,10 +10,12 @@
 		<% if @user.access_points.count > 0  %>
 			<p>Has individual access to</p>
 			<table class="table table-striped table-hover">
-				<% @user.access_points.each do |access_point| %>
+				<% sorted_access_points = @user.access_points.sort_by {|ap| ap[:itemid]} %>
+				<% sorted_access_points.each do |access_point| %>
 					<tr>
 						<td><%= access_point.itemid %></td>
 						<td><%= access_point.commentaryid %></td>
+						<td><%= access_point.role %></td>
 						<% if current_user.admin? %>
 							<td>
 								<%= form_for(:access_point, url: delete_access_point_path, method: :delete) do |f| %>
@@ -61,6 +63,11 @@
 					<p>Add Access Point</p>
 					<%= f.text_field :itemid %>
 					<%= f.text_field :commentaryid %>
+					<%= f.select(:role) do %> 
+		      	<% AccessPoint.roles.each do |role, int| %>
+		      		<%= content_tag(:option, role, value: role) %>
+		    		<% end %>
+		  		<% end %>
 					<%= f.submit "Add Access Point" %>
 				<% end %>
 			</div>

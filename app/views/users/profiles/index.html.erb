@@ -11,7 +11,7 @@
 			</tr>
 		</thead>
 		<tbody>
-			<% @users.each do |user| %>
+			<% @sorted_users.each do |user| %>
 				<tr>
 					<td><%= link_to user.email, users_profile_path(user) %></td>
 					<td><%= user.role %></td>

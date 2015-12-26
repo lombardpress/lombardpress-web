@@ -1,6 +1,8 @@
 class AccessPointPolicy < ApplicationPolicy
+	def index?
+		user.admin?
+	end
 	def show?
-		puts "test"
 		user.admin?
 	end
 	def create?
