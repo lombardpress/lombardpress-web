@@ -19,20 +19,23 @@
 # To learn more, please read the Rails Internationalization guide
 # available at http://guides.rubyonrails.org/i18n.html.
 
-en:
-  hello: "Hello World"
-  text: "Text"
-  resources: "Resources"
-  toc: "Table of Contents" 
-  toq: "Table of Questions"
-  index: "Index"
-  about: "About"
-  account: "Account"
-  login: "Log in"
-  logout: "Log out"
-  view_the_text: "See the text"
-  learn_more: "Learn more"
-  search_text: "Search the text"
-  powered_by: "Powered by"
-  profile: "Profile"
-  edit_profile: "Edit Profile"
+fr:
+  hello: "Bonjour Monde"
+  text: "Texte"
+  resources: "Ressources"
+  toc: "Table des matières" 
+  toq: "Table des Questions"
+  index: "Indice"
+  about: "A propos"
+  account: "Compte"
+  login: "Entre"
+  logout: "Déconnecter"
+  submit: "Soumettre"
+  view_the_text: "Voir le texte"
+  learn_more: "Savoir plus"
+  search_text: "Rechercher le texte"
+  powered_by: "Propulsé par"
+  profile: "Profil"
+  edit_profile: "Modifier le profil"
+
+  

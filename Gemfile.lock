@@ -82,6 +82,7 @@ GEM
       responders
       thread_safe (~> 0.1)
       warden (~> 1.2.3)
+    devise-i18n (0.12.1)
     domain_name (0.5.24)
       unf (>= 0.0.5, < 1.0.0)
     ebnf (0.3.9)
@@ -261,6 +262,7 @@ DEPENDENCIES
   ckeditor_rails
   coffee-rails (~> 4.1.0)
   devise
+  devise-i18n
   handlebars_assets
   jbuilder (~> 2.0)
   jquery-rails
