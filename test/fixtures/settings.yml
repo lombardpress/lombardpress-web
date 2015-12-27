@@ -6,7 +6,7 @@ one:
   title: Peter Plaoul's Commentary on the Sentences
   bannermessage: Peter Plaoul's Commentary on the Sentences
   blog: true
-  default_ms_image: 'Reims'
+  default_ms_image: 'reims'
   dark_color: MyString
   light_color: MyString
   commentarydirname: MyString

@@ -16,11 +16,25 @@ commentary_list = [
   }
 ]
 
+user_list = [
+	{
+	email: "admin@example.com",
+  password: "changme"
+  role: 0
+	},
+	{
+	user: "user@example.com",
+  password: "changme"
+  role: 1
+	}
+]
+
 commentary_list.each do |commentary|
   Setting.create(commentaryid: commentary[:commentaryid], blog: commentary[:blog], images: commentary[:images], logo: commentary[:logo], default_ms_image: commentary[:default_ms_image])
 end
 
-
-User.create(email: "admin@admin.com", password: "changeme", role: 0)
+user_list.each do |user|
+	User.create(email: user[:email], password: user[:password], role: user[:role])
+end
 
 

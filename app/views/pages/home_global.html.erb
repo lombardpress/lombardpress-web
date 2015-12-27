@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Lombardpress2</title>
+  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+  <%= csrf_meta_tags %>
+
+  <style>
+  .lbp-tile {opacity: .8; height: 200px; border: 1px solid gray; text-align: center;}
+	.lbp-tile:hover {opacity: 1;}
+	.lbp-tile-info {
+  	display: none;
+  	background-color: black;
+  	position: absolute;
+  	color: white;
+  	width: 100%;
+  	padding: 10px;
+  	top: 0;
+  	left: 0px;
+  	bottom: 0px;
+  	z-index: 1;
+  }
+  .lbp-tile-logo {position: absolute; top: 30%; text-align: center; font-size: 20px;}
+  .lbp-global-home-header {margin-bottom: 20px;}
+	</style>
+	<script>
+	 $(document).ready(function(){
+	 		$(".lbp-tile").hover(function(){
+	 			$(this).children(".lbp-tile-info").slideToggle();
+			});
+	 });
+	</script>
+
+</head>
+
+<body>
+
+<div id="lbp-global-home-body" class="container">
+	<div id="lbp-global-home-header" class="container center">
+	<h1>LombardPress Sentences Commentary Publications</h1>
+	<p>Search All Commentaries</p>
+	
+		<form class="center" role="search" action="http://#{commentary.commentaryid}.lombardpress.org/search" method="get">
+	    <div class="form-group">
+	      <input type="text" class="form-control" placeholder="<%= t(:search_text) %>" name="searchterm">
+	    </div>
+	   <button type="submit" class="btn btn-default" style="margin-top: 10px"><%= t(:submit) %></button>
+		</form>
+	</div>
+	
+	<div class="container">
+		<div class="row">
+
+		<% @commentaries.each do |commentary| %>
+			<div class="col-md-3 col-sm-3 lbp-tile" >
+				<p class="lbp-tile-logo"><%=commentary.logo %></p>
+				<div class="lbp-tile-info" style="background-color: <%= commentary.dark_color %>">
+					<p><%= commentary.logo %><p>
+					<p><%= link_to "View Text", "http://#{commentary.commentaryid}.lombardpress.org" %><p>
+					<!-- begin seach form -->
+					<form class="center" role="search" action="http://#{commentary.commentaryid}.lombardpress.org/search" method="get">
+		        <div class="form-group">
+		          <input type="text" class="form-control" placeholder="<%= t(:search_text) %>" name="searchterm">
+		        </div>
+		        <button type="submit" class="btn btn-default"><%= t(:submit) %></button>
+	      	</form>
+	      	<!-- end search form -->
+				</div>
+
+			</div>
+
+		<% end %>
+		</div>
+	</div>
+</div>
+
+
+<%= debug(params) if Rails.env.development? %>
+<%= "User Loggied in: " + user_signed_in?.to_s if Rails.env.development? %>
+<%= "id: " + current_user.id.to_s + " username/email: " + current_user.email + " role: " + current_user.role if Rails.env.development? && user_signed_in?%>
+
+<% if current_user %>
+	<script type="text/javascript">
+	analytics.identify( "<%= current_user.id %>", {
+	  email: "<%= current_user.email %>"
+	});
+	</script>
+<% end %>
+
+
+</body>
+</html>
+

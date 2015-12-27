@@ -28,28 +28,32 @@ class ApplicationController < ActionController::Base
       redirect_to(request.referrer || permissions_path)
     end
     def set_conf
-      
-      if request.host.include? "petrusplaoul"
-        commentaryid = "plaoulcommentary"
-      elsif request.host.include? "adamwodeham"
-        commentaryid = "wodehamordinatio"
-      elsif request.subdomains.any?
-        commentaryid = request.subdomains.first
-      elsif Rails.env.development?
-        # only needed for developement
-        port = request.port
-        if port + 1 == 3009 
-          cid = port.to_s.split('').last().to_i + 1
-        elsif port + 1 >= 3010
-          cid = port.to_s.split('').last(2).join.to_i + 1
+      unless request.host == "sententia.lombardpress.org" || request.host == "sententia.lombardpress.dev"
+        if request.host.include? "petrusplaoul"
+          commentaryid = "plaoulcommentary"
+        elsif request.host.include? "adamwodeham"
+          commentaryid = "wodehamordinatio"
+        elsif request.subdomains.any?
+          commentaryid = request.subdomains.first
+        elsif Rails.env.development?
+          # only needed for developement
+          port = request.port
+          if port + 1 == 3009 
+            cid = port.to_s.split('').last().to_i + 1
+          elsif port + 1 >= 3010
+            cid = port.to_s.split('').last(2).join.to_i + 1
+          else
+            cid = port.to_s.split('').last.to_i + 1
+          end
+          commentaryid = Setting.find(cid).commentaryid
         else
-          cid = port.to_s.split('').last.to_i + 1
+          commentaryid = "plaoulcommentary"
         end
-        commentaryid = Setting.find(cid).commentaryid
+        
+        @config = Setting.find_by(commentaryid: commentaryid)
+        Rails.application.config.action_mailer.default_url_options[:host] = request.host
       end
-      #@config = LbpConfig.new(url)
-      @config = Setting.find_by(commentaryid: commentaryid)
-      Rails.application.config.action_mailer.default_url_options[:host] = request.host
+
     end
     def check_for_user
       unless request.path == "/users/sign_in" or request.path == "/users/password/new" or request.path == "/users/password" or request.path == "/users/password/edit"
