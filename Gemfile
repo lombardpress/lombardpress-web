@@ -12,6 +12,9 @@ gem 'coffee-rails', '~> 4.1.0'
 # See https://github.com/sstephenson/execjs#readme for more supported runtimes
 # gem 'therubyracer', platforms: :ruby
 
+## adding support for sprokcets es6
+gem 'sprockets-es6', require: 'sprockets/es6'
+
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
@@ -30,11 +33,12 @@ gem 'devise-i18n'
 
 ## rails to include rich text editor in asset pipeline
 gem 'ckeditor_rails'
+
 #handle bars assets allows me to call HandlebarsTemplates['template'](data) in javascript files 
-gem 'handlebars_assets'
+gem 'handlebars_assets', :git => "https://github.com/leshill/handlebars_assets.git"
 
 
-gem 'lbp', :git => "https://jeffreycwitt@bitbucket.org/jeffreycwitt/lbp.rb.git", :branch => "sparql-only"
+gem 'lbp', :git => "https://bitbucket.org/jeffreycwitt/lbp.rb.git", :branch => "sparql-only"
 
 gem 'osullivan'
 

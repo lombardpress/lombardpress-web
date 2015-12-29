@@ -1,0 +1,21 @@
+  #lbp-global-home-body {background: #ffffff image-url('coverimage.jpg') repeat center top; height: 100%; padding-bottom: 50px; padding-top: 50px; width: 100%; margin: 0}
+  .lbp-tile {opacity: .8; height: 200px; border: 1px solid gray; text-align: center;}
+	.lbp-tile:hover {opacity: 1;}
+	.lbp-tile-info {
+  	display: none;
+  	background-color: black;
+  	position: absolute;
+  	color: white;
+  	width: 100%;
+  	padding: 10px;
+  	top: 0;
+  	left: 0px;
+  	bottom: 0px;
+  	z-index: 1;
+  }
+  .lbp-tile-logo {position: absolute; top: 30%; text-align: center; font-size: 20px;}
+  .lbp-global-home-header {margin-bottom: 20px;}
+  
+  .lbp-global-panel {}
+  #lbp-global-table {@include border-radius(10px); @include box-shadow(50px);}
+  

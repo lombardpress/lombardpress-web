@@ -18,8 +18,7 @@ module TextMethods
 					unless allowed_texts.include? params[:itemid] => @config.commentaryid or allowed_texts.include? "all" => @config.commentaryid
 						redirect_to "/text/draft_permissions/#{params[:itemid]}", :alert => "Access denied: This text is a draft. It requires permission to be viewed." and return
 					end
-				else
-					redirect_to "/text/draft_permissions/#{params[:itemid]}", :alert => "Access denied: This text is a draft. It requires permission to be viewed." and return
+				# if user is logged in and is admin, no redirect should occur, thus there is no final "else" statment
 				end 
 			end
 		end
