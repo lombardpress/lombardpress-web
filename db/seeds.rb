@@ -23,7 +23,7 @@ user_list = [
   role: 0
 	},
 	{
-	user: "user@example.com",
+	email: "user@example.com",
   password: "changeme",
   role: 1
 	}
