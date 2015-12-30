@@ -47,15 +47,16 @@ gem 'osullivan'
 
  gem 'pundit'
 
-# Use Unicorn as the app server
-# gem 'unicorn'
-# Using Puma as web server
-gem 'puma'
+
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 group :production do
   gem 'pg'
+  # Use Unicorn as the app server
+  # gem 'unicorn'
+  # Using Puma as web server
+  gem 'puma'
 
 end
 

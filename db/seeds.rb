@@ -19,12 +19,12 @@ commentary_list = [
 user_list = [
 	{
 	email: "admin@example.com",
-  password: "changme"
+  password: "changeme"
   role: 0
 	},
 	{
 	user: "user@example.com",
-  password: "changme"
+  password: "changeme"
   role: 1
 	}
 ]
