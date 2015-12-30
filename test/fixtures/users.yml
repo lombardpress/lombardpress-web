@@ -12,3 +12,4 @@ user:
   id: 2
   email: "user@example.com"
   role: 1
+  access_points: ap_lectio1_plaoul_draft_reader

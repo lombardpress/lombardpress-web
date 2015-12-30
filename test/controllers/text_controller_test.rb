@@ -39,5 +39,17 @@ class TextControllerTest < ActionController::TestCase
     get :show, {'itemid' => "lectio1"}
     assert :redirect
   end
+  test "should request text#show and succeed when user is logged in and has draft status access point" do
+    sign_in users(:user)
+    
+    get :show, {'itemid' => "lectio1"}
+    assert :success
+  end
+  test "should request text#show and redirect when user is logged in but does not have draft status access point" do
+    sign_in users(:user)
+    
+    get :show, {'itemid' => "lectio2"}
+    assert :redirect
+  end
 
 end
