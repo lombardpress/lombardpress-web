@@ -75,6 +75,8 @@ group :development, :test do
   gem 'pry'
 
   gem 'thin'
+  # use letter opener for development email
+  gem "letter_opener"
 
 end
 

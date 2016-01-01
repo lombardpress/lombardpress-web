@@ -1,12 +1,13 @@
 GIT
   remote: https://bitbucket.org/jeffreycwitt/lbp.rb.git
-  revision: 0372c2d3b89f8f60ab6eaf182404b06ba4e57e75
+  revision: d4047c2f0ee0294a5e95f2172e827a82599f7676
   branch: sparql-only
   specs:
     lbp (0.0.2)
       nokogiri
       rdf
       rdf-rdfxml
+      rdf-vocab
       rest-client
       sparql
       thor
@@ -60,6 +61,7 @@ GEM
       minitest (~> 5.1)
       thread_safe (~> 0.3, >= 0.3.4)
       tzinfo (~> 1.1)
+    addressable (2.4.0)
     arel (6.0.0)
     autoprefixer-rails (5.1.11)
       execjs
@@ -124,13 +126,17 @@ GEM
       railties (>= 4.2.0)
       thor (>= 0.14, < 2.0)
     json (1.8.3)
+    launchy (2.4.3)
+      addressable (~> 2.3)
+    letter_opener (1.4.1)
+      launchy (~> 2.2)
     link_header (0.0.8)
     loofah (2.0.3)
       nokogiri (>= 1.5.9)
     mail (2.6.3)
       mime-types (>= 1.16, < 3)
     method_source (0.8.2)
-    mime-types (2.5)
+    mime-types (2.99)
     mini_portile2 (2.0.0)
     minitest (5.8.3)
     multi_json (1.11.2)
@@ -196,6 +202,8 @@ GEM
       rdf (~> 1.99)
       rdf-rdfa (~> 1.99)
       rdf-xsd (~> 1.99)
+    rdf-vocab (0.8.7.1)
+      rdf (~> 1.1, >= 1.1.10)
     rdf-xsd (1.99.0)
       rdf (~> 1.99)
     rdoc (4.2.0)
@@ -282,6 +290,7 @@ DEPENDENCIES
   jbuilder (~> 2.0)
   jquery-rails
   lbp!
+  letter_opener
   osullivan
   pg
   pry

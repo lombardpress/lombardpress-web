@@ -12,7 +12,7 @@ commentary_list = [
   blog: true,
   images: true,
   logo: "Petrus Plaoul",
-  default_ms_image:	'reims'
+  default_ms_image:	"'reims'"
   }
 ]
 
