@@ -50,6 +50,7 @@ class TextController < ApplicationController
 		end
 		
 		@title = item.title
+
 		#remove @fs after check for use. use itemid instead
 		@fs = item.fs
 		@itemid = item.fs
@@ -67,7 +68,7 @@ class TextController < ApplicationController
 				"edited_by_phrase", "'#{t(:edited_by)}'"]
 		
 		@transform = transcript.transform_main_view(xslt_param_array)
-
+		
 	end
 	
 	def xml

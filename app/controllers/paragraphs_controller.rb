@@ -26,7 +26,6 @@ class ParagraphsController < ApplicationController
 
     transcript = @item.transcription(source: "origin", wit: canonicalwit)
     
-
     @p = transcript.paragraph(pid).transform_plain_text
     render :layout => false
   end
