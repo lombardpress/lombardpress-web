@@ -48,10 +48,10 @@ $(document).on('ready page:load', function () {
 			showSpinner("#lbp-bottom-window-container");
 			showBottomWindow();
 			halfSizeBottomWindow();
-			var msslug = $(this).attr("data-msslug");
+			//var msslug = $(this).attr("data-msslug");
 			var canvasid = $(this).attr("data-canvasid");
 			
-			showFolioImage(msslug, canvasid);
+			showFolioImage(canvasid);
 		
 		});
 
@@ -255,8 +255,8 @@ var showParaZoomImage = function(itemid, msslug, pid){
 			});
 		});
 }
-var showFolioImage = function(msslug, canvasid){
-	$.get("/paragraphimage/showfoliozoom/" + msslug + "/" + canvasid, function(data){
+var showFolioImage = function(canvasid){
+	$.get("/paragraphimage/showfoliozoom?canvasid="+ canvasid, function(data){
 		id = Math.random();
 		$("#lbp-bottom-window-container").html("<div id='openseadragon-" + id + "' style='width: 1000px; height: 1400px; margin: auto;'></div>");
 		showOpenseadragonFolio(id, data)

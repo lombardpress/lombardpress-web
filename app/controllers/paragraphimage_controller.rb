@@ -73,9 +73,9 @@ class ParagraphimageController < ApplicationController
 	def showfoliozoom
 		#add commentaryslug to Settings config; then this will be fully automated
 		commentary_slug = Lbp::Collection.new(@config.confighash, "http://scta.info/text/#{@config.commentaryid}/commentary").slug
-		manifest_slug = commentary_slug + "-" + params[:msslug]
-		canvasid = "http://scta.info/iiif/#{manifest_slug}/canvas/#{params[:canvas_id]}"
-
+		#manifest_slug = commentary_slug + "-" + params[:msslug]
+		#canvasid = "http://scta.info/iiif/#{manifest_slug}/canvas/#{params[:canvas_id]}"
+		canvasid = params[:canvasid].sub('xxx-', "#{commentary_slug}-")
 		
 		results = MiscQuery.new.folio_info(canvasid)
 		

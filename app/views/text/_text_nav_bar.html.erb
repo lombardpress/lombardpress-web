@@ -18,10 +18,10 @@
           <li><a class="js-show-outline" data-itemid="<%= @itemid %>"><%= t(:text_outline) %></a></li>
         <% end %>
         <% if @previous_itemid != nil  %>
-          <li><%= link_to t(:previous), show_text_path(@previous_itemid, params[:msslug]) %></li> 
+          <li><%= link_to t(:previous), show_text_path(@previous_itemid, params[:msslug]),  data: { keybinding: 'p' } %></li> 
         <% end %>
         <% if @next_itemid != nil %>
-          <li><%= link_to t(:next), show_text_path(@next_itemid, params[:msslug]) %></li> 
+          <li><%= link_to t(:next), show_text_path(@next_itemid, params[:msslug]), data: { keybinding: 'n' } %></li> 
         <% end %>
           <li><a href="/text/status/<%= params[:itemid] %>"><%= t(:available_transcriptions) %></a></li>
         

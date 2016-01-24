@@ -139,6 +139,7 @@ GEM
     mime-types (2.99)
     mini_portile2 (2.0.0)
     minitest (5.8.3)
+    mousetrap-rails (1.4.6)
     multi_json (1.11.2)
     multipart-post (2.0.0)
     net-http-persistent (2.9.4)
@@ -291,6 +292,7 @@ DEPENDENCIES
   jquery-rails
   lbp!
   letter_opener
+  mousetrap-rails
   osullivan
   pg
   pry

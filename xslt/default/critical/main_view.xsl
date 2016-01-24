@@ -174,7 +174,7 @@
   <!-- clear note desc bib template -->
   <xsl:template match=" tei:note | tei:desc | tei:bibl"></xsl:template>
   
-  <xsl:template match="tei:cb">
+  <xsl:template match="tei:cb[not(@type='startOn')]">
     <xsl:variable name="hashms"><xsl:value-of select="@ed"/></xsl:variable>
     <xsl:variable name="ms"><xsl:value-of select="translate($hashms, '#', '')"/></xsl:variable>
     <xsl:variable name="fullcn"><xsl:value-of select="@n"/></xsl:variable>
@@ -183,9 +183,21 @@
     <xsl:variable name="side_column"><xsl:value-of select="substring($fullcn, $length+1)"/></xsl:variable>
     <xsl:variable name="just_column"><xsl:value-of select="substring($fullcn, $length+2, 1)"/></xsl:variable>
     <xsl:variable name="justSide"><xsl:value-of select="substring($fullcn, $length+1, 1)"/></xsl:variable>
-    <xsl:variable name="canvasid" select="concat($ms, $folionumber, $justSide)"/>
-    <!-- this variable gets the msslug associated with ms initial in the teiHeader -->
     <xsl:variable name="break-ms-slug" select="/tei:TEI/tei:teiHeader/tei:fileDesc/tei:sourceDesc/tei:listWit/tei:witness[@xml:id=$ms]/@n"/>
+    <xsl:variable name="canvasid">
+      <xsl:choose>
+        <xsl:when test="/tei:TEI/tei:teiHeader/tei:fileDesc/tei:sourceDesc/tei:listWit/tei:witness[@xml:id=$ms]/@xml:base">
+          <xsl:variable name="canvasbase" select="/tei:TEI/tei:teiHeader/tei:fileDesc/tei:sourceDesc/tei:listWit/tei:witness[@xml:id=$ms]/@xml:base"/>
+          <xsl:variable name="canvasend" select="./@select"/>
+          <xsl:value-of select="concat($canvasbase, $canvasend)"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:value-of select="concat('http://scta.info/iiif/', 'xxx-', $break-ms-slug, '/canvas/', $ms, $folionumber, $justSide)"/>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable> 
+    <!-- this variable gets the msslug associated with ms initial in the teiHeader -->
+    
     <span class="lbp-folionumber">
       <!-- data-msslug needs to get info directly from final; default will not work -->
       <xsl:choose>
@@ -206,7 +218,7 @@
     <xsl:text> </xsl:text>
   </xsl:template>
   
-  <xsl:template match="tei:pb">
+  <xsl:template match="tei:pb[not(@type='startOn')]">
     <xsl:variable name="hashms"><xsl:value-of select="@ed"/></xsl:variable>
     <xsl:variable name="ms"><xsl:value-of select="translate($hashms, '#', '')"/></xsl:variable>
     <xsl:variable name="fullcn"><xsl:value-of select="@n"/></xsl:variable>
@@ -216,9 +228,24 @@
     <xsl:variable name="folionumber"><xsl:value-of select="substring($fullcn,1, $length)"/></xsl:variable>
     <!-- this desgination gets side by skipping lenghth of msAbbrev and folio number and then getting the first character that occurs -->
     <xsl:variable name="justSide"><xsl:value-of select="substring($fullcn, $length+1, 1)"/></xsl:variable>
-    <xsl:variable name="canvasid" select="concat($ms, $folionumber, $justSide)"/>
+    
     <!-- this variable gets the msslug associated with ms initial in the teiHeader -->
     <xsl:variable name="break-ms-slug" select="/tei:TEI/tei:teiHeader[1]/tei:fileDesc[1]/tei:sourceDesc[1]/tei:listWit[1]/tei:witness[1][@xml:id=$ms]/@n"/>
+    
+    
+    <xsl:variable name="canvasid">
+      <xsl:choose>
+        <xsl:when test="/tei:TEI/tei:teiHeader/tei:fileDesc/tei:sourceDesc/tei:listWit/tei:witness[@xml:id=$ms]/@xml:base">
+          <xsl:variable name="canvasbase" select="/tei:TEI/tei:teiHeader/tei:fileDesc/tei:sourceDesc/tei:listWit/tei:witness[@xml:id=$ms]/@xml:base"/>
+          <xsl:variable name="canvasend" select="./@select"/>
+          <xsl:value-of select="concat($canvasbase, $canvasend)"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <!-- the 'xxx-' is used to be replaced in the rails app with the commentary slug -->
+          <xsl:value-of select="concat('http://scta.info/iiif/', 'xxx-', $break-ms-slug, '/canvas/', $ms, $folionumber, $justSide)"/>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
 
     <span class="lbp-folionumber">
       <!-- data-msslug needs to get info directly from final; default will not work -->

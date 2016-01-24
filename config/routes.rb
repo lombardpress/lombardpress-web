@@ -69,7 +69,8 @@ scope "text" do
   get ':itemid(/:msslug)' => 'text#show', as: :show_text
 end 
 
-  get 'paragraphimage/showfoliozoom/:msslug/:canvas_id' => 'paragraphimage#showfoliozoom'
+  #get 'paragraphimage/showfoliozoom/:msslug/:canvas_id' => 'paragraphimage#showfoliozoom'
+  get 'paragraphimage/showfoliozoom' => 'paragraphimage#showfoliozoom'
   get 'paragraphimage/showzoom/:itemid/:msslug/:pid' => 'paragraphimage#showzoom'
   get 'paragraphimage/:itemid/:msslug/:pid' => 'paragraphimage#show'
 

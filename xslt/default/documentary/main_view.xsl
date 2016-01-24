@@ -199,7 +199,20 @@
     <xsl:variable name="side_column"><xsl:value-of select="substring($fullcn, $length+1)"/></xsl:variable>
     <xsl:variable name="just_column"><xsl:value-of select="substring($fullcn, $length+2, 1)"/></xsl:variable>
     <xsl:variable name="justSide"><xsl:value-of select="substring($fullcn, $length+1, 1)"/></xsl:variable>
-    <xsl:variable name="canvasid" select="concat($ms, $folionumber, $justSide)"/>
+    
+    <xsl:variable name="canvasid">
+      <xsl:choose>
+        <xsl:when test="/tei:TEI/tei:teiHeader/tei:fileDesc/tei:sourceDesc/tei:listWit/tei:witness[@xml:id=$ms]/@xml:base">
+          <xsl:variable name="canvasbase" select="/tei:TEI/tei:teiHeader/tei:fileDesc/tei:sourceDesc/tei:listWit/tei:witness[@xml:id=$ms]/@xml:base"/>
+          <xsl:variable name="canvasend" select="./@select"/>
+          <xsl:value-of select="concat($canvasbase, $canvasend)"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:value-of select="concat('http://scta.info/iiif/', 'xxx-', $default-ms-image, '/canvas/', $ms, $folionumber, $justSide)"/>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
+    
     <span class="lbp-folionumber">
       <xsl:choose>
         <xsl:when test="$show-images = 'true'">
@@ -230,7 +243,20 @@
     <!-- this desgination gets side by skipping lenghth of msAbbrev and folio number and then getting the first character that occurs -->
     
     <xsl:variable name="justSide"><xsl:value-of select="substring($fullcn, $length+1, 1)"/></xsl:variable>
-    <xsl:variable name="canvasid" select="concat($ms, $folionumber, $justSide)"/>
+    
+    <xsl:variable name="canvasid">
+      <xsl:choose>
+        <xsl:when test="/tei:TEI/tei:teiHeader/tei:fileDesc/tei:sourceDesc/tei:listWit/tei:witness[@xml:id=$ms]/@xml:base">
+          <xsl:variable name="canvasbase" select="/tei:TEI/tei:teiHeader/tei:fileDesc/tei:sourceDesc/tei:listWit/tei:witness[@xml:id=$ms]/@xml:base"/>
+          <xsl:variable name="canvasend" select="./@select"/>
+          <xsl:value-of select="concat($canvasbase, $canvasend)"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:value-of select="concat('http://scta.info/iiif/', 'xxx-', $default-ms-image, '/canvas/', $ms, $folionumber, $justSide)"/>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
+    
     <span class="lbp-folionumber">
       <xsl:choose>
         <xsl:when test="$show-images = 'true'">
