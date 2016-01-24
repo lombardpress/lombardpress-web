@@ -1,25 +1,27 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  commentaryid: MyString
-  logo: MyString
-  title: MyText
-  bannermessage: MyText
-  blog: false
-  default_ms_image: MyString
+  commentaryid: plaoulcommentary
+  logo: Petrus Plaoul
+  title: Peter Plaoul's Commentary on the Sentences
+  bannermessage: Peter Plaoul's Commentary on the Sentences
+  blog: true
+  default_ms_image: 'reims'
   dark_color: MyString
   light_color: MyString
   commentarydirname: MyString
-  article_id_id: 
+  images: true
+  properties: 
 
 two:
-  commentaryid: MyString
-  logo: MyString
-  title: MyText
-  bannermessage: MyText
-  blog: false
+  commentaryid: lombardsententia
+  logo: Petrus Lombardus
+  title: Petrus Lombard's Sentences
+  bannermessage: Petrus Lombard's Sentences
+  blog: true
   default_ms_image: MyString
   dark_color: MyString
   light_color: MyString
   commentarydirname: MyString
-  article_id_id: 
+  images: true
+  properties:

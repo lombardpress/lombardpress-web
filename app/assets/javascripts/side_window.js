@@ -218,3 +218,19 @@ var showParagraphReference = function(url){
     }
   });
 }	
+
+var getParagraphIdFromNumber = function(n){
+	pid = $("span#pn" + n).parent("p").attr("id");
+	console.log(pid);
+	return pid;
+}
+
+var getNextParagraph = function(pid){
+	$nextparagraph = $("p#" + pid).next("p")
+	return $nextparagraph;
+}
+
+var getPreviousParagraph = function(pid){
+	$previousparagraph = $("p#" + pid).prev("p")
+	return $previousparagraph;
+}

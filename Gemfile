@@ -8,14 +8,25 @@ gem 'sass-rails', '~> 5.0'
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 1.3.0'
 # Use CoffeeScript for .coffee assets and views
+
+### Javascript assets
 gem 'coffee-rails', '~> 4.1.0'
 # See https://github.com/sstephenson/execjs#readme for more supported runtimes
 # gem 'therubyracer', platforms: :ruby
 
+## adding support for sprokcets es6
+gem 'sprockets-es6', require: 'sprockets/es6'
+
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
+
+## mousetrap keyboard shortcuts gem read more at: https://github.com/kugaevsky/mousetrap-rails
+gem 'mousetrap-rails'
+
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
 gem 'turbolinks'
+
+
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 2.0'
 # bundle exec rake doc:rails generates the API under doc/api.
@@ -26,14 +37,16 @@ gem 'bootstrap-sass', '~> 3.2.0'
 gem 'autoprefixer-rails'
 
 gem 'devise'
+gem 'devise-i18n'
 
 ## rails to include rich text editor in asset pipeline
 gem 'ckeditor_rails'
+
 #handle bars assets allows me to call HandlebarsTemplates['template'](data) in javascript files 
-gem 'handlebars_assets'
+gem 'handlebars_assets', :git => "https://github.com/leshill/handlebars_assets.git"
 
 
-gem 'lbp', :git => "https://jeffreycwitt@bitbucket.org/jeffreycwitt/lbp.rb.git", :branch => "sparql-only"
+gem 'lbp', :git => "https://bitbucket.org/jeffreycwitt/lbp.rb.git", :branch => "sparql-only"
 
 gem 'osullivan'
 
@@ -42,15 +55,16 @@ gem 'osullivan'
 
  gem 'pundit'
 
-# Use Unicorn as the app server
-# gem 'unicorn'
-# Using Puma as web server
-gem 'puma'
+
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 group :production do
   gem 'pg'
+  # Use Unicorn as the app server
+  # gem 'unicorn'
+  # Using Puma as web server
+  gem 'puma'
 
 end
 
@@ -69,6 +83,8 @@ group :development, :test do
   gem 'pry'
 
   gem 'thin'
+  # use letter opener for development email
+  gem "letter_opener"
 
 end
 

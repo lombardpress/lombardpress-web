@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Lombardpress2</title>
+  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+  <%= csrf_meta_tags %>
+
+  <style>
+  body {padding-top: 0;}
+  </style>
+	<script>
+	 $(document).ready(function(){
+	 		$(".lbp-tile").hover(function(){
+	 			$(this).children(".lbp-tile-info").slideToggle();
+			});
+	 });
+	</script>
+
+</head>
+
+<body>
+
+<div id="lbp-global-home-body" class="container">
+	<div id="lbp-global-home-header" class="container">
+	<h1>LombardPress Sentences Commentary Publications</h1>		
+			
+			
+				<form class="center" role="search" action="<%= "http://sententia.lombardpress.org/search" %>" method="get">
+			    <div class="form-group">
+			      <input type="text" class="form-control" placeholder="<%= t(:search_all_texts) %>" name="searchterm">
+			      <button type="submit" class="btn btn-default" style="margin-top: 10px"><%= t(:submit) %></button>
+			    </div>
+			   
+				</form>
+			</div>
+			<div class="container">
+				<div class="row">
+					<div class='col-md-6 col-lg-6' class="lbp-global-panel" style="background-color: white;">
+					<h1>About</h1>
+					<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus lectus ante, scelerisque a ex eu, mattis blandit erat. Proin quis ligula lacinia felis aliquam bibendum. Suspendisse potenti. Integer ultricies augue ut vulputate placerat. Integer sed lobortis mi. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin pellentesque felis sed libero consequat commodo. Nam pulvinar elit finibus erat ullamcorper consequat. Etiam vehicula rutrum odio, at ultrices sem finibus eu. Sed dui eros, elementum eu finibus sed, volutpat quis purus. Pellentesque semper ultrices tortor sed egestas. Duis id sollicitudin turpis, non posuere erat. Fusce scelerisque ornare justo sit amet posuere.</p>
+					<p>Vivamus tempus, nisi sed consectetur fringilla, nunc enim porttitor tortor, luctus rutrum nisi massa nec mauris. Nam eget auctor lectus. Phasellus convallis est in condimentum malesuada. Sed venenatis accumsan nisl et laoreet. Vivamus bibendum felis a tortor feugiat pulvinar. Sed augue nunc, fermentum vitae arcu id, ullamcorper faucibus turpis. Fusce vitae sem nec orci condimentum efficitur vel quis diam. Vestibulum pharetra tortor tincidunt ante imperdiet, at consequat magna iaculis. Nam viverra ex vel tellus tincidunt fringilla. Fusce sit amet nisi et ipsum scelerisque auctor nec in libero. Vestibulum viverra suscipit sem et feugiat. Interdum et malesuada fames ac ante ipsum primis in faucibus. Nunc pellentesque nec erat eu vulputate. Maecenas porta dolor et tincidunt malesuada.</p>
+				</div>
+				<div class='col-md-6 col-lg-6' class="lbp-global-panel">
+						<table id="lbp-global-table" class="table-hover" style="background-color: white;">
+
+						<% @commentaries.each do |commentary| %>
+							<tr >
+								<td style="padding: 10px;"><%= link_to commentary.logo, "http://#{commentary.commentaryid}.lombardpress.org" %>
+								</td>
+									<!-- begin seach form -->
+									<td style="widht: 40%; text-align: center;">
+										<form class="navbar-form navbar-left" role="search" action="<%= "http://#{commentary.commentaryid}.lombardpress.org/search" %>" method="get" >
+											<input type="text" class="form-control" placeholder="<%= t(:search_text) %>" name="searchterm">
+						          <button type="submit" class="btn btn-default"><%= t(:submit) %></button>
+						        </form>
+						      </td>
+					    </tr>
+					  <% end %>
+					</table>
+				
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- footer paste -->
+
+
+
+<div id="lbp-footer" class="container">
+	<div class="row">
+		
+			<div class="col-xs-11 col-md-12 center">
+		
+			<p class="lbp-footer-div-label"><%= t(:powered_by) %></p>
+			<div class="row">
+				<div class="col-md-6">
+			  	<p><%= link_to "LombardPress", "http://lombardpress.org" %></p>
+			  	<p><%= link_to "The Sentences Commentary Text Archive", "http://scta.info" %></p>
+		  	</div>
+		  	<div class="col-md-6">
+		  	<%= link_to image_tag("https://upload.wikimedia.org/wikipedia/commons/thumb/5/5b/Text_Encoding_InitiativeTEI_Logo.svg/2000px-Text_Encoding_InitiativeTEI_Logo.svg.png", class: "lbp-footer-logo-image"), "http://www.tei-c.org/index.xml", {target: "_blank", class: "lbp-footer-logo-link"}  %>
+		  		<%= link_to image_tag("https://upload.wikimedia.org/wikipedia/commons/e/e8/International_Image_Interoperability_Framework_logo.png", class: "lbp-footer-logo-image"), "http://iiif.io", {target: "_blank", class: "lbp-footer-logo-link"}  %>
+		  	</div>
+		  </div>
+  	</div>
+  	
+	</div>
+</div>
+
+<!-- end footer paste -->
+
+<%= debug(params) if Rails.env.development? %>
+<%= "User Loggied in: " + user_signed_in?.to_s if Rails.env.development? %>
+<%= "id: " + current_user.id.to_s + " username/email: " + current_user.email + " role: " + current_user.role if Rails.env.development? && user_signed_in?%>
+
+<% if current_user %>
+	<script type="text/javascript">
+	analytics.identify( "<%= current_user.id %>", {
+	  email: "<%= current_user.email %>"
+	});
+	</script>
+<% end %>
+
+
+</body>
+</html>
+

@@ -42,11 +42,14 @@ class ParagraphexemplarController < ApplicationController
         :copies => para.copies.map {|item| item[:o].to_s},
         :copiedBy => para.copiedBy.map {|item| item[:o].to_s},
         :quotes => para.quotes.map {|item| item[:o].to_s},
+        :quotedBy => para.quotedBy.map {|item| item[:o].to_s},
         :mentions => para.mentions.map {|item| item[:o].to_s},
         :wordcount => paratranscript.word_count,
         :wordfrequency => paratranscript.word_frequency
 
       }
+
+      
 
 			
     

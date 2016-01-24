@@ -1,15 +1,15 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  user_id: 
-  comment: MyString
-  itemid: MyString
-  commentaryid: MyString
-  pid: MyString
+  user_id: 1
+  comment: Plaoul lectio 1 paragaph 1 test comment
+  itemid: lectio1
+  commentaryid: plaoulcommentary
+  pid: l1-cpspfs
 
 two:
-  user_id: 
-  comment: MyString
-  itemid: MyString
-  commentaryid: MyString
-  pid: MyString
+  user_id: 1
+  comment: Plaoul lectio 1 paragaph 1 test comment
+  itemid: lectio1
+  commentaryid: plaoulcommentary
+  pid: l1-cpspfs

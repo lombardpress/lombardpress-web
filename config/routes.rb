@@ -4,7 +4,7 @@ Rails.application.routes.draw do
 
   root 'pages#home'
 
-  devise_for :users, controllers: { sessions: "users/sessions", profiles: "users/profiles"}
+  devise_for :users, controllers: { sessions: "users/sessions", profiles: "users/profiles", registrations: "users/registrations"}
   
   get 'posts/list' => 'posts#list'
   resources :posts
@@ -69,7 +69,8 @@ scope "text" do
   get ':itemid(/:msslug)' => 'text#show', as: :show_text
 end 
 
-  get 'paragraphimage/showfoliozoom/:msslug/:canvas_id' => 'paragraphimage#showfoliozoom'
+  #get 'paragraphimage/showfoliozoom/:msslug/:canvas_id' => 'paragraphimage#showfoliozoom'
+  get 'paragraphimage/showfoliozoom' => 'paragraphimage#showfoliozoom'
   get 'paragraphimage/showzoom/:itemid/:msslug/:pid' => 'paragraphimage#showzoom'
   get 'paragraphimage/:itemid/:msslug/:pid' => 'paragraphimage#show'
 
@@ -79,8 +80,9 @@ end
   put 'users/profiles/:id' => 'users/profiles#update', as: :update_users_profile
   post 'users/profiles' => 'users/profiles#create', as: :create_users_profile
   get 'users/profiles' => 'users/profiles#index'
-
-  get 'accesspoints/:commentaryid/:itemid' => 'access_points#show', as: :access_point
+  
+  get 'accesspoints' => 'access_points#index', as: :access_points
+  get 'accesspoints/:commentaryid/:itemid/:role' => 'access_points#show', as: :access_point
   post 'accesspoints/:id' => 'access_points#create', as: :create_access_point
   delete 'accesspoints/:id' => 'access_points#destroy', as: :delete_access_point
   

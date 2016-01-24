@@ -4,13 +4,13 @@
 <div>
 <h1>
 	{{#if previous}}
-		<small><a href="#" class="js-show-paragraph-info" data-pid="{{previous}}" data-itemid="{{itemid}}">Previous</a></small>
+		<small><a href="#" id="lbp-previous-paragraph" class="js-show-paragraph-info" data-pid="{{previous}}" data-itemid="{{itemid}}">Previous</a></small>
 	{{/if}}
 
 	<a href="#" class="js-show-paragraph-info" data-pid="{{pid}}" data-itemid="{{itemid}}">Paragraph {{number}}</a>
 
 	{{#if next}}
-		<small><a href="#" class="js-show-paragraph-info" data-pid="{{next}}" data-itemid="{{itemid}}">Next</a></small>
+		<small><a href="#" id="lbp-next-paragraph" class="js-show-paragraph-info" data-pid="{{next}}" data-itemid="{{itemid}}">Next</a></small>
 	{{/if}}
 </h1>
 </div>
@@ -54,6 +54,12 @@
 {{#if quotes}}
 	{{#each quotes}}
 		<p>Quotes <a href="{{this}}">{{this}}</a></p>
+	{{/each}}
+{{/if}}
+{{#if quotedBy}}
+	{{#each quotedBy}}
+		<p>Quoted by <a href="{{this}}">{{this}}</a></p>
+		<p style="padding-left: 20px"><a class="js-show-reference-paragraph" href="#" data-url="{{this}}">View Text</a><p>
 	{{/each}}
 {{/if}}
 {{#if mentions}}

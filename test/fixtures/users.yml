@@ -4,8 +4,12 @@
 # model remove the '{}' from the fixture names and add the columns immediately
 # below each fixture, per the syntax in the comments below
 #
-one: {}
-# column: value
-#
-two: {}
-#  column: value
+admin: 
+  id: 1
+  email: "admin@example.com"
+  role: 0
+user: 
+  id: 2
+  email: "user@example.com"
+  role: 1
+  access_points: ap_lectio1_plaoul_draft_reader

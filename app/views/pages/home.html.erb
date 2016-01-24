@@ -3,7 +3,7 @@
 	<div id="lbp-home-jumbotron" class="jumbotron" style="background-color: <%= @config.dark_color %>;">
   	<h1><%= raw(@config.title) %></h1>
   	<p><%= raw(@config.bannermessage) %></p>
-  	<p><a class="btn btn-primary btn-lg" href="/text" role="button">View the Text</a> <a class="btn btn-primary btn-lg" href="/articles/about" role="button">Learn More</a></p>
+  	<p><a class="btn btn-primary btn-lg" href="/text" role="button"><%= t(:view_the_text) %></a> <a class="btn btn-primary btn-lg" href="/articles/about" role="button"><%= t(:learn_more) %></a></p>
   	
 	</div>
 </div>

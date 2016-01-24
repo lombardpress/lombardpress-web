@@ -7,6 +7,7 @@ class Users::ProfilesController < ApplicationController
 		 #	redirect_to "/permissions", :alert => "Access denied."
     #end
     @users = User.all
+    @sorted_users = @users.sort_by {|row| row[:email]}
     @profile = User.new
     authorize @profile
 
@@ -14,7 +15,7 @@ class Users::ProfilesController < ApplicationController
 	def show
 		@user = User.find(params[:id])
 		@profile = @user
-		#not that user in the authorize method is actually the second arg
+		#note that user in the authorize method is actually the second arg
 		#corresponding to the @profile arg in the pundit policy
 		authorize @profile
   end

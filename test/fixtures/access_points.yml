@@ -1,0 +1,8 @@
+ap_lectio1_plaoul_draft_reader:
+  itemid: "lectio1"
+  commentaryid: "plaoulcommentary"
+  role: "draft_reader"
+ap_lectio1_plaoul_editor:
+  itemid: "lectio1"
+  commentaryid: "plaoulcommentary"
+  role: "editor"

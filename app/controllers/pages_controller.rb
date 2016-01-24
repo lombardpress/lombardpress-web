@@ -2,8 +2,12 @@ class PagesController < ApplicationController
 	
 	
 	def home
-		#@title = "The Commentary on the Sentences of Peter Plaoul"
-		#@banner_message = "A working edition of the <br/> Commentary on the Sentences by Peter Plaoul";
+		if @config == nil
+			@commentaries = Setting.all
+			render :home_global, layout: false
+		else
+			render :home
+		end
 	end
 	
 	def permissions

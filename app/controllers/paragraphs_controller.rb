@@ -21,12 +21,11 @@ class ParagraphsController < ApplicationController
     @commentary_title = commentary.title
     itemurl = "http://scta.info/text/#{commentaryid}/item/#{itemid}"
     @item = Lbp::Item.new(@config.confighash, itemurl)
-
+    
     canonicalwit = @item.canonical_transcription_slug
 
     transcript = @item.transcription(source: "origin", wit: canonicalwit)
     
-
     @p = transcript.paragraph(pid).transform_plain_text
     render :layout => false
   end

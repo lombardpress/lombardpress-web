@@ -1,0 +1,23 @@
+<div class="container">
+	<h1>Access Points</h1>
+	<table class="table table-striped table-hover">
+		<tbody>
+			<tr>
+					<td>Id</td>
+					<td>Itemid</td>
+					<td>Commentaryid</td>
+					<td>Role</td>
+					<td>No. of Users</td>
+				</tr>
+			<% @sorted_access_points.each do |access_point| %>
+				<tr>
+					<td><%= link_to access_point.id, access_point_path(access_point.commentaryid, access_point.itemid, access_point.role) %></td>
+					<td><%= access_point.itemid %></td>
+					<td><%= access_point.commentaryid %></td>
+					<td><%= access_point.role %></td>
+					<td><%= access_point.users.count %></td>
+				</tr>
+			<% end %>
+		</tbody>
+	</table>
+</div>
