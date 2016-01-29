@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151226212528) do
+ActiveRecord::Schema.define(version: 20160128220034) do
 
   create_table "access_points", force: :cascade do |t|
     t.string   "itemid"
@@ -58,8 +58,9 @@ ActiveRecord::Schema.define(version: 20151226212528) do
     t.string   "itemid"
     t.string   "commentaryid"
     t.string   "pid"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
+    t.integer  "access_type",  default: 0
   end
 
   add_index "comments", ["user_id"], name: "index_comments_on_user_id"

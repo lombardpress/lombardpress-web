@@ -14,6 +14,8 @@ class Users::ProfilesController < ApplicationController
 	end
 	def show
 		@user = User.find(params[:id])
+    @comments = Comment.where(user_id: @user.id)
+    
 		@profile = @user
 		#note that user in the authorize method is actually the second arg
 		#corresponding to the @profile arg in the pundit policy
@@ -21,7 +23,7 @@ class Users::ProfilesController < ApplicationController
   end
   def create
   	@profile = User.new(profile_params)
-    authorize @profile
+    authorize @profile 
     if @profile.save
       redirect_to users_profiles_path, :notice => "Profile successfully added"
     end

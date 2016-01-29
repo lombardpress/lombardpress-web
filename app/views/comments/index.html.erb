@@ -1,2 +1,23 @@
-<h1>Comments#index</h1>
-<p>Find me in app/views/comments/index.html.erb</p>
+<div id="lbp-comments-list-container" class="container" >
+	<h1>All Comments</h1>
+	<table class="table table-striped table-hover">
+		<tbody>
+			<% @comments.each do |comment| %>
+				<tr>
+					<td><%= comment.created_at %></td>
+					<td><p><%= comment.user.email %></p></td>
+					<td style="width: 50%"><%= raw(comment.comment) %></td>
+					<td><%= comment.commentaryid %></td>
+					<td><%= comment.itemid %></td>
+					<td><%= comment.pid %></td>
+					<td><%= comment.access_type %></td>
+					<td>Change Status</td>
+					<td>Delete</td>
+
+
+				</tr>
+			<% end %>
+		</tbody>
+	</table>
+	
+</div>

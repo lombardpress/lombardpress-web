@@ -1,6 +1,42 @@
 class CommentsController < ApplicationController
   before_filter :authenticate_user!, :except => [:list, :show]
   def index
+    if current_user.admin?
+      @comments = Comment.all
+    else
+    # this little map block is copied from "check permissions" functions 
+    # in text methods. It should be refactored to avoid redundancy
+      allowed_texts = current_user.access_points.map do  |access_point| 
+        if access_point.editor?
+          {itemid: access_point.itemid,
+          commentaryid: access_point.commentaryid} 
+        end
+      end  
+      allowed_texts.compact!
+      @comments = []
+      # not that by doing the folloing each loop, you could be 
+      # hitting the database several times
+      # it might better to get an array of acceptable values all 
+      # at once and then hit the database more than once
+      # but this is more complicated
+      allowed_texts.each do |allowed|
+        if allowed[:itemid] == 'all'
+          results = Comment.where(commentaryid: allowed[:commentaryid])    
+        else
+         results = Comment.where(commentaryid: allowed[:commentaryid], itemid: allowed[:itemid])    
+        end
+        @comments << results
+        @comments.flatten!
+        
+      end
+      
+      
+    end
+    ## at the moment this authorization,
+    ## this auth simply double checks to make sure the user
+    ## is either an admin or use. In otherwords is not an anonymous user.
+    authorize @comments[0]
+
   end
 
   def new

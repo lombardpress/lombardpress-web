@@ -15,7 +15,8 @@ class AccessPointsController < ApplicationController
 	def create
 		user = User.find(params[:id])
 		# first check to see if access point exists; if it does check to see if user already has access
-		if ap = AccessPoint.find_by(access_params)
+		if ap = AccessPoint.find_by(itemid: access_params[:itemid], commentaryid: access_params[:commentaryid], role: AccessPoint.roles[access_params[:role]])
+			binding.pry
 			authorize ap
 			unless user.access_points.include?(ap)
 				user.access_points << ap
@@ -43,7 +44,7 @@ class AccessPointsController < ApplicationController
   end
   def destroy 
 		user = User.find(params[:id])
-		ap = AccessPoint.find_by(access_params)
+		ap = AccessPoint.find_by(itemid: access_params[:itemid], commentaryid: access_params[:commentaryid], role: AccessPoint.roles[access_params[:role]])
 		authorize ap
 		user.access_points.delete(ap)
     redirect_to users_profile_path(user), :notice => "Access point successfully deleted"

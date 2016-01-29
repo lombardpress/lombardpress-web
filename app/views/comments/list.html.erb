@@ -13,7 +13,7 @@
 			<% @comments.each do |comment| %>
 				<tr>
 					<td><%= comment.created_at %></td>
-					<td><p><%= comment.user.email %><p></td>
+					<td><p><%= comment.user.email %></p></td>
 					<td style="width: 70%"><%= raw(comment.comment) %></td>
 				</tr>
 			<% end %>
