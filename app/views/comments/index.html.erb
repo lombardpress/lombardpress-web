@@ -7,12 +7,18 @@
 					<td><%= comment.created_at %></td>
 					<td><p><%= comment.user.email %></p></td>
 					<td style="width: 50%"><%= raw(comment.comment) %></td>
-					<td><%= comment.commentaryid %></td>
-					<td><%= comment.itemid %></td>
-					<td><%= comment.pid %></td>
+					<td><%= link_to comment.commentaryid, "http://#{comment.commentaryid}.lombardpress.org" %></td>
+					<td><%= link_to comment.itemid, "http://#{comment.commentaryid}.lombardpress.org/text/#{comment.itemid}" %></td>
+					<td><%= link_to comment.pid, "http://#{comment.commentaryid}.lombardpress.org/text/#{comment.itemid}##{comment.pid}" %></td>
 					<td><%= comment.access_type %></td>
-					<td>Change Status</td>
-					<td>Delete</td>
+					
+					<td>
+					<%= form_for(:comment, url: comment_path(comment), method: :delete) do |f| %>
+								<%= f.hidden_field :itemid, value: params[:itemid] %>
+								<%= f.hidden_field :redirect_target, value: "index" %>
+								<%= f.submit "Delete" %>
+							<% end %>
+					</td>
 
 
 				</tr>

@@ -16,17 +16,29 @@
 	<% end %>
 	<br/>
 	<% unless @personal_comments.empty? %>
-		<h3 class="small">My Private Notes</h4>
+		<h3 class="small" style="font-weight: bold">My Private Notes</h4>
 		<table class="table table-striped table-hover">
+		<thead style="font-weight: bold">
+			<td>Created at:</td>
+					<td>User</td>
+					<td>pid</td>
+					<td>itemid</td>
+					<td>commentaryid</td>
+					<td style="width: 50%">comment</td>
+			</thead>
 			<tbody>
 			<% @personal_comments.each do |comment| %>
 				<tr>
 					<td><%= comment.created_at %></td>
 					<td><p><%= comment.user.email %></p></td>
-					<td style="width: 70%"><%= raw(comment.comment) %></td>
+					<td><%= link_to comment.pid, "http://#{comment.commentaryid}.lombardpress.org/text/#{comment.itemid}##{comment.pid}" %></td>
+					<td><%= link_to comment.itemid, "http://#{comment.commentaryid}.lombardpress.org/text/#{comment.itemid}" %></td>
+					<td><%= link_to comment.commentaryid, "http://#{comment.commentaryid}.lombardpress.org" %></td>
+					<td style="width: 50%"><%= raw(comment.comment) %></td>
 					<td>
 					<%= form_for(:comment, url: comment_path(comment), method: :delete) do |f| %>
 								<%= f.hidden_field :itemid, value: params[:itemid] %>
+								<%= f.hidden_field :redirect_target, value: "profile" %>
 								<%= f.submit "Delete" %>
 							<% end %>
 					</td>
@@ -36,17 +48,29 @@
 		</table>
 	<% end %>
 	<% unless @general_comments.empty? %>
-		<h3 class="small">My Public Comments</h4>
+		<h3 class="small" style="font-weight: bold">My Public Comments</h4>
 		<table class="table table-striped table-hover">
+		<thead style="font-weight: bold">
+			<td>Created at:</td>
+					<td>User</td>
+					<td>pid</td>
+					<td>itemid</td>
+					<td>commentaryid</td>
+					<td style="width: 50%">Comment</td>
+			</thead>
 			<tbody>
 			<% @general_comments.each do |comment| %>
 				<tr>
 					<td><%= comment.created_at %></td>
 					<td><p><%= comment.user.email %></p></td>
-					<td style="width: 70%"><%= raw(comment.comment) %></td>
+					<td><%= link_to comment.pid, "http://#{comment.commentaryid}.lombardpress.org/text/#{comment.itemid}##{comment.pid}" %></td>
+					<td><%= link_to comment.itemid, "http://#{comment.commentaryid}.lombardpress.org/text/#{comment.itemid}" %></td>
+					<td><%= link_to comment.commentaryid, "http://#{comment.commentaryid}.lombardpress.org" %></td>
+					<td style="width: 50%"><%= raw(comment.comment) %></td>
 					<td>
 					<%= form_for(:comment, url: comment_path(comment), method: :delete) do |f| %>
 								<%= f.hidden_field :itemid, value: params[:itemid] %>
+								<%= f.hidden_field :redirect_target, value: "profile" %>
 								<%= f.submit "Delete" %>
 							<% end %>
 					</td>
@@ -56,17 +80,29 @@
 		</table>
 	<% end %>
 	<% unless @editorial_comments.empty? %>
-		<h3 class="small">My Editorial Comments</h4>
+		<h3 class="small" style="font-weight: bold">My Editorial Comments</h4>
 		<table class="table table-striped table-hover">
+			<thead style="font-weight: bold">
+			<td>Created at:</td>
+					<td>User</td>
+					<td>pid</td>
+					<td>itemid</td>
+					<td>commentaryid</td>
+					<td style="width: 50%">Comment</td>
+			</thead>
 			<tbody>
 			<% @editorial_comments.each do |comment| %>
 				<tr>
 					<td><%= comment.created_at %></td>
 					<td><p><%= comment.user.email %></p></td>
-					<td style="width: 70%"><%= raw(comment.comment) %></td>
+					<td><%= link_to comment.pid, "http://#{comment.commentaryid}.lombardpress.org/text/#{comment.itemid}##{comment.pid}" %></td>
+					<td><%= link_to comment.itemid, "http://#{comment.commentaryid}.lombardpress.org/text/#{comment.itemid}" %></td>
+					<td><%= link_to comment.commentaryid, "http://#{comment.commentaryid}.lombardpress.org" %></td>
+					<td style="width: 50%"><%= raw(comment.comment) %></td>
 					<td>
 					<%= form_for(:comment, url: comment_path(comment), method: :delete) do |f| %>
 								<%= f.hidden_field :itemid, value: params[:itemid] %>
+								<%= f.hidden_field :redirect_target, value: "profile" %>
 								<%= f.submit "Delete" %>
 							<% end %>
 					</td>

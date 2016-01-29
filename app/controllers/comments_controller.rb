@@ -34,8 +34,10 @@ class CommentsController < ApplicationController
     end
     ## at the moment this authorization,
     ## this auth simply double checks to make sure the user
-    ## is either an admin or use. In otherwords is not an anonymous user.
-    authorize @comments[0]
+    ## is either an admin or user. In otherwords, it only checks against an anonymous user.
+    if @comments.count > 0
+      authorize @comments[0]
+    end
 
   end
 
@@ -71,11 +73,11 @@ class CommentsController < ApplicationController
     @general_comments = @comments.select {|comment| comment.access_type == 'general'}
     @editorial_comments = @comments.select {|comment| comment.access_type == 'editorial'}
     #turn this conditional if you want admin to be able to see private notes
-      #if current_user.admin?
-       # @personal_comments = @comments.select {|comment| comment.access_type == 'personal'}
-      #else
+      if current_user.admin?
+        @personal_comments = @comments.select {|comment| comment.access_type == 'personal'}
+      else
       @personal_comments = @comments.select {|comment| comment.access_type == 'personal' && comment.user_id == current_user.id }
-      #end
+      end
     
   end
 
@@ -93,12 +95,17 @@ class CommentsController < ApplicationController
     @comment = Comment.find(params[:id])
     authorize @comment
     @comment.destroy
-    ## needs different redirect if comment was destroyed from user profile
-    redirect_to list_comments_path comment_params[:itemid], :notice => "Post sucessfully deleted"
+    rt = redirect_target
+    if rt[:redirect_target] == "index"
+      redirect_to comments_path, :notice => "Comment sucessfully deleted"
+    elsif rt[:redirect_target] == "profile"
+      redirect_to users_profile_path @comment.user_id, :notice => "Comment sucessfully deleted"
+    else
+      redirect_to list_comments_path comment_params[:itemid], :notice => "Comment sucessfully deleted"
+    end
+    
   end
-
-
-
+  
   private 
   def comment_params
     params.require(:comment).permit(:comment, :user_id, :pid, :itemid, :commentaryid, :access_type)
@@ -120,7 +127,11 @@ class CommentsController < ApplicationController
     if @item.transcription?("critical")
       @paragraph = @item.transcription(source: "origin").paragraph(params[:pid])
     end
-    
+  end
+  # this parameter is used to let me redirect use to different places after a comment has 
+  # been successfully deleted
+  def redirect_target
+    return params.require(:comment).permit(:redirect_target)
   end
 
 end

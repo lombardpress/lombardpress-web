@@ -21,6 +21,9 @@ class CommentPolicy < ApplicationPolicy
   def destroy?
     user.admin? or check_editor_access(user, comment.itemid, comment.commentaryid) or comment.user_id == user.id
   end
+  def destroy_alt?
+    user.admin? or check_editor_access(user, comment.itemid, comment.commentaryid) or comment.user_id == user.id
+  end
 
   def edit?
     user.admin?

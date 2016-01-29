@@ -17,7 +17,7 @@ class Users::ProfilesController < ApplicationController
     @comments = Comment.where(user_id: @user.id)
     @general_comments = @comments.select {|comment| comment.access_type == 'general'}
     @personal_comments = @comments.select {|comment| comment.access_type == 'personal'}
-    @editorial_comments = @comments.select {|comment| comment.access_type == 'personal'}
+    @editorial_comments = @comments.select {|comment| comment.access_type == 'editorial'}
 		
     @profile = @user
 		#note that user in the authorize method is actually the second arg
