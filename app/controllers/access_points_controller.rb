@@ -16,7 +16,6 @@ class AccessPointsController < ApplicationController
 		user = User.find(params[:id])
 		# first check to see if access point exists; if it does check to see if user already has access
 		if ap = AccessPoint.find_by(itemid: access_params[:itemid], commentaryid: access_params[:commentaryid], role: AccessPoint.roles[access_params[:role]])
-			binding.pry
 			authorize ap
 			unless user.access_points.include?(ap)
 				user.access_points << ap

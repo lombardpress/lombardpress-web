@@ -15,8 +15,11 @@ class Users::ProfilesController < ApplicationController
 	def show
 		@user = User.find(params[:id])
     @comments = Comment.where(user_id: @user.id)
-    
-		@profile = @user
+    @general_comments = @comments.select {|comment| comment.access_type == 'general'}
+    @personal_comments = @comments.select {|comment| comment.access_type == 'personal'}
+    @editorial_comments = @comments.select {|comment| comment.access_type == 'personal'}
+		
+    @profile = @user
 		#note that user in the authorize method is actually the second arg
 		#corresponding to the @profile arg in the pundit policy
 		authorize @profile

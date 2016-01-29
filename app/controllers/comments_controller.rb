@@ -14,7 +14,7 @@ class CommentsController < ApplicationController
       end  
       allowed_texts.compact!
       @comments = []
-      # not that by doing the folloing each loop, you could be 
+      # note that by doing the folloing each loop, you could be 
       # hitting the database several times
       # it might better to get an array of acceptable values all 
       # at once and then hit the database more than once
@@ -50,7 +50,7 @@ class CommentsController < ApplicationController
     @comment = Comment.new(comment_params)
     authorize @comment
     if @comment.save
-      redirect_to @comment, :notice => "Post successfully created"
+      redirect_to @comment, :notice => "Comment successfully created"
     else
       # note that without resending this params, they are not available.
       set_required_params
@@ -61,7 +61,21 @@ class CommentsController < ApplicationController
 
   def list
     set_required_params
-    @comments = Comment.where itemid: params[:itemid], pid: params[:pid]
+    
+    if params[:pid] == nil
+       @comments = Comment.where itemid: params[:itemid]
+     else
+      @comments = Comment.where itemid: params[:itemid], pid: params[:pid]
+    end
+    
+    @general_comments = @comments.select {|comment| comment.access_type == 'general'}
+    @editorial_comments = @comments.select {|comment| comment.access_type == 'editorial'}
+    #turn this conditional if you want admin to be able to see private notes
+      #if current_user.admin?
+       # @personal_comments = @comments.select {|comment| comment.access_type == 'personal'}
+      #else
+      @personal_comments = @comments.select {|comment| comment.access_type == 'personal' && comment.user_id == current_user.id }
+      #end
     
   end
 
@@ -76,11 +90,18 @@ class CommentsController < ApplicationController
   end
 
   def destroy
+    @comment = Comment.find(params[:id])
+    authorize @comment
+    @comment.destroy
+    ## needs different redirect if comment was destroyed from user profile
+    redirect_to list_comments_path comment_params[:itemid], :notice => "Post sucessfully deleted"
   end
+
+
 
   private 
   def comment_params
-    params.require(:comment).permit(:comment, :user_id, :pid, :itemid, :commentaryid)
+    params.require(:comment).permit(:comment, :user_id, :pid, :itemid, :commentaryid, :access_type)
   end
   def set_required_params
     config_hash = @config.confighash

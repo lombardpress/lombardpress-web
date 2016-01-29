@@ -314,14 +314,15 @@ var postComment = function(itemid, pid){
 	user_id = form.find("#comment_user_id").val(),
 	commentaryid = form.find("#comment_commentaryid").val(),
 	itemid = form.find("#comment_itemid").val(),
+	access_type = form.find("#comment_access_type").val(),
 	pid = form.find("#comment_pid").val();
 	
-	var comment = {comment: comment_text, user_id: user_id, pid: pid, itemid: itemid, commentaryid: commentaryid,}
+	var comment = {comment: comment_text, user_id: user_id, pid: pid, itemid: itemid, commentaryid: commentaryid, access_type: access_type}
 	$.ajax({
       type: "POST",
       url: "/comments",
       data: { "comment": 
-      	{ "comment": comment_text, "user_id": user_id, "pid": pid, "itemid": itemid, "commentaryid": commentaryid} 
+      	{ "comment": comment_text, "user_id": user_id, "pid": pid, "itemid": itemid, "commentaryid": commentaryid, "access_type": access_type} 
       },
       success:function(data, status, xhr){
       	showSpinner("#lbp-bottom-window-container");
