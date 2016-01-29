@@ -18,6 +18,10 @@ class PostsController < ApplicationController
 		params[:user] = current_user[:id]
  		params[:commentaryid] = @config.commentaryid
  		@post = Post.new
+ 		#the commentaryid is getting added here so that that pundit 
+ 		#can access the commentaryid value and make sure the user has 
+ 		#permission to create a new post for this commentary
+ 		@post.commentaryid = @config.commentaryid
  		authorize @post
 	end
 	def edit

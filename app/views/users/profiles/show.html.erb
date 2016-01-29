@@ -1,19 +1,126 @@
 <div class="container center">
+	<h1>User Profile</h1>
+	<hr/>
 	<div>
-		<h1><%= @user.email %></h1>
+		<h2>User info</h2>
+		<p><%= @user.email %></p>
 		<p><%= @user.role %></p>
 		<p><%= @user.created_at %></p>
 		<p>Preferred Language <%= @user.language %></p>
 		<p><%= link_to t(:edit_profile), '/users/edit' %></p>
 	</div>
+	<hr/>
+	<div>
+	<% unless @comments.empty? %>
+	<h2>My Comments</h2>
+	<% end %>
+	<br/>
+	<% unless @personal_comments.empty? %>
+		<h3 class="small" style="font-weight: bold">My Private Notes</h4>
+		<table class="table table-striped table-hover">
+		<thead style="font-weight: bold">
+			<td>Created at:</td>
+					<td>User</td>
+					<td>pid</td>
+					<td>itemid</td>
+					<td>commentaryid</td>
+					<td style="width: 50%">comment</td>
+			</thead>
+			<tbody>
+			<% @personal_comments.each do |comment| %>
+				<tr>
+					<td><%= comment.created_at %></td>
+					<td><p><%= comment.user.email %></p></td>
+					<td><%= link_to comment.pid, "http://#{comment.commentaryid}.lombardpress.org/text/#{comment.itemid}##{comment.pid}" %></td>
+					<td><%= link_to comment.itemid, "http://#{comment.commentaryid}.lombardpress.org/text/#{comment.itemid}" %></td>
+					<td><%= link_to comment.commentaryid, "http://#{comment.commentaryid}.lombardpress.org" %></td>
+					<td style="width: 50%"><%= raw(comment.comment) %></td>
+					<td>
+					<%= form_for(:comment, url: comment_path(comment), method: :delete) do |f| %>
+								<%= f.hidden_field :itemid, value: params[:itemid] %>
+								<%= f.hidden_field :redirect_target, value: "profile" %>
+								<%= f.submit "Delete" %>
+							<% end %>
+					</td>
+				</tr>
+			<% end %>
+			</tbody>
+		</table>
+	<% end %>
+	<% unless @general_comments.empty? %>
+		<h3 class="small" style="font-weight: bold">My Public Comments</h4>
+		<table class="table table-striped table-hover">
+		<thead style="font-weight: bold">
+			<td>Created at:</td>
+					<td>User</td>
+					<td>pid</td>
+					<td>itemid</td>
+					<td>commentaryid</td>
+					<td style="width: 50%">Comment</td>
+			</thead>
+			<tbody>
+			<% @general_comments.each do |comment| %>
+				<tr>
+					<td><%= comment.created_at %></td>
+					<td><p><%= comment.user.email %></p></td>
+					<td><%= link_to comment.pid, "http://#{comment.commentaryid}.lombardpress.org/text/#{comment.itemid}##{comment.pid}" %></td>
+					<td><%= link_to comment.itemid, "http://#{comment.commentaryid}.lombardpress.org/text/#{comment.itemid}" %></td>
+					<td><%= link_to comment.commentaryid, "http://#{comment.commentaryid}.lombardpress.org" %></td>
+					<td style="width: 50%"><%= raw(comment.comment) %></td>
+					<td>
+					<%= form_for(:comment, url: comment_path(comment), method: :delete) do |f| %>
+								<%= f.hidden_field :itemid, value: params[:itemid] %>
+								<%= f.hidden_field :redirect_target, value: "profile" %>
+								<%= f.submit "Delete" %>
+							<% end %>
+					</td>
+				</tr>
+			<% end %>
+			</tbody>
+		</table>
+	<% end %>
+	<% unless @editorial_comments.empty? %>
+		<h3 class="small" style="font-weight: bold">My Editorial Comments</h4>
+		<table class="table table-striped table-hover">
+			<thead style="font-weight: bold">
+			<td>Created at:</td>
+					<td>User</td>
+					<td>pid</td>
+					<td>itemid</td>
+					<td>commentaryid</td>
+					<td style="width: 50%">Comment</td>
+			</thead>
+			<tbody>
+			<% @editorial_comments.each do |comment| %>
+				<tr>
+					<td><%= comment.created_at %></td>
+					<td><p><%= comment.user.email %></p></td>
+					<td><%= link_to comment.pid, "http://#{comment.commentaryid}.lombardpress.org/text/#{comment.itemid}##{comment.pid}" %></td>
+					<td><%= link_to comment.itemid, "http://#{comment.commentaryid}.lombardpress.org/text/#{comment.itemid}" %></td>
+					<td><%= link_to comment.commentaryid, "http://#{comment.commentaryid}.lombardpress.org" %></td>
+					<td style="width: 50%"><%= raw(comment.comment) %></td>
+					<td>
+					<%= form_for(:comment, url: comment_path(comment), method: :delete) do |f| %>
+								<%= f.hidden_field :itemid, value: params[:itemid] %>
+								<%= f.hidden_field :redirect_target, value: "profile" %>
+								<%= f.submit "Delete" %>
+							<% end %>
+					</td>
+				</tr>
+			<% end %>
+			</tbody>
+		</table>
+	<% end %>
+	</div>
+	<hr/>
 	<div>
 		<% if @user.access_points.count > 0  %>
-			<p>Has individual access to</p>
+			<h2>Has individual access to</h2>
 			<table class="table table-striped table-hover">
 				<% sorted_access_points = @user.access_points.sort_by {|ap| ap[:itemid]} %>
 				<% sorted_access_points.each do |access_point| %>
 					<tr>
-						<td><%= access_point.itemid %></td>
+						<td><%= link_to access_point.itemid, "http://#{access_point.commentaryid}.lombardpress.org/text/#{access_point.itemid}" %></td>
 						<td><%= access_point.commentaryid %></td>
 						<td><%= access_point.role %></td>
 						<% if current_user.admin? %>
@@ -21,6 +128,7 @@
 								<%= form_for(:access_point, url: delete_access_point_path, method: :delete) do |f| %>
 								<%= f.hidden_field :itemid, value: access_point.itemid %>
 								<%= f.hidden_field :commentaryid, value: access_point.commentaryid %>
+								<%= f.hidden_field :role, value: access_point.role %>
 								<%= f.submit "Remove" %>
 							<% end %>
 						</td>
@@ -30,9 +138,10 @@
 			</table>
 		<% end %>
 	</div>
+	<hr/>
 	<div>
 	<% if @user.access_requests.count > 0  %>
-		<p>Has open requests for </p>
+		<h2>Has open requests for </h2>
 		<table class="table table-striped table-hover">
 			<% @user.access_requests.each do |access_request| %>
 				<% if access_request.open? %>
@@ -54,9 +163,10 @@
 		</table>
 	<% end %>
 	</div>
+	<hr/>
 	<% if current_user.admin? %>
 		<div style="border-top: 1px solid black">
-			<h3>Admin Options</h3>
+			<h2>Admin Options</h2>
 			
 			<div style="margin: 10px; border-top: 1px dotted gray;">
 				<%= form_for(:access_point, url: create_access_point_path, method: :post) do |f| %>

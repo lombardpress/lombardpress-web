@@ -31,13 +31,22 @@
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
+      <% if current_user.admin? || check_editor_access(current_user, params[:itemid], @config.commentaryid) %>
         <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><%= t(:text_outline) %> <span class="caret"></span></a>
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Editor Tools <span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            <li><%= link_to "Review Comments for this Text", list_comments_path(params[:itemid]) %></li>
+            <li><%= link_to "Review All Comments", comments_path %></li>
+            <li><%= link_to "View Analytics" %></li>
+          </ul>
+        </li>
+        <% end %>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><%= t(:text_tools) %> <span class="caret"></span></a>
           <ul class="dropdown-menu" role="menu">
             <li><a href="#" class="js-show-item-xml" data-itemid="<%= @itemid %>">XML</a></li>
             <li class="divider"></li>
             <li><a href="#" class="js-show-item-info" data-itemid="<%= @itemid %>">Text Info/Stats</a></li>
-            
           </ul>
         </li>
       </ul>

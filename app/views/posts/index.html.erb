@@ -1,5 +1,13 @@
 <div class="container">
 	<h1>Research Notes</h1>
+	<% if user_signed_in? %>
+		<% if current_user.admin? || check_blog_access(current_user, @config.commentaryid) %>
+		<div class="center">
+			<%= link_to 'List', posts_list_path %> 
+			| <%= link_to "Create New Post", new_post_path %>
+		</div>
+		<% end %>
+	<% end %>
 	<% @posts.each do |post| %>
 		<div class="container lbp-post-show-container">
 			<div class="lbp-post-header">
@@ -12,11 +20,8 @@
 				<%= raw(post.body) %>
 			</div>
 			<div class="lbp-post-footer">
-				<%= link_to 'All Posts', posts_path %>
 				<% if user_signed_in? %>
-					<% if current_user.admin? %>
-					| <%= link_to 'List', posts_list_path %> |
-					<%= link_to "Create New Post", new_post_path %> | 
+					<% if current_user.admin? || check_blog_access(current_user, @config.commentaryid) %>
 					<%= link_to 'Edit', edit_post_path(post) %> |
 					<%= link_to "Delete", post_path(post), :method => :delete, :confirm => "are you sure?" %>
 					<% end %>
@@ -25,4 +30,6 @@
 			
 		</div>
 	<% end %>
+	
+	
 </div>

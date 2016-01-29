@@ -12,7 +12,7 @@
 	<div class="lbp-post-footer">
 		<%= link_to 'All Posts', posts_path %>
 		<% if user_signed_in? %>
-			<% if current_user.admin? %>
+			<% if current_user.admin? || check_blog_access(current_user, @config.commentaryid)%>
 				<%= link_to 'Edit', edit_post_path(@post) %>
 				<%= link_to 'List', posts_list_path %>
 			<% end %>
