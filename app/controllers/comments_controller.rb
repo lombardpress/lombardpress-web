@@ -27,6 +27,8 @@ class CommentsController < ApplicationController
         end
         @comments << results
         @comments.flatten!
+        #use this remove personal/privates comments from results unless they belong to the current user
+        @comments = @comments.select {|comment| comment.access_type != 'personal' || (comment.access_type == 'personal' && comment.user_id == current_user.id) }
         
       end
       
@@ -72,7 +74,7 @@ class CommentsController < ApplicationController
     
     @general_comments = @comments.select {|comment| comment.access_type == 'general'}
     @editorial_comments = @comments.select {|comment| comment.access_type == 'editorial'}
-    #turn this conditional if you want admin to be able to see private notes
+    #turn this conditional oof you do not want admin to be able to see private notes
       if current_user.admin?
         @personal_comments = @comments.select {|comment| comment.access_type == 'personal'}
       else

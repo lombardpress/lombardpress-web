@@ -6,6 +6,9 @@ module ApplicationHelper
 			if ap.editor? && ap.itemid == "all" && ap.commentaryid == commentaryid
 				answer = true
 				break
+			elsif ap.editor? && ap.itemid == itemid && ap.commentaryid = commentaryid
+				answer = true
+				break
 			end  
 		end
 		return answer

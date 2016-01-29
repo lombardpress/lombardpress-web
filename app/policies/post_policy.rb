@@ -8,7 +8,6 @@ class PostPolicy < ApplicationPolicy
   end
 
   def new?
-    binding.pry
     user.admin? or check_blog_access(user, post.commentaryid)
   end
   def create?
