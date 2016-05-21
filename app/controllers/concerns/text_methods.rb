@@ -29,13 +29,12 @@ module TextMethods
 		def get_transcript(item, params, source="origin")
 			wit = default_wit(params)
 			shortid = params[:itemid]
-			#transcript = item.transcription(source: source, wit: wit)
 			
-			# this is a bit hard coded; is shoudl get to transcription from item/expression (with a manifestation identifier and then from manifestation to transcription)
-			# for example manifestation = item.manifestion(url) where url is "http://scta.info/resource/#{expression}/reims" (shortid could also be used where short id is "/#{expressionid}/reims" )
-			# and then transcript = manifestation.transcription(url) where url is where url is "http://scta.info/resource/#{expression}/reims" (shortid could also be used where short id is "/#{expressionid}/reims/transcription" )
-			transcript = Lbp::Transcript.new("http://scta.info/resource/#{shortid}/#{wit}/transcription")
-			file = transcript.file(@config.confighash)
+			# transcription is requested by asking by calling the transcription method
+			# on the expression/item. the transcription method at the express level requests
+			# the cananonical transcription on the canonical manifestation
+			transcriptObj = item.transcription("http://scta.info/resource/#{shortid}/#{wit}")
+			return transcriptObj
 		end
 		def check_transcript_existence(item, params)
 			wit = default_wit(params)

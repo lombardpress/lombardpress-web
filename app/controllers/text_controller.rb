@@ -55,8 +55,9 @@ class TextController < ApplicationController
 
 	def status
 		commentaryid = @config.commentaryid
-		url = "<http://scta.info/text/#{commentaryid}/item/#{params[:itemid]}>"
+		url = "<http://scta.info/resource/#{params[:itemid]}>"
 		results = Lbp::Query.new.item_query(url)
+
 		@itemid = params[:itemid]
 		@results = results.order_by(:transcript_type)
 		if @results.count == 0
@@ -89,6 +90,7 @@ class TextController < ApplicationController
 
 		transcript = get_transcript(item, params)
 		
+		file = transcript.file(@config.confighash)
 		#always remember single quotes for paramater value
 		#specify if global image setting is true or false
 		xslt_param_array = ["default-ms-image", if default_wit(params) == "critical" then @config.default_ms_image else "'#{default_wit(params)}'" end, 
@@ -97,7 +99,7 @@ class TextController < ApplicationController
 				"by_phrase", "'#{t(:by)}'", 
 				"edited_by_phrase", "'#{t(:edited_by)}'"]
 		
-		@transform = transcript.transform_main_view(xslt_param_array)
+		@transform = file.transform_main_view(xslt_param_array)
 		
 	end
 	
