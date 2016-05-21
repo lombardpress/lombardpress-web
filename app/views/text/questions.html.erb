@@ -2,7 +2,8 @@
   .status{display: none;}
   .itemLink:hover .status{display: inline;}
 </style>
-<div>
+<!-- TODO: need a global style for top of page headers -->
+<div style="padding: 20px">
   <h1><%= t(:toq) %></h1>
 </div>
 <div id="lbp-question-container" class="container">
@@ -13,6 +14,14 @@
       <td><%= unless result[:status] == "Not Started" then link_to result[:title], link else result[:title]  end %></td>
       <td><%= unless result[:status] == "Not Started" || result[:questiontitle] == nil  then link_to result[:questiontitle], link else result[:questiontitle]  end %></td>
       <td><%= result[:status] %></td>
+      <td>
+        <% unless result[:status] == "Not Started" %>
+          <img src="https://img.shields.io/wercker/ci/wercker/docs.svg"/>  
+        <% else %>
+          No Review
+        <% end %>
+      </td>
+      <td><%= link_to "View on GitHub", result[:gitRepository].to_s %></td>
     </tr>
 
         

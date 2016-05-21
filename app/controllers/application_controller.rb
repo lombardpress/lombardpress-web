@@ -9,7 +9,9 @@ class ApplicationController < ActionController::Base
 
   before_action :set_locale
   
-  before_filter :set_conf, :check_for_user
+  before_filter :set_conf 
+
+  #before_filter :check_for_user
 
   # I wish I could do this in a policy but currently can't figure out how
   
@@ -28,7 +30,7 @@ class ApplicationController < ActionController::Base
       redirect_to(request.referrer || permissions_path)
     end
     def set_conf
-      unless request.host == "sententia.lombardpress.org" || request.host == "sententia.lombardpress.dev"
+      #unless request.host == "sententia.lombardpress.org" || request.host == "sententia.lombardpress.dev"
         if request.host.include? "petrusplaoul"
           commentaryid = "plaoulcommentary"
         elsif request.host.include? "adamwodeham"
@@ -52,7 +54,7 @@ class ApplicationController < ActionController::Base
         
         @config = Setting.find_by(commentaryid: commentaryid)
         Rails.application.config.action_mailer.default_url_options[:host] = request.host
-      end
+      #end
 
     end
     def check_for_user

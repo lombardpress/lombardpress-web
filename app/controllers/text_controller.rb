@@ -7,9 +7,37 @@ class TextController < ApplicationController
 		@results = Lbp::Query.new().collection_query(url)
 	end
 	def questions
-		commentaryid = @config.commentaryid
-		url =  "<http://scta.info/text/#{commentaryid}/commentary>" 
-		@results = Lbp::Query.new().collection_query(url)
+		# commentarydirname should be changed to resource type
+		# it would be even more ideal if this information could be grabbed from the database
+		# get type of resource and then adjust the query to the kind of resource this is.
+		
+		# TODO create method in lbp.rb to check recourse of any short id
+		# re-write conditional based on these values
+		# conditional should simply ask: is this a work group, a work, or an expression or even an author
+		# controller should route to the appropriate view based on the resource type. 
+		# for example if it is an author we should list all expressions by this author
+		# if it is a an expresion it should list all expressions parts with structure type=item
+		# if it is a work, it should list available expression if there are more than one, 
+		# otherwise, if there is only expression, it should re-route to the top-level expression view.
+
+		if params[:resourceid] == "sententia" || params[:resourceid] == "deanima"
+			@results = WorkGroupQuery.new.expression_list(params[:resourceid])
+			render "expressionlist"
+		elsif params[:resourceid]
+			expressionid = params[:resourceid]
+			url =  "<http://scta.info/resource/#{expressionid}>" 
+
+			@results = Lbp::Query.new().collection_query(url)
+		else
+			if @config.commentarydirname == "workgroup" 
+				@results = WorkGroupQuery.new.expression_list(@config.commentaryid)
+				render "expressionlist"
+			else
+				commentaryid = @config.commentaryid
+				url =  "<http://scta.info/resource/#{commentaryid}>"
+				@results = Lbp::Query.new().collection_query(url)
+			end
+		end
 	end
 
 	def info
@@ -43,7 +71,8 @@ class TextController < ApplicationController
 		
 		item = get_item(params)
 		check_permission(item); return if performed?
-		check_transcript_existence(item, params); return if performed?
+		
+		#check_transcript_existence(item, params); return if performed?
 
 		if item.status == "In Progress" || item.status == "draft"
 			flash.now[:alert] = "Please remember: the status of this text is draft. You have been granted access through the generosity of the editor. Please use the comments to help make suggestions or corrections."
@@ -52,8 +81,9 @@ class TextController < ApplicationController
 		@title = item.title
 
 		#remove @fs after check for use. use itemid instead
-		@fs = item.fs
-		@itemid = item.fs
+		#@fs = item.fs
+		#@itemid = item.fs
+		
 		@next_itemid = if item.next != nil then item.next.split("/").last else nil end
 		@previous_itemid = if item.previous != nil then item.previous.split("/").last else nil end
 

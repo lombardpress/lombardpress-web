@@ -138,5 +138,19 @@ class IndexQuery < Lbp::Query
       # ORDER BY ?orderNumber"
 		result = self.query(query)
 	end
+
+	def expression_list()
+		query = "
+			SELECT ?workgrouptitle ?expression ?expressiontitle
+	      {
+	        <http://scta.info/scta> <http://purl.org/dc/elements/1.1/title> ?workgrouptitle .
+	        <http://scta.info/scta> <http://purl.org/dc/terms/hasPart> ?expression .
+	        ?expression <http://purl.org/dc/elements/1.1/title> ?expressiontitle  .
+	      }
+	      ORDER BY ?expressiontitle
+	      "
+
+		result = self.query(query)
+	end
 end
  

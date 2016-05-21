@@ -2,11 +2,12 @@ module TextMethods
   extend ActiveSupport::Concern
 
   def get_item(params)
-			config_hash = @config.confighash
-			commentaryid = @config.commentaryid
-			url = "http://scta.info/text/#{commentaryid}/item/#{params[:itemid]}"
-			item = Lbp::Item.new(config_hash, url)
-
+			#config_hash = @config.confighash
+			#commentaryid = @config.commentaryid
+			#url = "http://scta.info/text/#{commentaryid}/item/#{params[:itemid]}"
+			shortid = params[:itemid]
+			#item = Lbp::Item.new(config_hash, shortid)
+			item = Lbp::Expression.new(shortid)
 		end
 
 		def check_permission(item)
@@ -27,7 +28,14 @@ module TextMethods
 		end
 		def get_transcript(item, params, source="origin")
 			wit = default_wit(params)
-			transcript = item.transcription(source: source, wit: wit)
+			shortid = params[:itemid]
+			#transcript = item.transcription(source: source, wit: wit)
+			
+			# this is a bit hard coded; is shoudl get to transcription from item/expression (with a manifestation identifier and then from manifestation to transcription)
+			# for example manifestation = item.manifestion(url) where url is "http://scta.info/resource/#{expression}/reims" (shortid could also be used where short id is "/#{expressionid}/reims" )
+			# and then transcript = manifestation.transcription(url) where url is where url is "http://scta.info/resource/#{expression}/reims" (shortid could also be used where short id is "/#{expressionid}/reims/transcription" )
+			transcript = Lbp::Transcript.new("http://scta.info/resource/#{shortid}/#{wit}/transcription")
+			file = transcript.file(@config.confighash)
 		end
 		def check_transcript_existence(item, params)
 			wit = default_wit(params)
