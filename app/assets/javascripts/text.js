@@ -81,7 +81,9 @@ $(document).on('ready page:load', function () {
 			showBottomWindow();
 			expandBottomWindow();
 			var itemid = $(this).attr("data-itemid");
-			showItemXML(itemid);
+			var manifestationid = $(this).attr("data-manifestation-id"); //? $(this).attr("data-manifestation-id") : null;
+			var transcriptionid = $(this).attr("data-transcription-id"); //? $(this).attr("data-transcription-id") : null;
+			showItemXML(itemid, manifestationid, transcriptionid);
 		});
 		$("a.js-show-paragraph-xml").click(function(event){
 			event.preventDefault();
@@ -339,8 +341,16 @@ var postComment = function(itemid, pid){
 	}
 
 //show xml functions for Item and paragraph
-var showItemXML = function(itemid){
-	$("#lbp-bottom-window-container").load("/text/xml/" + itemid + " #lbp-xml-container", function(response, status, xhr) {
+var showItemXML = function(itemid, manifestationid, transcriptionid){
+	
+	var parameters = itemid;
+	if (manifestationid){
+		parameters = parameters + "/" + manifestationid;
+	}
+	if (transcriptionid){
+		parameters = parameters + "/" + transcriptionid
+	}
+	$("#lbp-bottom-window-container").load("/text/xml/" + parameters + " #lbp-xml-container", function(response, status, xhr) {
 		// this is required to apply style after ajax load
 		$("pre.xmlCode").snippet("xml", {style: "bright"});
   	

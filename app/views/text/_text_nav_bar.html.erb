@@ -14,14 +14,14 @@
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div id="lbp-text-tool-bar-collapse" class="collapse navbar-collapse" >
       <ul class="nav navbar-nav">
-        <% unless params.has_key?(:msslug) && params[:msslug] != "critical" %>
-          <li><a class="js-show-outline" data-itemid="<%= @itemid %>"><%= t(:text_outline) %></a></li>
+        <% unless (params.has_key?(:msslug) && params[:msslug] != "critical") || @expression_structure == "structureBlock" %>
+          <li><a class="js-show-outline" data-itemid="<%= params[:itemid] %>"><%= t(:text_outline) %></a></li>
         <% end %>
-        <% if @previous_itemid != nil  %>
-          <li><%= link_to t(:previous), show_text_path(@previous_itemid, params[:msslug]),  data: { keybinding: 'p' } %></li> 
+        <% if @previous_expressionid != nil  %>
+          <li><%= link_to t(:previous), show_text_path(@previous_expressionid, params[:msslug]),  data: { keybinding: 'p' } %></li> 
         <% end %>
-        <% if @next_itemid != nil %>
-          <li><%= link_to t(:next), show_text_path(@next_itemid, params[:msslug]), data: { keybinding: 'n' } %></li> 
+        <% if @next_expressionid != nil %>
+          <li><%= link_to t(:next), show_text_path(@next_expressionid, params[:msslug]), data: { keybinding: 'n' } %></li> 
         <% end %>
           <li><a href="/text/status/<%= params[:itemid] %>"><%= t(:available_transcriptions) %></a></li>
         
@@ -44,9 +44,9 @@
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><%= t(:text_tools) %> <span class="caret"></span></a>
           <ul class="dropdown-menu" role="menu">
-            <li><a href="#" class="js-show-item-xml" data-itemid="<%= @itemid %>">XML</a></li>
+            <li><a href="#" class="js-show-item-xml" data-itemid="<%= params[:itemid] %>" data-manifestation-id="<%= params[:msslug] %>" data-transcript-id="<%= params[:transcriptslug] %>">XML</a></li>
             <li class="divider"></li>
-            <li><a href="#" class="js-show-item-info" data-itemid="<%= @itemid %>">Text Info/Stats</a></li>
+            <li><a href="#" class="js-show-item-info" data-itemid="<%= @expressionid %>">Text Info/Stats</a></li>
           </ul>
         </li>
       </ul>

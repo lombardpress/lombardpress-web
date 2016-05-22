@@ -15,6 +15,7 @@
   <xsl:param name="edited_by_phrase">By</xsl:param>
   
   
+  
   <!-- variables-->
   <xsl:variable name="itemid"><xsl:value-of select="/tei:TEI/tei:text/tei:body/tei:div/@xml:id"/></xsl:variable>
   
@@ -24,7 +25,7 @@
     <xsl:call-template name="teiHeaderInfo"/>
     
     <!-- transform body of text -->
-    <xsl:apply-templates/>
+  	<xsl:apply-templates/>
     
     <!-- prepare footnotes -->
     <div class="footnotes">

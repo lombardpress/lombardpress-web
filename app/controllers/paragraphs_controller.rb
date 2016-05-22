@@ -31,9 +31,9 @@ class ParagraphsController < ApplicationController
   end
   
   def xml
-    item = get_item(params)
+    #item = get_item(params)
     #check_permission(item)
-    transcript = get_transcript(item, params)
+    transcript = get_transcript(params)
     @p = transcript.file_part(@config.confighash, params[:pid]).xml
     
   end

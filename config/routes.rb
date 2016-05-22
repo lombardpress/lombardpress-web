@@ -65,8 +65,8 @@ scope "text" do
   get 'info/:itemid' => 'text#info'
   get 'status/:itemid' => 'text#status'
   get 'toc/:itemid(/:msslug)' => 'text#toc'
-  get 'xml/:itemid(/:msslug)' => 'text#xml'
-  get ':itemid(/:msslug)' => 'text#show', as: :show_text
+  get 'xml/:itemid(/:msslug)(/:transcriptslug)' => 'text#xml'
+  get ':itemid(/:msslug)(/:transcriptslug)' => 'text#show', as: :show_text
 end 
 
   #get 'paragraphimage/showfoliozoom/:msslug/:canvas_id' => 'paragraphimage#showfoliozoom'

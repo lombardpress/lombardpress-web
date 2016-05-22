@@ -1,6 +1,8 @@
 class TextController < ApplicationController
 	include TextMethods
 	
+	#TODO this make question list the index page
+	# current division between index and question list is confusing
   def index
 		commentaryid = @config.commentaryid
 		url =  "<http://scta.info/text/#{commentaryid}/commentary>" 
@@ -41,12 +43,14 @@ class TextController < ApplicationController
 	end
 
 	def info
-		item = get_item(params)
-		check_permission(item)
-		@title = item.title
-		@itemid = item.fs
-		commentaryid = @config.commentaryid
-		url = "http://scta.info/text/#{commentaryid}/item/#{params[:itemid]}"
+		expression = get_expression(params[:itemid])
+		check_permission(expression)
+		@title = expression.title
+		#@itemid should be equivalent to expression id
+		@itemid = params[:itemid]
+		url_short_id = get_shortid(params)
+		
+		url = "http://scta.info/resource/#{url_short_id}"
 		query = Lbp::Query.new
 		@name_results = query.names(url)
 		@quote_results = query.quotes(url)
@@ -54,10 +58,12 @@ class TextController < ApplicationController
 	end
 
 	def status
-		commentaryid = @config.commentaryid
+		#commentaryid = @config.commentaryid
 		url = "<http://scta.info/resource/#{params[:itemid]}>"
 		results = Lbp::Query.new.item_query(url)
 
+		# @itemid is equivalent to @expression id
+		# will be changed as part of global change 
 		@itemid = params[:itemid]
 		@results = results.order_by(:transcript_type)
 		if @results.count == 0
@@ -70,53 +76,82 @@ class TextController < ApplicationController
 			flash.now[:notice] = "Search results for instances of #{params[:searchid]} (#{params[:search]}) are highlighted in yellow below." 
 		end
 		
-		item = get_item(params)
-		check_permission(item); return if performed?
-		
-		#check_transcript_existence(item, params); return if performed?
+		# get expression and related info
+		expression = get_expression(params[:itemid])
+		@expression_structure = expression.structureType_shortId
 
-		if item.status == "In Progress" || item.status == "draft"
+		check_permission(expression); return if performed?
+		
+		if expression.status == "In Progress" || expression.status == "draft"
 			flash.now[:alert] = "Please remember: the status of this text is draft. You have been granted access through the generosity of the editor. Please use the comments to help make suggestions or corrections."
 		end
 		
-		@title = item.title
+		#get values  needed for view
+		#@expressionid = params[:itemid]
+		@title = expression.title
+		@next_expressionid = if expression.next != nil then expression.next.split("/").last else nil end
+		@previous_expressionid = if expression.previous != nil then expression.previous.split("/").last else nil end
 
-		#remove @fs after check for use. use itemid instead
-		#@fs = item.fs
-		#@itemid = item.fs
+		#get transcription Object from params	
+		transcript = get_transcript(params)
 		
-		@next_itemid = if item.next != nil then item.next.split("/").last else nil end
-		@previous_itemid = if item.previous != nil then item.previous.split("/").last else nil end
-
-		transcript = get_transcript(item, params)
 		
-		file = transcript.file(@config.confighash)
-		#always remember single quotes for paramater value
-		#specify if global image setting is true or false
+		#prepare xslt arrays to be used for transformation
+			#always remember single quotes for paramater value
+			#specify if global image setting is true or false
 		xslt_param_array = ["default-ms-image", if default_wit(params) == "critical" then @config.default_ms_image else "'#{default_wit(params)}'" end, 
 				"default-msslug", "'#{default_wit(params)}'", 
 				"show-images", "'#{@config.images.to_s}'",
 				"by_phrase", "'#{t(:by)}'", 
 				"edited_by_phrase", "'#{t(:edited_by)}'"]
 		
-		@transform = file.transform_main_view(xslt_param_array)
-		
+		# get file object to be tansformed
+		# and perform transformation
+		if @expression_structure == "structureItem"
+			file = transcript.file(@config.confighash)
+			@transform = file.transform_main_view(xslt_param_array)
+		elsif @expression_structure == "structureBlock"
+			file = transcript.file_part(@config.confighash, params[:itemid])
+			@transform = file.transform_plain_text(xslt_param_array)
+		end
 	end
 	
 	def xml
-		item = get_item(params)
-		check_permission(item)
+		expression = get_expression(params[:itemid])
+		@expression_structure = expression.structureType_shortId
+		
+		check_permission(expression)
+		
+		transcript = get_transcript(params)
 
-		transcript = get_transcript(item, params)
-		@nokogiri = transcript.nokogiri
+		if @expression_structure == "structureItem"
+			file = transcript.file(@config.confighash)
+			@nokogiri = file.nokogiri
+		elsif @expression_structure == "structureBlock"
+			# NOTE: don't be confused by item id here; it is the id of the block express
+			# all :itemid should be interpreted as shortId of the expression.
+			# the will eventually all be changed to "expressionid"
+			file = transcript.file_part(@config.confighash, params[:itemid])
+			@nokogiri = file.xml
+		end
 	end
 
 	def toc 
-		item = get_item(params)
-		check_permission(item)
+		expression = get_expression(params[:itemid])
+		@expression_structure = expression.structureType_shortId
+		
+		check_permission(expression)
 
-		transcript = get_transcript(item, params)
-		@toc = transcript.transform_toc
+		transcript = get_transcript(params)
+
+		if @expression_structure == "structureItem"
+			file = transcript.file(@config.confighash)
+		elsif @expression_structure == "structureDivision"
+			## until each structure division has its own 
+			## tei file, it will need to use the file_part class
+			## and will need a method that can get the toc of just that part
+		end
+		@toc = file.transform_toc
 		render :layout => false
 	end
 

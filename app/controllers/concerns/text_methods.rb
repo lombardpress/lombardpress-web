@@ -2,16 +2,15 @@ module TextMethods
   extend ActiveSupport::Concern
 
   def get_item(params)
-			#config_hash = @config.confighash
-			#commentaryid = @config.commentaryid
-			#url = "http://scta.info/text/#{commentaryid}/item/#{params[:itemid]}"
-			shortid = params[:itemid]
-			#item = Lbp::Item.new(config_hash, shortid)
-			item = Lbp::Expression.new(shortid)
-		end
+		shortid = params[:itemid]
+		item = Lbp::Resource.new(shortid).convert
+	end
+	def get_expression(shortid)
+		expression = Lbp::Expression.new(shortid)
+	end
 
-		def check_permission(item)
-			if item.status == "In Progress" || item.status == "draft"
+		def check_permission(expression)
+			if expression.status == "In Progress" || expression.status == "draft"
 				if current_user.nil?
 					redirect_to "/text/draft_permissions/#{params[:itemid]}", :alert => "Access denied: This text is a draft. It requires permission to be viewed." and return
 				elsif !current_user.admin? 
@@ -23,18 +22,47 @@ module TextMethods
 				end 
 			end
 		end
+		
 		def default_wit(params)
 			if params.has_key?(:msslug) then params[:msslug] else "critical" end
 		end
-		def get_transcript(item, params, source="origin")
-			wit = default_wit(params)
-			shortid = params[:itemid]
+		def get_shortid(params)
+			if params.has_key? :transcriptslug
+				shortid = "#{params[:itemid]}/#{params[:msslug]}/#{params[:transcriptslug]}" 
+			elsif params.has_key? :msslug
+				shortid = "#{params[:itemid]}/#{params[:msslug]}"
+			else
+				shortid = "#{params[:itemid]}"
+			end
+		end
+		def get_transcript(params)
+			# get short id of either expression, manifestation, or transcription from paramaters
+			shortid = get_shortid(params)
+			#construct the resource url
+			resource_url = "http://scta.info/resource/#{shortid}"
+			# get the resource class object
+			resource = Lbp::Resource.new(resource_url)
 			
-			# transcription is requested by asking by calling the transcription method
-			# on the expression/item. the transcription method at the express level requests
-			# the cananonical transcription on the canonical manifestation
-			transcriptObj = item.transcription("http://scta.info/resource/#{shortid}/#{wit}")
-			return transcriptObj
+			#this conditional helps avoid a redundant call for the expression object
+			#since the expression object always gets called in the show 
+			#command to get basic info about status etc. 
+			#if this makes things to muddy the conditional could be removed and
+			#replaced with simply `resource_subclass=resource.convert
+
+			#i'm concerned about this conditional as I'm not quite sure how the && @expression is working
+			#yet the conditional seems to work only when this second condition is present
+			unless resource.type_shortId == "expression" && @expression != nil
+				resource_subclass = resource.convert
+			else
+				resource_subclass = @expression
+			end
+			# return the transcription object to be used
+			unless resource_subclass.class == Lbp::Transcription
+				return transcriptObj = resource_subclass.canonicalTranscription
+			else
+				# here it is assumed the subclass is already a Transcription class
+				return resource_subclass
+			end
 		end
 		def check_transcript_existence(item, params)
 			wit = default_wit(params)
