@@ -43,7 +43,7 @@ class TextController < ApplicationController
 	end
 
 	def info
-		expression = get_expression(params[:itemid])
+		expression = get_expression(params)
 		check_permission(expression)
 		@title = expression.title
 		#@itemid should be equivalent to expression id
@@ -77,7 +77,7 @@ class TextController < ApplicationController
 		end
 		
 		# get expression and related info
-		expression = get_expression(params[:itemid])
+		expression = get_expression(params)
 		@expression_structure = expression.structureType_shortId
 
 		check_permission(expression); return if performed?
@@ -96,10 +96,22 @@ class TextController < ApplicationController
 		transcript = get_transcript(params)
 		
 		
+
+		# ms_slugs is not great because its hard coding "critical"
+    # what if the name of the manifestion for a critical manifestion was not called critical
+    # more idea to check database to get a manifestationType
+    # but this could be costly. If there were 20 or 30 manifestations 
+    # then you'd be making lots of requests to db
+    # this map is reused in the paragraph controller as well; should be refactored
+    ms_slugs = expression.manifestationUrls.map {|m| unless m.include? 'critical' then m.split("/").last end}.compact
+		default_wit_param = ms_slugs[0]
+
 		#prepare xslt arrays to be used for transformation
 			#always remember single quotes for paramater value
 			#specify if global image setting is true or false
-		xslt_param_array = ["default-ms-image", if default_wit(params) == "critical" then @config.default_ms_image else "'#{default_wit(params)}'" end, 
+		
+			
+		xslt_param_array = ["default-ms-image", if default_wit(params) == "critical" then "'#{default_wit_param}'" else "'#{default_wit(params)}'" end, 
 				"default-msslug", "'#{default_wit(params)}'", 
 				"show-images", "'#{@config.images.to_s}'",
 				"by_phrase", "'#{t(:by)}'", 
@@ -117,7 +129,7 @@ class TextController < ApplicationController
 	end
 	
 	def xml
-		expression = get_expression(params[:itemid])
+		expression = get_expression(params)
 		@expression_structure = expression.structureType_shortId
 		
 		check_permission(expression)
@@ -137,7 +149,7 @@ class TextController < ApplicationController
 	end
 
 	def toc 
-		expression = get_expression(params[:itemid])
+		expression = get_expression(params)
 		@expression_structure = expression.structureType_shortId
 		
 		check_permission(expression)

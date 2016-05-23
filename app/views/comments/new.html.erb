@@ -1,8 +1,8 @@
 <div id="lbp-comment-new-container" class="container-fluid">
-<% if @paragraph != nil %>
-		<h1>Comments for <%= @item.title %>, paragraph <%= @paragraph.number %></h1>
+<% if @expression != nil %>
+		<h1>Comments for <%= @expression.title %>, paragraph <%= @expression.order_number %></h1>
 	<% else %>
-		<h1>Comments for <%= @item.title %>, paragraph <%= params[:pid] %></h1>
+		<h1>Comments for <%= @expression.title %>, paragraph <%= params[:pid] %></h1>
 	<% end %>
 
 <%= form_for :comment, url: comments_path, :html => { id: "lbp-new-comment-form" } do |f| %>

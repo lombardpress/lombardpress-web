@@ -1,16 +1,11 @@
 class ParagraphexemplarController < ApplicationController
+    include TextMethods
 	def json
 
-    para = Lbp::Expression.new(params[:itemid])
-
-    #TODO: paragraphNumber in db should be changed to something generic for all expressions
-    # then this conditional will no longer be necessary 
-
-		if para.structureType_shortId == "structureBlock"
-      number = para.results.dup.filter(:p => RDF::URI("http://scta.info/property/paragraphNumber")).first[:o].to_s.to_i
-    else
-      number = para.order_number
-    end
+    # para variable here is simpy the expressionObj
+    para = get_expression(params)
+    number = para.order_number
+    
 		expression_hash = {
         #:pid => pid,
         :itemid => params[:itemid],     

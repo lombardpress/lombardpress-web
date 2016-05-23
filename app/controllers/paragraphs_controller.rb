@@ -42,27 +42,48 @@ class ParagraphsController < ApplicationController
   end
 
 
-  #TODO - not sure if this is being used. 
-  # figure out if being its beings used and then delete
+  #TODO 
+  # this is being used by the get show paragraph image reques 
   def json
-    #item = get_item(params)
-    @expression = get_expression(params[:itemid])
+    @expression = get_expression(params)
     check_permission(@expression); return if performed?
-    #check_transcript_existence(item, params); return if performed?
-    #paragraph = item.transcription(wit: params[:msslug], source: "origin").paragraph(params[:pid])
-    #paragraph_text = paragraph.transform("#{Rails.root}/xslt/default/documentary/documentary_simple.xsl")
-    #add compact at the end to exlude nil result for critical text
-    #ms_slugs = item.transcription_slugs.map {|slug| unless slug == params[:itemid] then slug.split("_").first end}.compact
-      
+
+    # ms_slugs is not great because its hard coding "critical"
+    # what if the name of the manifestion for a critical manifestion was not called critical
+    # more idea to check database to get a manifestationType
+    # but this could be costly. If there were 20 or 30 manifestations 
+    # then you'd be making lots of requests to db
+    ms_slugs = @expression.manifestationUrls.map {|m| unless m.include? 'critical' then m.split("/").last end}.compact
+    transcript = get_transcript(params)
+
+    file = transcript.file_part(@config.confighash, params[:itemid])
+
+    text = file.transform("#{Rails.root}/xslt/default/documentary/documentary_simple.xsl")
+    
+    #TODO this should be become part of a core method
+    number = @expression.order_number
+
+    #TODO: db and lbp.gem should be returning nil, but the actually returning "http://scta.info/resource/" for nil. 
+    # Once this is fixed this conditional can be removed
+    if @expression.previous != nil && @expression.previous  != "http://scta.info/resource/"
+      previous_expression = @expression.previous.split("/").last
+    else
+      previous_expression = nil
+    end
+    if @expression.next != nil && @expression.next != "http://scta.info/resource/"
+      next_expression = @expression.next.split("/").last
+    else
+      next_expression = nil
+    end
+    
     paragraph_hash = {
-        :paragraph_text => @expressionparagraph_text.text.to_s.gsub(/\n/, '<br/> *').gsub(/\s+/, ' '),
-        :next_para => if paragraph.next != nil then paragraph.next.pid else nil end,
-        :previous_para => if paragraph.previous != nil then paragraph.previous.pid else nil end,
-        :paragraph_number => paragraph.number,
+        :paragraph_text => text.text.to_s.gsub(/\n/, '<br/> *').gsub(/\s+/, ' '),
+        :next_para => next_expression,
+        :previous_para => previous_expression,
+        :paragraph_number => number,
         :ms_slugs => ms_slugs,
-        :pid => params[:pid],
         :itemid => params[:itemid],
-        :commentaryid => @config.commentaryid,
+        
       }
 
     
@@ -73,10 +94,10 @@ class ParagraphsController < ApplicationController
   def collation
     
     #item = get_item(params)
-    @expression = get_expression(params[:itemid])
+    @expression = get_expression(params)
     
     @parts = @expression.manifestationUrls.map do |url|
-      url.split("/").last
+        url.split("/").last
     end
     
     if params[:base].nil? or params[:base] == ""

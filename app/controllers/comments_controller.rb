@@ -115,20 +115,20 @@ class CommentsController < ApplicationController
   def set_required_params
     config_hash = @config.confighash
     commentaryid = @config.commentaryid
-    url = "http://scta.info/text/#{commentaryid}/item/#{params[:itemid]}"
+    url = "http://scta.info/resource/#{params[:itemid]}"
 
     params[:user] = current_user[:id]
     params[:commentaryid] = @config.commentaryid
     
-    @item = Lbp::Item.new(config_hash, url)
+    @expression = Lbp::Expression.new(url)
     
     # Lbp should create a separate class for Paragraph and TranscriptParagraph
     # I should be able to retrieve paragraph number from SCTA rather than having to count it from the file
     # since paragraphs numbers are currently being counted from critical file, we need to check and see if there is a critical file
     # this would no longer be needed if paragraph number was coming from the SCTA databse.
-    if @item.transcription?("critical")
-      @paragraph = @item.transcription(source: "origin").paragraph(params[:pid])
-    end
+    #if @item.transcription?("critical")
+    #  @paragraph = @item.transcription(source: "origin").paragraph(params[:pid])
+    #end
   end
   # this parameter is used to let me redirect use to different places after a comment has 
   # been successfully deleted

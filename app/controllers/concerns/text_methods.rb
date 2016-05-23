@@ -5,8 +5,8 @@ module TextMethods
 		shortid = params[:itemid]
 		resource = Lbp::Resource.new(shortid).convert
 	end
-	def get_expression(shortid)
-		expression = Lbp::Expression.new(shortid)
+	def get_expression(params)
+		expression = Lbp::Expression.new(params[:itemid])
 	end
 
 		def check_permission(expression)
@@ -36,26 +36,26 @@ module TextMethods
 			end
 		end
 		def get_transcript(params)
-			# get short id of either expression, manifestation, or transcription from paramaters
-			shortid = get_shortid(params)
-			#construct the resource url
-			resource_url = "http://scta.info/resource/#{shortid}"
+			if params[:url]
+				resource_url = params[:url]
+			else
+				# get short id of either expression, manifestation, or transcription from paramaters
+				shortid = get_shortid(params)
+				#construct the resource url
+				resource_url = "http://scta.info/resource/#{shortid}"
+			end
 			# get the resource class object
 			resource = Lbp::Resource.new(resource_url)
-			
 			#this conditional helps avoid a redundant call for the expression object
 			#since the expression object always gets called in the show 
 			#command to get basic info about status etc. 
 			#if this makes things to muddy the conditional could be removed and
 			#replaced with simply `resource_subclass=resource.convert
-
-			#i'm concerned about this conditional as I'm not quite sure how the && @expression is working
-			#yet the conditional seems to work only when this second condition is present
-			unless resource.type_shortId == "expression" && @expression != nil
+			# resource.type_shortId == "expression" && !@expression
 				resource_subclass = resource.convert
-			else
-				resource_subclass = @expression
-			end
+			#else
+			#	resource_subclass = @expression
+			#end
 			# return the transcription object to be used
 			unless resource_subclass.class == Lbp::Transcription
 				return transcriptObj = resource_subclass.canonicalTranscription

@@ -1,10 +1,10 @@
 class MiscQuery < Lbp::Query
-	def zone_info(paragraphurl)
+	def zone_info(transcripturl)
 		nameurl = "<#{nameurl}>"
 		query = "#{@prefixes}
 			SELECT DISTINCT ?zone ?ulx ?uly ?lry ?lrx ?position ?height ?width ?canvasurl ?imageurl ?totalHeight ?totalWidth
       {
-        <#{paragraphurl}> <http://scta.info/property/hasZone> ?zone .
+        <#{transcripturl}> <http://scta.info/property/hasZone> ?zone .
          ?zone <http://scta.info/property/ulx> ?ulx .
          ?zone <http://scta.info/property/uly> ?uly .
          ?zone <http://scta.info/property/lry> ?lry .

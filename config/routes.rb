@@ -71,8 +71,8 @@ end
 
   #get 'paragraphimage/showfoliozoom/:msslug/:canvas_id' => 'paragraphimage#showfoliozoom'
   get 'paragraphimage/showfoliozoom' => 'paragraphimage#showfoliozoom'
-  get 'paragraphimage/showzoom/:itemid/:msslug/:pid' => 'paragraphimage#showzoom'
-  get 'paragraphimage/:itemid/:msslug/:pid' => 'paragraphimage#show'
+  get 'paragraphimage/showzoom/:itemid/:msslug' => 'paragraphimage#showzoom'
+  #get 'paragraphimage/:itemid/:msslug/:pid' => 'paragraphimage#show'
 
   
   get 'users/profiles/:id' => 'users/profiles#show', as: :users_profile
