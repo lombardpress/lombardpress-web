@@ -29,27 +29,29 @@ $(document).on('ready page:load', function () {
 		});
 		$("a.js-show-paragraph-variants").click(function(event){
 			event.preventDefault();
-			var itemid = $(this).attr("data-itemid");
+			//var itemid = $(this).attr("data-itemid");
+			// pid is functioning as expression id here
 			var pid = $(this).attr("data-pid");
 			$paragraph = $("p#" + pid);
 			showSideWindow($paragraph);
-			showParagraphVariants(itemid, pid);
+			showParagraphVariants(pid);
 		});
 		$("a.js-show-paragraph-notes").click(function(event){
 			event.preventDefault();
-			var itemid = $(this).attr("data-itemid");
+			//var itemid = $(this).attr("data-itemid");
+			// pid is functioning as expression id here
 			var pid = $(this).attr("data-pid");
 			$paragraph = $("p#" + pid);
 			showSideWindow($paragraph);
-			showParagraphNotes(itemid, pid);
+			showParagraphNotes(pid);
 		});
 		$("a.js-show-paragraph-info").click(function(event){
 			event.preventDefault();
-			var itemid = $(this).attr("data-itemid");
+			// var pid here stands for the expression id
 			var pid = $(this).attr("data-pid");
 			$paragraph = $("p#" + pid);
 			showSideWindow($paragraph)
-			showParagraphInfo(itemid, pid)
+			showParagraphInfo(pid)
 		});
 
 	});
@@ -98,12 +100,12 @@ $(document).on("click", ".js-show-reference-paragraph", function(event){
 //note redundancy here; copying document ready functions
 $(document).on("click", "a.js-show-paragraph-info", function(event){
 			event.preventDefault();
-			var itemid = $(this).attr("data-itemid");
+			// pid stands for expression short id here
 			var pid = $(this).attr("data-pid");
 			$paragraph = $("p#" + pid);
 			showSpinner("div#lbp-side-window-container");
 			showSideWindow($paragraph)
-			showParagraphInfo(itemid, pid)
+			showParagraphInfo(pid)
 		});
 
 
@@ -182,8 +184,8 @@ var showOutline = function(itemid){
 	});
 }
 
-var showParagraphVariants = function(itemid, pid){
-	$("#lbp-side-window-container").load("/paragraphs/variants/" + itemid + "/" + pid + "#lbp-" + pid + "-variant-list", function( response, status, xhr) {
+var showParagraphVariants = function(expressionid){
+	$("#lbp-side-window-container").load("/paragraphs/variants/" + expressionid  + "#lbp-" + expressionid + "-variant-list", function( response, status, xhr) {
 		console.log(status);
   	if ( status == "error" ) {
     	var msg = "<h3>Sorry, but there are no variants for this paragraph.</h3>";
@@ -192,8 +194,8 @@ var showParagraphVariants = function(itemid, pid){
     }	
 	});
 }
-var showParagraphNotes = function(itemid, pid){
-	$("#lbp-side-window-container").load("/paragraphs/notes/" + itemid + "/" + pid + "#lbp-" + pid + "-notes-list", function( response, status, xhr) {
+var showParagraphNotes = function(expressionid){
+	$("#lbp-side-window-container").load("/paragraphs/notes/" + expressionid + "#lbp-" + expressionid + "-notes-list", function( response, status, xhr) {
 		console.log(status);
   	if ( status == "error" ) {
     	var msg = "<h3>Sorry, but there are no variants for this paragraph.</h3>";
@@ -203,8 +205,8 @@ var showParagraphNotes = function(itemid, pid){
 	});
 }
 
-var showParagraphInfo = function(itemid, pid){
-	$.get("/paragraphexemplar/json/" + itemid + "/" + pid, function(data){
+var showParagraphInfo = function(itemid){
+	$.get("/paragraphexemplar/json/" + itemid, function(data){
 		var content = HandlebarsTemplates['textinfo'](data);
 		$("#lbp-side-window-container").html(content);
 

@@ -1,40 +1,23 @@
 class ParagraphexemplarController < ApplicationController
 	def json
-		commentaryid = @config.commentaryid
-		#itemid = "wdr-l1prol"
-		itemid = params[:itemid]
-		#pid = "wdrl1prol-qutvrs"
-		pid = params[:pid]
-		#if paragraphexamplar is really a class for sections of diverse types
-        #articles, questions, divisions, etc, then we need to know the type, 
-        #since the current url scheme lists the type in the id. 
-        #here we have hard-coded paragraph which means this only works for paragraphs
-        #params[:type] could fix this with values such as "paragraph", "articulus", "dubium" or generic "division"
-		para = Lbp::ParagraphExemplar.new(@config.confighash, "http://scta.info/text/#{commentaryid}/paragraph/#{pid}")
-        
-#begin test
-    
-    itemid = para.itemid
-    commentaryid = para.cid
-    pid = para.pid
 
-    itemurl = "http://scta.info/text/#{commentaryid}/item/#{itemid}"
-    item = Lbp::Item.new(@config.confighash, itemurl)
+    para = Lbp::Expression.new(params[:itemid])
 
-    canonicalwit = item.canonical_transcription_slug
+    #TODO: paragraphNumber in db should be changed to something generic for all expressions
+    # then this conditional will no longer be necessary 
 
-    transcript = item.transcription(source: "origin", wit: canonicalwit)
-    paratranscript = transcript.paragraph(pid)
-    
-#end test
-		
-		paragraph_hash = {
-        :pid => pid,
-        :itemid => itemid,     
+		if para.structureType_shortId == "structureBlock"
+      number = para.results.dup.filter(:p => RDF::URI("http://scta.info/property/paragraphNumber")).first[:o].to_s.to_i
+    else
+      number = para.order_number
+    end
+		expression_hash = {
+        #:pid => pid,
+        :itemid => params[:itemid],     
         :next => if para.next != nil then para.next.split("/").last else nil end, 
         :previous => if para.previous != nil then para.previous.split("/").last else nil end,
-        :number => para.paragraph_number,
-        :transcriptions => para.transcriptions.map {|item| item[:o].to_s},
+        :number => number,
+        :transcriptions => para.manifestationUrls,
         :abbreviates => para.abbreviates.map {|item| item[:o].to_s},
         :abbreviatedBy => para.abbreviatedBy.map {|item| item[:o].to_s},
         :references => para.references.map {|item| item[:o].to_s},
@@ -44,16 +27,11 @@ class ParagraphexemplarController < ApplicationController
         :quotes => para.quotes.map {|item| item[:o].to_s},
         :quotedBy => para.quotedBy.map {|item| item[:o].to_s},
         :mentions => para.mentions.map {|item| item[:o].to_s},
-        :wordcount => paratranscript.word_count,
-        :wordfrequency => paratranscript.word_frequency
+        #:wordcount => paratranscript.word_count,
+        #:wordfrequency => paratranscript.word_frequency
 
       }
-
-      
-
-			
-    
-    render :json => paragraph_hash
+    render :json => expression_hash
   end
   
 end

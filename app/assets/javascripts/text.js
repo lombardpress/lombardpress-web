@@ -111,9 +111,8 @@ $(document).on('ready page:load', function () {
 			showSpinner("#lbp-bottom-window-container");
 			showBottomWindow();
 			halfSizeBottomWindow();
-			var itemid = $(this).attr("data-itemid");
-			var pid = $(this).attr("data-pid");
-			showParagraphCollation(itemid, pid, "", "");
+			var expressionid = $(this).attr("data-itemid");
+			showParagraphCollation(expressionid, "", "");
 		});
 
 
@@ -150,11 +149,10 @@ $(document).on("submit", "#lbp-new-comment-form", function(event){
 $(document).on("submit", "#lbp-collation-selector-form", function(event){
 	 event.preventDefault();
 	 var form = $('#lbp-collation-selector-form');
-	 var itemid = form.attr("data-itemid");
-	 var pid = form.attr("data-pid");
+	 var expressionid = form.attr("data-expressionid");
 	 var base = form.find("#base").val();
    var comp = form.find("#comp").val(); 
-   showParagraphCollation(itemid, pid, base, comp);
+   showParagraphCollation(expressionid, base, comp);
 });
 
 
@@ -383,8 +381,8 @@ var showItemInfo = function(itemid){
   });
 }
 // paragraph collation functions 
-var showParagraphCollation = function(itemid, pid, base, comp){
-	$("#lbp-bottom-window-container").load("/paragraphs/collation/" + itemid + "/" + pid + "?base=" + base + "&comp=" + comp, function(response, status, xhr) {
+var showParagraphCollation = function(expressionid, base, comp){
+	$("#lbp-bottom-window-container").load("/paragraphs/collation/" + expressionid + "?base=" + base + "&comp=" + comp, function(response, status, xhr) {
 
 		if ( status == "error" ) {
     	var msg = "Sorry but collation comparison is not currently available for this paragraph";

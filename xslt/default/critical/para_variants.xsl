@@ -10,7 +10,7 @@
     <h3 class="lbp-side-bar-paragraph-heading"><a class="js-side-bar-scroll-to-paragraph" data-pid="{$pid}">Variants for paragraph <xsl:value-of select="count(//tei:body//tei:p) - count(//tei:p[@xml:id=$pid]//following::tei:p)"/></a></h3>
     <ul id="{$pid}-variant-list" class="lbp-paragraph-variant-list">
     <xsl:variable name="test" select="$pid"/>  
-      <xsl:apply-templates select="//tei:p[@xml:id=$pid]//tei:app"/>
+      <xsl:apply-templates select="//tei:*[@xml:id=$pid]//tei:app"/>
     </ul>
   </xsl:template>
   

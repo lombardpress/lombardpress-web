@@ -43,16 +43,16 @@ scope 'paragraphs' do
   get 'plaintext' => 'paragraphs#plaintext'
   get 'show2' => 'paragraphs#show2'
 
-  get 'collation/:itemid/:pid' => 'paragraphs#collation', as: :paragraphs_collation
+  get 'collation/:itemid' => 'paragraphs#collation', as: :paragraphs_collation
   get 'xml/:itemid/:pid(/:msslug)' => 'paragraphs#xml', as: :paragraphs_xml
-  get 'json/:itemid/:pid(/:msslug)' => 'paragraphs#json', as: :paragraphs_json
-  get 'variants/:itemid/:pid' => 'paragraphs#variants', as: :paragraphs_variants
-  get 'notes/:itemid/:pid' => 'paragraphs#notes', as: :paragraphs_notes
+  get 'json/:itemid/(/:msslug)(/:transcriptslug)' => 'paragraphs#json', as: :paragraphs_json
+  get 'variants/:itemid/(/:msslug)(/:transcriptslug)' => 'paragraphs#variants', as: :paragraphs_variants
+  get 'notes/:itemid/(/:msslug)(/:transcriptslug)' => 'paragraphs#notes', as: :paragraphs_notes
   
   get ':itemid/:pid(/:msslug)' => 'paragraphs#show'
 end
   
-  get 'paragraphexemplar/json/:itemid/:pid' => 'paragraphexemplar#json'
+  get 'paragraphexemplar/json/:itemid' => 'paragraphexemplar#json'
 
   get 'permissions' => 'pages#permissions'
   

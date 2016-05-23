@@ -3,7 +3,7 @@ module TextMethods
 
   def get_item(params)
 		shortid = params[:itemid]
-		item = Lbp::Resource.new(shortid).convert
+		resource = Lbp::Resource.new(shortid).convert
 	end
 	def get_expression(shortid)
 		expression = Lbp::Expression.new(shortid)

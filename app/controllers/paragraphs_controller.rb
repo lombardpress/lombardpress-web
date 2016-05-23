@@ -30,6 +30,9 @@ class ParagraphsController < ApplicationController
     render :layout => false
   end
   
+  # TODO: text controller xml should work for this
+  # so this should eventually be deleted and then an requests 
+  # should be rerouted
   def xml
     #item = get_item(params)
     #check_permission(item)
@@ -38,22 +41,21 @@ class ParagraphsController < ApplicationController
     
   end
 
-  def info
-  end
 
-  def plaintext
-  end
+  #TODO - not sure if this is being used. 
+  # figure out if being its beings used and then delete
   def json
-    item = get_item(params)
-    check_permission(item); return if performed?
-    check_transcript_existence(item, params); return if performed?
-    paragraph = item.transcription(wit: params[:msslug], source: "origin").paragraph(params[:pid])
-    paragraph_text = paragraph.transform("#{Rails.root}/xslt/default/documentary/documentary_simple.xsl")
+    #item = get_item(params)
+    @expression = get_expression(params[:itemid])
+    check_permission(@expression); return if performed?
+    #check_transcript_existence(item, params); return if performed?
+    #paragraph = item.transcription(wit: params[:msslug], source: "origin").paragraph(params[:pid])
+    #paragraph_text = paragraph.transform("#{Rails.root}/xslt/default/documentary/documentary_simple.xsl")
     #add compact at the end to exlude nil result for critical text
-    ms_slugs = item.transcription_slugs.map {|slug| unless slug == params[:itemid] then slug.split("_").first end}.compact
+    #ms_slugs = item.transcription_slugs.map {|slug| unless slug == params[:itemid] then slug.split("_").first end}.compact
       
     paragraph_hash = {
-        :paragraph_text => paragraph_text.text.to_s.gsub(/\n/, '<br/> *').gsub(/\s+/, ' '),
+        :paragraph_text => @expressionparagraph_text.text.to_s.gsub(/\n/, '<br/> *').gsub(/\s+/, ' '),
         :next_para => if paragraph.next != nil then paragraph.next.pid else nil end,
         :previous_para => if paragraph.previous != nil then paragraph.previous.pid else nil end,
         :paragraph_number => paragraph.number,
@@ -69,53 +71,66 @@ class ParagraphsController < ApplicationController
   end
 
   def collation
-    item = get_item(params)
-    @parts = item.transcription_slugs.map do |part| 
-      if part.include? "_"
-        part.split("_").first
-      else
-        "critical"
-      end
+    
+    #item = get_item(params)
+    @expression = get_expression(params[:itemid])
+    
+    @parts = @expression.manifestationUrls.map do |url|
+      url.split("/").last
     end
     
     if params[:base].nil? or params[:base] == ""
       @base_text_name = nil
-      @para_base
+      @para_base = nil
     else
       @base_text_name = params[:base]
-      base_transcript = item.transcription(source: "origin", wit: @base_text_name)
-      #gsum is added to remove extra spaces; ideally this would happen at XSLT level
-      @para_base = base_transcript.paragraph(params[:pid]).transform_plain_text.text.gsub(/\s+/, ' ')
+      base_params = {itemid: params[:itemid], msslug: params[:base]}
+      base_transcript = get_transcript(base_params)
+      @para_base = base_transcript.file_part(@config.confighash, params[:itemid]).transform_plain_text.text.gsub(/\s+/, ' ')
     end
     if params[:comp].nil? or params[:comp] == ""
       @comp_text_name = nil
       @para_comp = nil
     else
       @comp_text_name = params[:comp]
-      comp_transcript = item.transcription(source: "origin", wit: @comp_text_name)
+      comp_params = {itemid: params[:itemid], msslug: params[:comp]}
+      comp_transcript = get_transcript(comp_params)
       #gsum is added to remove extra spaces; ideally this would happen at XSLT level
-      @para_comp = comp_transcript.paragraph(params[:pid]).transform_plain_text.text.gsub(/\s+/, ' ')
+      @para_comp = comp_transcript.file_part(@config.confighash, params[:itemid]).transform_plain_text.text.gsub(/\s+/, ' ')
     end
 
     render :layout => false
 
   end
   def variants
-    item = get_item(params)
-    check_permission(item); return if performed?
-    check_transcript_existence(item, params); return if performed?
-    transcript = get_transcript(item, params)
-    xslt_param_array = ["pid", "'#{params[:pid]}'"]
-    @para_variants = transcript.transform("#{Rails.root}/xslt/default/critical/para_variants.xsl", xslt_param_array)
+    #@expression = get_expression(params[:itemid])
+    #check_permission(expression); return if performed?
+    #check_transcript_existence(item, params); return if performed?
+    transcript = get_transcript(params)
+    
+    ## TODO: this call is not ideal
+    ## but calling file it, bubbles ups to the item level expression no matter 
+    ## what structure level expression has been called. 
+    ## this is required at the moment since the xslt sheet is designed for this
+    ## But when each transcription can point to its own tei file, 
+    ## the xslt may need to be written
+    file = transcript.file(@config.confighash)
+
+    xslt_param_array = ["pid", "'#{params[:itemid]}'"]
+    @para_variants = file.transform("#{Rails.root}/xslt/default/critical/para_variants.xsl", xslt_param_array)
+    
     render :layout => false
   end
   def notes
-    item = get_item(params)
-    check_permission(item); return if performed?
-    check_transcript_existence(item, params); return if performed?
-    transcript = get_transcript(item, params)
-    xslt_param_array = ["pid", "'#{params[:pid]}'"]
-    @para_notes = transcript.transform("#{Rails.root}/xslt/default/critical/para_notes.xsl", xslt_param_array)
+    #item = get_item(params)
+    #check_permission(item); return if performed?
+    #check_transcript_existence(item, params); return if performed?
+    transcript = get_transcript(params)
+    # same message as above
+    file = transcript.file(@config.confighash)
+
+    xslt_param_array = ["pid", "'#{params[:itemid]}'"]
+    @para_notes = file.transform("#{Rails.root}/xslt/default/critical/para_notes.xsl", xslt_param_array)
     render :layout => false
   end
 end
