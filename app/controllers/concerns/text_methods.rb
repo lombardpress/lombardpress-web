@@ -14,15 +14,22 @@ module TextMethods
 				if current_user.nil?
 					redirect_to "/text/draft_permissions/#{params[:itemid]}", :alert => "Access denied: This text is a draft. It requires permission to be viewed." and return
 				elsif !current_user.admin? 
-					allowed_texts = current_user.access_points.map {|access_point| {access_point.itemid =>access_point.commentaryid} }
-					unless allowed_texts.include? params[:itemid] => @config.commentaryid or allowed_texts.include? "all" => @config.commentaryid
+					# begin collecting allow structureItems
+					allowed_items = current_user.access_points.map {|access_point| access_point.itemid}
+					# collecting allowed topLevelExpressions
+					allowed_top_level_collection = current_user.access_points.map {|access_point| access_point.commentaryid}
+					# get topLevel expression that structureItem expression belongs to
+					toplevelexpressionid = expression.top_level_expression_shortId
+					#begins test
+					if !allowed_items.include? expression.resource_shortId and !allowed_top_level_collection.include? toplevelexpressionid
 						redirect_to "/text/draft_permissions/#{params[:itemid]}", :alert => "Access denied: This text is a draft. It requires permission to be viewed." and return
 					end
-				# if user is logged in and is admin, no redirect should occur, thus there is no final "else" statment
-				end 
-			end
+					# if user is logged in and is admin, no redirect should occur, thus there is no final "else" statment
+				end
+			end 
 		end
-		
+		## TODO: test and see if this being, used. Seems obsolute now that 
+		# I can use canonicalManifestion and canonicalWitness methods
 		def default_wit(params)
 			if params.has_key?(:msslug) then params[:msslug] else "critical" end
 		end
@@ -46,16 +53,9 @@ module TextMethods
 			end
 			# get the resource class object
 			resource = Lbp::Resource.new(resource_url)
-			#this conditional helps avoid a redundant call for the expression object
-			#since the expression object always gets called in the show 
-			#command to get basic info about status etc. 
-			#if this makes things to muddy the conditional could be removed and
-			#replaced with simply `resource_subclass=resource.convert
-			# resource.type_shortId == "expression" && !@expression
-				resource_subclass = resource.convert
-			#else
-			#	resource_subclass = @expression
-			#end
+			
+			resource_subclass = resource.convert
+			
 			# return the transcription object to be used
 			unless resource_subclass.class == Lbp::Transcription
 				return transcriptObj = resource_subclass.canonicalTranscription
@@ -64,10 +64,10 @@ module TextMethods
 				return resource_subclass
 			end
 		end
-		def check_transcript_existence(item, params)
-			wit = default_wit(params)
-				unless item.transcription?(wit)
-					redirect_to "/text/status/#{params[:itemid]}", :alert => "A critical/normalized edition of this text does not exist yet. Below are the available transcriptions." and return
+		def check_transcript_existence(expressionObj)
+				unless expressionObj.canonicalTranscription?
+					expressionid = expressionObj.resource_shortId
+					redirect_to "/text/status/#{expressionid}", :alert => "A critical/normalized edition of this text does not exist yet. Below are the available transcriptions." and return
 		end
 		
 	end

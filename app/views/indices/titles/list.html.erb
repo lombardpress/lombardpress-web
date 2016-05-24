@@ -7,10 +7,10 @@
 		</div>
 	<table class="table table-striped table-hover">
 		<% @results.each do |result| %>
-			<% titleid = result[:title].to_s.split("/").last %>
+			<% titleid = result[:resource].to_s.split("/").last %>
 			<tr>
-				<td><%= link_to result[:titleTitle], "/index/titles/show/#{titleid}" %></td>
-				<td><%= link_to "SCTA Entry",  result[:title].to_s %></td>
+				<td><%= link_to result[:resourceTitle], "/index/titles/show/#{titleid}" %></td>
+				<td><%= link_to "SCTA Entry",  result[:resource].to_s %></td>
 			</tr>
 		<% end %>	
 	</table>

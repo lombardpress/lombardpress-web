@@ -61,7 +61,7 @@ end
 scope "text" do
   get '' => 'text#index'
   get 'draft_permissions/:itemid' => 'text#draft_permissions'
-  get 'questions(/:resourceid)' => 'text#questions'
+  get 'questions(/:resourceid)' => 'text#questions', as: :table_of_questions
   get 'info/:itemid' => 'text#info'
   get 'status/:itemid' => 'text#status'
   get 'toc/:itemid(/:msslug)' => 'text#toc'

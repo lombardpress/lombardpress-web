@@ -7,11 +7,11 @@
 		</div>
 	<table class="table table-striped table-hover">
 		<% @results.each do |result| %>
-			<% quoteid = result[:quote].to_s.split("/").last %>
+			<% quoteid = result[:resource].to_s.split("/").last %>
 			<tr>
-				<td><%= link_to result[:quoteTitle], "/index/quotes/show/#{quoteid}" %></td>
-				<td><%= result[:quoteCitation] %></td>
-				<td><%= link_to "SCTA Entry",  result[:quote].to_s %></td>
+				<td><%= link_to result[:resourceTitle], "/index/quotes/show/#{quoteid}" %></td>
+				<td><%= result[:resource] %></td>
+				<td><%= link_to "SCTA Entry",  result[:resource].to_s %></td>
 			</tr>
 		<% end %>	
 	</table>

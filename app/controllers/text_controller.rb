@@ -21,26 +21,34 @@ class TextController < ApplicationController
 		# if it is a an expresion it should list all expressions parts with structure type=item
 		# if it is a work, it should list available expression if there are more than one, 
 		# otherwise, if there is only expression, it should re-route to the top-level expression view.
-
-		if params[:resourceid] == "sententia" || params[:resourceid] == "deanima"
-			@results = WorkGroupQuery.new.expression_list(params[:resourceid])
-			render "expressionlist"
-		elsif params[:resourceid]
-			expressionid = params[:resourceid]
-			url =  "<http://scta.info/resource/#{expressionid}>" 
-
-			@results = Lbp::Query.new().collection_query(url)
-		else
-			if @config.commentarydirname == "workgroup" 
-				@results = WorkGroupQuery.new.expression_list(@config.commentaryid)
+		
+		if params[:resourceid] != nil
+			resource = Lbp::Resource.new("http://scta.info/resource/#{params[:resourceid]}")
+			if resource.type_shortId == "workGroup"
+				@results = WorkGroupQuery.new.expression_list(params[:resourceid])
 				render "expressionlist"
+				# a conditional like this could display expression types
+					#elsif resource.type == "http://scta.info/resource/lectio"
+						#	puts "test"
+				# another conditional could handle a list for an author
+					#elsif resource.type == "http://scta.info/resource/person"
+						#	puts "test"
+				elsif params[:resourceid]
+					expressionid = params[:resourceid]
+					url =  "<http://scta.info/resource/#{expressionid}>" 
+					@results = Lbp::Query.new().collection_query(url)
+				end
 			else
-				commentaryid = @config.commentaryid
-				url =  "<http://scta.info/resource/#{commentaryid}>"
-				@results = Lbp::Query.new().collection_query(url)
+				if @config.commentarydirname == "workgroup" 
+					@results = WorkGroupQuery.new.expression_list(@config.commentaryid)
+					render "expressionlist"
+				else
+					commentaryid = @config.commentaryid
+					url =  "<http://scta.info/resource/#{commentaryid}>"
+					@results = Lbp::Query.new().collection_query(url)
+				end
 			end
 		end
-	end
 
 	def info
 		expression = get_expression(params)
@@ -78,8 +86,10 @@ class TextController < ApplicationController
 		
 		# get expression and related info
 		expression = get_expression(params)
+		
 		@expression_structure = expression.structureType_shortId
-
+		# perform checks
+		check_transcript_existence(expression)
 		check_permission(expression); return if performed?
 		
 		if expression.status == "In Progress" || expression.status == "draft"
