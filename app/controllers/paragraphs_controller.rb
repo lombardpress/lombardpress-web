@@ -12,21 +12,22 @@ class ParagraphsController < ApplicationController
   end
   def show2
     url = params[:url]
-    @para = Lbp::ParagraphExemplar.new(@config.confighash, url)
-    itemid = @para.itemid
-    commentaryid = @para.cid
-    pid = @para.pid
-    commentaryurl = "http://scta.info/text/#{commentaryid}/commentary"
-    commentary = Lbp::Collection.new(@config.confighash, commentaryurl)
-    @commentary_title = commentary.title
-    itemurl = "http://scta.info/text/#{commentaryid}/item/#{itemid}"
-    @item = Lbp::Item.new(@config.confighash, itemurl)
+    @expression = Lbp::Expression.new(url)
+    #itemid = @para.itemid
+    #commentaryid = @para.cid
+    #pid = @para.pid
+    #commentaryurl = "http://scta.info/text/#{commentaryid}/commentary"
+    #commentary = Lbp::Collection.new(@config.confighash, commentaryurl)
+    #@commentary_title = commentary.title
+    #itemurl = "http://scta.info/text/#{commentaryid}/item/#{itemid}"
+    #@item = Lbp::Item.new(@config.confighash, itemurl)
     
-    canonicalwit = @item.canonical_transcription_slug
-
-    transcript = @item.transcription(source: "origin", wit: canonicalwit)
+    #canonicalwit = @item.canonical_transcription_slug
+    transcript = get_transcript(params)
+    file = transcript.file_part(@config.confighash, @expression.resource_shortId)
+    #transcript = @item.transcription(source: "origin", wit: canonicalwit)
     
-    @p = transcript.paragraph(pid).transform_plain_text
+    @text = file.transform_plain_text
     render :layout => false
   end
   

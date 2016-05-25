@@ -90,22 +90,22 @@ class TextController < ApplicationController
 		end
 		
 		# get expression and related info
-		expression = get_expression(params)
+		@expression = get_expression(params)
 		
-		@expression_structure = expression.structureType_shortId
+		@expression_structure = @expression.structureType_shortId
 		# perform checks
-		check_transcript_existence(expression)
-		check_permission(expression); return if performed?
+		check_transcript_existence(@expression)
+		check_permission(@expression); return if performed?
 		
-		if expression.status == "In Progress" || expression.status == "draft"
+		if @expression.status == "In Progress" || @expression.status == "draft"
 			flash.now[:alert] = "Please remember: the status of this text is draft. You have been granted access through the generosity of the editor. Please use the comments to help make suggestions or corrections."
 		end
 		
 		#get values  needed for view
 		#@expressionid = params[:itemid]
-		@title = expression.title
-		@next_expressionid = if expression.next != nil then expression.next.split("/").last else nil end
-		@previous_expressionid = if expression.previous != nil then expression.previous.split("/").last else nil end
+		@title = @expression.title
+		@next_expressionid = if @expression.next != nil then @expression.next.split("/").last else nil end
+		@previous_expressionid = if @expression.previous != nil then @expression.previous.split("/").last else nil end
 
 		#get transcription Object from params	
 		transcript = get_transcript(params)
@@ -118,7 +118,7 @@ class TextController < ApplicationController
     # but this could be costly. If there were 20 or 30 manifestations 
     # then you'd be making lots of requests to db
     # this map is reused in the paragraph controller as well; should be refactored
-    ms_slugs = expression.manifestationUrls.map {|m| unless m.include? 'critical' then m.split("/").last end}.compact
+    ms_slugs = @expression.manifestationUrls.map {|m| unless m.include? 'critical' then m.split("/").last end}.compact
 		default_wit_param = ms_slugs[0]
 
 		#prepare xslt arrays to be used for transformation

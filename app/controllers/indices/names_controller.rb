@@ -21,15 +21,17 @@ class Indices::NamesController < ApplicationController
 		return @results
 	end
 	def show
-		commentaryurl = "http://scta.info/text/#{@config.commentaryid}/commentary"
 		nameurl = "http://scta.info/resource/person/#{params[:nameid]}"
-		query = IndexQuery.new(commentaryurl)
-		@results = query.name_info(nameurl)
-		@commentary_results = @results.dup.filter(:commentary => RDF::URI("#{commentaryurl}"))
+		query = IndexQuery.new(nameurl)
+		@results = query.expression_element_info(nameurl)
+		
+		#@commentary_results = @results.dup.filter(:commentary => RDF::URI("#{commentaryurl}"))
 		#@other_results = @results.dup.filter(:commentary => (RDF::URI("#{commentaryurl}"))
 	end
 	def categories
+		
 		@categories = ["All", "Arabic", "Biblical", "Classical", "Patristic", "Scholastic"]
+
 	end
 
 end

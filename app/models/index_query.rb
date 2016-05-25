@@ -30,20 +30,25 @@ class IndexQuery < Lbp::Query
 	   end   
 		result = self.query(query)
 	end
-	def name_info(nameurl)
-		nameurl = "<#{nameurl}>"
-		query = "#{@prefixes}
-			SELECT DISTINCT ?nameTitle ?item ?itemTitle ?commentary ?commentaryTitle ?orderNumber
-      {
-        #{nameurl} <http://purl.org/dc/elements/1.1/title> ?nameTitle  .
-        #{nameurl} <http://scta.info/property/mentionedBy> ?item .
-        ?item <http://purl.org/dc/elements/1.1/title> ?itemTitle .
+	def expression_element_info(expressionElementUrl)
+		nameurl = "<#{expressionElementUrl}>"
+		
+		query = "SELECT DISTINCT ?nameTitle ?element ?structureBlock ?item ?itemTitle ?orderNumber ?commentary ?commentaryTitle ?author ?authorTitle
+{
+				#{nameurl} <http://purl.org/dc/elements/1.1/title> ?nameTitle  .
+        ?element <http://scta.info/property/isInstanceOf> #{nameurl} .
+        ?element <http://scta.info/property/isPartOfStructureBlock> ?structureBlock .
+         ?structureBlock <http://scta.info/property/isPartOfStructureItem> ?item .
+         ?item <http://purl.org/dc/elements/1.1/title> ?itemTitle .
          ?item <http://scta.info/property/totalOrderNumber> ?orderNumber .
-         ?item <http://scta.info/property/isPartOfCommentary> ?commentary .
-         ?item <http://purl.org/dc/elements/1.1/title> ?commentaryTitle
-      }
-      # ORDER BY ?orderNumber"
+         ?item <http://scta.info/property/isPartOfTopLevelExpression> ?commentary .
+         ?item <http://purl.org/dc/elements/1.1/title> ?commentaryTitle .
+         ?commentary <http://www.loc.gov/loc.terms/relators/AUT> ?author .
+         ?commentary <http://purl.org/dc/elements/1.1/title> ?authorTitle .
+      }"
+      
 		result = self.query(query)
+		
 	end
 	def title_list(type='All')
 		if type=='All'
@@ -71,6 +76,7 @@ class IndexQuery < Lbp::Query
 	   end   
 		result = self.query(query)
 	end
+=begin	
 	def title_info(titleurl)
 		titleurl = "<#{titleurl}>"
 		query = "#{@prefixes}
@@ -86,6 +92,7 @@ class IndexQuery < Lbp::Query
       # ORDER BY ?orderNumber"
 		result = self.query(query)
 	end
+=end
 	def quote_list(type='All')
 		if type=='All'
 			query = "#{@prefixes}
@@ -123,6 +130,7 @@ class IndexQuery < Lbp::Query
 	   end   
 		result = self.query(query)
 	end
+=begin	
 	def quote_info(quoteurl)
 		quoteurl = "<#{quoteurl}>"
 		query = "#{@prefixes}
@@ -138,7 +146,7 @@ class IndexQuery < Lbp::Query
       # ORDER BY ?orderNumber"
 		result = self.query(query)
 	end
-
+=end
 	def expression_list()
 		query = "
 			SELECT ?workgrouptitle ?expression ?expressiontitle
@@ -152,5 +160,6 @@ class IndexQuery < Lbp::Query
 
 		result = self.query(query)
 	end
+
 end
  
