@@ -24,7 +24,12 @@ class TextController < ApplicationController
 		
 		if params[:resourceid] != nil
 			resource = Lbp::Resource.new("http://scta.info/resource/#{params[:resourceid]}")
-			if resource.type_shortId == "workGroup"
+			# TODO this first conditional should be chanted to 
+			# if resource is topLevelWorkGroup
+			if resource.resource_shortId == "scta"
+				@results = WorkGroupQuery.new.work_group_list(params[:resourceid])
+				render "workgrouplist"
+			elsif resource.type_shortId == "workGroup"
 				@results = WorkGroupQuery.new.expression_list(params[:resourceid])
 				render "expressionlist"
 				# a conditional like this could display expression types
@@ -39,9 +44,9 @@ class TextController < ApplicationController
 					@results = Lbp::Query.new().collection_query(url)
 				end
 			else
-				if @config.commentarydirname == "workgroup" 
-					@results = WorkGroupQuery.new.expression_list(@config.commentaryid)
-					render "expressionlist"
+				if @config.commentaryid == "scta"
+					@results = WorkGroupQuery.new.work_group_list(@config.commentaryid)
+					render "workgrouplist"
 				else
 					commentaryid = @config.commentaryid
 					url =  "<http://scta.info/resource/#{commentaryid}>"

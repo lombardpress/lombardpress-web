@@ -1,16 +1,17 @@
 class AccessMailer < ApplicationMailer
 
-	def request_access(user, itemid, commentaryid)
+	def request_access(user, itemid, commentaryid, domain)
 		@user = user
 		@itemid = itemid
 		@commentaryid = commentaryid
+		@domain = domain
   	mail(to: 'jeffreycwitt@gmail.com', from: @user.email, subject: "New Access Request")
 	end
-	def confirm_request_access(user, itemid, commentaryid)
+	def confirm_request_access(user, itemid, commentaryid, domain)
 		@user = user
 		@itemid = itemid
 		@commentaryid = commentaryid
-		binding.pry
+		@domain = domain
 		if @itemid == 'all'
 			@item_title = "all items"
 		else

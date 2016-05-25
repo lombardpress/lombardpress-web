@@ -11,7 +11,20 @@ class WorkGroupQuery < Lbp::Query
 	# contained by the works within this work group
 	# the current database does not yet use this 
 	# terminology, but sufficiently approximates it
+	def work_group_list(workgroup_short_id)
+		query = "
+			SELECT ?workgrouptitle ?sub_workgroup ?sub_workgroup_title ?sub_workgroup_desc
+	      {
+	        <http://scta.info/resource/#{workgroup_short_id}> <http://purl.org/dc/elements/1.1/title> ?workgrouptitle .
+	        <http://scta.info/resource/#{workgroup_short_id}> <http://scta.info/property/hasWorkGroup> ?sub_workgroup .
+	        ?sub_workgroup <http://purl.org/dc/elements/1.1/title> ?sub_workgroup_title .
+	        ?sub_workgroup <http://purl.org/dc/elements/1.1/description> ?sub_workgroup_desc .
+	      }
+	      ORDER BY ?sub_workgroup_title
+	      "
 
+		result = self.query(query)
+	end
 	def expression_list(workgroup_short_id)
 		query = "
 			SELECT ?workgrouptitle ?expression ?expressiontitle
