@@ -35,6 +35,8 @@ class ApplicationController < ActionController::Base
           commentaryid = "plaoulcommentary"
         elsif request.host.include? "adamwodeham"
           commentaryid = "wodehamordinatio"
+        elsif request.host.include? "scta-stagin"
+          commentaryid = "scta"
         elsif request.subdomains.any?
           commentaryid = request.subdomains.first
         elsif Rails.env.development?
