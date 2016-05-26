@@ -30,7 +30,7 @@ class ApplicationController < ActionController::Base
       redirect_to(request.referrer || permissions_path)
     end
     def set_conf
-      #unless request.host == "sententia.lombardpress.org" || request.host == "sententia.lombardpress.dev"
+      
         if request.host.include? "petrusplaoul"
           commentaryid = "plaoulcommentary"
         elsif request.host.include? "adamwodeham"
@@ -49,12 +49,11 @@ class ApplicationController < ActionController::Base
           end
           commentaryid = Setting.find(cid).commentaryid
         else
-          commentaryid = "plaoulcommentary"
+          commentaryid = "scta"
         end
         
         @config = Setting.find_by(commentaryid: commentaryid)
         Rails.application.config.action_mailer.default_url_options[:host] = request.host
-      #end
 
     end
     def check_for_user

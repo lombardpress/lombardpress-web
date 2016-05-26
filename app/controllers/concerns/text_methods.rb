@@ -52,10 +52,13 @@ module TextMethods
 				resource_url = "http://scta.info/resource/#{shortid}"
 			end
 			# get the resource class object
+			# TODO: someting about this feels redundant
+			# since most controllers using the get_transcript method
+			# have already invoked an @expression resource
 			resource = Lbp::Resource.new(resource_url)
 			
 			resource_subclass = resource.convert
-			
+
 			# return the transcription object to be used
 			unless resource_subclass.class == Lbp::Transcription
 				return transcriptObj = resource_subclass.canonicalTranscription

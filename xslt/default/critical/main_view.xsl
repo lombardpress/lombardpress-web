@@ -46,9 +46,15 @@
   <xsl:template match="tei:head">
     <xsl:variable name="number" select="count(ancestor::tei:div)" />
     <xsl:variable name="id"><xsl:value-of select="@xml:id"/></xsl:variable>
+    <xsl:variable name="parent-div-id"><xsl:value-of select="./parent::tei:div/@xml:id"/></xsl:variable>
     
     <xsl:element name="h{$number}"><xsl:attribute name="id"><xsl:value-of select="$id"/></xsl:attribute>
       <xsl:apply-templates/>
+      <!-- TODO: add button to get info about a section 
+        <xsl:if test="./parent::tei:div[@xml:id] and not(./type='questionTitle')">
+          <a href="#" class='js-show-paragraph-info' data-itemid="{$itemid}" data-pid="{$parent-div-id}"><span class="glyphicon glyphicon-tasks" aria-hidden="true"></span></a>
+        </xsl:if>
+      -->
     </xsl:element>
   </xsl:template>
 

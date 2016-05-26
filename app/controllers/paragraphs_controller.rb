@@ -13,6 +13,13 @@ class ParagraphsController < ApplicationController
   def show2
     url = params[:url]
     @expression = Lbp::Expression.new(url)
+    
+    if @expression.structureType_shortId == "structureItem"
+      @target_url = "/text/#{@expression.resource_shortId}" 
+    else
+      @target_url = "/text/#{@expression.item_level_expression_shortId}##{@expression.resource_shortId}" 
+    end
+    @target_title = @expression.title
     #itemid = @para.itemid
     #commentaryid = @para.cid
     #pid = @para.pid

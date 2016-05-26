@@ -65,6 +65,10 @@ group :production do
   # gem 'unicorn'
   # Using Puma as web server
   gem 'puma'
+  
+  ## email server for production
+  gem 'postmark-rails', '~> 0.12.0'
+
 
 end
 

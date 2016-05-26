@@ -84,7 +84,7 @@ class ParagraphimageController < ApplicationController
 			
 			expItemId = exBlockObj.results.dup.filter(:p => RDF::URI("http://scta.info/property/isPartOfStructureItem")).first[:o].to_s
 			expItemObj = Lbp::Expression.new(expItemId)
-			expTopId = expItemObj.results.dup.filter(:p => RDF::URI("http://scta.info/property/hasTopLevelExpression")).first[:o].to_s
+			expTopId = expItemObj.results.dup.filter(:p => RDF::URI("http://scta.info/property/isPartOfTopLevelExpression")).first[:o].to_s
 			expTopObj = Lbp::Expression.new(expTopId)
 			commentary_slug = expTopObj.results.dup.filter(:p => RDF::URI("http://scta.info/property/slug")).first[:o]
 			canvasid = params[:canvasid].sub('xxx-', "#{commentary_slug}-")
