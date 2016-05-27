@@ -37,8 +37,8 @@ class ApplicationController < ActionController::Base
           commentaryid = "wodehamordinatio"
         elsif request.host.include? "scta-staging"
           commentaryid = "scta"
-        elsif request.subdomains.any?
-          commentaryid = request.subdomains.first
+        #elsif request.subdomains.any?
+          #commentaryid = request.subdomains.first
         elsif Rails.env.development?
           # only needed for developement
           port = request.port
