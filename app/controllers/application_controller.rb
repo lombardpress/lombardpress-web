@@ -15,7 +15,6 @@ class ApplicationController < ActionController::Base
 
   # I wish I could do this in a policy but currently can't figure out how
   
-
   def set_locale
     if current_user.nil?
       I18n.locale = I18n.default_locale

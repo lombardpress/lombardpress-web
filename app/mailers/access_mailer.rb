@@ -5,7 +5,7 @@ class AccessMailer < ApplicationMailer
 		@itemid = itemid
 		@commentaryid = commentaryid
 		@domain = domain
-  	mail(to: 'jeffreycwitt@gmail.com', from: @user.email, subject: "New Access Request")
+  	mail(to: 'jcwitt@loyola.edu', from: @user.email, subject: "New Access Request")
 	end
 	def confirm_request_access(user, itemid, commentaryid, domain)
 		@user = user
@@ -19,7 +19,7 @@ class AccessMailer < ApplicationMailer
 			item = Lbp::Expression.new(url)
 			@item_title = item.title
 		end
-		mail(to: @user.email, from: 'jeffreycwitt@gmail.com', subject: "Confirmation of Access Request")
+		mail(to: @user.email, from: 'jcwitt@loyola.edu', subject: "Confirmation of Access Request")
 	end
 	def grant_access(user, itemid, commentaryid, domain)
 		@user = user
@@ -34,6 +34,6 @@ class AccessMailer < ApplicationMailer
 			@item_title = item.title
 		end
   	
-  	mail(to: @user.email, from: 'jeffreycwitt@gmail.com', subject: "You've Been Granted Access")
+  	mail(to: @user.email, from: 'jcwitt@loyola.edu', subject: "You've Been Granted Access")
 	end
 end

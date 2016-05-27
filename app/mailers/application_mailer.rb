@@ -1,5 +1,5 @@
 class ApplicationMailer < ActionMailer::Base
-  default from: "admin@lombardpress.org"
+  default from: "jcwitt@loyola.edu"
   
   layout 'mailer'
  
