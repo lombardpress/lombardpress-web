@@ -9,11 +9,12 @@ class ApplicationController < ActionController::Base
 
   before_action :set_locale
   
-  before_filter :set_conf, :check_for_user
+  before_filter :set_conf 
+
+  #before_filter :check_for_user
 
   # I wish I could do this in a policy but currently can't figure out how
   
-
   def set_locale
     if current_user.nil?
       I18n.locale = I18n.default_locale
@@ -28,13 +29,15 @@ class ApplicationController < ActionController::Base
       redirect_to(request.referrer || permissions_path)
     end
     def set_conf
-      unless request.host == "sententia.lombardpress.org" || request.host == "sententia.lombardpress.dev"
+      
         if request.host.include? "petrusplaoul"
           commentaryid = "plaoulcommentary"
         elsif request.host.include? "adamwodeham"
           commentaryid = "wodehamordinatio"
-        elsif request.subdomains.any?
-          commentaryid = request.subdomains.first
+        elsif request.host.include? "scta-staging"
+          commentaryid = "scta"
+        #elsif request.subdomains.any?
+          #commentaryid = request.subdomains.first
         elsif Rails.env.development?
           # only needed for developement
           port = request.port
@@ -47,12 +50,11 @@ class ApplicationController < ActionController::Base
           end
           commentaryid = Setting.find(cid).commentaryid
         else
-          commentaryid = "plaoulcommentary"
+          commentaryid = "scta"
         end
         
         @config = Setting.find_by(commentaryid: commentaryid)
         Rails.application.config.action_mailer.default_url_options[:host] = request.host
-      end
 
     end
     def check_for_user

@@ -4,7 +4,7 @@
     <table class="table table-striped table-hover">
 
       <% @results.each do |result|    
-        slug = result[:transcript].to_s.split("/").last.split("_").first
+        slug = result[:manifestation].to_s.split("/").last
         type = result[:transcript_type]
         status = result[:transcript_status]
         if type == "critical" || type == "Critical"
@@ -22,7 +22,7 @@
     </table>
   <% else %>
     <div style="text-align: center; height: 400px; margin-top: 100px">
-      <h4>Sorry this text has not been started. <%= link_to "Return to Table of Contents", text_path %></h4>
+      <h4>Sorry this text has not been started. <%= link_to "Return to Table of Contents", table_of_questions_path %></h4>
     </div>
   <% end %>
 </div>

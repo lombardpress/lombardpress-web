@@ -20,7 +20,7 @@
     </xsl:template>
 
 
-    <xsl:template match="tei:head">
+    <xsl:template match="tei:head[not(@type='questionTitle')]">
         <xsl:variable name="number" select="count(ancestor::tei:div)" />
         <xsl:variable name="id"><xsl:value-of select="@xml:id"/></xsl:variable>
         <xsl:variable name="fs"><xsl:value-of select="//tei:text/tei:body/tei:div/@xml:id"/></xsl:variable>

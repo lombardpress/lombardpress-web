@@ -36,9 +36,9 @@ class AccessRequestsController < ApplicationController
     respond_to do |format|
       if @access_request.save
         #confirm_request sends email to user who requested access
-        AccessMailer.confirm_request_access(@user, access_request_params[:itemid], access_request_params[:commentaryid], @config.confighash).deliver_now
+        AccessMailer.confirm_request_access(@user, access_request_params[:itemid], access_request_params[:commentaryid], request.host).deliver_now
         # request access sends email to editor (currently "me")
-        AccessMailer.request_access(@user, access_request_params[:itemid], access_request_params[:commentaryid]).deliver_now
+        AccessMailer.request_access(@user, access_request_params[:itemid], access_request_params[:commentaryid], request.host).deliver_now
         
         format.html { redirect_to @access_request, notice: 'Access request was successfully created.' }
         format.json { render :show, status: :created, location: @access_request }

@@ -70,11 +70,11 @@
                   <li><a href="#" class='js-new-comment' data-itemid="{$itemid}" data-pid="{@xml:id}">Leave a Comment</a></li>
                 </ul>
               </li>
-              <li><a href="#" class="js-show-para-image-zoom-window" data-itemid="{$itemid}" data-pid="{@xml:id}" data-msslug="{$default-ms-image}">Manuscript Images</a></li>
+              <li><a href="#" class="js-show-para-image-zoom-window" data-expressionid="{@xml:id}"  data-msslug="{$default-ms-image}">Manuscript Images</a></li>
               <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Paragraph Text Tools<span class="caret"></span></a>
                 <ul class="dropdown-menu" role="menu">
-                  <li><a href="#" class='js-show-paragraph-collation' data-itemid="{$itemid}" data-pid="{@xml:id}">Collation</a></li>
+                  <li><a href="#" class='js-show-paragraph-collation' data-itemid="{@xml:id}">Collation</a></li>
                   <li><a href="#" class='js-show-paragraph-xml' data-itemid="{$itemid}" data-pid="{@xml:id}" data-msslug="{$default-msslug}">XML</a></li>
                   <li><a href="#" class='js-show-paragraph-info' data-itemid="{$itemid}" data-pid="{@xml:id}">Paragraph Info</a></li>
                   
@@ -212,11 +212,13 @@
         </xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
+    <!-- get preceding paragraph id -->
+    <xsl:variable name="expressionid" select="./preceding::tei:p/@xml:id"/>
     
     <span class="lbp-folionumber">
       <xsl:choose>
         <xsl:when test="$show-images = 'true'">
-          <a href="#" class="js-show-folio-image" data-canvasid="{$canvasid}" data-msslug="{$default-ms-image}">
+          <a href="#" class="js-show-folio-image" data-canvasid="{$canvasid}" data-msslug="{$default-ms-image}" data-expressionid="{$expressionid}">
             <xsl:value-of select="$ms"/>
             <xsl:value-of select="$folionumber"/>
             <xsl:value-of select="$side_column"/>
@@ -256,11 +258,13 @@
         </xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
+    <!-- get preceding paragraph id -->
+    <xsl:variable name="expressionid" select="./preceding::tei:p/@xml:id"/>
     
     <span class="lbp-folionumber">
       <xsl:choose>
         <xsl:when test="$show-images = 'true'">
-          <a href="#" class="js-show-folio-image" data-canvasid="{$canvasid}" data-msslug="{$default-ms-image}">
+          <a href="#" class="js-show-folio-image" data-canvasid="{$canvasid}" data-msslug="{$default-ms-image}" data-expressionid="{$expressionid}">
           <xsl:value-of select="$ms"/>
           <xsl:value-of select="$folionumber"/>
           <xsl:value-of select="$justSide"/>

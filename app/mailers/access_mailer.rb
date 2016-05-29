@@ -1,36 +1,39 @@
 class AccessMailer < ApplicationMailer
 
-	def request_access(user, itemid, commentaryid)
+	def request_access(user, itemid, commentaryid, domain)
 		@user = user
 		@itemid = itemid
 		@commentaryid = commentaryid
-  	mail(to: 'jeffreycwitt@gmail.com', from: @user.email, subject: "New Access Request")
+		@domain = domain
+  	mail(to: 'jcwitt@loyola.edu', from: @user.email, subject: "New Access Request")
 	end
-	def confirm_request_access(user, itemid, commentaryid, config_hash)
+	def confirm_request_access(user, itemid, commentaryid, domain)
 		@user = user
 		@itemid = itemid
 		@commentaryid = commentaryid
+		@domain = domain
 		if @itemid == 'all'
 			@item_title = "all items"
 		else
-			url = "http://scta.info/text/#{@commentaryid}/item/#{@itemid}"
-			item = Lbp::Item.new(config_hash, url)
+			url = "http://scta.info/resource/#{@itemid}"
+			item = Lbp::Expression.new(url)
 			@item_title = item.title
 		end
-		mail(to: @user.email, from: 'jeffreycwitt@gmail.com', subject: "Confirmation of Access Request")
+		mail(to: @user.email, from: 'jcwitt@loyola.edu', subject: "Confirmation of Access Request")
 	end
-	def grant_access(user, itemid, commentaryid, config_hash)
+	def grant_access(user, itemid, commentaryid, domain)
 		@user = user
 		@itemid = itemid
 		@commentaryid = commentaryid
+		@domain = domain
 		if @itemid == 'all'
 			@item_title = "all items"
 		else
-			url = "http://scta.info/text/#{@commentaryid}/item/#{@itemid}"
-			item = Lbp::Item.new(config_hash, url)
+			url = "http://scta.info/resource/#{@itemid}"
+			item = Lbp::Expression.new(url)
 			@item_title = item.title
 		end
   	
-  	mail(to: @user.email, from: 'jeffreycwitt@gmail.com', subject: "You've Been Granted Access")
+  	mail(to: @user.email, from: 'jcwitt@loyola.edu', subject: "You've Been Granted Access")
 	end
 end

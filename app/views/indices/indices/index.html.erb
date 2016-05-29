@@ -2,17 +2,16 @@
 	<h1>Index</h1>
 	<table class="table table-striped table-hover">
 			<tr>
-				<td><%= link_to "Names", "/index/names/categories" %></td>
+			<!-- instead of goin to an categories page first via /index/names categories
+			I'm goin go straing to the names all list -->
+				<td><%= link_to "Names", "/index/names/list/All" %></td>
 			</tr>
 			<tr>
-				<td><%= link_to "Titles", "/index/titles/categories" %></td>
+				<td><%= link_to "Titles", "/index/titles/list/All" %></td>
 			</tr>
 			<tr>
-				<td><%= link_to "Quotations", "/index/quotes/categories" %></td>
+				<td><%= link_to "Quotations", "/index/quotes/list/All" %></td>
 			</tr>
-			<tr>
-				<td><%= link_to "Subjects", "/index/subjects/categories" %></td>
-			</tr>
-		
+			
 	</table>
 </div>

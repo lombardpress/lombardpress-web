@@ -3,7 +3,7 @@
   
   <div id="lbp-collation-selector">
     
-    <form id="lbp-collation-selector-form" action="/paragraphs/collation/<%= params[:itemid]%>/<%= params[:pid]%>" method="get" data-itemid="<%= params[:itemid] %>" data-pid="<%=params[:pid] %>">
+    <form id="lbp-collation-selector-form" action="/paragraphs/collation/<%= params[:itemid]%>" method="get" data-expressionid="<%= params[:itemid] %>">
       <select id="base" name="base">
         <option value="<%= @base_text_name %>" selected='selected'>Base Text</option>
         <option>--</option>

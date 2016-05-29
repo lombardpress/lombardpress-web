@@ -15,6 +15,7 @@
   <xsl:param name="edited_by_phrase">By</xsl:param>
   
   
+  
   <!-- variables-->
   <xsl:variable name="itemid"><xsl:value-of select="/tei:TEI/tei:text/tei:body/tei:div/@xml:id"/></xsl:variable>
   
@@ -24,7 +25,7 @@
     <xsl:call-template name="teiHeaderInfo"/>
     
     <!-- transform body of text -->
-    <xsl:apply-templates/>
+  	<xsl:apply-templates/>
     
     <!-- prepare footnotes -->
     <div class="footnotes">
@@ -45,9 +46,15 @@
   <xsl:template match="tei:head">
     <xsl:variable name="number" select="count(ancestor::tei:div)" />
     <xsl:variable name="id"><xsl:value-of select="@xml:id"/></xsl:variable>
+    <xsl:variable name="parent-div-id"><xsl:value-of select="./parent::tei:div/@xml:id"/></xsl:variable>
     
     <xsl:element name="h{$number}"><xsl:attribute name="id"><xsl:value-of select="$id"/></xsl:attribute>
       <xsl:apply-templates/>
+      <!-- TODO: add button to get info about a section 
+        <xsl:if test="./parent::tei:div[@xml:id] and not(./type='questionTitle')">
+          <a href="#" class='js-show-paragraph-info' data-itemid="{$itemid}" data-pid="{$parent-div-id}"><span class="glyphicon glyphicon-tasks" aria-hidden="true"></span></a>
+        </xsl:if>
+      -->
     </xsl:element>
   </xsl:template>
 
@@ -91,14 +98,14 @@
                 </ul>
               </li>
               <xsl:if test="$show-images = 'true'">
-                <li><a href="#" class="js-show-para-image-zoom-window" data-itemid="{$itemid}" data-pid="{@xml:id}" data-msslug="{$default-ms-image}">Manuscript Images</a></li>
+                <li><a href="#" class="js-show-para-image-zoom-window" data-expressionid="{@xml:id}" data-msslug="{$default-ms-image}">Manuscript Images</a></li>
               </xsl:if>
               <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Paragraph Text Tools<span class="caret"></span></a>
                 <ul class="dropdown-menu" role="menu">
                   <li><a href="#" class='js-show-paragraph-variants' data-itemid="{$itemid}" data-pid="{@xml:id}">Variants</a></li>
                   <li><a href="#" class='js-show-paragraph-notes' data-itemid="{$itemid}" data-pid="{@xml:id}">Notes</a></li>
-                  <li><a href="#" class='js-show-paragraph-collation' data-itemid="{$itemid}" data-pid="{@xml:id}">Collation</a></li>
+                  <li><a href="#" class='js-show-paragraph-collation' data-itemid="{@xml:id}">Collation</a></li>
                   <li><a href="#" class='js-show-paragraph-xml' data-itemid="{$itemid}" data-pid="{@xml:id}" data-msslug="{$default-msslug}">XML</a></li>
                   <li><a href="#" class='js-show-paragraph-info' data-itemid="{$itemid}" data-pid="{@xml:id}">Paragraph Info</a></li>
                   
@@ -196,13 +203,16 @@
         </xsl:otherwise>
       </xsl:choose>
     </xsl:variable> 
-    <!-- this variable gets the msslug associated with ms initial in the teiHeader -->
+    <!-- get preceding paragraph id -->
+    <xsl:variable name="expressionid" select="./preceding::tei:p/@xml:id"/>
+    
+
     
     <span class="lbp-folionumber">
       <!-- data-msslug needs to get info directly from final; default will not work -->
       <xsl:choose>
         <xsl:when test="$show-images = 'true'">
-          <a href="#" class="js-show-folio-image" data-canvasid="{$canvasid}" data-msslug="{$break-ms-slug}">
+          <a href="#" class="js-show-folio-image" data-canvasid="{$canvasid}" data-msslug="{$break-ms-slug}" data-expressionid="{$expressionid}">
             <xsl:value-of select="$ms"/>
             <xsl:value-of select="$folionumber"/>
             <xsl:value-of select="$side_column"/>
@@ -231,7 +241,8 @@
     
     <!-- this variable gets the msslug associated with ms initial in the teiHeader -->
     <xsl:variable name="break-ms-slug" select="/tei:TEI/tei:teiHeader[1]/tei:fileDesc[1]/tei:sourceDesc[1]/tei:listWit[1]/tei:witness[1][@xml:id=$ms]/@n"/>
-    
+    <!-- get preceding paragraph id -->
+    <xsl:variable name="expressionid" select="./preceding::tei:p/@xml:id"/>
     
     <xsl:variable name="canvasid">
       <xsl:choose>
@@ -251,7 +262,7 @@
       <!-- data-msslug needs to get info directly from final; default will not work -->
       <xsl:choose>
         <xsl:when test="$show-images = 'true'">
-          <a href="#" class="js-show-folio-image" data-canvasid="{$canvasid}" data-msslug="{$break-ms-slug}">
+          <a href="#" class="js-show-folio-image" data-canvasid="{$canvasid}" data-msslug="{$break-ms-slug}" data-expressionid="{$expressionid}">
           <xsl:value-of select="$ms"/>
           <xsl:value-of select="$folionumber"/>
           <xsl:value-of select="$justSide"/>
