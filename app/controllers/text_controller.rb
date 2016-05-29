@@ -32,28 +32,28 @@ class TextController < ApplicationController
 			elsif resource.type_shortId == "workGroup"
 				@results = WorkGroupQuery.new.expression_list(params[:resourceid])
 				render "expressionlist"
-				# a conditional like this could display expression types
-					#elsif resource.type == "http://scta.info/resource/lectio"
-						#	puts "test"
-				# another conditional could handle a list for an author
-					#elsif resource.type == "http://scta.info/resource/person"
-						#	puts "test"
-				elsif params[:resourceid]
-					expressionid = params[:resourceid]
-					url =  "<http://scta.info/resource/#{expressionid}>" 
-					@results = Lbp::Query.new().collection_query(url)
-				end
+			elsif resource.type_shortId == "expressionType"		
+				@results = ExpressionTypeQuery.new.expression_list(params[:resourceid])
+				@expressions = @results.map {|result| {expression: result[:expression], expressiontitle: result[:expressiontitle], authorTitle: result[:authorTitle]}}.uniq!
+				render "expressionType_expressionList"
+			#TODO add a conditional for resource.type_shortId == person
+			# results should list expression for a given author
+			elsif params[:resourceid]
+				expressionid = params[:resourceid]
+				url =  "<http://scta.info/resource/#{expressionid}>" 
+				@results = Lbp::Query.new().collection_query(url)
+			end
+		else
+			if @config.commentaryid == "scta"
+				@results = WorkGroupQuery.new.work_group_list(@config.commentaryid)
+				render "workgrouplist"
 			else
-				if @config.commentaryid == "scta"
-					@results = WorkGroupQuery.new.work_group_list(@config.commentaryid)
-					render "workgrouplist"
-				else
-					commentaryid = @config.commentaryid
-					url =  "<http://scta.info/resource/#{commentaryid}>"
-					@results = Lbp::Query.new().collection_query(url)
-				end
+				commentaryid = @config.commentaryid
+				url =  "<http://scta.info/resource/#{commentaryid}>"
+				@results = Lbp::Query.new().collection_query(url)
 			end
 		end
+	end
 
 	def info
 		expression = get_expression(params)
