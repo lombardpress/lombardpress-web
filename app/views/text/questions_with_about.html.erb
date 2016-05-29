@@ -1,0 +1,64 @@
+<style type="text/css">
+  .status{display: none;}
+  .itemLink:hover .status{display: inline;}
+</style>
+<div class="row container" style="margin: auto;">
+  
+  <div class="col-md-8" style="padding: 20px">
+      <h1><%= @resource.title %></h1>  
+  </div>
+  <div class="col-md-4">
+  </div>
+  
+  <div id="lbp-question-container" class="container col-md-8">
+    <h1 class="center"><%= t(:toq) %></h1>
+    <table class="table table-striped table-hover">
+      <% @results.each do |result| %>
+      <% link = "/text/" + result[:item].to_s.split('/').last %>
+      <tr>
+        <td><%= unless result[:status] == "Not Started" then link_to result[:title], link else result[:title]  end %></td>
+        <td><%= unless result[:status] == "Not Started" || result[:questiontitle] == nil  then link_to result[:questiontitle], link else result[:questiontitle]  end %></td>
+        <td><%= result[:status] %></td>
+        <td>
+          <% unless result[:status] == "Not Started" %>
+            <img src="https://img.shields.io/wercker/ci/wercker/docs.svg"/>  
+          <% else %>
+            No Review
+          <% end %>
+        </td>
+        <td><%= link_to "View on GitHub", result[:gitRepository].to_s %></td>
+      </tr>
+
+          
+      <% end %>
+    </table>
+  </div>
+  <div class="col-md-4">
+  
+    <h1 class="center">About</h1>
+    <table class="table">
+      <tr>
+        <td><%= @info[0][:description] %></td>
+      </tr>
+      <tr>
+        <td>
+          <div class="label-xs">IIIF Collection URL</div>
+          <!-- IIIF Drag & Drop support -->
+          <a id="IIIF-drag-and-drop" title="Drag & Drop this icon into Mirador" href="/default_target?manifest=http://scta/iiif/<%= @resource.resource_shortId %>/collection">
+          <img height="20" src="http://www.e-codices.unifr.ch/img/logo-iiif-34x30.png" alt="IIIF Drag-n-drop"/>
+          </a>
+          <a href="http://scta/iiif/<%= @resource.resource_shortId %>/collection">http://scta/iiif/<%= @resource.resource_shortId %>/collection</a>
+        </td>
+      </tr>
+      <tr>
+        <td>Is Part Of <%= link_to @info[0][:isPartOf].to_s.split("/").last.capitalize, "/text/questions/#{@info[0][:isPartOf].to_s.split('/').last}" %> Work Group</td>
+      </tr>
+      <% @sponsors.each do |sponsor| %> 
+        <tr>
+          <td>Supported by <%= link_to sponsor[:sponsorTitle], sponsor[:sponsorLink].to_s %> <img height="32px" src="<%= sponsor[:sponsorLogo].to_s %>"/></td>
+        </tr>
+      <% end %>
+    </table>
+    
+  </div>
+</div>

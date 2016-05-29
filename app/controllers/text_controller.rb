@@ -23,16 +23,16 @@ class TextController < ApplicationController
 		# otherwise, if there is only expression, it should re-route to the top-level expression view.
 		
 		if params[:resourceid] != nil
-			resource = Lbp::Resource.new("http://scta.info/resource/#{params[:resourceid]}")
+			@resource = Lbp::Resource.new("http://scta.info/resource/#{params[:resourceid]}")
 			# TODO this first conditional should be chanted to 
 			# if resource is topLevelWorkGroup
-			if resource.resource_shortId == "scta"
+			if @resource.resource_shortId == "scta"
 				@results = WorkGroupQuery.new.work_group_list(params[:resourceid])
 				render "workgrouplist"
-			elsif resource.type_shortId == "workGroup"
+			elsif @resource.type_shortId == "workGroup"
 				@results = WorkGroupQuery.new.expression_list(params[:resourceid])
 				render "expressionlist"
-			elsif resource.type_shortId == "expressionType"		
+			elsif @resource.type_shortId == "expressionType"		
 				@results = ExpressionTypeQuery.new.expression_list(params[:resourceid])
 				@expressions = @results.map {|result| {expression: result[:expression], expressiontitle: result[:expressiontitle], authorTitle: result[:authorTitle]}}.uniq!
 				render "expressionType_expressionList"
@@ -42,13 +42,27 @@ class TextController < ApplicationController
 				expressionid = params[:resourceid]
 				url =  "<http://scta.info/resource/#{expressionid}>" 
 				@results = Lbp::Query.new().collection_query(url)
+				
+				if @resource.convert.level == 1
+					@info = MiscQuery.new.expression_info(params[:resourceid])
+					@sponsors = @info.map {|r| {sponsor: r[:sponsor], sponsorTitle: r[:sponsorTitle], sponsorLogo: r[:sponsorLogo], sponsorLink: r[:sponsorLink]}}
+					@sponsors.uniq!
+					# check to see if array is actaully empty. If it is, set it to empty array
+					@sponsors = @sponsors[0][:sponsor] == nil ? [] : @sponsors
+					render "questions_with_about"
+				else
+					render "questions"
+				end
+				
 			end
 		else
 			if @config.commentaryid == "scta"
+				@resource = Lbp::Resource.new("http://scta.info/resource/scta")
 				@results = WorkGroupQuery.new.work_group_list(@config.commentaryid)
 				render "workgrouplist"
 			else
 				commentaryid = @config.commentaryid
+				@resource = Lbp::Resource.new("http://scta.info/resource/#{commentaryid}")
 				url =  "<http://scta.info/resource/#{commentaryid}>"
 				@results = Lbp::Query.new().collection_query(url)
 			end

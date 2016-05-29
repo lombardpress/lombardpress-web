@@ -35,6 +35,21 @@ class MiscQuery < Lbp::Query
       }"
       result = self.query(query)
    end
+   def expression_info(expressionid)
+      query = "SELECT ?description ?isPartOf ?hasPart ?sponsor ?sponsorTitle ?sponsorLogo ?sponsorLink 
+      {
+         <http://scta.info/resource/#{expressionid}> <http://purl.org/dc/elements/1.1/description> ?description . 
+         <http://scta.info/resource/#{expressionid}> <http://purl.org/dc/terms/hasPart> ?hasPart . 
+         <http://scta.info/resource/#{expressionid}> <http://purl.org/dc/terms/isPartOf> ?isPartOf . 
+         OPTIONAL {
+         <http://scta.info/resource/#{expressionid}> <http://scta.info/property/hasSponsor> ?sponsor .
+         ?sponsor <http://purl.org/dc/elements/1.1/title> ?sponsorTitle . 
+         ?sponsor <http://scta.info/property/link> ?sponsorLink . 
+         ?sponsor <http://scta.info/property/logo> ?sponsorLogo 
+         }
+      }"
+      result = self.query(query)
+   end
 
 
 end
