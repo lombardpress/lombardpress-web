@@ -43,16 +43,16 @@ scope 'paragraphs' do
   get 'plaintext' => 'paragraphs#plaintext'
   get 'show2' => 'paragraphs#show2'
 
-  get 'collation/:itemid/:pid' => 'paragraphs#collation', as: :paragraphs_collation
+  get 'collation/:itemid' => 'paragraphs#collation', as: :paragraphs_collation
   get 'xml/:itemid/:pid(/:msslug)' => 'paragraphs#xml', as: :paragraphs_xml
-  get 'json/:itemid/:pid(/:msslug)' => 'paragraphs#json', as: :paragraphs_json
-  get 'variants/:itemid/:pid' => 'paragraphs#variants', as: :paragraphs_variants
-  get 'notes/:itemid/:pid' => 'paragraphs#notes', as: :paragraphs_notes
+  get 'json/:itemid/(/:msslug)(/:transcriptslug)' => 'paragraphs#json', as: :paragraphs_json
+  get 'variants/:itemid/(/:msslug)(/:transcriptslug)' => 'paragraphs#variants', as: :paragraphs_variants
+  get 'notes/:itemid/(/:msslug)(/:transcriptslug)' => 'paragraphs#notes', as: :paragraphs_notes
   
   get ':itemid/:pid(/:msslug)' => 'paragraphs#show'
 end
   
-  get 'paragraphexemplar/json/:itemid/:pid' => 'paragraphexemplar#json'
+  get 'paragraphexemplar/json/:itemid' => 'paragraphexemplar#json'
 
   get 'permissions' => 'pages#permissions'
   
@@ -61,18 +61,18 @@ end
 scope "text" do
   get '' => 'text#index'
   get 'draft_permissions/:itemid' => 'text#draft_permissions'
-  get 'questions' => 'text#questions'
+  get 'questions(/:resourceid)' => 'text#questions', as: :table_of_questions
   get 'info/:itemid' => 'text#info'
   get 'status/:itemid' => 'text#status'
-  get 'toc/:itemid(:/msslug)' => 'text#toc'
-  get 'xml/:itemid(:/msslug)' => 'text#xml'
-  get ':itemid(/:msslug)' => 'text#show', as: :show_text
+  get 'toc/:itemid(/:msslug)' => 'text#toc'
+  get 'xml/:itemid(/:msslug)(/:transcriptslug)' => 'text#xml'
+  get ':itemid(/:msslug)(/:transcriptslug)' => 'text#show', as: :show_text
 end 
 
   #get 'paragraphimage/showfoliozoom/:msslug/:canvas_id' => 'paragraphimage#showfoliozoom'
   get 'paragraphimage/showfoliozoom' => 'paragraphimage#showfoliozoom'
-  get 'paragraphimage/showzoom/:itemid/:msslug/:pid' => 'paragraphimage#showzoom'
-  get 'paragraphimage/:itemid/:msslug/:pid' => 'paragraphimage#show'
+  get 'paragraphimage/showzoom/:itemid/:msslug' => 'paragraphimage#showzoom'
+  #get 'paragraphimage/:itemid/:msslug/:pid' => 'paragraphimage#show'
 
   
   get 'users/profiles/:id' => 'users/profiles#show', as: :users_profile

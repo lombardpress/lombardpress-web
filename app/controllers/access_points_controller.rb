@@ -21,7 +21,7 @@ class AccessPointsController < ApplicationController
 				user.access_points << ap
 				#sends email only if a new access point is made; 
 				#should not send email if duplicate is accidentally attempted
-				AccessMailer.grant_access(user, access_params[:itemid], access_params[:commentaryid], @config.confighash).deliver_now
+				AccessMailer.grant_access(user, access_params[:itemid], access_params[:commentaryid], request.host).deliver_now
 			end
 		#if access point does not exist, create it and then assign it. No need to check if access point
 		#is already assigned becuase it is impossible to already be assigned if access point does not yet exist	
@@ -31,7 +31,7 @@ class AccessPointsController < ApplicationController
 			ap.save
 			user.access_points << ap
 			#sends email only if a new access point is made
-			AccessMailer.grant_access(user, access_params[:itemid], access_params[:commentaryid], @config.confighash).deliver_now
+			AccessMailer.grant_access(user, access_params[:itemid], access_params[:commentaryid], request.host).deliver_now
 		end
 		#change status of request to closed if an request was opened
 		if ar = AccessRequest.find_by(user_id: user.id, itemid: access_params[:itemid], commentaryid: access_params[:commentaryid], status: 0)

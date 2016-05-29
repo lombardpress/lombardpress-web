@@ -46,7 +46,7 @@ gem 'ckeditor_rails'
 gem 'handlebars_assets', :git => "https://github.com/leshill/handlebars_assets.git"
 
 
-gem 'lbp', :git => "https://bitbucket.org/jeffreycwitt/lbp.rb.git", :branch => "sparql-only"
+gem 'lbp', :git => "https://bitbucket.org/jeffreycwitt/lbp.rb.git", :branch => "develop"
 
 gem 'osullivan'
 
@@ -65,6 +65,10 @@ group :production do
   # gem 'unicorn'
   # Using Puma as web server
   gem 'puma'
+  
+  ## email server for production
+  gem 'postmark-rails', '~> 0.12.0'
+
 
 end
 

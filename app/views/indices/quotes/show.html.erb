@@ -1,19 +1,21 @@
 <div class="container lbp-index-container">
-		<h1>Index results for: <br/> 
-			<%= @commentary_results.first[:quoteTitle] %></h1>
-
+		<h1>Index results for <%= @results.first[:nameTitle] %></h1>
 		<div class="lbp-index-breadcrumbs">
 			<%= link_to "Back", :back %>
 			<%= link_to "Return to Index", "/index" %>
 		</div>
 	<table class="table table-striped table-hover">
-		<% @commentary_results.each do |result| %>
+		<% @results.each do |result| %>
 
-			<% itemid = result[:item].to_s.split("/").last %>
+			<% itemid = result[:item].to_s.split("/").last 
+				blockid = result[:structureBlock].to_s.split('/').last
+			%>
 			<tr>
-				<td><%= link_to result[:itemTitle],  "/text/#{itemid}?search=quote&searchid=#{params[:quoteid]}" %></td>
+				<td><%= link_to "#{result[:itemTitle]}, para. #{blockid}",  "/text/#{itemid}##{blockid}" %></td>
+				<td><%= result[:authorTitle] %></td>
 				<td><%= link_to "SCTA Entry",  result[:item].to_s %></td>
 			</tr>
 		<% end %>	
 	</table>
+</div>
 </div>

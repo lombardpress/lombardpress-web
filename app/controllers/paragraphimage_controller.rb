@@ -31,10 +31,11 @@ class ParagraphimageController < ApplicationController
 	end
 	def showzoom
 		
-		commentaryid = @config.commentaryid
-		paragraphurl = "http://scta.info/text/#{commentaryid}/transcription/#{params[:msslug]}_#{params[:itemid]}/paragraph/#{params[:pid]}"
-		#paragraphurl = "http://scta.info/text/#{commentaryid}/transcription/sorb_#{params[:itemid]}/paragraph/#{params[:pid]}" # test for sorb f. 2
-		results = MiscQuery.new.zone_info(paragraphurl)
+		#TODO: not ideal to be hardcoding "transcription" here. If there were more than one transcription
+		# of this manifestation there would be a problem
+		transcripturl = "http://scta.info/resource/#{params[:itemid]}/#{params[:msslug]}/transcription"
+		
+		results = MiscQuery.new.zone_info(transcripturl)
 		
 		@para_images = []
 		
@@ -71,11 +72,25 @@ class ParagraphimageController < ApplicationController
 	
 	end
 	def showfoliozoom
-		#add commentaryslug to Settings config; then this will be fully automated
-		commentary_slug = Lbp::Collection.new(@config.confighash, "http://scta.info/text/#{@config.commentaryid}/commentary").slug
-		#manifest_slug = commentary_slug + "-" + params[:msslug]
-		#canvasid = "http://scta.info/iiif/#{manifest_slug}/canvas/#{params[:canvas_id]}"
-		canvasid = params[:canvasid].sub('xxx-', "#{commentary_slug}-")
+		# this condition should be temporary
+		# as eventually tei milestones should identify their canvas url 
+		# right now the this requires three extra DB calls.
+		# the else side of the conditional is much preferred. 
+		####
+		# it is surprisingly fast for three extra calls
+		# maybe I shouldn't worry about that so much 
+		if params[:canvasid].include? "xxx-"
+			exBlockObj = Lbp::Expression.new(params[:expressionid])
+			
+			expItemId = exBlockObj.results.dup.filter(:p => RDF::URI("http://scta.info/property/isPartOfStructureItem")).first[:o].to_s
+			expItemObj = Lbp::Expression.new(expItemId)
+			expTopId = expItemObj.results.dup.filter(:p => RDF::URI("http://scta.info/property/isPartOfTopLevelExpression")).first[:o].to_s
+			expTopObj = Lbp::Expression.new(expTopId)
+			commentary_slug = expTopObj.results.dup.filter(:p => RDF::URI("http://scta.info/property/slug")).first[:o]
+			canvasid = params[:canvasid].sub('xxx-', "#{commentary_slug}-")
+		else
+			canvasid = params[:canvasid]
+		end
 		
 		results = MiscQuery.new.folio_info(canvasid)
 		
