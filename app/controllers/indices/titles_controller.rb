@@ -3,20 +3,23 @@ class Indices::TitlesController < ApplicationController
 	def list
 		unless params[:expressionid] == nil
 			expressionid = "http://scta.info/resource/#{params[:expressionid]}"
-		else
-			expressionid = "http://scta.info/resource/plaoulcommentary"
-		end
-		#query = IndexQuery.new(commentaryurl)
-		#category = if params.has_key?("category") then params[:category] else "all" end
-		#@results = query.title_list(category)
-		
-		query = Lbp::Query.new
-		category = if params.has_key?("category") then params[:category] else "all" end
-		#@results = query.name_list(category)
-		@raw_results = query.expressionElementQuery(expressionid, "http://scta.info/resource/structureElementTitle")
+			#query = IndexQuery.new(commentaryurl)
+			#category = if params.has_key?("category") then params[:category] else "all" end
+			#@results = query.title_list(category)
+			
+			query = Lbp::Query.new
+			category = if params.has_key?("category") then params[:category] else "all" end
+			#@results = query.name_list(category)
+			@raw_results = query.expressionElementQuery(expressionid, "http://scta.info/resource/structureElementTitle")
 
-		filter_index_query(@raw_results)
-		return @results
+			filter_index_query(@raw_results)
+			return @results
+		else
+			query_obj = IndexQuery.new("http://scta.info/resource/scta")
+			@results = query_obj.name_person_quote_list("http://scta.info/resource/work")
+			return @results
+		end
+		
 	end
 	def show
 		#commentaryurl = "http://scta.info/text/#{@config.commentaryid}/commentary"

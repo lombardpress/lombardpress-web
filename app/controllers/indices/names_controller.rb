@@ -9,16 +9,19 @@ class Indices::NamesController < ApplicationController
 	def list
 		unless params[:expressionid] == nil
 			expressionid = "http://scta.info/resource/#{params[:expressionid]}"
+			#query = IndexQuery.new(commentaryurl)
+			query = Lbp::Query.new
+			category = if params.has_key?("category") then params[:category] else "all" end
+			#@results = query.name_list(category)
+			@raw_results = query.expressionElementQuery(expressionid, "http://scta.info/resource/structureElementName")
+			filter_index_query(@raw_results)
+			return @results
 		else
-			expressionid = "http://scta.info/resource/plaoulcommentary"
+			query_obj = IndexQuery.new("http://scta.info/resource/scta")
+			@results = query_obj.name_person_quote_list("http://scta.info/resource/person")
+			return @results
 		end
-		#query = IndexQuery.new(commentaryurl)
-		query = Lbp::Query.new
-		category = if params.has_key?("category") then params[:category] else "all" end
-		#@results = query.name_list(category)
-		@raw_results = query.expressionElementQuery(expressionid, "http://scta.info/resource/structureElementName")
-		filter_index_query(@raw_results)
-		return @results
+		
 	end
 	def show
 		nameurl = "http://scta.info/resource/person/#{params[:nameid]}"

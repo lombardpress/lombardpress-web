@@ -160,6 +160,18 @@ class IndexQuery < Lbp::Query
 
 		result = self.query(query)
 	end
-
+	#A simple query that just gets all names, titles, or quotations, without reference 
+	#to commentaries or items in which they might appear.
+	def name_person_quote_list(resourceTypeUrl)
+		query = "
+			SELECT ?resource ?resourceTitle
+	      {
+	        ?resource a <#{resourceTypeUrl}> .
+	        ?resource <http://purl.org/dc/elements/1.1/title> ?resourceTitle .
+	      }
+	      ORDER BY ?resourceTitle
+	      "
+	  result = self.query(query)
+	end
 end
  
