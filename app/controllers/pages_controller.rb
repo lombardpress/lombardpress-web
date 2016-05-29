@@ -2,12 +2,14 @@ class PagesController < ApplicationController
 	
 	
 	def home
-		if @config.commentaryid != "scta" 
-			redirect_to "/text/questions/#{@config.commentaryid}" 
-				#if @config == nil
-		#	@commentaries = Setting.all
-		#	render :home_global, layout: false
-		else
+
+		if request.host.include? "petrusplaoul"
+          redirect_to "/text/questions/plaoulcommentary"
+    elsif request.host.include? "adamwodeham"
+      redirect_to "/text/questions/wodehamordinatio"
+    elsif request.subdomains.any?
+    	redirect_to "/text/questions/#{request.subdomains.first}" 
+    else
 			render :home
 		end
 	end
