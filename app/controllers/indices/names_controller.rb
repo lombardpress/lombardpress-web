@@ -21,7 +21,6 @@ class Indices::NamesController < ApplicationController
 			@results = query_obj.name_person_quote_list("http://scta.info/resource/person")
 			return @results
 		end
-		
 	end
 	def show
 		nameurl = "http://scta.info/resource/person/#{params[:nameid]}"
