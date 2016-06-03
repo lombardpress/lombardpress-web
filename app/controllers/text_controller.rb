@@ -36,8 +36,10 @@ class TextController < ApplicationController
 				@results = ExpressionTypeQuery.new.expression_list(params[:resourceid])
 				@expressions = @results.map {|result| {expression: result[:expression], expressiontitle: result[:expressiontitle], authorTitle: result[:authorTitle]}}.uniq!
 				render "expressionType_expressionList"
-			#TODO add a conditional for resource.type_shortId == person
-			# results should list expression for a given author
+			elsif @resource.type_shortId == "person"		
+				@results = MiscQuery.new.author_expression_list(params[:resourceid])
+				
+				render "expressionlist"
 			elsif params[:resourceid]
 				expressionid = params[:resourceid]
 				url =  "<http://scta.info/resource/#{expressionid}>" 

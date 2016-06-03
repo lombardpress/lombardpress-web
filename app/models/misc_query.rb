@@ -51,6 +51,23 @@ class MiscQuery < Lbp::Query
       result = self.query(query)
    end
 
+   def author_expression_list(author_short_id)
+      query = "
+         SELECT ?title ?expression ?expressiontitle
+         {
+           <http://scta.info/resource/#{author_short_id}> <http://purl.org/dc/elements/1.1/title> ?title .
+           ?expression <http://www.loc.gov/loc.terms/relators/AUT> <http://scta.info/resource/#{author_short_id}> .
+           ?expression a <http://scta.info/resource/expression> . 
+           ?expression <http://scta.info/property/level> '1' .
+           ?expression <http://purl.org/dc/elements/1.1/title> ?expressiontitle  .
+         }
+         ORDER BY ?expressiontitle
+         "
+
+      result = self.query(query)
+
+   end
+
 
 end
 

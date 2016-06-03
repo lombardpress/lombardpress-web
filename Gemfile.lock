@@ -1,6 +1,6 @@
 GIT
   remote: https://bitbucket.org/jeffreycwitt/lbp.rb.git
-  revision: daf07699e24460d60ed5c67a5b3c5d75bd4aaa05
+  revision: 4d869dfdacb4a8106c5d9b3bd50e9572bedbcc13
   branch: develop
   specs:
     lbp (0.0.2)
