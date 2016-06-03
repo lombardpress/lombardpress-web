@@ -49,8 +49,12 @@ class TextController < ApplicationController
 					@info = MiscQuery.new.expression_info(params[:resourceid])
 					@sponsors = @info.map {|r| {sponsor: r[:sponsor], sponsorTitle: r[:sponsorTitle], sponsorLogo: r[:sponsorLogo], sponsorLink: r[:sponsorLink]}}
 					@sponsors.uniq!
-					# check to see if array is actaully empty. If it is, set it to empty array
+					@articles = @info.map {|r| {article: r[:article], articleTitle: r[:articleTitle]}}
+					@articles.uniq!
+					# check to see if sponsors array is actaully empty. If it is, set it to empty array
 					@sponsors = @sponsors[0][:sponsor] == nil ? [] : @sponsors
+					# check to see if articles array is actaully empty. If it is, set it to empty array
+					@articles = @articles[0][:article] == nil ? [] : @articles
 					render "questions_with_about"
 				else
 					render "questions"

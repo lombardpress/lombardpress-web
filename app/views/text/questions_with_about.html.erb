@@ -60,6 +60,15 @@
         </tr>
       <% end %>
     </table>
-    
+    <% if @articles.count > 0 %>
+      <table class="table">
+      <h1 class="center">Related Articles</h1>
+        <% @articles.each do |article| %> 
+          <tr>
+            <td>Article <%= article[:articleTitle] %></td>
+          </tr>
+        <% end %>
+      </table>
+    <% end %>
   </div>
 </div>

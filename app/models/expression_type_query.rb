@@ -14,7 +14,7 @@ class ExpressionTypeQuery < Lbp::Query
 	
 	def expression_list(expression_type_id)
 		query = "
-			SELECT ?expression_type_title ?expression ?expressiontitle ?author ?authorTitle ?item ?itemTitle ?questionTitle ?itemOrder
+			SELECT ?expression_type_title ?expression ?expressiontitle ?author ?authorTitle ?item ?itemTitle ?questionTitle ?itemOrder ?article ?articleTitle
 	      {
 	        <http://scta.info/resource/#{expression_type_id}> <http://purl.org/dc/elements/1.1/title> ?expression_type_title . 
 	        ?expression <http://scta.info/property/expressionType> <http://scta.info/resource/#{expression_type_id}> .
@@ -27,6 +27,8 @@ class ExpressionTypeQuery < Lbp::Query
 	        OPTIONAL
 	      	{
 	      	?item <http://scta.info/property/questionTitle> ?questionTitle  .
+	      	?article <http://scta.info/property/isArticleOf ?expression .
+	      	?article <http://purl.org/dc/elements/1.1/title> ?articleTitle .
 	      	}
 	      }
 	       
