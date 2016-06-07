@@ -5,7 +5,7 @@ class AccessMailer < ApplicationMailer
 		@itemid = itemid
 		@commentaryid = commentaryid
 		@domain = domain
-  	mail(to: 'jcwitt@loyola.edu', from: @user.email, subject: "New Access Request")
+  	mail(to: 'jcwitt@loyola.edu', from: "jcwitt@loyola.edu", subject: "New Access Request")
 	end
 	def confirm_request_access(user, itemid, commentaryid, domain)
 		@user = user
