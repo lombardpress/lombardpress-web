@@ -38,6 +38,7 @@
     
     <xsl:template name="about-toc">
         <div id="about-toc">
+            <h1>Table of contents</h1>
         <xsl:for-each select="//tei:div">
             <xsl:variable name="sectionid" select="concat('#', @xml:id)"/>
             <h2 class="about-toc-item"><a href="{$sectionid}"><xsl:value-of select="./tei:head"/></a></h2>

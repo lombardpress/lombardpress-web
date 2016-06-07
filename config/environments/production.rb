@@ -65,7 +65,7 @@ Rails.application.configure do
   # config.action_mailer.raise_delivery_errors = false
   POSTMARK_API_KEY = ENV['POSTMARK_API_KEY']
   config.action_mailer.delivery_method = :postmark
-  config.action_mailer.postmark_settings = { :api_token => ENV['POSTMARK_API_KEY']}
+  config.action_mailer.postmark_settings = { :api_token => ENV['POSTMARK_API_KEY'], :proxy_port => ENV['POSTMARK_PORT']}
   config.action_mailer.default_url_options = { :host => 'lombardpress2.heroku.com' }
   # config.action_mailer.smtp_settings = {
   #   :address   => ENV['MAIL_ADDRESS'], 
