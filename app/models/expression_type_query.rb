@@ -19,14 +19,17 @@ class ExpressionTypeQuery < Lbp::Query
 	        <http://scta.info/resource/#{expression_type_id}> <http://purl.org/dc/elements/1.1/title> ?expression_type_title . 
 	        ?expression <http://scta.info/property/expressionType> <http://scta.info/resource/#{expression_type_id}> .
 	        ?expression <http://purl.org/dc/elements/1.1/title> ?expressiontitle  .
-	        ?expression <http://www.loc.gov/loc.terms/relators/AUT> ?author	.
-	        ?author <http://purl.org/dc/elements/1.1/title> ?authorTitle .
+	        
 	        ?expression <http://scta.info/property/hasStructureItem> ?item .
 	        ?item <http://purl.org/dc/elements/1.1/title> ?itemTitle  . 
 	        ?item <http://scta.info/property/totalOrderNumber> ?itemOrder .
 	        OPTIONAL
 	      	{
 	      	?item <http://scta.info/property/questionTitle> ?questionTitle  .
+	      	}
+	      	OPTIONAL{
+	      	?expression <http://www.loc.gov/loc.terms/relators/AUT> ?author	.
+	        ?author <http://purl.org/dc/elements/1.1/title> ?authorTitle .
 	      	}
 	      }
 	       

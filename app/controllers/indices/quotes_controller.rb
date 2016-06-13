@@ -21,7 +21,7 @@ class Indices::QuotesController < ApplicationController
 	end
 	def show
 		#commentaryurl = "http://scta.info/text/#{@config.commentaryid}/commentary"
-		quoteurl = "http://scta.info/resource/quotation/#{params[:quoteid]}"
+		quoteurl = "http://scta.info/resource/#{params[:quoteid]}"
 		query = IndexQuery.new(quoteurl)
 		@results = query.expression_element_info(quoteurl)
 		#@commentary_results = @results.dup.filter(:commentary => RDF::URI("#{commentaryurl}"))

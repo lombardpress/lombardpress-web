@@ -23,7 +23,7 @@ class Indices::NamesController < ApplicationController
 		end
 	end
 	def show
-		nameurl = "http://scta.info/resource/person/#{params[:nameid]}"
+		nameurl = "http://scta.info/resource/#{params[:nameid]}"
 		query = IndexQuery.new(nameurl)
 		@results = query.expression_element_info(nameurl)
 		

@@ -23,7 +23,7 @@ class Indices::TitlesController < ApplicationController
 	end
 	def show
 		#commentaryurl = "http://scta.info/text/#{@config.commentaryid}/commentary"
-		titleurl = "http://scta.info/resource/work/#{params[:titleid]}"
+		titleurl = "http://scta.info/resource/#{params[:titleid]}"
 		query = IndexQuery.new(titleurl)
 		@results = query.expression_element_info(titleurl)
 		#@commentary_results = @results.dup.filter(:commentary => RDF::URI("#{commentaryurl}"))

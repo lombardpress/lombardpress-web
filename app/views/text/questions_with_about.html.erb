@@ -44,11 +44,11 @@
         <td>
           <div class="label-xs">IIIF Collection URL</div>
           <!-- IIIF Drag & Drop support -->
-          <a id="IIIF-drag-and-drop" title="Drag & Drop this icon into Mirador" href="/default_target?manifest=http://scta/iiif/<%= @resource.resource_shortId %>/collection">
+          <a id="IIIF-drag-and-drop" title="Drag & Drop this icon into Mirador" href="/default_target?collection=http://scta.info/iiif/<%= @resource.resource_shortId %>/collection">
           <img height="20" src="http://www.e-codices.unifr.ch/img/logo-iiif-34x30.png" alt="IIIF Drag-n-drop"/>
           </a>
           <!-- TODO: the full collection URL should actually come directly from the database; and only display if a url is available -->
-          <a href="http://scta.info/iiif/<%= @resource.resource_shortId %>/collection">http://scta/iiif/<%= @resource.resource_shortId %>/collection</a>
+          <a href="http://scta.info/iiif/<%= @resource.resource_shortId %>/collection">http://scta.info/iiif/<%= @resource.resource_shortId %>/collection</a>
         </td>
       </tr>
       <tr>
