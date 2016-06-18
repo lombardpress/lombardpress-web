@@ -39,7 +39,7 @@ class MiscQuery < Lbp::Query
       query = "SELECT ?description ?isPartOf ?hasPart ?sponsor ?sponsorTitle ?sponsorLogo ?sponsorLink ?article ?articleTitle
       {
          <http://scta.info/resource/#{expressionid}> <http://purl.org/dc/elements/1.1/description> ?description . 
-         <http://scta.info/resource/#{expressionid}> <http://purl.org/dc/terms/hasPart> ?hasPart . 
+         
          <http://scta.info/resource/#{expressionid}> <http://purl.org/dc/terms/isPartOf> ?isPartOf . 
          OPTIONAL {
            <http://scta.info/resource/#{expressionid}> <http://scta.info/property/hasSponsor> ?sponsor .
@@ -50,6 +50,9 @@ class MiscQuery < Lbp::Query
          OPTIONAL {
           ?article <http://scta.info/property/isArticleOf> <http://scta.info/resource/#{expressionid}> .
           ?article <http://purl.org/dc/elements/1.1/title> ?articleTitle .
+         }
+         OPTIONAL {
+          <http://scta.info/resource/#{expressionid}> <http://purl.org/dc/terms/hasPart> ?hasPart . 
          }
       }"
       result = self.query(query)

@@ -30,22 +30,40 @@ class IndexQuery < Lbp::Query
 	   end   
 		result = self.query(query)
 	end
-	def expression_element_info(expressionElementUrl)
+	def expression_element_info(expressionElementUrl, expressionScope=nil)
 		nameurl = "<#{expressionElementUrl}>"
 		
-		query = "SELECT DISTINCT ?nameTitle ?element ?structureBlock ?item ?itemTitle ?orderNumber ?commentary ?commentaryTitle ?author ?authorTitle
-{
-				#{nameurl} <http://purl.org/dc/elements/1.1/title> ?nameTitle  .
-        ?element <http://scta.info/property/isInstanceOf> #{nameurl} .
-        ?element <http://scta.info/property/isPartOfStructureBlock> ?structureBlock .
-         ?structureBlock <http://scta.info/property/isPartOfStructureItem> ?item .
-         ?item <http://purl.org/dc/elements/1.1/title> ?itemTitle .
-         ?item <http://scta.info/property/totalOrderNumber> ?orderNumber .
-         ?item <http://scta.info/property/isPartOfTopLevelExpression> ?commentary .
-         ?item <http://purl.org/dc/elements/1.1/title> ?commentaryTitle .
-         ?commentary <http://www.loc.gov/loc.terms/relators/AUT> ?author .
-         ?commentary <http://purl.org/dc/elements/1.1/title> ?authorTitle .
-      }"
+		if expressionScope == nil
+			query = "SELECT DISTINCT ?nameTitle ?element ?structureBlock ?item ?itemTitle ?orderNumber ?commentary ?commentaryTitle ?author ?authorTitle
+			{
+					#{nameurl} <http://purl.org/dc/elements/1.1/title> ?nameTitle  .
+	        ?element <http://scta.info/property/isInstanceOf> #{nameurl} .
+	        ?element <http://scta.info/property/isPartOfStructureBlock> ?structureBlock .
+	         ?structureBlock <http://scta.info/property/isPartOfStructureItem> ?item .
+	         ?item <http://purl.org/dc/elements/1.1/title> ?itemTitle .
+	         ?item <http://scta.info/property/totalOrderNumber> ?orderNumber .
+	         ?item <http://scta.info/property/isPartOfTopLevelExpression> ?commentary .
+	         ?item <http://purl.org/dc/elements/1.1/title> ?commentaryTitle .
+	         ?commentary <http://www.loc.gov/loc.terms/relators/AUT> ?author .
+	         ?commentary <http://purl.org/dc/elements/1.1/title> ?authorTitle .
+	      }"
+	   else 
+	   	toplevelexpression = "<#{expressionScope}>"
+	   	query = "SELECT DISTINCT ?nameTitle ?element ?structureBlock ?item ?itemTitle ?orderNumber ?commentary ?commentaryTitle ?author ?authorTitle
+			{
+					#{nameurl} <http://purl.org/dc/elements/1.1/title> ?nameTitle  .
+	        ?element <http://scta.info/property/isInstanceOf> #{nameurl} .
+	        ?element <http://scta.info/property/isPartOfStructureBlock> ?structureBlock .
+	         ?structureBlock <http://scta.info/property/isPartOfStructureItem> ?item .
+	         ?item <http://purl.org/dc/elements/1.1/title> ?itemTitle .
+	         ?item <http://scta.info/property/isPartOfTopLevelExpression> #{toplevelexpression} .
+	         ?item <http://scta.info/property/totalOrderNumber> ?orderNumber .
+	         ?item <http://scta.info/property/isPartOfTopLevelExpression> ?commentary .
+	         ?item <http://purl.org/dc/elements/1.1/title> ?commentaryTitle .
+	         ?commentary <http://www.loc.gov/loc.terms/relators/AUT> ?author .
+	         ?commentary <http://purl.org/dc/elements/1.1/title> ?authorTitle .
+	      }"
+			end
       
 		result = self.query(query)
 		

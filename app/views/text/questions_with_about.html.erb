@@ -8,6 +8,7 @@
       <h1><%= @resource.title %></h1>  
   </div>
   <div class="col-md-4">
+  <!-- this div left empty -->
   </div>
   
   <div id="lbp-question-container" class="container col-md-8">
@@ -34,9 +35,8 @@
     </table>
   </div>
   <div class="col-md-4">
-  
-    <h1 class="center">About</h1>
     <table class="table">
+      <h1 class="center">About</h1>
       <tr>
         <td><%= @info[0][:description] %></td>
       </tr>
@@ -60,10 +60,22 @@
         </tr>
       <% end %>
     </table>
+    <!-- search menu -->
+    <div style="margin-bottom: 20px;">
+        <form  action="/search" method="get" >
+        <div>
+          <input type="text" class="form-control" placeholder="<%= t(:search_text) %>" name="searchterm">
+          <input type="hidden" class="form-control" name="expressionid" value="<%= @resource.resource_shortId %>"/>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block" style="margin-top: 5px;">Search</button>
+        </form>
+        <a href="/index/<%= @resource.resource_shortId %>"><button  type="submit" class="btn btn-info btn-block" style="margin-top: 5px;">Index</button></a>
+    </div>
+    <!-- articles menu -->
     <% if @articles.count > 0 %>
       <table class="table">
       <h1 class="center">Related Articles</h1>
-        <% @articles.each do |article| %> 
+      <% @articles.each do |article| %> 
           <tr>
             <td><%= link_to  article[:articleTitle], show_article_path(article[:article].to_s.split("/").last) %></td>
           </tr>

@@ -2,7 +2,7 @@
 		<h1>Index results for <%= @results.first[:nameTitle] %></h1>
 		<div class="lbp-index-breadcrumbs">
 			<%= link_to "Back", :back %>
-			<%= link_to "Return to Index", "/index" %>
+			<%= link_to "Return to Index", "/index/#{@expressionid}" %>
 		</div>
 	<table class="table table-striped table-hover">
 		<% @results.each do |result| %>
