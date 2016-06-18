@@ -37,6 +37,9 @@ module Lombardpress2
     config.action_dispatch.default_headers = {
         'X-Frame-Options' => 'ALLOWALL'
     }
+    ## This tells Rails to serve error pages from the Rails app itself (i.e. the routes we just set up), rather than using static error pages in public/.
+    ## See: https://mattbrictson.com/dynamic-rails-error-pages
+    config.exceptions_app = self.routes
     
     
 
