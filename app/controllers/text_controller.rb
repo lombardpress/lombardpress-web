@@ -24,7 +24,7 @@ class TextController < ApplicationController
 		
 		if params[:resourceid] != nil
 			@resource = Lbp::Resource.new("#{params[:resourceid]}")
-			# TODO this first conditional should be chanted to 
+			# TODO this first conditional should be changed to 
 			# if resource is topLevelWorkGroup
 			if @resource.resource_shortId == "scta"
 				shortid = @resource.resource_shortId
