@@ -7,8 +7,9 @@ class Indices::NamesController < ApplicationController
 	## This is true for quotes and titles as weel
 	## TODO: comment out subject indices until that its betters established
 	def list
-		unless params[:expressionid] == nil
+		unless params[:expressionid] == "all" || params[:expressionid] == "scta"
 			expressionid = "http://scta.info/resource/#{params[:expressionid]}"
+			@expressionid = expressionid.split("/").last
 			#query = IndexQuery.new(commentaryurl)
 			query = Lbp::Query.new
 			category = if params.has_key?("category") then params[:category] else "all" end
@@ -17,18 +18,23 @@ class Indices::NamesController < ApplicationController
 			filter_index_query(@raw_results)
 			return @results
 		else
+			@expressionid = "scta"
 			query_obj = IndexQuery.new("http://scta.info/resource/scta")
 			@results = query_obj.name_person_quote_list("http://scta.info/resource/person")
 			return @results
 		end
 	end
 	def show
-		nameurl = "http://scta.info/resource/person/#{params[:nameid]}"
-		query = IndexQuery.new(nameurl)
-		@results = query.expression_element_info(nameurl)
+		nameurl = "http://scta.info/resource/#{params[:nameid]}"
 		
-		#@commentary_results = @results.dup.filter(:commentary => RDF::URI("#{commentaryurl}"))
-		#@other_results = @results.dup.filter(:commentary => (RDF::URI("#{commentaryurl}"))
+		query = IndexQuery.new(nameurl)
+		unless params[:expressionid] == "all" || params[:expressionid] == "scta"
+			expression_scope = "http://scta.info/resource/#{params[:expressionid]}"
+			@results = query.expression_element_info(nameurl, expression_scope)
+		else
+			@results = query.expression_element_info(nameurl)
+		end
+		
 	end
 	def categories
 		

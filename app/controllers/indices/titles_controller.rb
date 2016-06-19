@@ -1,8 +1,9 @@
 class Indices::TitlesController < ApplicationController
 	include IndexMethods
 	def list
-		unless params[:expressionid] == nil
+		unless params[:expressionid] == "all" || params[:expressionid] == "scta"
 			expressionid = "http://scta.info/resource/#{params[:expressionid]}"
+			@expressionid = expressionid.split("/").last
 			#query = IndexQuery.new(commentaryurl)
 			#category = if params.has_key?("category") then params[:category] else "all" end
 			#@results = query.title_list(category)
@@ -15,6 +16,7 @@ class Indices::TitlesController < ApplicationController
 			filter_index_query(@raw_results)
 			return @results
 		else
+			@expressionid = "scta"
 			query_obj = IndexQuery.new("http://scta.info/resource/scta")
 			@results = query_obj.name_person_quote_list("http://scta.info/resource/work")
 			return @results
@@ -23,11 +25,16 @@ class Indices::TitlesController < ApplicationController
 	end
 	def show
 		#commentaryurl = "http://scta.info/text/#{@config.commentaryid}/commentary"
-		titleurl = "http://scta.info/resource/work/#{params[:titleid]}"
+		titleurl = "http://scta.info/resource/#{params[:titleid]}"
 		query = IndexQuery.new(titleurl)
-		@results = query.expression_element_info(titleurl)
-		#@commentary_results = @results.dup.filter(:commentary => RDF::URI("#{commentaryurl}"))
+		unless params[:expressionid] == "all" || params[:expressionid] == "scta"
+			expression_scope = "http://scta.info/resource/#{params[:expressionid]}"
+			@results = query.expression_element_info(titleurl, expression_scope)
+		else
+			@results = query.expression_element_info(titleurl)
+		end
 		
+		#@commentary_results = @results.dup.filter(:commentary => RDF::URI("#{commentaryurl}"))
 		#@other_results = @results.dup.filter(:commentary => (RDF::URI("#{commentaryurl}"))
 			
 	end

@@ -1,5 +1,9 @@
 Rails.application.routes.draw do
   
+  get 'errors/not_found'
+
+  get 'errors/internal_server_error'
+
   resources :access_requests
 
   root 'pages#home'
@@ -12,6 +16,11 @@ Rails.application.routes.draw do
   resources :comments, except: [:new]
 
   resources :settings
+
+  #BEGIN routes for error handling
+  match "/404", to: "errors#not_found", via: :all
+  match "/500", to: "errors#internal_server_error", via: :all
+  #END
   
 
   get 'articles/:articleid' => 'articles#show', as: :show_article
@@ -23,19 +32,19 @@ Rails.application.routes.draw do
   get "comments/new/:itemid(/:pid)" => 'comments#new', as: :new_comment
   get "comments/list/:itemid(/:pid)" => 'comments#list', as: :list_comments
   
-  get "index" => 'indices/indices#index'
+  get "index/(:expressionid)" => 'indices/indices#index'
   
-  get "index/names/list(/:category)" => 'indices/names#list'
-  get "index/names/show(/:nameid)" => 'indices/names#show'
-  get "index/names/categories" => 'indices/names#categories'
+  get "index/:expressionid/names/list(/:category)" => 'indices/names#list'
+  get "index/:expressionid/names/show(/:nameid)" => 'indices/names#show'
+  get "index/:expressionid/names/categories" => 'indices/names#categories'
   
-  get "index/titles/list(/:category)" => 'indices/titles#list'
-  get "index/titles/show(/:titleid)" => 'indices/titles#show'
-  get "index/titles/categories" => 'indices/titles#categories'
+  get "index/:expressionid/titles/list(/:category)" => 'indices/titles#list'
+  get "index/:expressionid/titles/show(/:titleid)" => 'indices/titles#show'
+  get "index/:expressionid/titles/categories" => 'indices/titles#categories'
 
-  get "index/quotes/list(/:category)" => 'indices/quotes#list'
-  get "index/quotes/show(/:quoteid)" => 'indices/quotes#show'
-  get "index/quotes/categories" => 'indices/quotes#categories'
+  get "index/:expressionid/quotes/list(/:category)" => 'indices/quotes#list'
+  get "index/:expressionid/quotes/show(/:quoteid)" => 'indices/quotes#show'
+  get "index/:expressionid/quotes/categories" => 'indices/quotes#categories'
 
 scope 'paragraphs' do
   get 'index' => 'paragraphs#index'

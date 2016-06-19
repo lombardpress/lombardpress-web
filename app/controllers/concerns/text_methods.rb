@@ -10,7 +10,7 @@ module TextMethods
 	end
 
 		def check_permission(expression)
-			if expression.status == "In Progress" || expression.status == "draft"
+			if expression.status == "private-draft"
 				if current_user.nil?
 					redirect_to "/text/draft_permissions/#{params[:itemid]}", :alert => "Access denied: This text is a draft. It requires permission to be viewed." and return
 				elsif !current_user.admin? 

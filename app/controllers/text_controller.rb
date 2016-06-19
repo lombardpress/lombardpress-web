@@ -23,32 +23,44 @@ class TextController < ApplicationController
 		# otherwise, if there is only expression, it should re-route to the top-level expression view.
 		
 		if params[:resourceid] != nil
-			@resource = Lbp::Resource.new("http://scta.info/resource/#{params[:resourceid]}")
-			# TODO this first conditional should be chanted to 
+			@resource = Lbp::Resource.new("#{params[:resourceid]}")
+			# TODO this first conditional should be changed to 
 			# if resource is topLevelWorkGroup
 			if @resource.resource_shortId == "scta"
-				@results = WorkGroupQuery.new.work_group_list(params[:resourceid])
+				shortid = @resource.resource_shortId
+				@results = WorkGroupQuery.new.work_group_list(shortid)
 				render "workgrouplist"
 			elsif @resource.type_shortId == "workGroup"
-				@results = WorkGroupQuery.new.expression_list(params[:resourceid])
+				shortid = @resource.resource_shortId
+				@results = WorkGroupQuery.new.expression_list(shortid)
 				render "expressionlist"
 			elsif @resource.type_shortId == "expressionType"		
-				@results = ExpressionTypeQuery.new.expression_list(params[:resourceid])
+				shortid = @resource.resource_shortId
+				@results = ExpressionTypeQuery.new.expression_list(shortid)
 				@expressions = @results.map {|result| {expression: result[:expression], expressiontitle: result[:expressiontitle], authorTitle: result[:authorTitle]}}.uniq!
 				render "expressionType_expressionList"
-			#TODO add a conditional for resource.type_shortId == person
-			# results should list expression for a given author
+			elsif @resource.type_shortId == "person"	
+				shortid = @resource.resource_shortId
+				@results = MiscQuery.new.author_expression_list(shortid)
+				
+				render "expressionlist"
 			elsif params[:resourceid]
-				expressionid = params[:resourceid]
-				url =  "<http://scta.info/resource/#{expressionid}>" 
+				shortid = @resource.resource_shortId
+				url =  "<http://scta.info/resource/#{shortid}>" 
 				@results = Lbp::Query.new().collection_query(url)
 				
 				if @resource.convert.level == 1
-					@info = MiscQuery.new.expression_info(params[:resourceid])
+					@info = MiscQuery.new.expression_info(shortid)
+
 					@sponsors = @info.map {|r| {sponsor: r[:sponsor], sponsorTitle: r[:sponsorTitle], sponsorLogo: r[:sponsorLogo], sponsorLink: r[:sponsorLink]}}
 					@sponsors.uniq!
-					# check to see if array is actaully empty. If it is, set it to empty array
+					@articles = @info.map {|r| {article: r[:article], articleTitle: r[:articleTitle]}}
+					@articles.uniq!
+					
+					# check to see if sponsors array is actaully empty. If it is, set it to empty array
 					@sponsors = @sponsors[0][:sponsor] == nil ? [] : @sponsors
+					# check to see if articles array is actaully empty. If it is, set it to empty array
+					@articles = @articles[0][:article] == nil ? [] : @articles
 					render "questions_with_about"
 				else
 					render "questions"

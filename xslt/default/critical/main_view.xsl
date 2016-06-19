@@ -280,6 +280,9 @@
   <xsl:template match="tei:supplied">
     <span class="lbp-supplied">[<xsl:apply-templates></xsl:apply-templates>]</span>
   </xsl:template>
+  <xsl:template match="tei:mentioned">
+    <span class="mentioned">'<xsl:apply-templates></xsl:apply-templates>'</span>
+  </xsl:template>
     
   <!-- notes template -->
   <xsl:template match="tei:bibl">

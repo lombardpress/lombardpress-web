@@ -1,6 +1,16 @@
 GIT
-  remote: https://bitbucket.org/jeffreycwitt/lbp.rb.git
-  revision: daf07699e24460d60ed5c67a5b3c5d75bd4aaa05
+  remote: https://github.com/leshill/handlebars_assets.git
+  revision: 03cb3ed3f44b1e2f669432a8d6aa346a4b25b6d2
+  specs:
+    handlebars_assets (0.22.0)
+      execjs (~> 2.0)
+      multi_json (~> 1.0)
+      sprockets (>= 2.0.0)
+      tilt (>= 1.2)
+
+GIT
+  remote: https://github.com/lombardpress/lbp.rb.git
+  revision: 81e93ed38a6873be4d03d01bac0dc861b780c9a0
   branch: develop
   specs:
     lbp (0.0.2)
@@ -11,16 +21,6 @@ GIT
       rest-client
       sparql
       thor
-
-GIT
-  remote: https://github.com/leshill/handlebars_assets.git
-  revision: 03cb3ed3f44b1e2f669432a8d6aa346a4b25b6d2
-  specs:
-    handlebars_assets (0.22.0)
-      execjs (~> 2.0)
-      multi_json (~> 1.0)
-      sprockets (>= 2.0.0)
-      tilt (>= 1.2)
 
 GEM
   remote: https://rubygems.org/

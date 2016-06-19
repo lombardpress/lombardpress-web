@@ -27,9 +27,9 @@ class WorkGroupQuery < Lbp::Query
 	end
 	def expression_list(workgroup_short_id)
 		query = "
-			SELECT ?workgrouptitle ?expression ?expressiontitle
+			SELECT ?title ?expression ?expressiontitle
 	      {
-	        <http://scta.info/resource/#{workgroup_short_id}> <http://purl.org/dc/elements/1.1/title> ?workgrouptitle .
+	        <http://scta.info/resource/#{workgroup_short_id}> <http://purl.org/dc/elements/1.1/title> ?title .
 	        <http://scta.info/resource/#{workgroup_short_id}> <http://purl.org/dc/terms/hasPart> ?expression .
 	        ?expression <http://purl.org/dc/elements/1.1/title> ?expressiontitle  .
 	      }
