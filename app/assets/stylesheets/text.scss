@@ -29,3 +29,6 @@ h1, h2, h3, h4, h5, h6 {font-size: 20px; text-align: center;}
 .lbp-paragraphmenu:hover {color: $link-hover-color;}
 #lbp-collation-selector-form {text-align: center; select {height: 30px; background-color: white;} input {height: 30px;}}
 #lbp-collation-selector {border-bottom: 1px dashed black; margin-bottom: 7px; padding-bottom: 7px;}
+
+//toggle class required for javascript question filter 
+.lbp-hidden {display: none}

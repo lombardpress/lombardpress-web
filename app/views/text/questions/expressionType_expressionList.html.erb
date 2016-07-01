@@ -7,6 +7,7 @@
   <h1><%= @results[0][:expression_type_title] %></h1>
 </div>
 <div id="lbp-question-container" class="container">
+  <%= render "text/questions/question_filter_form" %>
   <% @expressions.each do |expression| %>
     <% expression_link = expression[:expression].to_s.split('/').last %>
   <h2><%= link_to "#{expression[:authorTitle]} | #{expression[:expressiontitle]}", "/text/questions/#{expression_link}" %></h2>
@@ -14,7 +15,7 @@
     <% @results.each do |result| %>
       <% if result[:expression].to_s == expression[:expression].to_s %>
       <% link = "/text/" + result[:item].to_s.split('/').last %>
-        <tr>
+        <tr class="lbp-question-row">
           <td><%= link_to result[:itemTitle], link %></td>
           <td><%= result[:questionTitle] %></td>
         </tr>
