@@ -13,14 +13,17 @@
   
   <div id="lbp-question-container" class="container col-md-8">
     <h1 class="center"><%= t(:toq) %></h1>
+    
+    <%= render "text/questions/question_filter_form" %>
+    
     <table class="table table-striped table-hover">
       <% @results.each do |result| %>
       <% link = "/text/" + result[:item].to_s.split('/').last %>
-      <tr>
+      <tr class="lbp-question-row">
         <td><%= unless result[:status] == "Not Started" then link_to result[:title], link else result[:title]  end %></td>
-        <td><%= unless result[:status] == "Not Started" || result[:questiontitle] == nil  then link_to result[:questiontitle], link else result[:questiontitle]  end %></td>
+        <td class="lbp-question-title"><%= unless result[:status] == "Not Started" || result[:questiontitle] == nil  then link_to result[:questiontitle], link else result[:questiontitle]  end %></td>
         <td><%= result[:status] %></td>
-        <td>
+        <td class="lbp-status">
           <% unless result[:status] == "Not Started" %>
             <img src="https://img.shields.io/wercker/ci/wercker/docs.svg"/>  
           <% else %>
@@ -42,13 +45,15 @@
       </tr>
       <tr>
         <td>
-          <div class="label-xs">IIIF Collection URL</div>
-          <!-- IIIF Drag & Drop support -->
-          <a id="IIIF-drag-and-drop" title="Drag & Drop this icon into Mirador" href="/default_target?collection=http://scta.info/iiif/<%= @resource.resource_shortId %>/collection">
+          <div class="label-xs">
+          <!-- IIIF Drag & Drop support --> 
+          <a id="IIIF-drag-and-drop" title="Drag & Drop this icon into Mirador" href="/default_target?collection=http://scta.info/iiif/<%= @resource.resource_shortId %>/collection" style="padding: 0 5px">
           <img height="20" src="http://www.e-codices.unifr.ch/img/logo-iiif-34x30.png" alt="IIIF Drag-n-drop"/>
           </a>
+          <a href="http://scta.info/iiif/<%= @resource.resource_shortId %>/collection" title="Raw Json for collection" style="padding: 0 5px">IIIF Collection</a>
+          <a target="_blank" class="btn btn-default btn-sm" title="View in Mirador Image Viewer" href="http://reactmirador.herokuapp.com/#<%= @resource.resource_shortId %>" style="padding: 0 5px"><img alt="Mirador" src="http://www.e-codices.unifr.ch/mirador/mirador-logo.png">Open in Mirador</a>
+          </div>
           <!-- TODO: the full collection URL should actually come directly from the database; and only display if a url is available -->
-          <a href="http://scta.info/iiif/<%= @resource.resource_shortId %>/collection">http://scta.info/iiif/<%= @resource.resource_shortId %>/collection</a>
         </td>
       </tr>
       <tr>

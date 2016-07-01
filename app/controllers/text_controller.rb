@@ -24,26 +24,26 @@ class TextController < ApplicationController
 		
 		if params[:resourceid] != nil
 			@resource = Lbp::Resource.new("#{params[:resourceid]}")
-			# TODO this first conditional should be changed to 
+      # TODO this first conditional should be changed to 
 			# if resource is topLevelWorkGroup
 			if @resource.resource_shortId == "scta"
 				shortid = @resource.resource_shortId
 				@results = WorkGroupQuery.new.work_group_list(shortid)
-				render "workgrouplist"
+				render "text/questions/workgrouplist"
 			elsif @resource.type_shortId == "workGroup"
 				shortid = @resource.resource_shortId
 				@results = WorkGroupQuery.new.expression_list(shortid)
-				render "expressionlist"
+				render "text/questions/expressionlist"
 			elsif @resource.type_shortId == "expressionType"		
 				shortid = @resource.resource_shortId
 				@results = ExpressionTypeQuery.new.expression_list(shortid)
 				@expressions = @results.map {|result| {expression: result[:expression], expressiontitle: result[:expressiontitle], authorTitle: result[:authorTitle]}}.uniq!
-				render "expressionType_expressionList"
+				render "text/questions/expressionType_expressionList"
 			elsif @resource.type_shortId == "person"	
 				shortid = @resource.resource_shortId
 				@results = MiscQuery.new.author_expression_list(shortid)
 				
-				render "expressionlist"
+				render "text/questions/expressionlist"
 			elsif params[:resourceid]
 				shortid = @resource.resource_shortId
 				url =  "<http://scta.info/resource/#{shortid}>" 
@@ -61,9 +61,9 @@ class TextController < ApplicationController
 					@sponsors = @sponsors[0][:sponsor] == nil ? [] : @sponsors
 					# check to see if articles array is actaully empty. If it is, set it to empty array
 					@articles = @articles[0][:article] == nil ? [] : @articles
-					render "questions_with_about"
+					render "text/questions/questions_with_about"
 				else
-					render "questions"
+					render "text/questions/questions"
 				end
 				
 			end
@@ -71,7 +71,7 @@ class TextController < ApplicationController
 			if @config.commentaryid == "scta"
 				@resource = Lbp::Resource.new("http://scta.info/resource/scta")
 				@results = WorkGroupQuery.new.work_group_list(@config.commentaryid)
-				render "workgrouplist"
+				render "text/questions/workgrouplist"
 			else
 				commentaryid = @config.commentaryid
 				@resource = Lbp::Resource.new("http://scta.info/resource/#{commentaryid}")
@@ -136,8 +136,6 @@ class TextController < ApplicationController
 		#get transcription Object from params	
 		transcript = get_transcript(params)
 		
-		
-
 		# ms_slugs is not great because its hard coding "critical"
     # what if the name of the manifestion for a critical manifestion was not called critical
     # more idea to check database to get a manifestationType
