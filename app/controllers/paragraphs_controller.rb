@@ -143,10 +143,12 @@ class ParagraphsController < ApplicationController
     ## this is required at the moment since the xslt sheet is designed for this
     ## But when each transcription can point to its own tei file, 
     ## the xslt may need to be written
-    file = transcript.file(@config.confighash)
+    file = params[:branch] ? transcript.file(@config.confighash, params[:branch]) : transcript.file(@config.confighash)
 
     xslt_param_array = ["pid", "'#{params[:itemid]}'"]
-    @para_variants = file.transform("#{Rails.root}/xslt/default/critical/para_variants.xsl", xslt_param_array)
+
+    schema_version = file.validating_schema_version
+    @para_variants = file.transform("#{Rails.root}/xslt/#{schema_version}/critical/para_variants.xsl", xslt_param_array)
     
     render :layout => false
   end

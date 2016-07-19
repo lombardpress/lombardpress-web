@@ -181,25 +181,26 @@
   <!-- clear note desc bib template -->
   <xsl:template match=" tei:note | tei:desc | tei:bibl"></xsl:template>
   
-  <xsl:template match="tei:cb[not(@type='startOn')]">
+  <xsl:template match="tei:cb">
     <xsl:variable name="hashms"><xsl:value-of select="@ed"/></xsl:variable>
     <xsl:variable name="ms"><xsl:value-of select="translate($hashms, '#', '')"/></xsl:variable>
-    <xsl:variable name="fullcn"><xsl:value-of select="@n"/></xsl:variable>
-    <xsl:variable name="length"><xsl:value-of select="string-length($fullcn)-2"/></xsl:variable>
-    <xsl:variable name="folionumber"><xsl:value-of select="substring($fullcn,1, $length)"/></xsl:variable>
-    <xsl:variable name="side_column"><xsl:value-of select="substring($fullcn, $length+1)"/></xsl:variable>
-    <xsl:variable name="just_column"><xsl:value-of select="substring($fullcn, $length+2, 1)"/></xsl:variable>
-    <xsl:variable name="justSide"><xsl:value-of select="substring($fullcn, $length+1, 1)"/></xsl:variable>
+  	<!-- get side from previous pb -->
+    <xsl:variable name="folio-and-side"><xsl:value-of select="./preceding::tei:pb[@ed=$hashms]/@n"/></xsl:variable>
+    <!-- <xsl:variable name="length"><xsl:value-of select="string-length($folio-and-side)-2"/></xsl:variable> -->
+    <xsl:variable name="folio"><xsl:value-of select="substring-before($folio-and-side, '-')"/></xsl:variable>
+    <!-- <xsl:variable name="side_column"><xsl:value-of select="substring($fullcn, $length+1)"/></xsl:variable> -->
+    <xsl:variable name="column"><xsl:value-of select="./@n"/></xsl:variable>
+    <xsl:variable name="side"><xsl:value-of select="substring-after($folio-and-side, '-')"/></xsl:variable>
     <xsl:variable name="break-ms-slug" select="/tei:TEI/tei:teiHeader/tei:fileDesc/tei:sourceDesc/tei:listWit/tei:witness[@xml:id=$ms]/@n"/>
     <xsl:variable name="canvasid">
       <xsl:choose>
         <xsl:when test="/tei:TEI/tei:teiHeader/tei:fileDesc/tei:sourceDesc/tei:listWit/tei:witness[@xml:id=$ms]/@xml:base">
           <xsl:variable name="canvasbase" select="/tei:TEI/tei:teiHeader/tei:fileDesc/tei:sourceDesc/tei:listWit/tei:witness[@xml:id=$ms]/@xml:base"/>
-          <xsl:variable name="canvasend" select="./@select"/>
+          <xsl:variable name="canvasend" select="./preceding::tei:pb[@ed=$hashms]/@facs"/>
           <xsl:value-of select="concat($canvasbase, $canvasend)"/>
         </xsl:when>
         <xsl:otherwise>
-          <xsl:value-of select="concat('http://scta.info/iiif/', 'xxx-', $break-ms-slug, '/canvas/', $ms, $folionumber, $justSide)"/>
+          <xsl:value-of select="concat('http://scta.info/iiif/', 'xxx-', $break-ms-slug, '/canvas/', $ms, $folio, $side)"/>
         </xsl:otherwise>
       </xsl:choose>
     </xsl:variable> 
@@ -214,67 +215,69 @@
         <xsl:when test="$show-images = 'true'">
           <a href="#" class="js-show-folio-image" data-canvasid="{$canvasid}" data-msslug="{$break-ms-slug}" data-expressionid="{$expressionid}">
             <xsl:value-of select="$ms"/>
-            <xsl:value-of select="$folionumber"/>
-            <xsl:value-of select="$side_column"/>
+            <xsl:value-of select="$folio"/>
+            <xsl:value-of select="concat($side, $column)"/>
           </a>
         </xsl:when>
         <xsl:otherwise>
           <xsl:value-of select="$ms"/>
-          <xsl:value-of select="$folionumber"/>
-          <xsl:value-of select="$side_column"/>
+          <xsl:value-of select="$folio"/>
+          <xsl:value-of select="concat($side, $column)"/>
         </xsl:otherwise>
       </xsl:choose>
     </span>
     <xsl:text> </xsl:text>
   </xsl:template>
   
-  <xsl:template match="tei:pb[not(@type='startOn')]">
-    <xsl:variable name="hashms"><xsl:value-of select="@ed"/></xsl:variable>
-    <xsl:variable name="ms"><xsl:value-of select="translate($hashms, '#', '')"/></xsl:variable>
-    <xsl:variable name="fullcn"><xsl:value-of select="@n"/></xsl:variable>
-    <!-- this variable gets length of Ms abbrev and folio number after substracting side -->
-    <xsl:variable name="length"><xsl:value-of select="string-length($fullcn)-1"/></xsl:variable>
-    <!-- this variable separates isolates folio number by skipping msAbbrev and then not including side designation -->
-    <xsl:variable name="folionumber"><xsl:value-of select="substring($fullcn,1, $length)"/></xsl:variable>
-    <!-- this desgination gets side by skipping lenghth of msAbbrev and folio number and then getting the first character that occurs -->
-    <xsl:variable name="justSide"><xsl:value-of select="substring($fullcn, $length+1, 1)"/></xsl:variable>
-    
-    <!-- this variable gets the msslug associated with ms initial in the teiHeader -->
-    <xsl:variable name="break-ms-slug" select="/tei:TEI/tei:teiHeader[1]/tei:fileDesc[1]/tei:sourceDesc[1]/tei:listWit[1]/tei:witness[1][@xml:id=$ms]/@n"/>
-    <!-- get preceding paragraph id -->
-    <xsl:variable name="expressionid" select="./preceding::tei:p/@xml:id"/>
-    
-    <xsl:variable name="canvasid">
-      <xsl:choose>
-        <xsl:when test="/tei:TEI/tei:teiHeader/tei:fileDesc/tei:sourceDesc/tei:listWit/tei:witness[@xml:id=$ms]/@xml:base">
-          <xsl:variable name="canvasbase" select="/tei:TEI/tei:teiHeader/tei:fileDesc/tei:sourceDesc/tei:listWit/tei:witness[@xml:id=$ms]/@xml:base"/>
-          <xsl:variable name="canvasend" select="./@select"/>
-          <xsl:value-of select="concat($canvasbase, $canvasend)"/>
-        </xsl:when>
-        <xsl:otherwise>
-          <!-- the 'xxx-' is used to be replaced in the rails app with the commentary slug -->
-          <xsl:value-of select="concat('http://scta.info/iiif/', 'xxx-', $break-ms-slug, '/canvas/', $ms, $folionumber, $justSide)"/>
-        </xsl:otherwise>
-      </xsl:choose>
-    </xsl:variable>
-
-    <span class="lbp-folionumber">
-      <!-- data-msslug needs to get info directly from final; default will not work -->
-      <xsl:choose>
-        <xsl:when test="$show-images = 'true'">
-          <a href="#" class="js-show-folio-image" data-canvasid="{$canvasid}" data-msslug="{$break-ms-slug}" data-expressionid="{$expressionid}">
-          <xsl:value-of select="$ms"/>
-          <xsl:value-of select="$folionumber"/>
-          <xsl:value-of select="$justSide"/>
-          </a>
-          </xsl:when>
-        <xsl:otherwise>
-          <xsl:value-of select="$ms"/>
-          <xsl:value-of select="$folionumber"/>
-          <xsl:value-of select="$justSide"/>
-        </xsl:otherwise>
-      </xsl:choose>
-    </span><xsl:text> </xsl:text>
+  <xsl:template match="tei:pb">
+  	<xsl:if test="not(//tei:cb)">
+	    <xsl:variable name="hashms"><xsl:value-of select="@ed"/></xsl:variable>
+	    <xsl:variable name="ms"><xsl:value-of select="translate($hashms, '#', '')"/></xsl:variable>
+	    <xsl:variable name="folio-and-side"><xsl:value-of select="@n"/></xsl:variable>
+	    <!-- this variable gets length of Ms abbrev and folio number after substracting side -->
+	    <!-- <xsl:variable name="length"><xsl:value-of select="string-length($fullcn)-1"/></xsl:variable> -->
+	    <!-- this variable separates isolates folio number by skipping msAbbrev and then not including side designation -->
+	    <xsl:variable name="folio"><xsl:value-of select="substring-before($folio-and-side, '-')"/></xsl:variable> 
+	    <!-- this desgination gets side by skipping lenghth of msAbbrev and folio number and then getting the first character that occurs -->
+	    <xsl:variable name="side"><xsl:value-of select="substring-after($folio-and-side, '-')"/></xsl:variable>
+	    
+	    <!-- this variable gets the msslug associated with ms initial in the teiHeader -->
+	    <xsl:variable name="break-ms-slug" select="/tei:TEI/tei:teiHeader[1]/tei:fileDesc[1]/tei:sourceDesc[1]/tei:listWit[1]/tei:witness[1][@xml:id=$ms]/@n"/>
+	    <!-- get preceding paragraph id -->
+	    <xsl:variable name="expressionid" select="./preceding::tei:p/@xml:id"/>
+	    
+	    <xsl:variable name="canvasid">
+	      <xsl:choose>
+	        <xsl:when test="/tei:TEI/tei:teiHeader/tei:fileDesc/tei:sourceDesc/tei:listWit/tei:witness[@xml:id=$ms]/@xml:base">
+	          <xsl:variable name="canvasbase" select="/tei:TEI/tei:teiHeader/tei:fileDesc/tei:sourceDesc/tei:listWit/tei:witness[@xml:id=$ms]/@xml:base"/>
+	          <xsl:variable name="canvasend" select="./@facs"/>
+	          <xsl:value-of select="concat($canvasbase, $canvasend)"/>
+	        </xsl:when>
+	        <xsl:otherwise>
+	          <!-- the 'xxx-' is used to be replaced in the rails app with the commentary slug -->
+	          <xsl:value-of select="concat('http://scta.info/iiif/', 'xxx-', $break-ms-slug, '/canvas/', $ms, $folio, $side)"/>
+	        </xsl:otherwise>
+	      </xsl:choose>
+	    </xsl:variable>
+	
+	    <span class="lbp-folionumber">
+	      <!-- data-msslug needs to get info directly from final; default will not work -->
+	      <xsl:choose>
+	        <xsl:when test="$show-images = 'true'">
+	          <a href="#" class="js-show-folio-image" data-canvasid="{$canvasid}" data-msslug="{$break-ms-slug}" data-expressionid="{$expressionid}">
+	          <xsl:value-of select="$ms"/>
+	          <xsl:value-of select="$folio"/>
+	          <xsl:value-of select="$side"/>
+	          </a>
+	          </xsl:when>
+	        <xsl:otherwise>
+	          <xsl:value-of select="$ms"/>
+	          <xsl:value-of select="$folio"/>
+	          <xsl:value-of select="$side"/>
+	        </xsl:otherwise>
+	      </xsl:choose>
+	    </span><xsl:text> </xsl:text>
+  	</xsl:if>
   </xsl:template>
   
   <xsl:template match="tei:supplied">
@@ -300,15 +303,18 @@
   <!-- app template -->
   <xsl:template match="tei:app">
     <xsl:variable name="id"><xsl:number count="//tei:app" level="any" format="1"/></xsl:variable>
-    <span id="lbp-app-lem-{$id}" class="lemma"><xsl:apply-templates select="tei:lem"/></span>
-    
+    <span id="lbp-app-lem-{$id}" class="lemma"><xsl:apply-templates select="tei:lem"/>
     <xsl:text> </xsl:text>
     <sup><a href="#lbp-variant{$id}" name="lbp-variantreference{$id}" class="appnote">[<xsl:value-of select="$id"/>]</a></sup>
+    </span>
     <xsl:text> </xsl:text>
   </xsl:template>
   
   <!-- clear apparatus editorial notes -->
   <xsl:template match="tei:app/tei:note"></xsl:template>
+	
+	<!-- clear citation notes -->
+	<xsl:template match="tei:cit/tei:note"></xsl:template>
       
   <!-- named templates -->
   
@@ -368,61 +374,46 @@
             <xsl:text> ] </xsl:text>                         
           <xsl:for-each select="tei:rdg">
             <xsl:choose>
-              <xsl:when test="contains(@type, 'om.') or ./@type='omit' or ./@type='omission'">
+              <xsl:when test="./@type='variation-absent'">
                 <xsl:value-of select="."/><xsl:text> </xsl:text>
                 <em>om.</em><xsl:text> </xsl:text>
                 <xsl:value-of select="translate(@wit, '#', '')"/><xsl:text>   </xsl:text>
               </xsl:when>
-              <xsl:when test="./@type='corrAddition'">
-                <xsl:value-of select="tei:corr/tei:add"/><xsl:text> </xsl:text>
-                <em>add.</em><xsl:text> </xsl:text>
-                <xsl:value-of select="translate(@wit, '#', '')"/><xsl:text>   </xsl:text>
-              </xsl:when>
+            	<xsl:when test="./@type='variation-present'">
+            		<xsl:choose>
+            			<xsl:when test="./@cause='repetition'">
+            				<xsl:text> </xsl:text>
+            				<em>iter</em>
+            				<xsl:value-of select="translate(@wit, '#', '')"/><xsl:text> </xsl:text>
+            			</xsl:when>
+            			<xsl:otherwise>
+            				<xsl:text> </xsl:text>
+            				<xsl:value-of select="."/><xsl:text> </xsl:text>
+            				<em>in textu</em><xsl:text> </xsl:text>
+            				<xsl:value-of select="translate(@wit, '#', '')"/><xsl:text> </xsl:text>
+            			</xsl:otherwise>
+            		</xsl:choose>
+            	</xsl:when>
+            	
             	<xsl:when test="./@type='correction-addition'"> 
-            		<xsl:value-of select="."/><xsl:text> </xsl:text>
+            		<xsl:value-of select="tei:add"/><xsl:text> </xsl:text>
             		<em>add.</em><xsl:text> </xsl:text>
             		<xsl:value-of select="translate(@wit, '#', '')"/><xsl:text>   </xsl:text>
             	</xsl:when>
-            	<xsl:when test="./@type='corrDeletion'">
-                <xsl:value-of select="tei:corr/tei:del"/><xsl:text> </xsl:text>
-                <em>add. sed del.</em><xsl:text> </xsl:text>
-                <xsl:value-of select="translate(@wit, '#', '')"/><xsl:text>   </xsl:text>
-              </xsl:when>
+            	
             	<xsl:when test="./@type='correction-deletion'">
             		<xsl:value-of select="tei:del"/><xsl:text> </xsl:text>
             		<em>add. sed del.</em><xsl:text> </xsl:text>
             		<xsl:value-of select="translate(@wit, '#', '')"/><xsl:text>   </xsl:text>
             	</xsl:when>
-              <xsl:when test="./@type='corrReplace'">
-                <xsl:value-of select="tei:corr/tei:add"/><xsl:text> </xsl:text>
-                <em>corr. ex</em><xsl:text> </xsl:text>
-                <xsl:value-of select="tei:corr/tei:del"/><xsl:text> </xsl:text>
-                <xsl:value-of select="translate(@wit, '#', '')"/><xsl:text>   </xsl:text>
-              </xsl:when>
-            	<xsl:when test="./@type='correction-substitution'">
+              <xsl:when test="./@type='correction-substitution'">
             		<xsl:value-of select="tei:subst/tei:add"/><xsl:text> </xsl:text>
             		<em>corr. ex</em><xsl:text> </xsl:text>
             		<xsl:value-of select="tei:subst/tei:del"/><xsl:text> </xsl:text>
             		<xsl:value-of select="translate(@wit, '#', '')"/><xsl:text>   </xsl:text>
             	</xsl:when>
-              <xsl:when test="contains(@type, 'rep.')">
-                <xsl:text> </xsl:text>
-                <em>rep.</em>
-                <xsl:value-of select="translate(@wit, '#', '')"/><xsl:text> </xsl:text>
-              </xsl:when>
-              <xsl:when test="contains(@type, 'intextu')">
-                <xsl:text> </xsl:text>
-                <xsl:value-of select="."/><xsl:text> </xsl:text>
-                <em>in textu</em><xsl:text> </xsl:text>
-                <xsl:value-of select="translate(@wit, '#', '')"/><xsl:text> </xsl:text>
-              </xsl:when>
-            	<xsl:when test="./@type='addition'">
-            		<xsl:text> </xsl:text>
-            		<xsl:value-of select="."/><xsl:text> </xsl:text>
-            		<em>add.</em><xsl:text> </xsl:text>
-            		<xsl:value-of select="translate(@wit, '#', '')"/><xsl:text> </xsl:text>
-            	</xsl:when>
-              <xsl:otherwise>
+              
+            	<xsl:otherwise>
                 <xsl:value-of select="."/><xsl:text> </xsl:text>
                 <xsl:value-of select="translate(@wit, '#', '')"/><xsl:text>   </xsl:text>
               </xsl:otherwise>

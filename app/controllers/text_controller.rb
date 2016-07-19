@@ -159,7 +159,7 @@ class TextController < ApplicationController
 		# get file object to be tansformed
 		# and perform transformation
 		if @expression_structure == "structureItem"
-			file = transcript.file(@config.confighash)
+			file = params[:branch] ? transcript.file(@config.confighash, params[:branch]) : transcript.file(@config.confighash)
 			@transform = file.transform_main_view(xslt_param_array)
 		elsif @expression_structure == "structureBlock"
 			file = transcript.file_part(@config.confighash, params[:itemid])
