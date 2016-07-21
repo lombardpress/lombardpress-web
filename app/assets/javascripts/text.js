@@ -281,7 +281,7 @@ var showParaAltImage = function(itemid, msslug, pid){
 var showComments = function(itemid, pid){
 	$("#lbp-bottom-window-container").load("/comments/list/" + itemid + "/" + pid + " #lbp-comments-list-container", function( response, status, xhr) {
   	if ( status == "error" ) {
-    	var msg = "Sorry, but comments for this paragraph are not presently available ";
+    	var msg = "Sorry, but comments for this paragraph are not presently available. Make sure you've created and account and have logged in.";
     	$("#lbp-bottom-window-container").html( msg + "(" + xhr.status + " " + xhr.statusText + ")");
     }
   });
@@ -299,7 +299,7 @@ var newComment = function(itemid, pid){
 			});
   	
   	if ( status == "error" ) {
-    	var msg = "Sorry, but posting comments for this paragraph is not presently possible";
+    	var msg = "Sorry, you need to be logged in to leave a comment.";
     	$("#lbp-bottom-window-container").html( msg + "(" + xhr.status + " " + xhr.statusText + ")");
     }
   });

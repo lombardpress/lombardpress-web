@@ -1,4 +1,5 @@
 class ParagraphimageController < ApplicationController
+	# i'm pretty sure this method "show" is not being used at all. and shoudl be removed
 	def show
 		config_hash = @config.confighash
 		commentaryid = @config.commentaryid
@@ -80,13 +81,15 @@ class ParagraphimageController < ApplicationController
 		# it is surprisingly fast for three extra calls
 		# maybe I shouldn't worry about that so much 
 		if params[:canvasid].include? "xxx-"
-			exBlockObj = Lbp::Expression.new(params[:expressionid])
+			exBlockObj = Lbp::Expression.find(params[:expressionid])
 			
-			expItemId = exBlockObj.results.dup.filter(:p => RDF::URI("http://scta.info/property/isPartOfStructureItem")).first[:o].to_s
-			expItemObj = Lbp::Expression.new(expItemId)
-			expTopId = expItemObj.results.dup.filter(:p => RDF::URI("http://scta.info/property/isPartOfTopLevelExpression")).first[:o].to_s
-			expTopObj = Lbp::Expression.new(expTopId)
-			commentary_slug = expTopObj.results.dup.filter(:p => RDF::URI("http://scta.info/property/slug")).first[:o]
+			#expItemId = exBlockObj.results.dup.filter(:p => RDF::URI("http://scta.info/property/isPartOfStructureItem")).first[:o].to_s
+			expItemId = exBlockObj.value("http://scta.info/property/isPartOfStructureItem").to_s
+			expItemObj = Lbp::Expression.find(expItemId)
+			expTopId = expItemObj.value("http://scta.info/property/isPartOfTopLevelExpression").to_s
+			expTopObj = Lbp::Expression.find(expTopId)
+			#commentary_slug = expTopObj.results.dup.filter(:p => RDF::URI("http://scta.info/property/slug")).first[:o]
+			commentary_slug = expTopObj.value("http://scta.info/property/slug").to_s
 			canvasid = params[:canvasid].sub('xxx-', "#{commentary_slug}-")
 		else
 			canvasid = params[:canvasid]

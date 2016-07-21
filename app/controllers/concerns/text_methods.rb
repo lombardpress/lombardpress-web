@@ -3,10 +3,10 @@ module TextMethods
 
   def get_item(params)
 		shortid = params[:itemid]
-		resource = Lbp::Resource.new(shortid).convert
+		resource = Lbp::Resource.find(shortid)
 	end
 	def get_expression(params)
-		expression = Lbp::Expression.new(params[:itemid])
+		expression = Lbp::Expression.find(params[:itemid])
 	end
 
 		def check_permission(expression)
@@ -21,7 +21,7 @@ module TextMethods
 					# get topLevel expression that structureItem expression belongs to
 					toplevelexpressionid = expression.top_level_expression_shortId
 					#begins test
-					if !allowed_items.include? expression.resource_shortId and !allowed_top_level_collection.include? toplevelexpressionid
+					if !allowed_items.include? expression.short_id and !allowed_top_level_collection.include? toplevelexpressionid
 						redirect_to "/text/draft_permissions/#{params[:itemid]}", :alert => "Access denied: This text is a draft. It requires permission to be viewed." and return
 					end
 					# if user is logged in and is admin, no redirect should occur, thus there is no final "else" statment
@@ -55,21 +55,19 @@ module TextMethods
 			# TODO: someting about this feels redundant
 			# since most controllers using the get_transcript method
 			# have already invoked an @expression resource
-			resource = Lbp::Resource.new(resource_url)
 			
-			resource_subclass = resource.convert
-
-			# return the transcription object to be used
-			unless resource_subclass.class == Lbp::Transcription
-				return transcriptObj = resource_subclass.canonicalTranscription
+			resource = Lbp::Resource.find(resource_url)
+			
+			if resource.class == Lbp::Transcription
+				return resource
 			else
-				# here it is assumed the subclass is already a Transcription class
-				return resource_subclass
+				return resource.canonical_transcription.resource
 			end
+
 		end
 		def check_transcript_existence(expressionObj)
-				unless expressionObj.canonicalTranscription?
-					expressionid = expressionObj.resource_shortId
+				unless expressionObj.canonical_transcription?
+					expressionid = expressionObj.short_id
 					redirect_to "/text/status/#{expressionid}", :alert => "A critical/normalized edition of this text does not exist yet. Below are the available transcriptions." and return
 		end
 		

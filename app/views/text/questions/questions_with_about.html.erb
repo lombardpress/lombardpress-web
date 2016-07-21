@@ -47,11 +47,11 @@
         <td>
           <div class="label-xs">
           <!-- IIIF Drag & Drop support --> 
-          <a id="IIIF-drag-and-drop" title="Drag & Drop this icon into Mirador" href="/default_target?collection=http://scta.info/iiif/<%= @resource.resource_shortId %>/collection" style="padding: 0 5px">
+          <a id="IIIF-drag-and-drop" title="Drag & Drop this icon into Mirador" href="/default_target?collection=http://scta.info/iiif/<%= @resource.short_id %>/collection" style="padding: 0 5px">
           <img height="20" src="http://www.e-codices.unifr.ch/img/logo-iiif-34x30.png" alt="IIIF Drag-n-drop"/>
           </a>
-          <a href="http://scta.info/iiif/<%= @resource.resource_shortId %>/collection" title="Raw Json for collection" style="padding: 0 5px">IIIF Collection</a>
-          <a target="_blank" class="btn btn-default btn-sm" title="View in Mirador Image Viewer" href="http://reactmirador.herokuapp.com/#<%= @resource.resource_shortId %>" style="padding: 0 5px"><img alt="Mirador" src="http://www.e-codices.unifr.ch/mirador/mirador-logo.png">Open in Mirador</a>
+          <a href="http://scta.info/iiif/<%= @resource.short_id %>/collection" title="Raw Json for collection" style="padding: 0 5px">IIIF Collection</a>
+          <a target="_blank" class="btn btn-default btn-sm" title="View in Mirador Image Viewer" href="http://reactmirador.herokuapp.com/#<%= @resource.short_id %>" style="padding: 0 5px"><img alt="Mirador" src="http://www.e-codices.unifr.ch/mirador/mirador-logo.png">Open in Mirador</a>
           </div>
           <!-- TODO: the full collection URL should actually come directly from the database; and only display if a url is available -->
         </td>
@@ -70,11 +70,11 @@
         <form  action="/search" method="get" >
         <div>
           <input type="text" class="form-control" placeholder="<%= t(:search_text) %>" name="searchterm">
-          <input type="hidden" class="form-control" name="expressionid" value="<%= @resource.resource_shortId %>"/>
+          <input type="hidden" class="form-control" name="expressionid" value="<%= @resource.short_id %>"/>
         </div>
         <button type="submit" class="btn btn-primary btn-block" style="margin-top: 5px;">Search</button>
         </form>
-        <a href="/index/<%= @resource.resource_shortId %>"><button  type="submit" class="btn btn-info btn-block" style="margin-top: 5px;">Index</button></a>
+        <a href="/index/<%= @resource.short_id %>"><button  type="submit" class="btn btn-info btn-block" style="margin-top: 5px;">Index</button></a>
     </div>
     <!-- articles menu -->
     <% if @articles.count > 0 %>
