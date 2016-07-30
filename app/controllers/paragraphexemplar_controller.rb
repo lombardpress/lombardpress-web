@@ -26,6 +26,7 @@ class ParagraphexemplarController < ApplicationController
         #:wordfrequency => paratranscript.word_frequency
 
       }
+      
     render :json => expression_hash
   end
   
