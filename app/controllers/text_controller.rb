@@ -23,33 +23,42 @@ class TextController < ApplicationController
 		# otherwise, if there is only expression, it should re-route to the top-level expression view.
 		
 		if params[:resourceid] != nil
-			@resource = Lbp::Resource.new("#{params[:resourceid]}")
-      # TODO this first conditional should be changed to 
+			@resource = Lbp::Resource.find("#{params[:resourceid]}")
+
+			# TODO this first conditional should be changed to 
 			# if resource is topLevelWorkGroup
-			if @resource.resource_shortId == "scta"
-				shortid = @resource.resource_shortId
+			if @resource.short_id == "scta"
+				shortid = @resource.short_id
 				@results = WorkGroupQuery.new.work_group_list(shortid)
 				render "text/questions/workgrouplist"
-			elsif @resource.type_shortId == "workGroup"
-				shortid = @resource.resource_shortId
+			elsif @resource.type.short_id == "workGroup"
+				shortid = @resource.short_id
 				@results = WorkGroupQuery.new.expression_list(shortid)
 				render "text/questions/expressionlist"
-			elsif @resource.type_shortId == "expressionType"		
-				shortid = @resource.resource_shortId
+			elsif @resource.type.short_id == "expressionType"		
+				shortid = @resource.short_id
 				@results = ExpressionTypeQuery.new.expression_list(shortid)
+				@info = MiscQuery.new.expression_type_info(shortid)
 				@expressions = @results.map {|result| {expression: result[:expression], expressiontitle: result[:expressiontitle], authorTitle: result[:authorTitle]}}.uniq!
 				render "text/questions/expressionType_expressionList"
-			elsif @resource.type_shortId == "person"	
-				shortid = @resource.resource_shortId
+			elsif @resource.type.short_id == "person"	
+				shortid = @resource.short_id
 				@results = MiscQuery.new.author_expression_list(shortid)
 				
-				render "text/questions/expressionlist"
+				render "text/questions/authorlist"
 			elsif params[:resourceid]
-				shortid = @resource.resource_shortId
+				shortid = @resource.short_id
 				url =  "<http://scta.info/resource/#{shortid}>" 
-				@results = Lbp::Query.new().collection_query(url)
+
+				#@results = Lbp::Query.new().collection_query(url)
+				@results = MiscQuery.new().collection_query(url)
+			
+				# this was part of my attempt to use a new method, 
+				#but I figure out how to open a new method to the class
+				#see models/lbp/expression.rb
+					#@results = Lbp::Resource.find(shortid).overview
 				
-				if @resource.convert.level == 1
+				if @resource.level == 1
 					@info = MiscQuery.new.expression_info(shortid)
 
 					@sponsors = @info.map {|r| {sponsor: r[:sponsor], sponsorTitle: r[:sponsorTitle], sponsorLogo: r[:sponsorLogo], sponsorLink: r[:sponsorLink]}}
@@ -69,12 +78,12 @@ class TextController < ApplicationController
 			end
 		else
 			if @config.commentaryid == "scta"
-				@resource = Lbp::Resource.new("http://scta.info/resource/scta")
+				@resource = Lbp::Resource.find("http://scta.info/resource/scta")
 				@results = WorkGroupQuery.new.work_group_list(@config.commentaryid)
 				render "text/questions/workgrouplist"
 			else
 				commentaryid = @config.commentaryid
-				@resource = Lbp::Resource.new("http://scta.info/resource/#{commentaryid}")
+				@resource = Lbp::Resource.find("http://scta.info/resource/#{commentaryid}")
 				url =  "<http://scta.info/resource/#{commentaryid}>"
 				@results = Lbp::Query.new().collection_query(url)
 			end
@@ -118,7 +127,7 @@ class TextController < ApplicationController
 		# get expression and related info
 		@expression = get_expression(params)
 		
-		@expression_structure = @expression.structureType_shortId
+		@expression_structure = @expression.structure_type.short_id
 		# perform checks
 		check_transcript_existence(@expression)
 		check_permission(@expression); return if performed?
@@ -130,11 +139,12 @@ class TextController < ApplicationController
 		#get values  needed for view
 		#@expressionid = params[:itemid]
 		@title = @expression.title
-		@next_expressionid = if @expression.next != nil then @expression.next.split("/").last else nil end
-		@previous_expressionid = if @expression.previous != nil then @expression.previous.split("/").last else nil end
+		@next_expressionid = if @expression.next != nil then @expression.next.to_s.split("/").last else nil end
+		@previous_expressionid = if @expression.previous != nil then @expression.previous.to_s.split("/").last else nil end
 
 		#get transcription Object from params	
 		transcript = get_transcript(params)
+		
 		
 		# ms_slugs is not great because its hard coding "critical"
     # what if the name of the manifestion for a critical manifestion was not called critical
@@ -142,7 +152,7 @@ class TextController < ApplicationController
     # but this could be costly. If there were 20 or 30 manifestations 
     # then you'd be making lots of requests to db
     # this map is reused in the paragraph controller as well; should be refactored
-    ms_slugs = @expression.manifestationUrls.map {|m| unless m.include? 'critical' then m.split("/").last end}.compact
+    ms_slugs = @expression.manifestations.map {|m| unless m.to_s.include? 'critical' then m.to_s.split("/").last end}.compact
 		default_wit_param = ms_slugs[0]
 
 		#prepare xslt arrays to be used for transformation
@@ -159,7 +169,7 @@ class TextController < ApplicationController
 		# get file object to be tansformed
 		# and perform transformation
 		if @expression_structure == "structureItem"
-			file = transcript.file(@config.confighash)
+			file = params[:branch] ? transcript.file(@config.confighash, params[:branch]) : transcript.file(@config.confighash)
 			@transform = file.transform_main_view(xslt_param_array)
 		elsif @expression_structure == "structureBlock"
 			file = transcript.file_part(@config.confighash, params[:itemid])
@@ -169,7 +179,7 @@ class TextController < ApplicationController
 	
 	def xml
 		expression = get_expression(params)
-		@expression_structure = expression.structureType_shortId
+		@expression_structure = expression.structure_type.short_id
 		
 		check_permission(expression)
 		
@@ -186,10 +196,30 @@ class TextController < ApplicationController
 			@nokogiri = file.xml
 		end
 	end
+	def plain_text
+		## TODO refactor: this code is almost identical to TOC except that 
+		## it chooses a different transform options at the very end
+		expression = get_expression(params)
+		@expression_structure = expression.structure_type.short_id
+		
+		check_permission(expression)
 
+		transcript = get_transcript(params)
+
+		if @expression_structure == "structureItem"
+			file = transcript.file(@config.confighash)
+		elsif @expression_structure == "structureBlock"
+			# NOTE: itemid => expressionid
+			file = transcript.file_part(@config.confighash, params[:itemid])
+		end
+		@plaintext = file.transform_plain_text
+		render :plain => @plaintext
+
+	
+	end
 	def toc 
 		expression = get_expression(params)
-		@expression_structure = expression.structureType_shortId
+		@expression_structure = expression.structure_type.short_id
 		
 		check_permission(expression)
 

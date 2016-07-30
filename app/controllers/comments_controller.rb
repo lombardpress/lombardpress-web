@@ -120,7 +120,7 @@ class CommentsController < ApplicationController
     params[:user] = current_user[:id]
     params[:commentaryid] = @config.commentaryid
     
-    @expression = Lbp::Expression.new(url)
+    @expression = Lbp::Expression.find(url)
     
     # Lbp should create a separate class for Paragraph and TranscriptParagraph
     # I should be able to retrieve paragraph number from SCTA rather than having to count it from the file

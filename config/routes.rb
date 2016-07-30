@@ -74,6 +74,7 @@ scope "text" do
   get 'info/:itemid' => 'text#info'
   get 'status/:itemid' => 'text#status'
   get 'toc/:itemid(/:msslug)' => 'text#toc'
+  get 'plaintext/:itemid(/:msslug)(/:transcriptslug)' =>'text#plain_text', as: :plain_text
   get 'xml/:itemid(/:msslug)(/:transcriptslug)' => 'text#xml'
   get ':itemid(/:msslug)(/:transcriptslug)' => 'text#show', as: :show_text
 end 

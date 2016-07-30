@@ -65,5 +65,17 @@ $(document).on('ready page:load', function (){
 			showParaZoomImage(itemid, msslug, pid);
 		});
 
+		Mousetrap.bind("f", function(){
+			$(".js-filter-input").focus();
+		});
+
+		Mousetrap.bind("c", function(){
+			$("#corpus-search-field").focus();
+		});
+
+		Mousetrap.bind("e", function(){
+			$("#expression-search-field").focus();
+		});
+
   });
 });

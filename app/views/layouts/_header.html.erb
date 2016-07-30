@@ -48,7 +48,7 @@
         
         <form class="navbar-form navbar-left" role="search" action="/search" method="get">
           <div class="form-group">
-            <input type="text" class="form-control" placeholder="<%= t(:search_corpus) %>" name="searchterm">
+            <input type="text" id="corpus-search-field" class="form-control" placeholder="<%= t(:search_corpus) %>" name="searchterm">
           </div>
           <button type="submit" class="btn btn-default"><%= t(:submit) %></button>
         </form>
@@ -74,7 +74,7 @@
             <% end %>  
             <li class="divider"></li>
             <li><a href="http://lombardpress.org" target="_blank">About LombardPress</a></li>
-            <li><a href="http://scta.info" target="_blank">About the Sentences Commentary Text Archive (SCTA)</a></li>
+            <li><a href="http://scta.info" target="_blank">About the Scholastic Commentaries and Texts Archive (SCTA)</a></li>
             <li><a href="http://images.scta.info" target="_blank">The SCTA Image Viewer</a></li>
           </ul>
         </li>

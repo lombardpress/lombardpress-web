@@ -12,12 +12,12 @@ class ParagraphsController < ApplicationController
   end
   def show2
     url = params[:url]
-    @expression = Lbp::Expression.new(url)
+    @expression = Lbp::Expression.find(url)
     
-    if @expression.structureType_shortId == "structureItem"
+    if @expression.structure_type.short_id == "structureItem"
       @target_url = "/text/#{@expression.resource_shortId}" 
     else
-      @target_url = "/text/#{@expression.item_level_expression_shortId}##{@expression.resource_shortId}" 
+      @target_url = "/text/#{@expression.item_level_expression.short_id}##{@expression.short_id}" 
     end
     @target_title = @expression.title
     #itemid = @para.itemid
@@ -31,7 +31,7 @@ class ParagraphsController < ApplicationController
     
     #canonicalwit = @item.canonical_transcription_slug
     transcript = get_transcript(params)
-    file = transcript.file_part(@config.confighash, @expression.resource_shortId)
+    file = transcript.file_part(@config.confighash, @expression.short_id)
     #transcript = @item.transcription(source: "origin", wit: canonicalwit)
     
     @text = file.transform_plain_text
@@ -61,7 +61,7 @@ class ParagraphsController < ApplicationController
     # more idea to check database to get a manifestationType
     # but this could be costly. If there were 20 or 30 manifestations 
     # then you'd be making lots of requests to db
-    ms_slugs = @expression.manifestationUrls.map {|m| unless m.include? 'critical' then m.split("/").last end}.compact
+    ms_slugs = @expression.manifestations.map {|m| unless m.to_s.include? 'critical' then m.to_s.split("/").last end}.compact
     transcript = get_transcript(params)
 
     file = transcript.file_part(@config.confighash, params[:itemid])
@@ -73,13 +73,13 @@ class ParagraphsController < ApplicationController
 
     #TODO: db and lbp.gem should be returning nil, but the actually returning "http://scta.info/resource/" for nil. 
     # Once this is fixed this conditional can be removed
-    if @expression.previous != nil && @expression.previous  != "http://scta.info/resource/"
-      previous_expression = @expression.previous.split("/").last
+    if @expression.previous != nil && @expression.previous.to_s  != "http://scta.info/resource/"
+      previous_expression = @expression.previous.to_s.split("/").last
     else
       previous_expression = nil
     end
-    if @expression.next != nil && @expression.next != "http://scta.info/resource/"
-      next_expression = @expression.next.split("/").last
+    if @expression.next != nil && @expression.next.to_s != "http://scta.info/resource/"
+      next_expression = @expression.next.to_s.split("/").last
     else
       next_expression = nil
     end
@@ -104,8 +104,8 @@ class ParagraphsController < ApplicationController
     #item = get_item(params)
     @expression = get_expression(params)
     
-    @parts = @expression.manifestationUrls.map do |url|
-        url.split("/").last
+    @parts = @expression.manifestations.map do |url|
+        url.to_s.split("/").last
     end
     
     if params[:base].nil? or params[:base] == ""
@@ -143,10 +143,12 @@ class ParagraphsController < ApplicationController
     ## this is required at the moment since the xslt sheet is designed for this
     ## But when each transcription can point to its own tei file, 
     ## the xslt may need to be written
-    file = transcript.file(@config.confighash)
+    file = params[:branch] ? transcript.file(@config.confighash, params[:branch]) : transcript.file(@config.confighash)
 
     xslt_param_array = ["pid", "'#{params[:itemid]}'"]
-    @para_variants = file.transform("#{Rails.root}/xslt/default/critical/para_variants.xsl", xslt_param_array)
+
+    schema_version = file.validating_schema_version
+    @para_variants = file.transform("#{Rails.root}/xslt/#{schema_version}/critical/para_variants.xsl", xslt_param_array)
     
     render :layout => false
   end
