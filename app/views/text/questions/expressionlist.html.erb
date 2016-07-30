@@ -14,7 +14,12 @@
     <% link = "/text/questions/" + result[:expression].to_s.split('/').last %>
     <% author_link = result[:author].to_s.split("/").last %>
     <tr class="lbp-question-row">
-      <td><%= link_to result[:authorTitle], author_link %></td>
+      <% if result[:authorTitle] != nil %>
+        <td><%= link_to result[:authorTitle], author_link %></td>
+      <% else %>
+        <td></td>
+      <% end %>
+
       <td><%= link_to result[:expressiontitle], link %></td>
       
     </tr>

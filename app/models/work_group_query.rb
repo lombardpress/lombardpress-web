@@ -33,9 +33,13 @@ class WorkGroupQuery < Lbp::Query
 	        <http://scta.info/resource/#{workgroup_short_id}> <http://purl.org/dc/terms/hasPart> ?expression .
 	        ?expression <http://purl.org/dc/elements/1.1/title> ?expressiontitle  .
 	        ?expression <http://purl.org/dc/elements/1.1/title> ?expressiontitle  .
-	        ?expression <http://www.loc.gov/loc.terms/relators/AUT> ?author	.
-	        ?author <http://purl.org/dc/elements/1.1/title> ?authorTitle .
-	      }
+	    
+	    	  OPTIONAL
+	      	{
+	      		?expression <http://www.loc.gov/loc.terms/relators/AUT> ?author	.
+	        	?author <http://purl.org/dc/elements/1.1/title> ?authorTitle .
+	      	}
+	    	}
 	      ORDER BY ?authorTitle
 	      "
 
