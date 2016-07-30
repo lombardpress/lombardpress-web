@@ -74,6 +74,49 @@ class MiscQuery < Lbp::Query
       result = self.query(query)
 
    end
+   def expression_query
+   query = "#{@prefixes}
+      
+        SELECT ?collectiontitle ?title ?item ?questiontitle ?order ?status ?gitRepository
+        {
+          #{collection_url} <http://scta.info/property/hasStructureItem> ?item .
+          #{collection_url} <http://purl.org/dc/elements/1.1/title> ?collectiontitle .
+          ?item <http://purl.org/dc/elements/1.1/title> ?title  .
+          ?item <http://scta.info/property/totalOrderNumber> ?order .
+          ?item <http://scta.info/property/status> ?status .
+          ?item <http://scta.info/property/gitRepository> ?gitRepository .
+
+          
+          OPTIONAL
+          {
+          ?item <http://scta.info/property/questionTitle> ?questiontitle  .
+          }
+        }
+        ORDER BY ?order"
+
+        result = self.query(query)
+    end
+    def expression_type_info(expression_type_id)
+      query = "SELECT ?description ?isPartOf ?hasPart ?next ?previous
+      {
+        <http://scta.info/resource/#{expression_type_id}> <http://purl.org/dc/elements/1.1/description> ?description . 
+         
+        OPTIONAL {
+          <http://scta.info/resource/#{expression_type_id}> <http://purl.org/dc/terms/hasPart> ?hasPart . 
+        }
+        OPTIONAL {
+          <http://scta.info/resource/#{expression_type_id}> <http://purl.org/dc/terms/isPartOf> ?isPartOf . 
+        }
+        OPTIONAL {
+          <http://scta.info/resource/#{expression_type_id}> <http://scta.info/property/next> ?next . 
+        }
+        OPTIONAL {
+          <http://scta.info/resource/#{expression_type_id}> <http://scta.info/property/previous> ?previous . 
+        }
+      }"
+      result = self.query(query)
+   end
+
 
 
 end

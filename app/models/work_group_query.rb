@@ -27,13 +27,16 @@ class WorkGroupQuery < Lbp::Query
 	end
 	def expression_list(workgroup_short_id)
 		query = "
-			SELECT ?title ?expression ?expressiontitle
+			SELECT ?title ?expression ?expressiontitle ?author ?authorTitle
 	      {
 	        <http://scta.info/resource/#{workgroup_short_id}> <http://purl.org/dc/elements/1.1/title> ?title .
 	        <http://scta.info/resource/#{workgroup_short_id}> <http://purl.org/dc/terms/hasPart> ?expression .
 	        ?expression <http://purl.org/dc/elements/1.1/title> ?expressiontitle  .
+	        ?expression <http://purl.org/dc/elements/1.1/title> ?expressiontitle  .
+	        ?expression <http://www.loc.gov/loc.terms/relators/AUT> ?author	.
+	        ?author <http://purl.org/dc/elements/1.1/title> ?authorTitle .
 	      }
-	      ORDER BY ?expressiontitle
+	      ORDER BY ?authorTitle
 	      "
 
 		result = self.query(query)

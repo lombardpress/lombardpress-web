@@ -24,6 +24,7 @@ class TextController < ApplicationController
 		
 		if params[:resourceid] != nil
 			@resource = Lbp::Resource.find("#{params[:resourceid]}")
+
 			# TODO this first conditional should be changed to 
 			# if resource is topLevelWorkGroup
 			if @resource.short_id == "scta"
@@ -37,17 +38,25 @@ class TextController < ApplicationController
 			elsif @resource.type.short_id == "expressionType"		
 				shortid = @resource.short_id
 				@results = ExpressionTypeQuery.new.expression_list(shortid)
+				@info = MiscQuery.new.expression_type_info(shortid)
 				@expressions = @results.map {|result| {expression: result[:expression], expressiontitle: result[:expressiontitle], authorTitle: result[:authorTitle]}}.uniq!
 				render "text/questions/expressionType_expressionList"
 			elsif @resource.type.short_id == "person"	
 				shortid = @resource.short_id
 				@results = MiscQuery.new.author_expression_list(shortid)
 				
-				render "text/questions/expressionlist"
+				render "text/questions/authorlist"
 			elsif params[:resourceid]
 				shortid = @resource.short_id
 				url =  "<http://scta.info/resource/#{shortid}>" 
-				@results = Lbp::Query.new().collection_query(url)
+
+				#@results = Lbp::Query.new().collection_query(url)
+				@results = MiscQuery.new().collection_query(url)
+			
+				# this was part of my attempt to use a new method, 
+				#but I figure out how to open a new method to the class
+				#see models/lbp/expression.rb
+					#@results = Lbp::Resource.find(shortid).overview
 				
 				if @resource.level == 1
 					@info = MiscQuery.new.expression_info(shortid)
@@ -187,7 +196,27 @@ class TextController < ApplicationController
 			@nokogiri = file.xml
 		end
 	end
+	def plain_text
+		## TODO refactor: this code is almost identical to TOC except that 
+		## it chooses a different transform options at the very end
+		expression = get_expression(params)
+		@expression_structure = expression.structure_type.short_id
+		
+		check_permission(expression)
 
+		transcript = get_transcript(params)
+
+		if @expression_structure == "structureItem"
+			file = transcript.file(@config.confighash)
+		elsif @expression_structure == "structureBlock"
+			# NOTE: itemid => expressionid
+			file = transcript.file_part(@config.confighash, params[:itemid])
+		end
+		@plaintext = file.transform_plain_text
+		render :plain => @plaintext
+
+	
+	end
 	def toc 
 		expression = get_expression(params)
 		@expression_structure = expression.structure_type.short_id
