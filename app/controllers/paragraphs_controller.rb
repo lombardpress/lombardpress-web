@@ -15,7 +15,7 @@ class ParagraphsController < ApplicationController
     @expression = Lbp::Expression.find(url)
     
     if @expression.structure_type.short_id == "structureItem"
-      @target_url = "/text/#{@expression.resource_shortId}" 
+      @target_url = "/text/#{@expression.short_id}" 
     else
       @target_url = "/text/#{@expression.item_level_expression.short_id}##{@expression.short_id}" 
     end
