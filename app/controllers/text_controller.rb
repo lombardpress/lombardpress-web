@@ -4,13 +4,15 @@ class TextController < ApplicationController
 	#TODO this make question list the index page
 	# current division between index and question list is confusing
   def index
-		commentaryid = @config.commentaryid
-		url =  "<http://scta.info/text/#{commentaryid}/commentary>"
-		@results = Lbp::Query.new().collection_query(url)
+		redirect_to "/text/questions"
 	end
 	def questions
 		if params[:resourceid] != nil
-			@resource = Lbp::Resource.find("#{params[:resourceid]}")
+			#I'm using the full Id rather than short_id because not all resources in db have a short_id yet. this needs to be added
+			#TODO review lbp resource find, and see if the request looking for resource using short id in query in necessary
+			# an alternative would be to construct to the full from the short_id and then use one and the same query to get the resource properties
+			@resource = Lbp::Resource.find("http://scta.info/resource/#{params[:resourceid]}")
+
 			# TODO this first conditional should be changed to if resource is topLevelWorkGroup
 			if @resource.short_id == "scta"
 				@results = @resource.parts_display
@@ -18,10 +20,9 @@ class TextController < ApplicationController
 			elsif @resource.type.short_id == "workGroup"
 				@results = @resource.expressions_display
 				render "text/questions/expressionlist"
-			# TODO need an lbp class for expressionType
 			elsif @resource.type.short_id == "expressionType"
-				@results = ExpressionTypeQuery.new.expression_list(@resource.short_id)
-				@info = MiscQuery.new.expression_type_info(@resource.short_id)
+				@results = @resource.structure_items_by_expression_display
+				@info = @resource.info_display
 				@expressions = @results.map {|result| {expression: result[:expression], expressiontitle: result[:expressiontitle], authorTitle: result[:authorTitle]}}.uniq!
 				render "text/questions/expressionType_expressionList"
 			# TODO need an lbp class for Person

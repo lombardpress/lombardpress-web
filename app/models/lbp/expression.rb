@@ -1,8 +1,24 @@
 module Lbp
 	class Expression
 		def structure_items_display
-			url =  "<http://scta.info/resource/#{short_id}>"
-			Lbp::Query.new().collection_query(url)
+			#url =  "<http://scta.info/resource/#{short_id}>"
+			#Lbp::Query.new().collection_query(url)
+			query = "
+				SELECT ?collectiontitle ?title ?item ?questiontitle ?order ?status ?gitRepository
+	      {
+	        <http://scta.info/resource/#{short_id}> <http://scta.info/property/hasStructureItem> ?item .
+	        <http://scta.info/resource/#{short_id}> <http://purl.org/dc/elements/1.1/title> ?collectiontitle .
+	        ?item <http://purl.org/dc/elements/1.1/title> ?title  .
+	        ?item <http://scta.info/property/totalOrderNumber> ?order .
+	        ?item <http://scta.info/property/status> ?status .
+	        ?item <http://scta.info/property/gitRepository> ?gitRepository .
+					OPTIONAL
+	      	{
+	      	?item <http://scta.info/property/questionTitle> ?questiontitle  .
+	      	}
+	      }
+	      ORDER BY ?order"
+				results = Query.new.query(query)
 		end
 		def info_display
 			query = "SELECT ?description ?isPartOf ?hasPart ?sponsor ?sponsorTitle ?sponsorLogo ?sponsorLink ?article ?articleTitle
