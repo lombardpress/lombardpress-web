@@ -1,91 +1,54 @@
 class TextController < ApplicationController
 	include TextMethods
-	
+
 	#TODO this make question list the index page
 	# current division between index and question list is confusing
   def index
 		commentaryid = @config.commentaryid
-		url =  "<http://scta.info/text/#{commentaryid}/commentary>" 
+		url =  "<http://scta.info/text/#{commentaryid}/commentary>"
 		@results = Lbp::Query.new().collection_query(url)
 	end
 	def questions
-		# commentarydirname should be changed to resource type
-		# it would be even more ideal if this information could be grabbed from the database
-		# get type of resource and then adjust the query to the kind of resource this is.
-		
-		# TODO create method in lbp.rb to check recourse of any short id
-		# re-write conditional based on these values
-		# conditional should simply ask: is this a work group, a work, or an expression or even an author
-		# controller should route to the appropriate view based on the resource type. 
-		# for example if it is an author we should list all expressions by this author
-		# if it is a an expresion it should list all expressions parts with structure type=item
-		# if it is a work, it should list available expression if there are more than one, 
-		# otherwise, if there is only expression, it should re-route to the top-level expression view.
-		
 		if params[:resourceid] != nil
 			@resource = Lbp::Resource.find("#{params[:resourceid]}")
-
-			# TODO this first conditional should be changed to 
-			# if resource is topLevelWorkGroup
+			# TODO this first conditional should be changed to if resource is topLevelWorkGroup
 			if @resource.short_id == "scta"
-				shortid = @resource.short_id
-				@results = WorkGroupQuery.new.work_group_list(shortid)
+				@results = @resource.parts_display
 				render "text/questions/workgrouplist"
 			elsif @resource.type.short_id == "workGroup"
-				shortid = @resource.short_id
-				@results = WorkGroupQuery.new.expression_list(shortid)
+				@results = @resource.expressions_display
 				render "text/questions/expressionlist"
-			elsif @resource.type.short_id == "expressionType"		
-				shortid = @resource.short_id
-				@results = ExpressionTypeQuery.new.expression_list(shortid)
+			# TODO need an lbp class for expressionType
+			elsif @resource.type.short_id == "expressionType"
+				@results = ExpressionTypeQuery.new.expression_list(@resource.short_id)
 				@info = MiscQuery.new.expression_type_info(shortid)
 				@expressions = @results.map {|result| {expression: result[:expression], expressiontitle: result[:expressiontitle], authorTitle: result[:authorTitle]}}.uniq!
 				render "text/questions/expressionType_expressionList"
-			elsif @resource.type.short_id == "person"	
-				shortid = @resource.short_id
-				@results = MiscQuery.new.author_expression_list(shortid)
-				
+			# TODO need an lbp class for Person
+			elsif @resource.type.short_id == "person"
+				@results = MiscQuery.new.author_expression_list(@resource.short_id)
 				render "text/questions/authorlist"
 			elsif params[:resourceid]
-				shortid = @resource.short_id
-				url =  "<http://scta.info/resource/#{shortid}>" 
-
-				#@results = Lbp::Query.new().collection_query(url)
-				@results = MiscQuery.new().collection_query(url)
-			
-				# this was part of my attempt to use a new method, 
-				#but I figure out how to open a new method to the class
-				#see models/lbp/expression.rb
-					#@results = Lbp::Resource.find(shortid).overview
-				
+				@results = @resource.structure_items_display
 				if @resource.level == 1
-					@info = MiscQuery.new.expression_info(shortid)
-
-					@sponsors = @info.map {|r| {sponsor: r[:sponsor], sponsorTitle: r[:sponsorTitle], sponsorLogo: r[:sponsorLogo], sponsorLink: r[:sponsorLink]}}
-					@sponsors.uniq!
-					@articles = @info.map {|r| {article: r[:article], articleTitle: r[:articleTitle]}}
-					@articles.uniq!
-					
-					# check to see if sponsors array is actaully empty. If it is, set it to empty array
-					@sponsors = @sponsors[0][:sponsor] == nil ? [] : @sponsors
-					# check to see if articles array is actaully empty. If it is, set it to empty array
-					@articles = @articles[0][:article] == nil ? [] : @articles
+					@info = @resource.info_display
+					@sponsors = @resource.sponsors_display(@info)
+					@articles = @resource.articles_display(@info)
 					render "text/questions/questions_with_about"
 				else
 					render "text/questions/questions"
 				end
-				
 			end
+		# TODO review which part if any of the conditional below is necessary
 		else
 			if @config.commentaryid == "scta"
 				@resource = Lbp::Resource.find("http://scta.info/resource/scta")
-				@results = WorkGroupQuery.new.work_group_list(@config.commentaryid)
+				@results = @resource.parts_display
 				render "text/questions/workgrouplist"
 			else
 				commentaryid = @config.commentaryid
 				@resource = Lbp::Resource.find("http://scta.info/resource/#{commentaryid}")
-				url =  "<http://scta.info/resource/#{commentaryid}>"
-				@results = Lbp::Query.new().collection_query(url)
+				@results = @resource.structure_items_display
 			end
 		end
 	end
@@ -97,12 +60,12 @@ class TextController < ApplicationController
 		#@itemid should be equivalent to expression id
 		@itemid = params[:itemid]
 		url_short_id = get_shortid(params)
-		
+
 		url = "http://scta.info/resource/#{url_short_id}"
 		query = Lbp::Query.new
 		@name_results = query.names(url)
 		@quote_results = query.quotes(url)
-		
+
 	end
 
 	def status
@@ -111,7 +74,7 @@ class TextController < ApplicationController
 		results = Lbp::Query.new.item_query(url)
 
 		# @itemid is equivalent to @expression id
-		# will be changed as part of global change 
+		# will be changed as part of global change
 		@itemid = params[:itemid]
 		@results = results.order_by(:transcript_type)
 		if @results.count == 0
@@ -121,35 +84,35 @@ class TextController < ApplicationController
 
 	def show
 		if params.has_key?(:search)
-			flash.now[:notice] = "Search results for instances of #{params[:searchid]} (#{params[:search]}) are highlighted in yellow below." 
+			flash.now[:notice] = "Search results for instances of #{params[:searchid]} (#{params[:search]}) are highlighted in yellow below."
 		end
-		
+
 		# get expression and related info
 		@expression = get_expression(params)
-		
+
 		@expression_structure = @expression.structure_type.short_id
 		# perform checks
 		check_transcript_existence(@expression)
 		check_permission(@expression); return if performed?
-		
+
 		if @expression.status == "In Progress" || @expression.status == "draft"
 			flash.now[:alert] = "Please remember: the status of this text is draft. You have been granted access through the generosity of the editor. Please use the comments to help make suggestions or corrections."
 		end
-		
+
 		#get values  needed for view
 		#@expressionid = params[:itemid]
 		@title = @expression.title
 		@next_expressionid = if @expression.next != nil then @expression.next.to_s.split("/").last else nil end
 		@previous_expressionid = if @expression.previous != nil then @expression.previous.to_s.split("/").last else nil end
 
-		#get transcription Object from params	
+		#get transcription Object from params
 		transcript = get_transcript(params)
-		
-		
+
+
 		# ms_slugs is not great because its hard coding "critical"
     # what if the name of the manifestion for a critical manifestion was not called critical
     # more idea to check database to get a manifestationType
-    # but this could be costly. If there were 20 or 30 manifestations 
+    # but this could be costly. If there were 20 or 30 manifestations
     # then you'd be making lots of requests to db
     # this map is reused in the paragraph controller as well; should be refactored
     ms_slugs = @expression.manifestations.map {|m| unless m.to_s.include? 'critical' then m.to_s.split("/").last end}.compact
@@ -158,14 +121,14 @@ class TextController < ApplicationController
 		#prepare xslt arrays to be used for transformation
 			#always remember single quotes for paramater value
 			#specify if global image setting is true or false
-		
-			
-		xslt_param_array = ["default-ms-image", if default_wit(params) == "critical" then "'#{default_wit_param}'" else "'#{default_wit(params)}'" end, 
-				"default-msslug", "'#{default_wit(params)}'", 
+
+
+		xslt_param_array = ["default-ms-image", if default_wit(params) == "critical" then "'#{default_wit_param}'" else "'#{default_wit(params)}'" end,
+				"default-msslug", "'#{default_wit(params)}'",
 				"show-images", "'#{@config.images.to_s}'",
-				"by_phrase", "'#{t(:by)}'", 
+				"by_phrase", "'#{t(:by)}'",
 				"edited_by_phrase", "'#{t(:edited_by)}'"]
-		
+
 		# get file object to be tansformed
 		# and perform transformation
 		if @expression_structure == "structureItem"
@@ -176,13 +139,13 @@ class TextController < ApplicationController
 			@transform = file.transform_plain_text(xslt_param_array)
 		end
 	end
-	
+
 	def xml
 		expression = get_expression(params)
 		@expression_structure = expression.structure_type.short_id
-		
+
 		check_permission(expression)
-		
+
 		transcript = get_transcript(params)
 
 		if @expression_structure == "structureItem"
@@ -197,11 +160,11 @@ class TextController < ApplicationController
 		end
 	end
 	def plain_text
-		## TODO refactor: this code is almost identical to TOC except that 
+		## TODO refactor: this code is almost identical to TOC except that
 		## it chooses a different transform options at the very end
 		expression = get_expression(params)
 		@expression_structure = expression.structure_type.short_id
-		
+
 		check_permission(expression)
 
 		transcript = get_transcript(params)
@@ -215,12 +178,12 @@ class TextController < ApplicationController
 		@plaintext = file.transform_plain_text
 		render :plain => @plaintext
 
-	
+
 	end
-	def toc 
+	def toc
 		expression = get_expression(params)
 		@expression_structure = expression.structure_type.short_id
-		
+
 		check_permission(expression)
 
 		transcript = get_transcript(params)
@@ -228,7 +191,7 @@ class TextController < ApplicationController
 		if @expression_structure == "structureItem"
 			file = transcript.file(@config.confighash)
 		elsif @expression_structure == "structureDivision"
-			## until each structure division has its own 
+			## until each structure division has its own
 			## tei file, it will need to use the file_part class
 			## and will need a method that can get the toc of just that part
 		end
@@ -237,7 +200,7 @@ class TextController < ApplicationController
 	end
 
 	def draft_permissions
-		
+
 	end
 
 	private
