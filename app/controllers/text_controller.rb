@@ -21,7 +21,7 @@ class TextController < ApplicationController
 			# TODO need an lbp class for expressionType
 			elsif @resource.type.short_id == "expressionType"
 				@results = ExpressionTypeQuery.new.expression_list(@resource.short_id)
-				@info = MiscQuery.new.expression_type_info(shortid)
+				@info = MiscQuery.new.expression_type_info(@resource.short_id)
 				@expressions = @results.map {|result| {expression: result[:expression], expressiontitle: result[:expressiontitle], authorTitle: result[:authorTitle]}}.uniq!
 				render "text/questions/expressionType_expressionList"
 			# TODO need an lbp class for Person
