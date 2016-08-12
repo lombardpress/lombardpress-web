@@ -54,5 +54,30 @@ module Lbp
 			# check to see if articles array is actaully empty. If it is, set it to empty array
 			articles = articles[0][:article] == nil ? [] : articles
 		end
+		def manifestation_display
+			query ="SELECT ?item_title ?transcript ?transcript_title ?transcript_status ?transcript_type ?manifestation
+	    {
+      	<http://scta.info/resource/#{short_id}> <http://purl.org/dc/elements/1.1/title> ?item_title .
+      	?manifestation <http://scta.info/property/isManifestationOf> <http://scta.info/resource/#{short_id}> .
+				?transcript <http://scta.info/property/isTranscriptionOf> ?manifestation .
+				?transcript <http://purl.org/dc/elements/1.1/title> ?transcript_title  .
+        ?transcript <http://scta.info/property/status> ?transcript_status .
+        ?transcript <http://scta.info/property/transcriptionType> ?transcript_type .
+      }"
+			results = Query.new.query(query)
+		end
+		def translation_display
+			query ="SELECT ?item_title ?transcript ?transcript_title ?transcript_status ?language ?manifestation
+	    {
+      	<http://scta.info/resource/#{short_id}> <http://purl.org/dc/elements/1.1/title> ?item_title .
+      	?manifestation <http://scta.info/property/isTranslationOf> <http://scta.info/resource/#{short_id}> .
+				?manifestation <http://purl.org/dc/elements/1.1/language> ?language .
+				?transcript <http://scta.info/property/isTranscriptionOf> ?manifestation .
+				?transcript <http://purl.org/dc/elements/1.1/title> ?transcript_title  .
+        #?transcript <http://scta.info/property/status> ?transcript_status .
+        #?transcript <http://scta.info/property/transcriptionType> ?transcript_type .
+      }"
+			results = Query.new.query(query)
+		end
 	end
 end

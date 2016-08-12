@@ -71,13 +71,15 @@ class TextController < ApplicationController
 
 	def status
 		#commentaryid = @config.commentaryid
-		url = "<http://scta.info/resource/#{params[:itemid]}>"
-		results = Lbp::Query.new.item_query(url)
-
-		# @itemid is equivalent to @expression id
-		# will be changed as part of global change
+		url = "http://scta.info/resource/#{params[:itemid]}"
+		#results = Lbp::Query.new.item_query(url)
+		@resource = Lbp::Resource.find(url)
+		@results = @resource.manifestation_display
+		@results.order_by(:transcript_type)
+		@translation_results = @resource.translation_display
+		# @itemid is equivalent to @expression id will be changed as part of global change
 		@itemid = params[:itemid]
-		@results = results.order_by(:transcript_type)
+
 		if @results.count == 0
 			flash.clear
 		end
