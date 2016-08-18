@@ -3,25 +3,62 @@
   .itemLink:hover .status{display: inline;}
 </style>
 <!-- TODO: need a global style for top of page headers -->
-<div style="padding: 20px">
-  <h1><%= @results[0][:title] %></h1>
+<div class="row container" style="margin: auto;">
+
+  <div class="col-md-8" style="padding: 20px">
+      <h1><%= @results[0][:title] %></h1>
+  </div>
+  <div class="col-md-4">
+  <!--  this div left empty -->
 </div>
-<div id="lbp-question-container" class="container">
-  <%= render "text/questions/question_filter_form" %>
-  <table class="table table-striped table-hover">
-    <% @results.each do |result| %>
 
-    <% link = "/text/questions/" + result[:expression].to_s.split('/').last %>
-    <% author_link = result[:author].to_s.split("/").last %>
-    <tr class="lbp-question-row">
-      <td><%= link_to result[:expressiontitle], link %></td>
-    </tr>
-    
-      
-    
+  <div id="lbp-question-container" class="container col-md-8">
+<%= render "text/questions/question_filter_form" %>
+    <table class="table table-striped table-hover">
+      <% @results.each do |result| %>
 
-
-        
+      <% link = "/text/questions/" + result[:expression].to_s.split('/').last %>
+      <% author_link = result[:author].to_s.split("/").last %>
+      <tr class="lbp-question-row">
+        <td><%= link_to result[:expressiontitle], link %></td>
+      </tr>
+      <% end %>
+    </table>
+  </div>
+  <div class="col-md-4">
+    <div style="margin-bottom: 20px; padding-top: 10px">
+          <form  action="/search" method="get" >
+          <div>
+            <input id="expression-search-field" type="text" class="form-control" placeholder="<%= t(:search_text) %>" name="searchterm">
+          <input type="hidden" class="form-control" name="authorid" value="<%= @resource.short_id %>"/>
+          <input type="hidden" class="form-control" name="use" value="author"/>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block" style="margin-top: 5px;">Search</button>
+        </form>
+    </div>
+    <% unless @dob.nil? %>
+    <h1 class="center">RCS Data</h1>
+    <table class="table">
+      <tr>
+        <td>DOB: <%= @dob %></td>
+      </tr>
+      <tr>
+        <td>POB: <%= @pob %></td>
+      </tr>
+      <% @sinfo.each do |info| %>
+        <tr>
+          <td>Sententiarus Period: <%= info%> </td>
+        </tr>
+      <% end %>
+    </table>
     <% end %>
-  </table>
+    <% unless @language_result.nil? %>
+    <h1 class="center">Wikipedia Data</h1>
+    <table>
+      <tr>
+        <td><%= @language_result %></td>
+      </tr>
+    </table>
+    <% end %>
+  </div>
 </div>

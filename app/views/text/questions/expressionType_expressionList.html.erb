@@ -26,6 +26,17 @@
     <% end %>
   </div>
   <div class="col-md-4">
+    <!-- search menu -->
+      <div style="margin-bottom: 20px; padding-top: 10px;">
+          <form  action="/search" method="get" >
+          <div>
+            <input id="expression-search-field" type="text" class="form-control" placeholder="<%= t(:search_text) %>" name="searchterm">
+          <input type="hidden" class="form-control" name="expressionid" value="<%= @resource.short_id %>"/>
+          <input type="hidden" class="form-control" name="use" value="sparql"/>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block" style="margin-top: 5px;">Search</button>
+        </form>
+    </div>
       <table class="table">
         <h1 class="center">About</h1>
         <tr>
@@ -38,15 +49,6 @@
         <% end %>
       </table>
       <!-- search menu -->
-      <div style="margin-bottom: 20px;">
-          <form  action="/search" method="get" >
-          <div>
-            <input id="expression-search-field" type="text" class="form-control" placeholder="<%= t(:search_text) %>" name="searchterm">
-          <input type="hidden" class="form-control" name="expressionid" value="<%= @resource.short_id %>"/>
-          <input type="hidden" class="form-control" name="use" value="sparql"/>
-        </div>
-        <button type="submit" class="btn btn-primary btn-block" style="margin-top: 5px;">Search</button>
-        </form>
-    </div>
+
   </div>
 </div>

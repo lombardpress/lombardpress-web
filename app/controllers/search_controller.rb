@@ -1,8 +1,10 @@
 class SearchController < ApplicationController
 	def show
 		if params[:use] == "sparql"
-		expressionid = params[:expressionid] ? params[:expressionid] : "all"
-		@results = open("http://exist.scta.info/exist/rest/db/apps/scta/search-with-sparql.xq?query=#{params[:searchterm]}&expressionid=#{expressionid}").read
+			expressionid = params[:expressionid] ? params[:expressionid] : "all"
+			@results = open("http://exist.scta.info/exist/rest/db/apps/scta/search-with-sparql.xq?query=#{params[:searchterm]}&expressionid=#{expressionid}").read
+		elsif params[:use] == "author"
+			@results = open("http://localhost:8080/exist/rest/db/apps/scta-app/search-text-by-author.xq?query=#{params[:searchterm]}&authorid=#{params[:authorid]}").read
 		else
 		expressionid = params[:expressionid] ? params[:expressionid] : "all"
 		#@results = open("http://localhost:8080/exist/apps/scta/wordsearch.xq?query=#{params[:searchterm]}&commentaryid=#{@config.commentaryid}").read

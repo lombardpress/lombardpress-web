@@ -28,6 +28,24 @@ class TextController < ApplicationController
 			# TODO need an lbp class for Person
 			elsif @resource.type.short_id == "person"
 				@results = MiscQuery.new.author_expression_list(@resource.short_id)
+				sameas = @resource.value("http://www.w3.org/2002/07/owl#sameAs")
+				dbpediaAddress = sameas
+
+				dbpediaGraph = RDF::Graph.load(dbpediaAddress)
+				query = RDF::Query.new({:person =>
+					{
+						RDF::URI("http://dbpedia.org/ontology/abstract") => :abstract
+						#RDF::URI("http://dbpedia.org/ontology/birthDate") => :birthDate
+					}
+					})
+					result  = query.execute(dbpediaGraph)
+				current_language = I18n.locale
+
+				@language_result = result.find { |solution| solution.abstract.language == current_language}
+				@language_result = @language_result.nil? ? nil : @language_result[:abstract].to_s + " (Wikipedia Abstract)"
+				@dob = @resource.value("http://rcs.philsem.unibas.ch/resource/birthDate")
+				@pob = @resource.value("http://rcs.philsem.unibas.ch/resource/birthPlace")
+				@sinfo = @resource.values("http://rcs.philsem.unibas.ch/resource/sententiariusInfo")
 				render "text/questions/authorlist"
 			elsif params[:resourceid]
 				@results = @resource.structure_items_display
