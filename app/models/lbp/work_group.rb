@@ -27,7 +27,7 @@ module Lbp
   			SELECT ?workgrouptitle ?sub_workgroup ?sub_workgroup_title ?sub_workgroup_desc
   	      {
   	        <http://scta.info/resource/#{short_id}> <http://purl.org/dc/elements/1.1/title> ?workgrouptitle .
-  	        <http://scta.info/resource/#{short_id}> <http://scta.info/property/hasWorkGroup> ?sub_workgroup .
+  	        <http://scta.info/resource/#{short_id}> <http://purl.org/dc/terms/hasPart> ?sub_workgroup .
   	        ?sub_workgroup <http://purl.org/dc/elements/1.1/title> ?sub_workgroup_title .
   	        ?sub_workgroup <http://purl.org/dc/elements/1.1/description> ?sub_workgroup_desc .
   	      }

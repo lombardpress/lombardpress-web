@@ -1,5 +1,5 @@
 source 'https://rubygems.org'
-ruby "2.2.1"
+ruby "2.2.2"
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.0'
 
@@ -42,10 +42,11 @@ gem 'devise-i18n'
 ## rails to include rich text editor in asset pipeline
 gem 'ckeditor_rails'
 
-#handle bars assets allows me to call HandlebarsTemplates['template'](data) in javascript files 
+#handle bars assets allows me to call HandlebarsTemplates['template'](data) in javascript files
 gem 'handlebars_assets', :git => "https://github.com/leshill/handlebars_assets.git"
 
 gem 'lbp', :git => "https://github.com/lombardpress/lbp.rb.git", :branch => "develop"
+#gem 'lbp'
 
 gem 'osullivan'
 
@@ -64,7 +65,7 @@ group :production do
   # gem 'unicorn'
   # Using Puma as web server
   gem 'puma'
-  
+
   ## email server for production
   gem 'postmark-rails', '~> 0.12.0'
 
@@ -82,7 +83,7 @@ group :development, :test do
 
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
-  
+
   gem 'pry'
 
   gem 'thin'
@@ -92,6 +93,5 @@ group :development, :test do
 end
 
 #rails-assets
-source 'https://rails-assets.org' do 
+source 'https://rails-assets.org' do
 end
-

@@ -3,7 +3,7 @@
   .itemLink:hover .status{display: inline;}
 </style>
 <!-- TODO: need a global style for top of page headers -->
-<div class="row container" style="margin: auto;">
+<div class="row container" style="margin: auto auto 20px auto;">
 
   <div class="col-md-8" style="padding: 20px">
       <h1><%= @results[0][:title] %></h1>
@@ -44,6 +44,12 @@
       </tr>
       <tr>
         <td>POB: <%= @pob %></td>
+      </tr>
+      <tr>
+        <td>DOD: <%= @dod %></td>
+      </tr>
+      <tr>
+        <td>Order: <%= @order %></td>
       </tr>
       <% @sinfo.each do |info| %>
         <tr>

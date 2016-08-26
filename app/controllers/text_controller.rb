@@ -11,7 +11,11 @@ class TextController < ApplicationController
 			#I'm using the full Id rather than short_id because not all resources in db have a short_id yet. this needs to be added
 			#TODO review lbp resource find, and see if the request looking for resource using short id in query in necessary
 			# an alternative would be to construct to the full from the short_id and then use one and the same query to get the resource properties
-			@resource = Lbp::Resource.find("http://scta.info/resource/#{params[:resourceid]}")
+			if params[:resourceid].include?("http")
+				@resource = Lbp::Resource.find(params[:resourceid])
+			else
+				@resource = Lbp::Resource.find("http://scta.info/resource/#{params[:resourceid]}")
+			end
 
 			# TODO this first conditional should be changed to if resource is topLevelWorkGroup
 			if @resource.short_id == "scta"
@@ -31,20 +35,26 @@ class TextController < ApplicationController
 				sameas = @resource.value("http://www.w3.org/2002/07/owl#sameAs")
 				dbpediaAddress = sameas
 
-				dbpediaGraph = RDF::Graph.load(dbpediaAddress)
-				query = RDF::Query.new({:person =>
-					{
-						RDF::URI("http://dbpedia.org/ontology/abstract") => :abstract
-						#RDF::URI("http://dbpedia.org/ontology/birthDate") => :birthDate
-					}
-					})
-					result  = query.execute(dbpediaGraph)
-				current_language = I18n.locale
+				if dbpediaAddress.nil?
+					result = [];
+				else
+					dbpediaGraph = RDF::Graph.load(dbpediaAddress)
+					query = RDF::Query.new({:person =>
+						{
+							RDF::URI("http://dbpedia.org/ontology/abstract") => :abstract
+							#RDF::URI("http://dbpedia.org/ontology/birthDate") => :birthDate
+						}
+						})
+						result  = query.execute(dbpediaGraph)
+				end
 
+				current_language = I18n.locale
 				@language_result = result.find { |solution| solution.abstract.language == current_language}
 				@language_result = @language_result.nil? ? nil : @language_result[:abstract].to_s + " (Wikipedia Abstract)"
 				@dob = @resource.value("http://rcs.philsem.unibas.ch/resource/birthDate")
 				@pob = @resource.value("http://rcs.philsem.unibas.ch/resource/birthPlace")
+				@dod = @resource.value("http://rcs.philsem.unibas.ch/resource/deathDate")
+				@order = @resource.value("http://rcs.philsem.unibas.ch/resource/religiousOrder")
 				@sinfo = @resource.values("http://rcs.philsem.unibas.ch/resource/sententiariusInfo")
 				render "text/questions/authorlist"
 			elsif params[:resourceid]
@@ -150,14 +160,20 @@ class TextController < ApplicationController
 				"by_phrase", "'#{t(:by)}'",
 				"edited_by_phrase", "'#{t(:edited_by)}'"]
 
-		# get file object to be tansformed
-		# and perform transformation
-		if @expression_structure == "structureItem"
-			file = params[:branch] ? transcript.file(@config.confighash, params[:branch]) : transcript.file(@config.confighash)
+		#using "file" path, there is no longer any need to check the structure type; Exist will simply construct a new document
+		#for the expression at any level in the hierarchy
+		if params[:path] == "file"
+			file = transcript.file(confighash: @config.confighash, path: params[:path])
 			@transform = file.transform_main_view(xslt_param_array)
-		elsif @expression_structure == "structureBlock"
-			file = transcript.file_part(@config.confighash, params[:itemid])
-			@transform = file.transform_plain_text(xslt_param_array)
+		else
+			if @expression_structure == "structureItem"
+				file = params[:branch] ? transcript.file(branch: params[:branch], confighash: @config.confighash, path: "doc") : transcript.file(confighash: @config.confighash, path: "doc")
+				@transform = file.transform_main_view(xslt_param_array)
+			elsif @expression_structure == "structureBlock"
+				#path = params[:path] ? params[:path] : "doc"
+				file = transcript.file_part(confighash: @config.confighash, partid: params[:itemid], path: "doc")
+				@transform = file.transform_plain_text(xslt_param_array)
+			end
 		end
 	end
 
@@ -170,13 +186,13 @@ class TextController < ApplicationController
 		transcript = get_transcript(params)
 
 		if @expression_structure == "structureItem"
-			file = transcript.file(@config.confighash)
+			file = transcript.file(confighash: @config.confighash)
 			@nokogiri = file.nokogiri
 		elsif @expression_structure == "structureBlock"
 			# NOTE: don't be confused by item id here; it is the id of the block express
 			# all :itemid should be interpreted as shortId of the expression.
 			# the will eventually all be changed to "expressionid"
-			file = transcript.file_part(@config.confighash, params[:itemid])
+			file = transcript.file_part(confighash: @config.confighash, partid: params[:itemid])
 			@nokogiri = file.xml
 		end
 	end
@@ -191,10 +207,10 @@ class TextController < ApplicationController
 		transcript = get_transcript(params)
 
 		if @expression_structure == "structureItem"
-			file = transcript.file(@config.confighash)
+			file = transcript.file(confighash: @config.confighash)
 		elsif @expression_structure == "structureBlock"
 			# NOTE: itemid => expressionid
-			file = transcript.file_part(@config.confighash, params[:itemid])
+			file = transcript.file_part(confighash: @config.confighash, partid: params[:itemid])
 		end
 		@plaintext = file.transform_plain_text
 		render :plain => @plaintext
@@ -210,7 +226,7 @@ class TextController < ApplicationController
 		transcript = get_transcript(params)
 
 		if @expression_structure == "structureItem"
-			file = transcript.file(@config.confighash)
+			file = transcript.file(confighash: @config.confighash)
 		elsif @expression_structure == "structureDivision"
 			## until each structure division has its own
 			## tei file, it will need to use the file_part class
