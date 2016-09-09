@@ -10,10 +10,10 @@ GIT
 
 GIT
   remote: https://github.com/lombardpress/lbp.rb.git
-  revision: 38038fdd33fd55dfbfaf9df113e146b3e1189599
+  revision: c3953ded6d6f85a1214d618ca4f7321016bd271b
   branch: develop
   specs:
-    lbp (0.1.1)
+    lbp (0.1.3)
       nokogiri
       rdf
       rdf-rdfxml
