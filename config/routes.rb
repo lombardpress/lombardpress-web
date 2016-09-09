@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  
+
   get 'errors/not_found'
 
   get 'errors/internal_server_error'
@@ -9,10 +9,10 @@ Rails.application.routes.draw do
   root 'pages#home'
 
   devise_for :users, controllers: { sessions: "users/sessions", profiles: "users/profiles", registrations: "users/registrations"}
-  
+
   get 'posts/list' => 'posts#list'
   resources :posts
-  
+
   resources :comments, except: [:new]
 
   resources :settings
@@ -21,23 +21,23 @@ Rails.application.routes.draw do
   match "/404", to: "errors#not_found", via: :all
   match "/500", to: "errors#internal_server_error", via: :all
   #END
-  
+
 
   get 'articles/:articleid' => 'articles#show', as: :show_article
   get 'articles' => 'articles#index', as: :articles
-  
+
   get 'biography' => 'pages#biography'
-  get 'bibliography' => 'pages#bibliography' 
+  get 'bibliography' => 'pages#bibliography'
 
   get "comments/new/:itemid(/:pid)" => 'comments#new', as: :new_comment
   get "comments/list/:itemid(/:pid)" => 'comments#list', as: :list_comments
-  
+
   get "index/(:expressionid)" => 'indices/indices#index'
-  
+
   get "index/:expressionid/names/list(/:category)" => 'indices/names#list'
   get "index/:expressionid/names/show(/:nameid)" => 'indices/names#show'
   get "index/:expressionid/names/categories" => 'indices/names#categories'
-  
+
   get "index/:expressionid/titles/list(/:category)" => 'indices/titles#list'
   get "index/:expressionid/titles/show(/:titleid)" => 'indices/titles#show'
   get "index/:expressionid/titles/categories" => 'indices/titles#categories'
@@ -57,14 +57,12 @@ scope 'paragraphs' do
   get 'json/:itemid/(/:msslug)(/:transcriptslug)' => 'paragraphs#json', as: :paragraphs_json
   get 'variants/:itemid/(/:msslug)(/:transcriptslug)' => 'paragraphs#variants', as: :paragraphs_variants
   get 'notes/:itemid/(/:msslug)(/:transcriptslug)' => 'paragraphs#notes', as: :paragraphs_notes
-  
+
   get ':itemid/:pid(/:msslug)' => 'paragraphs#show'
 end
-  
-  get 'paragraphexemplar/json/:itemid' => 'paragraphexemplar#json'
 
   get 'permissions' => 'pages#permissions'
-  
+
   get 'search' => 'search#show', as: :show_search
 
 scope "text" do
@@ -77,33 +75,33 @@ scope "text" do
   get 'plaintext/:itemid(/:msslug)(/:transcriptslug)' =>'text#plain_text', as: :plain_text
   get 'xml/:itemid(/:msslug)(/:transcriptslug)' => 'text#xml'
   get ':itemid(/:msslug)(/:transcriptslug)' => 'text#show', as: :show_text
-end 
+end
 
   #get 'paragraphimage/showfoliozoom/:msslug/:canvas_id' => 'paragraphimage#showfoliozoom'
   get 'paragraphimage/showfoliozoom' => 'paragraphimage#showfoliozoom'
   get 'paragraphimage/showzoom/:itemid/:msslug' => 'paragraphimage#showzoom'
   #get 'paragraphimage/:itemid/:msslug/:pid' => 'paragraphimage#show'
 
-  
+
   get 'users/profiles/:id' => 'users/profiles#show', as: :users_profile
   delete 'users/profiles/:id' => 'users/profiles#destroy', as: :destroy_users_profile
   put 'users/profiles/:id' => 'users/profiles#update', as: :update_users_profile
   post 'users/profiles' => 'users/profiles#create', as: :create_users_profile
   get 'users/profiles' => 'users/profiles#index'
-  
+
   get 'accesspoints' => 'access_points#index', as: :access_points
   get 'accesspoints/:commentaryid/:itemid/:role' => 'access_points#show', as: :access_point
   post 'accesspoints/:id' => 'access_points#create', as: :create_access_point
   delete 'accesspoints/:id' => 'access_points#destroy', as: :delete_access_point
-  
 
 
 
-  
 
-  
 
-  
+
+
+
+
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

@@ -83,17 +83,35 @@ class TextController < ApplicationController
 	end
 
 	def info
-		expression = get_expression(params)
-		check_permission(expression)
-		@title = expression.title
-		#@itemid should be equivalent to expression id
-		@itemid = params[:itemid]
-		url_short_id = get_shortid(params)
+		# para variable here is simpy the expressionObj
+    expression = get_expression(params)
+    number = expression.order_number
 
-		url = "http://scta.info/resource/#{url_short_id}"
-		query = Lbp::Query.new
-		@name_results = query.names(url)
-		@quote_results = query.quotes(url)
+		expression_hash = {
+        #:pid => pid,
+        :itemid => params[:itemid],
+				:expression_url => expression.url,
+        :next => if expression.next != nil then expression.next.to_s.split("/").last else nil end,
+        :previous => if expression.previous != nil then expression.previous.to_s.split("/").last else nil end,
+        :number => number,
+				:is_structure_block => if expression.structure_type.short_id == "structureBlock" then true else false end,
+        :manifestations => expression.manifestations.map {|m| m.to_s},
+				:translations => expression.manifestations.map {|m| m.to_s},
+        :abbreviates => expression.abbreviates.map {|item| item.to_s},
+        :abbreviatedBy => expression.abbreviatedBy.map {|item| item.to_s},
+        :references => expression.references.map {|item| item.to_s},
+        :referencedBy => expression.referencedBy.map {|item| item.to_s},
+        :copies => expression.copies.map {|item| item.to_s},
+        :copiedBy => expression.copiedBy.map {|item| item.to_s},
+        :quotes => expression.quotes.map {|item| item.to_s},
+        :quotedBy => expression.quotedBy.map {|item| item.to_s},
+        :mentions => expression.mentions.map {|item| item.to_s},
+        #:wordcount => paratranscript.word_count,
+        #:wordfrequency => paratranscript.word_frequency
+
+      }
+
+    render :json => expression_hash
 
 	end
 

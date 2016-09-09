@@ -206,7 +206,7 @@ var showParagraphNotes = function(expressionid){
 }
 
 var showParagraphInfo = function(itemid){
-	$.get("/paragraphexemplar/json/" + itemid, function(data){
+	$.get("/text/info/" + itemid, function(data){
 		var content = HandlebarsTemplates['textinfo'](data);
 		$("#lbp-side-window-container").html(content);
 
