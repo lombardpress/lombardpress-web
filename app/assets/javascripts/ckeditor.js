@@ -1,4 +1,4 @@
-$(document).on('ready page:load', function () {
+$(document).on('tubolinks:load', function () {
   // Actions to do
 	$(document).ready(function(){
 		$('.ckeditor').ckeditor({
@@ -6,4 +6,3 @@ $(document).on('ready page:load', function () {
 		});
 	});
 });
-

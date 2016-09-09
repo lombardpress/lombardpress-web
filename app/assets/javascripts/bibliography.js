@@ -1,4 +1,4 @@
-$(document).on('ready page:load', function () {
+$(document).on('turbolinks:load', function () {
 	$(document).ready(function(){
 		$(".viewNotes").click(function(){
 
@@ -6,4 +6,3 @@ $(document).on('ready page:load', function () {
 		});
 	});
 });
-  

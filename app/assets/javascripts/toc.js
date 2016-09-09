@@ -1,14 +1,14 @@
-$(document).on('ready page:load', function () {
+$(document).on('turbolinks:load', function () {
   $(document).ready(function(){
-	
+
 		$("a.js-show-toc").click(function(){
 			showSpinner("#lbp-toc-window");
 			console.log("test");
 			var itemid = $(this).attr("data-itemid");
-			
+
 			showToc(itemid);
 		});
-	
+
 
 	});
 });
