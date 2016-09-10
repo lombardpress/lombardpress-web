@@ -1,90 +1,104 @@
 {{!-- this is handlebars template for text info --}}
 
 <div style="font-size: 12px;">
-<div>
-<h1>
-	{{#if previous}}
-		<small><a href="#" id="lbp-previous-paragraph" class="js-show-paragraph-info" data-pid="{{previous}}" data-itemid="{{itemid}}">Previous</a></small>
-	{{/if}}
+	<div>
+	<h1>
+		{{#if is_structure_block}}
+			{{#if previous}}
+				<small><a href="#" id="lbp-previous-paragraph" class="js-show-paragraph-info" data-pid="{{previous}}" data-itemid="{{itemid}}">Previous</a></small>
+			{{/if}}
 
-	<a href="#" class="js-show-paragraph-info" data-pid="{{pid}}" data-itemid="{{itemid}}">Paragraph {{number}}</a>
+			<a href="#" class="js-show-paragraph-info" data-pid="{{pid}}" data-itemid="{{itemid}}">Paragraph {{number}}</a>
 
-	{{#if next}}
-		<small><a href="#" id="lbp-next-paragraph" class="js-show-paragraph-info" data-pid="{{next}}" data-itemid="{{itemid}}">Next</a></small>
-	{{/if}}
-</h1>
-</div>
+			{{#if next}}
+				<small><a href="#" id="lbp-next-paragraph" class="js-show-paragraph-info" data-pid="{{next}}" data-itemid="{{itemid}}">Next</a></small>
+			{{/if}}
+		{{/if}}
+	</h1>
+	</div>
 
-<div>
-<h3>Paragraph Info</h3>
-{{#if abbreviates}}
-	{{#each abbreviates}}
-		<p>Abbreviates <a href="{{this}}">{{this}}</a></p>
-		<p style="padding-left: 20px"><a class="js-show-reference-paragraph" href="#" data-url="{{this}}">View Text</a><p>
-	{{/each}}
-{{/if}}
-{{#if abbreviatedBy}}
-	{{#each abbreviatedBy}}
-		<p>Abbreviated by <a href="{{this}}">{{this}}</a></p>
-		<p style="padding-left: 20px"><a class="js-show-reference-paragraph" href="#" data-url="{{this}}">View Text</a><p>
-	{{/each}}
-{{/if}}
-{{#if references}}
-	{{#each references}}
-		<p>References <a href="{{this}}">{{this}}</a></p>
-		<p style="padding-left: 20px"><a class="js-show-reference-paragraph" href="#" data-url="{{this}}">View Text</a><p>
-	{{/each}}
-{{/if}}
-{{#if referencedBy}}
-	{{#each referencedBy}}
-		<p>Referenced by <a href="{{this}}">{{this}}</a></p>
-		<p style="padding-left: 20px"><a class="js-show-reference-paragraph" href="#" data-url="{{this}}">View Text</a><p>
-	{{/each}}
-{{/if}}
-{{#if copies}}
-	{{#each copies}}
-		<p>Copies <a href="{{this}}">{{this}}</a></p>
-	{{/each}}
-{{/if}}
-{{#if copiedBy}}
-	{{#each copiedBy}}
-		<p>Copied by <a href="{{this}}">{{this}}</a></p>
-	{{/each}}
-{{/if}}
-{{#if quotes}}
-	{{#each quotes}}
-		<p>Quotes <a href="{{this}}">{{this}}</a></p>
-	{{/each}}
-{{/if}}
-{{#if quotedBy}}
-	{{#each quotedBy}}
-		<p>Quoted by <a href="{{this}}">{{this}}</a></p>
-		<p style="padding-left: 20px"><a class="js-show-reference-paragraph" href="#" data-url="{{this}}">View Text</a><p>
-	{{/each}}
-{{/if}}
-{{#if mentions}}
-	{{#each mentions}}
-		<p>Mentions <a href="{{this}}">{{this}}</a></p>
-	{{/each}}
-{{/if}}
-</div>
-<!-- <div>
-	<h3>Paragraph Statistics</h3>
-	<p>Word Count: {{wordcount}}</p>
-	<p>Word Frequency</p>
-	<ul>
-		{{#each wordfrequency}}
-			<li>{{@key}}: {{this}}</li>
+	<div>
+		<h3>Expression Info</h3>
+		<p>Expression Id:  <a href="{{expression_url}}">{{expression_url}}</a></p>
+	</div>
+	<div>
+		{{#if manifestations}}
+			<h3>Available Manifestations</h3>
+			{{#each manifestations}}
+				<p><a href="{{this}}">{{this}}</a></p>
+			{{/each}}
+		{{/if}}
+
+		{{#if translations}}
+			<h3>Available Translations</h3>
+			{{#each translations}}
+				<p><a href="{{this}}">{{this}}</a></p>
+			{{/each}}
+		{{/if}}
+	</div>
+	<div>
+	<h3>Content Info</h3>
+	{{#if abbreviates}}
+		{{#each abbreviates}}
+			<p>Abbreviates <a href="{{this}}">{{this}}</a></p>
+			<p style="padding-left: 20px"><a class="js-show-reference-paragraph" href="#" data-url="{{this}}">View Text</a><p>
 		{{/each}}
-	</ul>
-</div> -->
-<div>
-{{#if transcriptions}}
-	<h3>Available Transcriptions</h3>
-	{{#each transcriptions}}
-		<p><a href="{{this}}">{{this}}</a></p>
-	{{/each}}
-{{/if}}
+	{{/if}}
+	{{#if abbreviatedBy}}
+		{{#each abbreviatedBy}}
+			<p>Abbreviated by <a href="{{this}}">{{this}}</a></p>
+			<p style="padding-left: 20px"><a class="js-show-reference-paragraph" href="#" data-url="{{this}}">View Text</a><p>
+		{{/each}}
+	{{/if}}
+	{{#if references}}
+		{{#each references}}
+			<p>References <a href="{{this}}">{{this}}</a></p>
+			<p style="padding-left: 20px"><a class="js-show-reference-paragraph" href="#" data-url="{{this}}">View Text</a><p>
+		{{/each}}
+	{{/if}}
+	{{#if referencedBy}}
+		{{#each referencedBy}}
+			<p>Referenced by <a href="{{this}}">{{this}}</a></p>
+			<p style="padding-left: 20px"><a class="js-show-reference-paragraph" href="#" data-url="{{this}}">View Text</a><p>
+		{{/each}}
+	{{/if}}
+	{{#if copies}}
+		{{#each copies}}
+			<p>Copies <a href="{{this}}">{{this}}</a></p>
+		{{/each}}
+	{{/if}}
+	{{#if copiedBy}}
+		{{#each copiedBy}}
+			<p>Copied by <a href="{{this}}">{{this}}</a></p>
+		{{/each}}
+	{{/if}}
+	{{#if quotes}}
+		{{#each quotes}}
+			<p>Quotes <a href="{{this}}">{{this}}</a></p>
+		{{/each}}
+	{{/if}}
+	{{#if quotedBy}}
+		{{#each quotedBy}}
+			<p>Quoted by <a href="{{this}}">{{this}}</a></p>
+			<p style="padding-left: 20px"><a class="js-show-reference-paragraph" href="#" data-url="{{this}}">View Text</a><p>
+		{{/each}}
+	{{/if}}
+	{{#if mentions}}
+		{{#each mentions}}
+			<p>Mentions <a href="{{this}}">{{this}}</a></p>
+		{{/each}}
+	{{/if}}
+	</div>
+	<!-- <div>
+		<h3>Paragraph Statistics</h3>
+		<p>Word Count: {{wordcount}}</p>
+		<p>Word Frequency</p>
+		<ul>
+			{{#each wordfrequency}}
+				<li>{{@key}}: {{this}}</li>
+			{{/each}}
+		</ul>
+	</div> -->
 
-</div>
+
 </div>

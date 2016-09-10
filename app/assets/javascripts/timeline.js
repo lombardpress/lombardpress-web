@@ -1,4 +1,4 @@
-$(document).on('ready page:load', function () {
+$(document).on('turbolinks:load', function () {
   // Actions to do
 	$(document).ready(function(){
 		$(".eventHeader").click(function(){

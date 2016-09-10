@@ -1,25 +1,28 @@
+require_relative '../models/lbp'
+
+
 class ApplicationController < ActionController::Base
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
   include Pundit
-  
+
   protect_from_forgery with: :exception
-  
+
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
   before_action :set_locale
-  
-  before_filter :set_conf 
+
+  before_filter :set_conf
 
   #before_filter :check_for_user
 
   # I wish I could do this in a policy but currently can't figure out how
-  
+
   def set_locale
     if current_user.nil?
       I18n.locale = I18n.default_locale
     else
-      I18n.locale = params[:locale] || current_user.language 
+      I18n.locale = params[:locale] || current_user.language
     end
   end
 

@@ -3,7 +3,7 @@
     <h3>Available transcriptions for: <%= @results.first[:item_title] %></h3>
     <table class="table table-striped table-hover">
 
-      <% @results.each do |result|    
+      <% @results.each do |result|
         slug = result[:manifestation].to_s.split("/").last
         type = result[:transcript_type]
         status = result[:transcript_status]
@@ -20,6 +20,24 @@
           </tr>
       <% end %>
     </table>
+    <% unless @translation_results.count ==  0 %>
+      <h3>Available Translations for: <%= @results.first[:item_title] %></h3>
+      <table class="table table-striped table-hover">
+
+        <% @translation_results.each do |result|
+          slug = result[:manifestation].to_s.split("/").last
+          language = result[:language]
+          status = result[:transcript_status]
+          link = "/text/#{@itemid}/#{slug}"
+        %>
+            <tr>
+              <td><%= link_to result[:transcript_title].to_s, link %></td>
+              <td><%= "language: #{language}" %></td>
+              <td><%= "status: #{status}" %></td>
+            </tr>
+        <% end %>
+      </table>
+      <% end %>
   <% else %>
     <div style="text-align: center; height: 400px; margin-top: 100px">
       <h4>Sorry this text has not been started. <%= link_to "Return to Table of Contents", table_of_questions_path %></h4>

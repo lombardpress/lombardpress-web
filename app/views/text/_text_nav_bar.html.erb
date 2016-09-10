@@ -14,23 +14,27 @@
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div id="lbp-text-tool-bar-collapse" class="collapse navbar-collapse" >
       <ul class="nav navbar-nav">
+        <% if @expression.level == 1 %>
+        <li><%= link_to "Text Home", "/text/questions/#{@expression.short_id}" %></li>
+        <% else %>
         <li><%= link_to "Text Home", "/text/questions/#{@expression.top_level_expression.short_id}" %></li>
+        <% end %>
         <% unless (params.has_key?(:msslug) && params[:msslug] != "critical") || @expression_structure == "structureBlock" %>
           <li><a class="js-show-outline" data-itemid="<%= params[:itemid] %>"><%= t(:text_outline) %></a></li>
         <% end %>
         <% if @previous_expressionid != nil  %>
-          <li><%= link_to t(:previous), show_text_path(@previous_expressionid, params[:msslug]),  data: { keybinding: 'p' } %></li> 
+          <li><%= link_to t(:previous), show_text_path(@previous_expressionid, params[:msslug]),  data: { keybinding: 'p' } %></li>
         <% end %>
         <% if @next_expressionid != nil %>
-          <li><%= link_to t(:next), show_text_path(@next_expressionid, params[:msslug]), data: { keybinding: 'n' } %></li> 
+          <li><%= link_to t(:next), show_text_path(@next_expressionid, params[:msslug]), data: { keybinding: 'n' } %></li>
         <% end %>
           <li><a href="/text/status/<%= params[:itemid] %>"><%= t(:available_transcriptions) %></a></li>
-        
-        
-          
-        
+
+
+
+
       </ul>
-      
+
       <ul class="nav navbar-nav navbar-right">
       <!-- first condition is needed to avoid error in second condition in the current_user.admin? call -->
       <% if current_user %>

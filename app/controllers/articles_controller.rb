@@ -1,10 +1,11 @@
 class ArticlesController < ApplicationController
 	def index
-		## TODO need sparql query that retrieves all articles with ability to filter by commentary or author 
+		## TODO need sparql query that retrieves all articles with ability to filter by commentary or author
 	end
 	def show
-		
-		article = Lbp::Article.new(params[:articleid])
+
+		#article = Lbp::Article.new(params[:articleid])
+		article = Lbp::Resource.find(params[:articleid])
 		article_type = article.article_type_shortId
 
 		if article_type == "bibliography"
@@ -20,15 +21,15 @@ class ArticlesController < ApplicationController
 		else
 			xslt_file_path = "#{Rails.root}/xslt/articles/standard.xsl"
 		end
-		
+
 		xml_file_path = article.file_path
 
 		xml_file = open(xml_file_path, {:http_basic_authentication => [ENV["GUN"], ENV["GPW"]]})
 		nokogiri_doc = Nokogiri::XML(xml_file)
-		
+
 
 		xslt = Nokogiri::XSLT(open(xslt_file_path))
-		
+
 		@transform = xslt.apply_to(nokogiri_doc)
 	end
 end

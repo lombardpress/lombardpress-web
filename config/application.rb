@@ -23,7 +23,7 @@ module Lombardpress2
     config.i18n.default_locale = :en
 
     # Do not swallow errors in after_commit/after_rollback callbacks.
-    
+
     # i added this to declare require local env variables from a yml file not committed in app source
     config.before_configuration do
         env_file = File.join(Rails.root, 'config', 'local_env.yml')
@@ -31,7 +31,7 @@ module Lombardpress2
         ENV[key.to_s] = value
         end if File.exists?(env_file)
     end
-    
+
     config.active_record.raise_in_transactional_callbacks = true
 
     config.action_dispatch.default_headers = {
@@ -40,9 +40,6 @@ module Lombardpress2
     ## This tells Rails to serve error pages from the Rails app itself (i.e. the routes we just set up), rather than using static error pages in public/.
     ## See: https://mattbrictson.com/dynamic-rails-error-pages
     config.exceptions_app = self.routes
-    
-    
-
 
   end
 end

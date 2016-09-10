@@ -1,9 +1,9 @@
-$(document).on('ready page:load', function (){
+$(document).on('turbolinks:load', function (){
 	// Actions to do
 	$(document).ready(function(){
 
 		//NOTE THE REDUNDANCY HERE WITH THE FUNCTION IN SIDE WINDOW
-		
+
 		Mousetrap.bind("o", function(){
 			$paragraph = getCurrentViewingParagraph();
 	    showSideWindow($paragraph);
