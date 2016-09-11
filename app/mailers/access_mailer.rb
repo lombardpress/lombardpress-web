@@ -16,7 +16,7 @@ class AccessMailer < ApplicationMailer
 			@item_title = "all items"
 		else
 			url = "http://scta.info/resource/#{@itemid}"
-			item = Lbp::Expression.new(url)
+			item = Lbp::Expression.find(url)
 			@item_title = item.title
 		end
 		mail(to: @user.email, from: 'jcwitt@loyola.edu', subject: "Confirmation of Access Request")
@@ -30,10 +30,10 @@ class AccessMailer < ApplicationMailer
 			@item_title = "all items"
 		else
 			url = "http://scta.info/resource/#{@itemid}"
-			item = Lbp::Expression.new(url)
+			item = Lbp::Expression.find(url)
 			@item_title = item.title
 		end
-  	
+
   	mail(to: @user.email, from: 'jcwitt@loyola.edu', subject: "You've Been Granted Access")
 	end
 end

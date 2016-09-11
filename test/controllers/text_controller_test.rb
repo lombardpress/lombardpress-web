@@ -1,20 +1,20 @@
 require 'test_helper'
 
 class ActiveSupport::TestCase
-  include Devise::TestHelpers
+  include Devise::Test::ControllerHelpers
 end
 
 class TextControllerTest < ActionController::TestCase
 	setup do
-    request.host = "plaoulcommentary.lombardpress.org"
+    request.host = "scta.lombardpress.org"
     Rails.application.config.action_mailer.default_url_options = { :host => 'lombardpress2.heroku.com' }
   end
   #anonymous tests
   test "should request index and get redirect when no user is logged in" do
     get :index
-    assert_redirected_to "/users/sign_in"
+    assert_redirected_to "/text/questions"
   end
-  
+
   #admin tests
   test "should request text#index and succeed when admin is logged in " do
   	sign_in users(:admin)
@@ -23,11 +23,11 @@ class TextControllerTest < ActionController::TestCase
   end
   test "should request text#show and succeed when admin is logged in " do
     sign_in users(:admin)
-    
+
     get :show, {'itemid' => "lectio1"}
     assert :success
   end
-  
+
   #user tests
   test "should request text#index and succeed when user is logged in " do
   	sign_in users(:user)
@@ -41,13 +41,13 @@ class TextControllerTest < ActionController::TestCase
   end
   test "should request text#show and succeed when user is logged in and has draft status access point" do
     sign_in users(:user)
-    
+
     get :show, {'itemid' => "lectio1"}
     assert :success
   end
   test "should request text#show and redirect when user is logged in but does not have draft status access point" do
     sign_in users(:user)
-    
+
     get :show, {'itemid' => "lectio2"}
     assert :redirect
   end
