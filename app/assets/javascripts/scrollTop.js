@@ -3,10 +3,10 @@ function adjustAnchor(){
     var $anchor = $(':target'),
     fixedElementHeight = 100;
 
-    
+
     $anchor.css({backgroundColor: "yellow"});
     $anchor.animate({backgroundColor: "none"}, 5000);
-    
+
 
     if ($anchor.length > 0) {
 
@@ -23,7 +23,7 @@ function adjustAnchor(){
 
 
 
-$(document).on('ready page:load', function () {
+$(document).on('turbolinks:load', function () {
   $(document).ready(function(){
     if(window.location.hash){
         adjustAnchor();
@@ -34,6 +34,3 @@ $(document).on('ready page:load', function () {
 $(window).on('hashchange load', function() {
         adjustAnchor();
     });
-
-
-    
