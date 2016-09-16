@@ -1,5 +1,10 @@
 require 'test_helper'
 
+
+class ActiveSupport::TestCase
+  include Devise::Test::ControllerHelpers
+end
+
 class ParagraphsControllerTest < ActionController::TestCase
   test "should get index" do
     get :index

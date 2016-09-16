@@ -1,25 +1,12 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  commentaryid: plaoulcommentary
-  logo: Petrus Plaoul
-  title: Peter Plaoul's Commentary on the Sentences
-  bannermessage: Peter Plaoul's Commentary on the Sentences
+  commentaryid: scta
+  logo: SCTA
+  title: SCTA Reading Room
+  bannermessage: A place to study the scholastic tradition
   blog: true
   default_ms_image: 'reims'
-  dark_color: MyString
-  light_color: MyString
-  commentarydirname: MyString
-  images: true
-  properties: 
-
-two:
-  commentaryid: lombardsententia
-  logo: Petrus Lombardus
-  title: Petrus Lombard's Sentences
-  bannermessage: Petrus Lombard's Sentences
-  blog: true
-  default_ms_image: MyString
   dark_color: MyString
   light_color: MyString
   commentarydirname: MyString

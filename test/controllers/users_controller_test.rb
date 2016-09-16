@@ -1,26 +1,26 @@
 require 'test_helper'
 
 class ActiveSupport::TestCase
-  include Devise::TestHelpers
+  include Devise::Test::ControllerHelpers
 end
 
 class Users::ProfilesControllerTest < ActionController::TestCase
 	setup do
-    request.host = "plaoulcommentary.lombardpress.org"
+    request.host = "scta.lombardpress.org"
     Rails.application.config.action_mailer.default_url_options = { :host => 'lombardpress2.heroku.com' }
   end
   # anonymous tests
 
-  test "should request profiles##index and get redirect when no user is logged in" do
+  test "should request profiles#index and get redirect when no user is logged in" do
     get :index
     assert :redirect
   end
   test "should request profiles#show/1 and redirect when no user is logged in " do
-  	get :index, {'id' => "1"}
+    get :index, {'id' => "1"}
     assert :redirect
   end
   test "should request profiles#show/2 and redirect when no user is logged in " do
-  	get :index, {'id' => "2"}
+    get :index, {'id' => "2"}
     assert :redirect
   end
 

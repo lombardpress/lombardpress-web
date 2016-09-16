@@ -96,7 +96,7 @@ class TextController < ApplicationController
         :number => number,
 				:is_structure_block => if expression.structure_type.short_id == "structureBlock" then true else false end,
         :manifestations => expression.manifestations.map {|m| m.to_s},
-				:translations => expression.manifestations.map {|m| m.to_s},
+				:translations => expression.translations.map {|m| m.to_s},
         :abbreviates => expression.abbreviates.map {|item| item.to_s},
         :abbreviatedBy => expression.abbreviatedBy.map {|item| item.to_s},
         :references => expression.references.map {|item| item.to_s},

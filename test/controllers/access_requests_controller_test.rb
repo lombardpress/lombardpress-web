@@ -1,7 +1,14 @@
 require 'test_helper'
 
+class ActiveSupport::TestCase
+  include Devise::Test::ControllerHelpers
+end
+
 class AccessRequestsControllerTest < ActionController::TestCase
   setup do
+    request.host = "scta.lombardpress.org"
+    Rails.application.config.action_mailer.default_url_options = { :host => 'lombardpress2.heroku.com' }
+    sign_in users(:admin)
     @access_request = access_requests(:one)
   end
 
@@ -18,7 +25,7 @@ class AccessRequestsControllerTest < ActionController::TestCase
 
   test "should create access_request" do
     assert_difference('AccessRequest.count') do
-      post :create, access_request: { commentaryid: @access_request.commentaryid, itemid: @access_request.itemid, note: @access_request.note, user: @access_request.user }
+      post :create, access_request: { commentaryid: @access_request.commentaryid, itemid: @access_request.itemid, note: @access_request.note, user_id: @access_request.user }
     end
 
     assert_redirected_to access_request_path(assigns(:access_request))

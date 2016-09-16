@@ -1,6 +1,17 @@
 require 'test_helper'
 
+class ActiveSupport::TestCase
+  include Devise::Test::ControllerHelpers
+end
+
 class CommentsControllerTest < ActionController::TestCase
+=begin
+  setup do
+    request.host = "scta.lombardpress.org"
+    #Rails.application.config.action_mailer.default_url_options = { :host => 'lombardpress2.heroku.com' }
+    sign_in users(:admin)
+  end
+
   test "should get index" do
     get :index
     assert_response :success
@@ -35,5 +46,5 @@ class CommentsControllerTest < ActionController::TestCase
     get :destroy
     assert_response :success
   end
-
+=end
 end
