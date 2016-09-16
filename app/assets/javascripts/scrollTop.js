@@ -1,7 +1,10 @@
-function adjustAnchor(){
-
-    var $anchor = $(':target'),
+function adjustAnchor(hash){
+    // this used to work
+    //      var $anchor = $(':target')
+    // after tubolinks upgrade i have to pash the has in 
+    var $anchor = $(hash),
     fixedElementHeight = 100;
+    console.log($anchor);
 
 
     $anchor.css({backgroundColor: "yellow"});
@@ -26,11 +29,14 @@ function adjustAnchor(){
 $(document).on('turbolinks:load', function () {
   $(document).ready(function(){
     if(window.location.hash){
-        adjustAnchor();
+      // this is a strange fix. I used to be able to let the function
+      //find the target; but after turbolinks upgrade this no longer works
+      //hash must be passed to function
+      adjustAnchor(window.location.hash);
     }
     });
 });
 
-$(window).on('hashchange load', function() {
-        adjustAnchor();
-    });
+//$(window).on('hashchange load', function() {
+  //      adjustAnchor();
+  //  });
