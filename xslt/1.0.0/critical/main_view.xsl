@@ -192,6 +192,9 @@
     <xsl:variable name="column"><xsl:value-of select="./@n"/></xsl:variable>
     <xsl:variable name="side"><xsl:value-of select="substring-after($folio-and-side, '-')"/></xsl:variable>
     <xsl:variable name="break-ms-slug" select="/tei:TEI/tei:teiHeader/tei:fileDesc/tei:sourceDesc/tei:listWit/tei:witness[@xml:id=$ms]/@n"/>
+    <xsl:variable name="surfaceid">
+      <xsl:value-of select="concat($break-ms-slug, '/', $folionumber, $side)"/>
+    </xsl:variable>
     <xsl:variable name="canvasid">
       <xsl:choose>
         <xsl:when test="/tei:TEI/tei:teiHeader/tei:fileDesc/tei:sourceDesc/tei:listWit/tei:witness[@xml:id=$ms]/@xml:base">
@@ -213,7 +216,7 @@
       <!-- data-msslug needs to get info directly from final; default will not work -->
       <xsl:choose>
         <xsl:when test="$show-images = 'true'">
-          <a href="#" class="js-show-folio-image" data-canvasid="{$canvasid}" data-msslug="{$break-ms-slug}" data-expressionid="{$expressionid}">
+          <a href="#" class="js-show-folio-image" data-canvasid="{$canvasid}" data-surfaceid="{$surfaceid}" data-msslug="{$break-ms-slug}" data-expressionid="{$expressionid}">
             <xsl:value-of select="$ms"/>
             <xsl:value-of select="$folio"/>
             <xsl:value-of select="concat($side, $column)"/>
@@ -246,7 +249,11 @@
 	    <!-- get preceding paragraph id -->
 	    <xsl:variable name="expressionid" select="./preceding::tei:p/@xml:id"/>
 
-	    <xsl:variable name="canvasid">
+      <xsl:variable name="surfaceid">
+        <xsl:value-of select="concat($break-ms-slug, '/', $folionumber, $side)"/>
+      </xsl:variable>
+
+      <xsl:variable name="canvasid">
 	      <xsl:choose>
 	        <xsl:when test="/tei:TEI/tei:teiHeader/tei:fileDesc/tei:sourceDesc/tei:listWit/tei:witness[@xml:id=$ms]/@xml:base">
 	          <xsl:variable name="canvasbase" select="/tei:TEI/tei:teiHeader/tei:fileDesc/tei:sourceDesc/tei:listWit/tei:witness[@xml:id=$ms]/@xml:base"/>
@@ -264,7 +271,7 @@
 	      <!-- data-msslug needs to get info directly from final; default will not work -->
 	      <xsl:choose>
 	        <xsl:when test="$show-images = 'true'">
-	          <a href="#" class="js-show-folio-image" data-canvasid="{$canvasid}" data-msslug="{$break-ms-slug}" data-expressionid="{$expressionid}">
+	          <a href="#" class="js-show-folio-image" data-canvasid="{$canvasid}" data-surfaceid="{$surfaceid}" data-msslug="{$break-ms-slug}" data-expressionid="{$expressionid}">
 	          <xsl:value-of select="$ms"/>
 	          <xsl:value-of select="$folio"/>
 	          <xsl:value-of select="$side"/>

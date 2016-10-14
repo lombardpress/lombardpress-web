@@ -49,8 +49,9 @@ $(document).on('turbolinks:load', function () {
 			halfSizeBottomWindow();
 			var expressionid = $(this).attr("data-expressionid");
 			var canvasid = $(this).attr("data-canvasid");
+			var surfaceid = $(this).attr("data-surfaceid");
 
-			showFolioImage(canvasid, expressionid);
+			showFolioImage(canvasid, expressionid, surfaceid);
 
 		});
 
@@ -253,8 +254,8 @@ var showParaZoomImage = function(expressionid, msslug){
 			});
 		});
 }
-var showFolioImage = function(canvasid, expressionid){
-	$.get("/paragraphimage/showfoliozoom?canvasid="+ canvasid + "&expressionid=" + expressionid, function(data){
+var showFolioImage = function(canvasid, expressionid, surfaceid){
+	$.get("/paragraphimage/showfoliozoom?canvasid="+ canvasid + "&expressionid=" + expressionid + "&surfaceid=" + surfaceid , function(data){
 		id = Math.random();
 		$("#lbp-bottom-window-container").html("<div id='openseadragon-" + id + "' style='width: 1000px; height: 1400px; margin: auto;'></div>");
 		showOpenseadragonFolio(id, data)
