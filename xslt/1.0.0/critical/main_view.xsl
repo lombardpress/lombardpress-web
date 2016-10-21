@@ -193,7 +193,7 @@
     <xsl:variable name="side"><xsl:value-of select="substring-after($folio-and-side, '-')"/></xsl:variable>
     <xsl:variable name="break-ms-slug" select="/tei:TEI/tei:teiHeader/tei:fileDesc/tei:sourceDesc/tei:listWit/tei:witness[@xml:id=$ms]/@n"/>
     <xsl:variable name="surfaceid">
-      <xsl:value-of select="concat($break-ms-slug, '/', $folionumber, $side)"/>
+      <xsl:value-of select="concat($break-ms-slug, '/', $folio, $side)"/>
     </xsl:variable>
     <xsl:variable name="canvasid">
       <xsl:choose>
