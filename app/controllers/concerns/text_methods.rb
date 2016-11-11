@@ -62,7 +62,7 @@ module TextMethods
 
 			resource = Lbp::Resource.find(resource_url)
 
-			if resource.class == Lbp::Transcription
+      if resource.class == Lbp::Transcription
 				return resource
 			else
 				return resource.canonical_transcription.resource
