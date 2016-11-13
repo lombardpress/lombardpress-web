@@ -49,8 +49,9 @@ $(document).on('turbolinks:load', function () {
 			halfSizeBottomWindow();
 			var expressionid = $(this).attr("data-expressionid");
 			var canvasid = $(this).attr("data-canvasid");
+			var surfaceid = $(this).attr("data-surfaceid");
 
-			showFolioImage(canvasid, expressionid);
+			showFolioImage(canvasid, expressionid, surfaceid);
 
 		});
 
@@ -153,6 +154,17 @@ $(document).on("submit", "#lbp-collation-selector-form", function(event){
    showParagraphCollation(expressionid, base, comp);
 });
 
+$(document).on("click", ".js-show-folio-image", function(event){
+	event.preventDefault();
+	showSpinner("#lbp-bottom-window-container");
+	showBottomWindow();
+	//halfSizeBottomWindow();
+	var expressionid = $(this).attr("data-expressionid");
+	var canvasid = $(this).attr("data-canvasid");
+	var surfaceid = $(this).attr("data-surfaceid");
+	showFolioImage(canvasid, expressionid, surfaceid);
+});
+
 
 //end of event bindings
 
@@ -253,10 +265,30 @@ var showParaZoomImage = function(expressionid, msslug){
 			});
 		});
 }
-var showFolioImage = function(canvasid, expressionid){
-	$.get("/paragraphimage/showfoliozoom?canvasid="+ canvasid + "&expressionid=" + expressionid, function(data){
+var showFolioImage = function(canvasid, expressionid, surfaceid){
+	$.get("/paragraphimage/showfoliozoom?canvasid="+ canvasid + "&expressionid=" + expressionid + "&surfaceid=" + surfaceid , function(data){
 		id = Math.random();
-		$("#lbp-bottom-window-container").html("<div id='openseadragon-" + id + "' style='width: 1000px; height: 1400px; margin: auto;'></div>");
+
+		function insertNext(data){
+			if (data.next_shortid !== null){
+			return	"<a class='js-show-folio-image' data-surfaceid='" + data.next_shortid + "'>Next</a>"
+			}
+			else {
+				return ""
+			}
+		}
+		function insertPrev(data){
+			if (data.previous_shortid !== null){
+				return	"<a class='js-show-folio-image' data-surfaceid='" + data.previous_shortid + "'>Previous</a>"
+			}
+			else {
+				return ""
+			}
+		}
+		var height = data.c_height;
+		var width = data.c_width;
+		var newHeight = 1170 / width * height
+		$("#lbp-bottom-window-container").html("<div id='folio-nav' style='text-align: center;'>" + insertPrev(data) + " " + insertNext(data) + "</div><div id='openseadragon-" + id + "' style='width: 1170;  height: " + newHeight + "px; margin: auto;'></div>");
 		showOpenseadragonFolio(id, data)
 	});
 

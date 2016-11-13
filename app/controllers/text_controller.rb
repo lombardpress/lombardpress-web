@@ -106,6 +106,7 @@ class TextController < ApplicationController
         :quotes => expression.quotes.map {|item| item.to_s},
         :quotedBy => expression.quotedBy.map {|item| item.to_s},
         :mentions => expression.mentions.map {|item| item.to_s},
+				:isRelatedTo => expression.isRelatedTo.map {|item| item.to_s},
         #:wordcount => paratranscript.word_count,
         #:wordfrequency => paratranscript.word_frequency
 
@@ -167,13 +168,14 @@ class TextController < ApplicationController
     ms_slugs = @expression.manifestations.map {|m| unless m.to_s.include? 'critical' then m.to_s.split("/").last end}.compact
 		default_wit_param = ms_slugs[0]
 
+
 		#prepare xslt arrays to be used for transformation
 			#always remember single quotes for paramater value
 			#specify if global image setting is true or false
 
 
-		xslt_param_array = ["default-ms-image", if default_wit(params) == "critical" then "'#{default_wit_param}'" else "'#{default_wit(params)}'" end,
-				"default-msslug", "'#{default_wit(params)}'",
+		xslt_param_array = ["default-ms-image", if default_wit(params, @expression) == "critical" then "'#{default_wit_param}'" else "'#{default_wit(params, @expression)}'" end,
+				"default-msslug", "'#{default_wit(params, @expression)}'",
 				"show-images", "'#{@config.images.to_s}'",
 				"by_phrase", "'#{t(:by)}'",
 				"edited_by_phrase", "'#{t(:edited_by)}'"]

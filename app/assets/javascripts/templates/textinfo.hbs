@@ -72,6 +72,12 @@
 			<p>Copied by <a href="{{this}}">{{this}}</a></p>
 		{{/each}}
 	{{/if}}
+	{{#if isRelatedTo}}
+		{{#each isRelatedTo}}
+			<p>Is related to <a href="{{this}}">{{this}}</a></p>
+			<p style="padding-left: 20px"><a class="js-show-reference-paragraph" href="#" data-url="{{this}}">View Text</a><p>
+		{{/each}}
+	{{/if}}
 	{{#if quotes}}
 		{{#each quotes}}
 			<p>Quotes <a href="{{this}}">{{this}}</a></p>
