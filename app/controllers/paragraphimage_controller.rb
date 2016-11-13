@@ -103,8 +103,10 @@ class ParagraphimageController < ApplicationController
 
 		@image_info = {
 			:image_url => results.first[:imageurl].to_s,
+			:c_width => results.first[:c_width].to_i,
+			:c_height => results.first[:c_height].to_i,
 			:next_shortid => if results.first[:next_surface] then results.first[:next_surface].to_s.split("resource/").last else nil end,
-			:previous_shortid => if results.first[:previous_surface] then results.first[:previous_surface].to_s.split("resource/").last else nil end, 
+			:previous_shortid => if results.first[:previous_surface] then results.first[:previous_surface].to_s.split("resource/").last else nil end,
 		}
 
 		render :json => @image_info
