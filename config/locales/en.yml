@@ -23,7 +23,8 @@ en:
   hello: "Hello World"
   text: "Text"
   resources: "Resources"
-  toc: "Table of Contents" 
+  catalogue: "Catalogue of Texts" 
+  toc: "Table of Contents"
   toq: "Table of Questions"
   index: "Index"
   about: "About"
@@ -46,5 +47,3 @@ en:
   draft_reminder: "Please remember: the status of this text is draft. You have been granted access through the generosity of the editor. Please use the comments to help make suggestions or corrections."
   by: "By"
   edited_by: "Edited by"
-
-

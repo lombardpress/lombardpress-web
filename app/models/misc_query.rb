@@ -40,9 +40,15 @@ class MiscQuery < Lbp::Query
 	 #replaces folio_info
 	 def folio_info2(surfaceid)
       query = "#{@prefixes}
-         SELECT DISTINCT ?zone ?ulx ?uly ?lry ?lrx ?position ?height ?width ?canvasurl ?imageurl
+         SELECT DISTINCT ?zone ?ulx ?uly ?lry ?lrx ?position ?height ?width ?canvasurl ?imageurl ?next_surface ?previous_surface
       {
         <#{surfaceid}> <http://scta.info/property/hasISurface> ?isurface .
+				OPTIONAL{
+					<#{surfaceid}> <http://scta.info/property/next> ?next_surface .
+				}
+				OPTIONAL{
+					<#{surfaceid}> <http://scta.info/property/previous> ?previous_surface .
+				}
 				?isurface <http://scta.info/property/hasCanvas> ?canvas .
 				 ?canvas <http://iiif.io/api/presentation/2#hasImageAnnotations> ?blank .
          ?blank <http://www.w3.org/1999/02/22-rdf-syntax-ns#first> ?o .

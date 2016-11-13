@@ -9,12 +9,12 @@
         <span class="icon-bar"></span>
       </button>
       <ul class="nav navbar-nav">
-        <li class="dropdown"> 
+        <li class="dropdown">
           <!-- <a class="navbar-brand" href="/"> -->
           <a href="#" class="dropdown-toggle navbar-brand" data-toggle="dropdown" role="button" aria-expanded="false">
             <span><%= @config.logo %></span>
             <span class="caret" style="margin-left: 5px;"></span>
-            
+
           </a>
           <ul class="dropdown-menu" role="menu">
             <li>
@@ -28,7 +28,7 @@
               </li>
               <% end %>
             <% end %>
-          </ul> 
+          </ul>
         </li>-->
       <ul>
     </div>
@@ -41,11 +41,11 @@
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><%= t(:text) %> <span class="caret"></span></a>
           <ul class="dropdown-menu" role="menu">
             <!--<li><a href="/text"><%= t(:toc) %></a></li> -->
-            <li><%= link_to t(:toc), "/text/questions", data: { keybinding: 'q' } %></li>
+            <li><%= link_to t(:catalogue), "/text/questions", data: { keybinding: 'q' } %></li>
             <li><%= link_to t(:index), "/index", data: { keybinding: 'i' } %></li>
           </ul>
         </li>
-        
+
         <form class="navbar-form navbar-left" role="search" action="/search" method="get">
           <div class="form-group">
             <input type="text" id="corpus-search-field" class="form-control" placeholder="<%= t(:search_corpus) %>" name="searchterm">
@@ -68,18 +68,18 @@
           <ul class="dropdown-menu" role="menu">
             <% if @config.articles.select {|article| article.article_name == "about"}.count != 0 %>
               <li><%= link_to "About This Project", "/articles/about", data: { keybinding: "a" } %></li>
-            <% end %>  
+            <% end %>
             <% if @config.blog %>
               <li><a href="/posts">Blog/News</a></li>
-            <% end %>  
+            <% end %>
             <li class="divider"></li>
             <li><a href="http://lombardpress.org" target="_blank">About LombardPress</a></li>
             <li><a href="http://scta.info" target="_blank">About the Scholastic Commentaries and Texts Archive (SCTA)</a></li>
-            <li><a href="http://images.scta.info" target="_blank">The SCTA Image Viewer</a></li>
+            <li><a href="http://mirador.scta.info" target="_blank">The SCTA Image Viewer</a></li>
           </ul>
         </li>
       </ul>
-      
+
       <ul class="nav navbar-nav navbar-right">
         <!-- change then when I know how to check if session cookie is set with devise -->
         <% if user_signed_in? %>

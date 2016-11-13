@@ -80,27 +80,31 @@ class ParagraphimageController < ApplicationController
 		####
 		# it is surprisingly fast for three extra calls
 		# maybe I shouldn't worry about that so much
-		full_surfaceid = "http://scta.info/resource/#{params[:surfaceid]}"
-		if params[:canvasid].include? "xxx-"
-			exBlockObj = Lbp::Expression.find(params[:expressionid])
 
-			#expItemId = exBlockObj.results.dup.filter(:p => RDF::URI("http://scta.info/property/isPartOfStructureItem")).first[:o].to_s
-			expItemId = exBlockObj.value("http://scta.info/property/isPartOfStructureItem").to_s
-			expItemObj = Lbp::Expression.find(expItemId)
-			expTopId = expItemObj.value("http://scta.info/property/isPartOfTopLevelExpression").to_s
-			expTopObj = Lbp::Expression.find(expTopId)
-			#commentary_slug = expTopObj.results.dup.filter(:p => RDF::URI("http://scta.info/property/slug")).first[:o]
-			commentary_slug = expTopObj.value("http://scta.info/property/slug").to_s
-			canvasid = params[:canvasid].sub('xxx-', "#{commentary_slug}-")
-		else
-			canvasid = params[:canvasid]
-		end
+		##THIS SHOULD NO LONGER BE NEEDED; DELETE AFTER 0.6.0 release
+		# if params[:canvasid].include? "xxx-"
+		# 	exBlockObj = Lbp::Expression.find(params[:expressionid])
+		#
+		# 	#expItemId = exBlockObj.results.dup.filter(:p => RDF::URI("http://scta.info/property/isPartOfStructureItem")).first[:o].to_s
+		# 	expItemId = exBlockObj.value("http://scta.info/property/isPartOfStructureItem").to_s
+		# 	expItemObj = Lbp::Expression.find(expItemId)
+		# 	expTopId = expItemObj.value("http://scta.info/property/isPartOfTopLevelExpression").to_s
+		# 	expTopObj = Lbp::Expression.find(expTopId)
+		# 	#commentary_slug = expTopObj.results.dup.filter(:p => RDF::URI("http://scta.info/property/slug")).first[:o]
+		# 	commentary_slug = expTopObj.value("http://scta.info/property/slug").to_s
+		# 	canvasid = params[:canvasid].sub('xxx-', "#{commentary_slug}-")
+		# else
+		# 	canvasid = params[:canvasid]
+		# end
 
 		#results = MiscQuery.new.folio_info(canvasid)
+		full_surfaceid = "http://scta.info/resource/#{params[:surfaceid]}"
 		results = MiscQuery.new.folio_info2(full_surfaceid)
 
 		@image_info = {
-			:image_url => results.first[:imageurl].to_s
+			:image_url => results.first[:imageurl].to_s,
+			:next_shortid => if results.first[:next_surface] then results.first[:next_surface].to_s.split("resource/").last else nil end,
+			:previous_shortid => if results.first[:previous_surface] then results.first[:previous_surface].to_s.split("resource/").last else nil end, 
 		}
 
 		render :json => @image_info
