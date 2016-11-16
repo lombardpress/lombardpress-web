@@ -50,12 +50,22 @@ class MiscQuery < Lbp::Query
 					<#{surfaceid}> <http://scta.info/property/previous> ?previous_surface .
 				}
 				?isurface <http://scta.info/property/hasCanvas> ?canvas .
-				 ?canvas <http://iiif.io/api/presentation/2#hasImageAnnotations> ?blank .
+				OPTIONAL{
+					?canvas <http://iiif.io/api/presentation/2#hasImageAnnotations> ?blank .
+				}
+				OPTIONAL{
+					?canvas <http://www.shared-canvas.org/ns/hasImageAnnotations> ?blank .
+				}
 				 ?canvas <http://www.w3.org/2003/12/exif/ns#width> ?c_width .
 				 ?canvas <http://www.w3.org/2003/12/exif/ns#height> ?c_height .
-         ?blank <http://www.w3.org/1999/02/22-rdf-syntax-ns#first> ?o .
-         ?o <http://www.w3.org/ns/oa#hasBody> ?o2 .
-         ?o2 <http://rdfs.org/sioc/services#has_service> ?imageurl .
+		     ?blank <http://www.w3.org/1999/02/22-rdf-syntax-ns#first> ?o .
+		     ?o <http://www.w3.org/ns/oa#hasBody> ?o2 .
+		    OPTIONAL{
+					 ?o2 <http://rdfs.org/sioc/services#has_service> ?imageurl .
+				 }
+				 OPTIONAL{
+					 ?o2 <http://www.shared-canvas.org/ns/hasRelatedService> ?imageurl .
+				 }
       }"
       result = self.query(query)
    end
