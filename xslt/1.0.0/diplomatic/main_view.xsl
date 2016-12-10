@@ -180,7 +180,7 @@
     <span class="lbp-glyph lbp-pilcrow">&#182;</span><xsl:text> </xsl:text>
   </xsl:template>
   <xsl:template match="tei:lb">
-    <br/>
+    <br/> 
   </xsl:template>
 
 
@@ -268,27 +268,40 @@
           </xsl:otherwise>
         </xsl:choose>
       </xsl:variable>
-      <!-- get preceding paragraph id -->
-      <xsl:variable name="expressionid" select="./preceding::tei:p/@xml:id"/>
+     
+      
 
       <span class="lbp-folionumber">
         <xsl:choose>
           <xsl:when test="$show-images = 'true'">
             <a href="#" class="js-show-folio-image" data-canvasid="{$canvasid}" data-surfaceid="{$surfaceid}" data-msslug="{$default-ms-image}" data-expressionid="{$expressionid}">
             <xsl:value-of select="$ms"/>
-            <xsl:value-of select="$folionumber"/>
-            <xsl:value-of select="$justSide"/>
+            <xsl:value-of select="$folio"/>
+            <xsl:value-of select="$side"/>
             </a>
           </xsl:when>
           <xsl:otherwise>
             <xsl:value-of select="$ms"/>
-            <xsl:value-of select="$folionumber"/>
-            <xsl:value-of select="$justSide"/>
+            <xsl:value-of select="$folio"/>
+            <xsl:value-of select="$side"/>
           </xsl:otherwise>
         </xsl:choose>
       </span>
       <xsl:text> </xsl:text>
     </xsl:if>
+  </xsl:template>
+  
+  <xsl:template match="tei:note[@type='marginal-note']">
+    <xsl:variable name="place" select="./@place"/>
+    <xsl:variable name="preceding-line" select="./preceding::tei:lb[1]"/>
+    <xsl:variable name="number-of-notes-after-this-line"><xsl:value-of select="(count($preceding-line//following::tei:note) - count(.//following::tei:note)) -1"/></xsl:variable>
+    <!-- <xsl:variable name="note-paragraph-count"><xsl:number level="single" count="tei:note[@type='marginal-note']"/></xsl:variable> -->
+    <xsl:variable name="top-offset"><xsl:value-of select="$number-of-notes-after-this-line * 20"/></xsl:variable>
+    <xsl:variable name="left-offset"><xsl:value-of select="($number-of-notes-after-this-line * 20) + 150"/></xsl:variable>
+    <xsl:variable name="note-zindex"><xsl:value-of select="$number-of-notes-after-this-line * .1"/></xsl:variable>
+    <xsl:variable name="top-style-setting"><xsl:value-of select="concat($top-offset, 'px')"/></xsl:variable>
+    <xsl:variable name="left-style-setting"><xsl:value-of select="concat('-', $left-offset, 'px')"/></xsl:variable>
+      <span class="lbp-marginal-note" data-place="{$place}" style="top: {$top-style-setting}; left: {$left-style-setting}; z-index: {$note-zindex}"><xsl:apply-templates/></span>
   </xsl:template>
 
 
