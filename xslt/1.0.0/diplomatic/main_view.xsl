@@ -298,7 +298,7 @@
     <!-- <xsl:variable name="note-paragraph-count"><xsl:number level="single" count="tei:note[@type='marginal-note']"/></xsl:variable> -->
     <xsl:variable name="top-offset"><xsl:value-of select="$number-of-notes-after-this-line * 20"/></xsl:variable>
     <xsl:variable name="left-offset"><xsl:value-of select="($number-of-notes-after-this-line * 20) + 150"/></xsl:variable>
-    <xsl:variable name="note-zindex"><xsl:value-of select="$number-of-notes-after-this-line * .1"/></xsl:variable>
+    <xsl:variable name="note-zindex"><xsl:value-of select="($number-of-notes-after-this-line + 1) * .1"/></xsl:variable>
     <xsl:variable name="top-style-setting"><xsl:value-of select="concat($top-offset, 'px')"/></xsl:variable>
     <xsl:variable name="left-style-setting"><xsl:value-of select="concat('-', $left-offset, 'px')"/></xsl:variable>
       <span class="lbp-marginal-note" data-place="{$place}" style="top: {$top-style-setting}; left: {$left-style-setting}; z-index: {$note-zindex}"><xsl:apply-templates/></span>
