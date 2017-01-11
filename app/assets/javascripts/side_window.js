@@ -45,14 +45,17 @@ $(document).on('turbolinks:load', function () {
 			showSideWindow($paragraph);
 			showParagraphNotes(pid);
 		});
-		$("a.js-show-paragraph-info").click(function(event){
-			event.preventDefault();
-			// var pid here stands for the expression id
-			var pid = $(this).attr("data-pid");
-			$paragraph = $("p#" + pid);
-			showSideWindow($paragraph)
-			showParagraphInfo(pid)
-		});
+//this biding is redundant because it is bound to the document below
+// if uncommented, the function will be called twice producing repeated results
+// this could be a problem with above functions as well		
+		// $("a.js-show-paragraph-info").click(function(event){
+		// 	event.preventDefault();
+		// 	// var pid here stands for the expression id
+		// 	var pid = $(this).attr("data-pid");
+		// 	$paragraph = $("p#" + pid);
+		// 	showSideWindow($paragraph)
+		// 	showParagraphInfo(pid)
+		// });
 
 	});
 });
@@ -209,8 +212,27 @@ var showParagraphInfo = function(itemid){
 	$.get("/text/info/" + itemid, function(data){
 		var content = HandlebarsTemplates['textinfo'](data);
 		$("#lbp-side-window-container").html(content);
+	});
+	$.get("http://inbox.scta.info/notifications?resourceid=http://scta.info/resource/" + itemid, function(data){
+		data.contains.forEach(function(l){
+			$.get(l, function(ldata){
+				if (ldata["motivation"] == "commenting") {
+					var comments = HandlebarsTemplates['ldn-comments'](ldata);
+					$("#lbp-side-window-container").append(comments);
+				}
+				if (ldata["motivation"] == "discussing") {
+					console.log(ldata);
+					var discussions = HandlebarsTemplates['ldn-discussing'](ldata);
+					$("#lbp-side-window-container").append(discussions);
+				}
+
+
+			});
+
+		});
 
 	});
+
 }
 var showParagraphReference = function(url){
 	$("#lbp-bottom-window-container").load("/paragraphs/show2/?url=" + url, function(response, status, xhr){
