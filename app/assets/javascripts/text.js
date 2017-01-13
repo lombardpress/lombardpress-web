@@ -142,7 +142,7 @@ $(document).on("click", ".js-show-alt-para-image", function(event){
 
 $(document).on("submit", "#lbp-new-comment-form", function(event){
 	 event.preventDefault();
-    postComment();
+	 postComment();
 });
 
 $(document).on("submit", "#lbp-collation-selector-form", function(event){
@@ -356,7 +356,7 @@ var postComment = function(itemid, pid){
       },
       success:function(data, status, xhr){
       	showSpinner("#lbp-bottom-window-container");
-        showComments(itemid, pid)
+				showComments(itemid, pid)
       },
       error:function(data, status, xhr){
       	//I want this error work when a user is not signed in.

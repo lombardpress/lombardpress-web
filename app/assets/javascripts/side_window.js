@@ -47,7 +47,7 @@ $(document).on('turbolinks:load', function () {
 		});
 //this biding is redundant because it is bound to the document below
 // if uncommented, the function will be called twice producing repeated results
-// this could be a problem with above functions as well		
+// this could be a problem with above functions as well
 		// $("a.js-show-paragraph-info").click(function(event){
 		// 	event.preventDefault();
 		// 	// var pid here stands for the expression id
@@ -214,23 +214,30 @@ var showParagraphInfo = function(itemid){
 		$("#lbp-side-window-container").html(content);
 	});
 	$.get("http://inbox.scta.info/notifications?resourceid=http://scta.info/resource/" + itemid, function(data){
-		data.contains.forEach(function(l){
-			$.get(l, function(ldata){
+
+		var comments_counter = 0;
+		var discussions_counter = 0;
+
+		data["ldp:contains"].forEach(function(l){
+			$.get(l["@id"], function(ldata){
 				if (ldata["motivation"] == "commenting") {
-					var comments = HandlebarsTemplates['ldn-comments'](ldata);
-					$("#lbp-side-window-container").append(comments);
+					if (comments_counter === 0) {
+						$("#ldn-comments").append("<h3>LDN Comments</h3>");
+					}
+					var comments_tpl = HandlebarsTemplates['ldn-comments'](ldata);
+					$("#ldn-comments").append(comments_tpl);
+					comments_counter++;
 				}
 				if (ldata["motivation"] == "discussing") {
-					console.log(ldata);
-					var discussions = HandlebarsTemplates['ldn-discussing'](ldata);
-					$("#lbp-side-window-container").append(discussions);
+					if (discussions === 0) {
+						$("#ldn-comments").append("<h3>Known External Secondary Discussions</h3>");
+					}
+					var discussions_tpl = HandlebarsTemplates['ldn-discussing'](ldata);
+					$("#ldn-discussions").append(discussions_tpl);
+					discussions_counter++;
 				}
-
-
 			});
-
 		});
-
 	});
 
 }
