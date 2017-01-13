@@ -229,8 +229,8 @@ var showParagraphInfo = function(itemid){
 					comments_counter++;
 				}
 				if (ldata["motivation"] == "discussing") {
-					if (discussions === 0) {
-						$("#ldn-comments").append("<h3>Known External Secondary Discussions</h3>");
+					if (discussions_counter === 0) {
+						$("#ldn-discussions").append("<h3>Known External Secondary Discussions</h3>");
 					}
 					var discussions_tpl = HandlebarsTemplates['ldn-discussing'](ldata);
 					$("#ldn-discussions").append(discussions_tpl);

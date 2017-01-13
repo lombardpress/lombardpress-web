@@ -54,8 +54,11 @@ class CommentsController < ApplicationController
     @comment = Comment.new(comment_params)
     authorize @comment
     if @comment.save
+      #send_ldn performs a post to lnd inbox for this resource;
+      #comment out if this functionality is not desired.
       @comment.send_ldn(comment_params)
-      redirect_to @comment, :notice => "Comment successfully created"
+
+      render 'show'
     else
       # note that without resending this params, they are not available.
       set_required_params
