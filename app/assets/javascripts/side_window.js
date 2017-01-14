@@ -213,28 +213,20 @@ var showParagraphInfo = function(itemid){
 		var content = HandlebarsTemplates['textinfo'](data);
 		$("#lbp-side-window-container").html(content);
 	});
-	$.get("http://inbox.scta.info/notifications?resourceid=http://scta.info/resource/" + itemid, function(data){
 
-		var comments_counter = 0;
-		var discussions_counter = 0;
+	$.get("http://inbox.scta.info/notifications?resourceid=http://scta.info/resource/" + itemid, function(data){
 
 		data["ldp:contains"].forEach(function(l){
 			$.get(l["@id"], function(ldata){
 				if (ldata["motivation"] == "commenting") {
-					if (comments_counter === 0) {
-						$("#ldn-comments").append("<h3>LDN Comments</h3>");
-					}
+					$("#ldn-comments-head").css({"display" : "block"})
 					var comments_tpl = HandlebarsTemplates['ldn-comments'](ldata);
 					$("#ldn-comments").append(comments_tpl);
-					comments_counter++;
 				}
 				if (ldata["motivation"] == "discussing") {
-					if (discussions_counter === 0) {
-						$("#ldn-discussions").append("<h3>Known External Secondary Discussions</h3>");
-					}
+					$("#ldn-discussions-head").css({"display" : "block"})
 					var discussions_tpl = HandlebarsTemplates['ldn-discussing'](ldata);
 					$("#ldn-discussions").append(discussions_tpl);
-					discussions_counter++;
 				}
 			});
 		});
