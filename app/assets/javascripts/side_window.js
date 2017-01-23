@@ -210,24 +210,25 @@ var showParagraphNotes = function(expressionid){
 
 var showParagraphInfo = function(itemid){
 	$.get("/text/info/" + itemid, function(data){
+		var inbox = data.inbox
 		var content = HandlebarsTemplates['textinfo'](data);
 		$("#lbp-side-window-container").html(content);
-	});
 
-	$.get("http://inbox.scta.info/notifications?resourceid=http://scta.info/resource/" + itemid, function(data){
+		$.get(inbox, function(data){
 
-		data["ldp:contains"].forEach(function(l){
-			$.get(l["@id"], function(ldata){
-				if (ldata["motivation"] == "commenting") {
-					$("#ldn-comments-head").css({"display" : "block"})
-					var comments_tpl = HandlebarsTemplates['ldn-comments'](ldata);
-					$("#ldn-comments").append(comments_tpl);
-				}
-				if (ldata["motivation"] == "discussing") {
-					$("#ldn-discussions-head").css({"display" : "block"})
-					var discussions_tpl = HandlebarsTemplates['ldn-discussing'](ldata);
-					$("#ldn-discussions").append(discussions_tpl);
-				}
+			data["ldp:contains"].forEach(function(l){
+				$.get(l["@id"], function(ldata){
+					if (ldata["motivation"] == "commenting") {
+						$("#ldn-comments-head").css({"display" : "block"})
+						var comments_tpl = HandlebarsTemplates['ldn-comments'](ldata);
+						$("#ldn-comments").append(comments_tpl);
+					}
+					if (ldata["motivation"] == "discussing") {
+						$("#ldn-discussions-head").css({"display" : "block"})
+						var discussions_tpl = HandlebarsTemplates['ldn-discussing'](ldata);
+						$("#ldn-discussions").append(discussions_tpl);
+					}
+				});
 			});
 		});
 	});
