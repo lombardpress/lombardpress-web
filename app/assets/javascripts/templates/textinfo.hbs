@@ -95,10 +95,12 @@
 		{{/each}}
 	{{/if}}
 	</div>
+	{{#if inbox}}
 	<div>
 		<h3>LinkedData Notification Inbox</h3>
-		<p><a href="http://inbox.scta.info/notifications?resourceid={{expression_url}}">http://inbox.scta.info/notifications?resourceid={{expression_url}}</a></p>
+		<p><a href="{{inbox}}">{{inbox}}</a></p>
 	</div>
+	{{/if}}
 	<div id="ldn-comments">
 		<h3 id="ldn-comments-head" style="display: none">LDN Comments</h3>
 	</div>

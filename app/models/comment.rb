@@ -1,11 +1,13 @@
 require 'net/http'
 require 'uri'
+require 'lbp'
 
 class Comment < ActiveRecord::Base
 	enum access_type: [:general, :editorial, :personal]
   belongs_to :user
 
 	def send_ldn(comment_params)
+		inbox = Lbp::Resource.find("http://scta.info/resource/#{comment_params[:pid]}").inbox.to_s
 		target = "http://scta.info/resource/#{comment_params[:pid]}"
 
 		ldn = {
@@ -21,7 +23,7 @@ class Comment < ActiveRecord::Base
 		  "target": target
 		}
 
-		uri = URI.parse("http://inbox.scta.info/notifications?resourceid=#{target}")
+		uri = URI.parse(inbox)
 
 		http = Net::HTTP.new(uri.host)
 		req = Net::HTTP::Post.new(uri.path, 'Content-Type' => 'application/json+ld')
