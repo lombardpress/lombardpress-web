@@ -194,9 +194,30 @@
     <xsl:variable name="hashms"><xsl:value-of select="@ed"/></xsl:variable>
     <xsl:variable name="ms"><xsl:value-of select="translate($hashms, '#', '')"/></xsl:variable>
     <!-- get side from previous pb -->
-    <xsl:variable name="folio-and-side"><xsl:value-of select="./preceding::tei:pb[@ed=$hashms]/@n"/></xsl:variable>
+    <xsl:variable name="folio-and-side">
+      <!-- condition to get preceding sibling when needed -->
+      <xsl:choose>
+        <xsl:when test="./preceding-sibling::tei:pb[1]">
+          <xsl:value-of select="./preceding-sibling::tei:pb[@ed=$hashms][1]/@n"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:value-of select="./preceding::tei:pb[@ed=$hashms][1]/@n"/>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
+      
+      
     <!-- <xsl:variable name="length"><xsl:value-of select="string-length($folio-and-side)-2"/></xsl:variable> -->
-    <xsl:variable name="folio"><xsl:value-of select="substring-before($folio-and-side, '-')"/></xsl:variable>
+    <xsl:variable name="folio">
+      <xsl:choose>
+        <xsl:when test="not(contains($folio-and-side, '-'))">
+          <xsl:value-of select="$folio-and-side"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:value-of select="substring-before($folio-and-side, '-')"/>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
     <!-- <xsl:variable name="side_column"><xsl:value-of select="substring($fullcn, $length+1)"/></xsl:variable> -->
     <xsl:variable name="column"><xsl:value-of select="./@n"/></xsl:variable>
     <xsl:variable name="side"><xsl:value-of select="substring-after($folio-and-side, '-')"/></xsl:variable>
@@ -244,7 +265,16 @@
       <xsl:variable name="ms"><xsl:value-of select="translate($hashms, '#', '')"/></xsl:variable>
       <xsl:variable name="folio-and-side"><xsl:value-of select="@n"/></xsl:variable>
       <!-- this variable gets length of Ms abbrev and folio number after substracting side -->
-      <xsl:variable name="folio"><xsl:value-of select="substring-before($folio-and-side, '-')"/></xsl:variable>
+      <xsl:variable name="folio">
+        <xsl:choose>
+          <xsl:when test="not(contains($folio-and-side, '-'))">
+            <xsl:value-of select="$folio-and-side"/>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:value-of select="substring-before($folio-and-side, '-')"/>
+          </xsl:otherwise>
+        </xsl:choose>
+      </xsl:variable>
       <!-- this variable separates isolates folio number by skipping msAbbrev and then not including side designation -->
       <xsl:variable name="side"><xsl:value-of select="substring-after($folio-and-side, '-')"/></xsl:variable>
       <!-- this desgination gets side by skipping lenghth of msAbbrev and folio number and then getting the first character that occurs -->
