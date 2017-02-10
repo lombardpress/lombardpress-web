@@ -369,11 +369,22 @@
               <span><xsl:value-of select="."/></span><xsl:text>, </xsl:text>
             </xsl:otherwise>
           </xsl:choose>
-
         </xsl:for-each>
       </p>
+      <xsl:for-each select="//tei:titleStmt/tei:respStmt">
+        <p><span><xsl:value-of select="./tei:resp"/></span>: <span><xsl:value-of select="./tei:name"/></span></p>
+      </xsl:for-each>
       <p>Edition: <span id="editionNumber"><xsl:value-of select="//tei:teiHeader/tei:fileDesc/tei:editionStmt/tei:edition/@n"/></span> | <xsl:value-of select="//tei:teiHeader/tei:fileDesc/tei:editionStmt/tei:edition/tei:date"/></p>
-      <p>Authority: <xsl:value-of select="//tei:teiHeader/tei:fileDesc/tei:publicationStmt/tei:authority"/>, <xsl:value-of select="//tei:teiHeader/tei:fileDesc/tei:publicationStmt/tei:pubPlace"/>, <xsl:value-of select="//tei:teiHeader/tei:fileDesc/tei:publicationStmt/tei:date"/></p>
+      <p>Authority: 
+        <xsl:choose>
+          <xsl:when test="//tei:teiHeader/tei:fileDesc/tei:publicationStmt/tei:authority/tei:ref">
+            <a href="{//tei:teiHeader/tei:fileDesc/tei:publicationStmt/tei:authority/tei:ref/@target}"><xsl:value-of select="//tei:teiHeader/tei:fileDesc/tei:publicationStmt/tei:authority"/></a>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:value-of select="//tei:teiHeader/tei:fileDesc/tei:publicationStmt/tei:authority"/>
+          </xsl:otherwise>
+        </xsl:choose>
+      </p>
       <p>License Availablity: <xsl:value-of select="//tei:teiHeader/tei:fileDesc/tei:publicationStmt/tei:availability/@status"/>, <xsl:value-of select="//tei:teiHeader/tei:fileDesc/tei:publicationStmt/tei:availability/tei:p"/> </p>
       <p style="display: none;"><span id="filestem"><xsl:value-of select="//tei:body/tei:div/@xml:id"/></span></p>
 
