@@ -23,7 +23,7 @@
             <% if result[:structure_type] == "http://scta.info/resource/structureItem" %>
             <p>
               <% if result[:resource_status] != "Not Started" %>
-                <a href="text/<%= result[:resource_short_id] %>">
+                <a href="/text/<%= result[:resource_short_id] %>">
                   <%= result[:resource_title] %>
               <% else %>
                 <%= result[:resource_title] %>
