@@ -22,7 +22,7 @@ class SearchController < ApplicationController
 		unless @searchterm == nil || @searchterm == ""
 			predicate = "<http://scta.info/property/questionTitle>"
 		  query = "
-				SELECT ?resource ?resource_short_id ?resource_title ?qtitle ?author_title ?author_short_id ?toplevel_expression ?toplevel_expression_title ?toplevel_expression_short_id ?structure_type ?parent_item ?parent_item_title ?parent_item_short_id ?parent_item_author ?parent_item_author_title ?parent_item_author_short_id
+				SELECT ?resource ?resource_short_id ?resource_title ?resource_status ?qtitle ?author_title ?author_short_id ?toplevel_expression ?toplevel_expression_title ?toplevel_expression_short_id ?structure_type ?parent_item ?parent_item_title ?parent_item_short_id ?parent_item_author ?parent_item_author_title ?parent_item_author_short_id ?parent_item_status
 	      {
 	      	?resource #{predicate} ?qtitle  .
 					FILTER (REGEX(STR(?qtitle), '#{@searchterm}', 'i')) .
@@ -40,6 +40,10 @@ class SearchController < ApplicationController
 					}
 					OPTIONAL
 					{
+						?resource <http://scta.info/property/status> ?resource_status	.
+					}
+					OPTIONAL
+					{
 						?resource <http://scta.info/property/isPartOfTopLevelExpression> ?toplevel_expression	.
 						?toplevel_expression <http://purl.org/dc/elements/1.1/title> ?toplevel_expression_title .
 						?toplevel_expression <http://scta.info/property/shortId> ?toplevel_expression_short_id .
@@ -49,6 +53,7 @@ class SearchController < ApplicationController
 						?resource <http://scta.info/property/isPartOfStructureItem> ?parent_item	.
 						?parent_item <http://purl.org/dc/elements/1.1/title> ?parent_item_title .
 						?parent_item <http://scta.info/property/shortId> ?parent_item_short_id .
+						?parent_item <http://scta.info/property/status> ?parent_item_status .
 						?parent_item <http://www.loc.gov/loc.terms/relators/AUT> ?parent_item_author .
 						?parent_item_author <http://purl.org/dc/elements/1.1/title> ?parent_item_author_title .
 						?parent_item_author <http://scta.info/property/shortId> ?parent_item_author_short_id .
