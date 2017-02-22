@@ -19,7 +19,7 @@ class SearchController < ApplicationController
 	end
 	def questions
 		@searchterm = params[:searchterm]
-		unless @searchterm == ""
+		unless @searchterm == nil || @searchterm == ""
 			predicate = "<http://scta.info/property/questionTitle>"
 		  query = "
 				SELECT ?resource ?resource_short_id ?resource_title ?qtitle ?author_title ?author_short_id ?toplevel_expression ?toplevel_expression_title ?toplevel_expression_short_id ?structure_type ?parent_item ?parent_item_title ?parent_item_short_id ?parent_item_author ?parent_item_author_title ?parent_item_author_short_id

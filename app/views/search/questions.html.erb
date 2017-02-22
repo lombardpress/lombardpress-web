@@ -1,8 +1,9 @@
 <div class="container" style="margin-top: 100px; margin-bottom: 100px; width: 60%;">
   <div id="question-search-form" style="margin-bottom: 20px;">
 	  <% if @searchterm %>
-    <h1><%= @results.count %> search results for <%= params[:searchterm] %></h1>
-
+    <h2><%= @results.count %> search results for <%= params[:searchterm] %></h2>
+    <% else %>
+    <h2>Search for a Question Title within the <a href="http://scta.info">SCTA</a> corpus</h2>
     <% end %>
     <form class="center">
       <input type="text" name="searchterm">
