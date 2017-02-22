@@ -64,6 +64,7 @@ end
   get 'permissions' => 'pages#permissions'
 
   get 'search' => 'search#show', as: :show_search
+  get 'search/questions' => 'search#questions', as: :search_questions
 
 scope "text" do
   get '' => 'text#index'

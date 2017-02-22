@@ -1,0 +1,53 @@
+<div class="container" style="margin-top: 100px; margin-bottom: 100px; width: 60%;">
+  <div id="question-search-form" style="margin-bottom: 20px;">
+	  <% if @searchterm %>
+    <h1><%= @results.count %> search results for <%= params[:searchterm] %></h1>
+
+    <% end %>
+    <form class="center">
+      <input type="text" name="searchterm">
+      <input type="submit">
+    </form>
+  </div>
+	<div id="lbp-question-results" class="list-group">
+    <style type="text/css">
+    .lbp-question-search-result:hover {background-color: lightgray}
+    </style>
+
+    <% @results.each do |result| %>
+        <div class="list-group-item lbp-question-search-result">
+
+          <p><%= result[:qtitle] %></p>
+          <div style="font-size: 12px; padding-left: 20px;">
+            <% if result[:structure_type] == "http://scta.info/resource/structureItem" %>
+            <p>
+              <a href="text/<%= result[:resource_short_id] %>">
+                <%= result[:resource_title] %>
+              </a>
+            </p>
+            <p><a href="/text/questions/<%= result[:author_short_id] %>"><%= result[:author_title] %></a> | <a href="text/questions/<%=result[:toplevel_expression_short_id]%>"> <%= result[:toplevel_expression_title] %></a></p>
+
+            <% elsif result[:structure_type] == "http://scta.info/resource/structureCollection" %>
+            <p>
+              <a href="/text/questions/<%= result[:resource_short_id] %>">
+                <%= result[:resource_title] %>
+              </a>
+            </p>
+            <p><a href="/text/questions/<%= result[:author_short_id] %>"><%= result[:author_title] %></a> | <a href="text/questions/<%=result[:toplevel_expression_short_id]%>"> <%= result[:toplevel_expression_title] %></a></p>
+
+            <% else %>
+            <p>
+              <a href="/text/<%= result[:parent_item_short_id] %>#<%= result[:resource_short_id] %>">
+                <%= result[:resource_title] %>
+              </a>
+              | part of <a href="/text/<%= result[:parent_item_short_id] %>"> <%= result[:parent_item_title] %>
+              </a>
+            </p>
+            <p><a href="/text/questions/<%= result[:parent_item_author_short_id] %>"><%= result[:parent_item_author_title] %> </a> | <a href="text/questions/<%=result[:toplevel_expression_short_id]%>"> <%= result[:toplevel_expression_title] %></a></p>
+
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
