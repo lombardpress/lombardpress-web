@@ -30,7 +30,7 @@
               <% end %>
               </a>
             </p>
-            <p><a href="/text/questions/<%= result[:author_short_id] %>"><%= result[:author_title] %></a> | <a href="text/questions/<%=result[:toplevel_expression_short_id]%>"> <%= result[:toplevel_expression_title] %></a></p>
+            <p><a href="/text/questions/<%= result[:author_short_id] %>"><%= result[:author_title] %></a> | <a href="/text/questions/<%=result[:toplevel_expression_short_id]%>"> <%= result[:toplevel_expression_title] %></a></p>
 
             <% elsif result[:structure_type] == "http://scta.info/resource/structureCollection" %>
             <p>
@@ -38,7 +38,7 @@
                 <%= result[:resource_title] %>
               </a>
             </p>
-            <p><a href="/text/questions/<%= result[:author_short_id] %>"><%= result[:author_title] %></a> | <a href="text/questions/<%=result[:toplevel_expression_short_id]%>"> <%= result[:toplevel_expression_title] %></a></p>
+            <p><a href="/text/questions/<%= result[:author_short_id] %>"><%= result[:author_title] %></a> | <a href="/text/questions/<%=result[:toplevel_expression_short_id]%>"> <%= result[:toplevel_expression_title] %></a></p>
 
             <% else %>
             <p>
@@ -52,7 +52,7 @@
                 <%= result[:resource_title] %> | part of <%= result[:parent_item_title] %>
               <% end %>
             </p>
-            <a href="/text/questions/<%= result[:parent_item_author_short_id] %>"><%= result[:parent_item_author_title] %> </a> | <a href="text/questions/<%=result[:toplevel_expression_short_id]%>"> <%= result[:toplevel_expression_title] %></a></p>
+            <a href="/text/questions/<%= result[:parent_item_author_short_id] %>"><%= result[:parent_item_author_title] %> </a> | <a href="/text/questions/<%=result[:toplevel_expression_short_id]%>"> <%= result[:toplevel_expression_title] %></a></p>
 
           <% end %>
         </div>
