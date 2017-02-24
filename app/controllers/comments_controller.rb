@@ -56,8 +56,10 @@ class CommentsController < ApplicationController
     if @comment.save
       #send_ldn performs a post to lnd inbox for this resource;
       #comment out if this functionality is not desired.
-      @comment.send_ldn(comment_params)
-
+      if comment_params[:access_type] == 'general'
+        @comment.send_ldn(comment_params)
+      end
+      
       render 'show'
     else
       # note that without resending this params, they are not available.

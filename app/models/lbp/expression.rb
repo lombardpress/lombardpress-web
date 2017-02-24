@@ -36,7 +36,7 @@ module Lbp
           ?article <http://scta.info/property/isArticleOf> <http://scta.info/resource/#{short_id}> .
           ?article <http://purl.org/dc/elements/1.1/title> ?articleTitle .
          }
-         OPTIONAL {
+				 OPTIONAL {
           <http://scta.info/resource/#{short_id}> <http://purl.org/dc/terms/hasPart> ?hasPart .
          }
       }"

@@ -63,6 +63,8 @@ class TextController < ApplicationController
 					@info = @resource.info_display
 					@sponsors = @resource.sponsors_display(@info)
 					@articles = @resource.articles_display(@info)
+					@questionEditor = @resource.value("http://scta.info/property/questionListEditor")
+					@questionEncoder = @resource.value("http://scta.info/property/questionListEncoder")
 					render "text/questions/questions_with_about"
 				else
 					render "text/questions/questions"
@@ -86,7 +88,7 @@ class TextController < ApplicationController
 		# para variable here is simpy the expressionObj
     expression = get_expression(params)
     number = expression.order_number
-		
+
 		expression_hash = {
         #:pid => pid,
         :itemid => params[:itemid],
