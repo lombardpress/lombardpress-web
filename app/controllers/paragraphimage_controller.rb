@@ -100,7 +100,7 @@ class ParagraphimageController < ApplicationController
 		#results = MiscQuery.new.folio_info(canvasid)
 		full_surfaceid = "http://scta.info/resource/#{params[:surfaceid]}"
 		results = MiscQuery.new.folio_info2(full_surfaceid)
-
+		
 		@image_info = {
 			:image_url => results.first[:imageurl].to_s,
 			:c_width => results.first[:c_width].to_i,

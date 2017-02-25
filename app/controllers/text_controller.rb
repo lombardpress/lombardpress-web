@@ -63,6 +63,8 @@ class TextController < ApplicationController
 					@info = @resource.info_display
 					@sponsors = @resource.sponsors_display(@info)
 					@articles = @resource.articles_display(@info)
+					@questionEditor = @resource.value("http://scta.info/property/questionListEditor")
+					@questionEncoder = @resource.value("http://scta.info/property/questionListEncoder")
 					render "text/questions/questions_with_about"
 				else
 					render "text/questions/questions"
@@ -94,6 +96,7 @@ class TextController < ApplicationController
         :next => if expression.next != nil then expression.next.to_s.split("/").last else nil end,
         :previous => if expression.previous != nil then expression.previous.to_s.split("/").last else nil end,
         :number => number,
+				:inbox => if expression.inbox.to_s != nil then expression.inbox.to_s else nil end,
 				:is_structure_block => if expression.structure_type.short_id == "structureBlock" then true else false end,
         :manifestations => expression.manifestations.map {|m| m.to_s},
 				:translations => expression.translations.map {|m| m.to_s},
@@ -106,8 +109,8 @@ class TextController < ApplicationController
         :quotes => expression.quotes.map {|item| item.to_s},
         :quotedBy => expression.quotedBy.map {|item| item.to_s},
         :mentions => expression.mentions.map {|item| item.to_s},
-				:isRelatedTo => expression.isRelatedTo.map {|item| item.to_s},
-        #:wordcount => paratranscript.word_count,
+				:isRelatedTo => expression.isRelatedTo.map {|item| item.to_s}
+				#:wordcount => paratranscript.word_count,
         #:wordfrequency => paratranscript.word_frequency
 
       }

@@ -185,9 +185,29 @@
     <xsl:variable name="hashms"><xsl:value-of select="@ed"/></xsl:variable>
     <xsl:variable name="ms"><xsl:value-of select="translate($hashms, '#', '')"/></xsl:variable>
   	<!-- get side from previous pb -->
-    <xsl:variable name="folio-and-side"><xsl:value-of select="./preceding::tei:pb[@ed=$hashms]/@n"/></xsl:variable>
+    <xsl:variable name="folio-and-side">
+      <!-- TODO preceding not working in column A cases where pagebreak is preceding sibling -->
+      <xsl:choose>
+        <xsl:when test="./preceding-sibling::tei:pb[1]">
+          <xsl:value-of select="./preceding-sibling::tei:pb[@ed=$hashms][1]/@n"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:value-of select="./preceding::tei:pb[@ed=$hashms][1]/@n"/>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
     <!-- <xsl:variable name="length"><xsl:value-of select="string-length($folio-and-side)-2"/></xsl:variable> -->
-    <xsl:variable name="folio"><xsl:value-of select="substring-before($folio-and-side, '-')"/></xsl:variable>
+    <xsl:variable name="folio">
+      <xsl:choose>
+        <xsl:when test="not(contains($folio-and-side, '-'))">
+          <xsl:value-of select="$folio-and-side"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:value-of select="substring-before($folio-and-side, '-')"/>
+        </xsl:otherwise>
+      </xsl:choose>
+      
+    </xsl:variable>
     <!-- <xsl:variable name="side_column"><xsl:value-of select="substring($fullcn, $length+1)"/></xsl:variable> -->
     <xsl:variable name="column"><xsl:value-of select="./@n"/></xsl:variable>
     <xsl:variable name="side"><xsl:value-of select="substring-after($folio-and-side, '-')"/></xsl:variable>
@@ -240,7 +260,16 @@
 	    <!-- this variable gets length of Ms abbrev and folio number after substracting side -->
 	    <!-- <xsl:variable name="length"><xsl:value-of select="string-length($fullcn)-1"/></xsl:variable> -->
 	    <!-- this variable separates isolates folio number by skipping msAbbrev and then not including side designation -->
-	    <xsl:variable name="folio"><xsl:value-of select="substring-before($folio-and-side, '-')"/></xsl:variable>
+	    <xsl:variable name="folio">
+	      <xsl:choose>
+	        <xsl:when test="not(contains($folio-and-side, '-'))">
+	          <xsl:value-of select="$folio-and-side"/>
+	        </xsl:when>
+	        <xsl:otherwise>
+	          <xsl:value-of select="substring-before($folio-and-side, '-')"/>
+	        </xsl:otherwise>
+	      </xsl:choose>
+	    </xsl:variable>
 	    <!-- this desgination gets side by skipping lenghth of msAbbrev and folio number and then getting the first character that occurs -->
 	    <xsl:variable name="side"><xsl:value-of select="substring-after($folio-and-side, '-')"/></xsl:variable>
 
@@ -250,7 +279,7 @@
 	    <xsl:variable name="expressionid" select="./preceding::tei:p/@xml:id"/>
 
       <xsl:variable name="surfaceid">
-        <xsl:value-of select="concat($break-ms-slug, '/', $folionumber, $side)"/>
+        <xsl:value-of select="concat($break-ms-slug, '/', $folio, $side)"/>
       </xsl:variable>
 
       <xsl:variable name="canvasid">
@@ -340,11 +369,22 @@
               <span><xsl:value-of select="."/></span><xsl:text>, </xsl:text>
             </xsl:otherwise>
           </xsl:choose>
-
         </xsl:for-each>
       </p>
+      <xsl:for-each select="//tei:titleStmt/tei:respStmt">
+        <p><span><xsl:value-of select="./tei:resp"/></span>: <span><xsl:value-of select="./tei:name"/></span></p>
+      </xsl:for-each>
       <p>Edition: <span id="editionNumber"><xsl:value-of select="//tei:teiHeader/tei:fileDesc/tei:editionStmt/tei:edition/@n"/></span> | <xsl:value-of select="//tei:teiHeader/tei:fileDesc/tei:editionStmt/tei:edition/tei:date"/></p>
-      <p>Authority: <xsl:value-of select="//tei:teiHeader/tei:fileDesc/tei:publicationStmt/tei:authority"/>, <xsl:value-of select="//tei:teiHeader/tei:fileDesc/tei:publicationStmt/tei:pubPlace"/>, <xsl:value-of select="//tei:teiHeader/tei:fileDesc/tei:publicationStmt/tei:date"/></p>
+      <p>Authority: 
+        <xsl:choose>
+          <xsl:when test="//tei:teiHeader/tei:fileDesc/tei:publicationStmt/tei:authority/tei:ref">
+            <a href="{//tei:teiHeader/tei:fileDesc/tei:publicationStmt/tei:authority/tei:ref/@target}"><xsl:value-of select="//tei:teiHeader/tei:fileDesc/tei:publicationStmt/tei:authority"/></a>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:value-of select="//tei:teiHeader/tei:fileDesc/tei:publicationStmt/tei:authority"/>
+          </xsl:otherwise>
+        </xsl:choose>
+      </p>
       <p>License Availablity: <xsl:value-of select="//tei:teiHeader/tei:fileDesc/tei:publicationStmt/tei:availability/@status"/>, <xsl:value-of select="//tei:teiHeader/tei:fileDesc/tei:publicationStmt/tei:availability/tei:p"/> </p>
       <p style="display: none;"><span id="filestem"><xsl:value-of select="//tei:body/tei:div/@xml:id"/></span></p>
 

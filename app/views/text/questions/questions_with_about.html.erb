@@ -76,6 +76,15 @@
           <td>Supported by <%= link_to sponsor[:sponsorTitle], sponsor[:sponsorLink].to_s %> <img height="32px" src="<%= sponsor[:sponsorLogo].to_s %>"/></td>
         </tr>
       <% end %>
+      <% if @questionEditor != nil %>
+        <tr>
+          <td>Question Listed edited by <%= @questionEditor %></td>
+        </tr>
+      <% end %>
+      <% if @questionEncoder != nil %>
+          <td>Question Listed encoded by <%= @questionEncoder %></td>
+        </tr>
+      <% end %>
     </table>
 
     <!-- articles menu -->

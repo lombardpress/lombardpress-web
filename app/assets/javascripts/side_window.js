@@ -45,14 +45,17 @@ $(document).on('turbolinks:load', function () {
 			showSideWindow($paragraph);
 			showParagraphNotes(pid);
 		});
-		$("a.js-show-paragraph-info").click(function(event){
-			event.preventDefault();
-			// var pid here stands for the expression id
-			var pid = $(this).attr("data-pid");
-			$paragraph = $("p#" + pid);
-			showSideWindow($paragraph)
-			showParagraphInfo(pid)
-		});
+//this biding is redundant because it is bound to the document below
+// if uncommented, the function will be called twice producing repeated results
+// this could be a problem with above functions as well
+		// $("a.js-show-paragraph-info").click(function(event){
+		// 	event.preventDefault();
+		// 	// var pid here stands for the expression id
+		// 	var pid = $(this).attr("data-pid");
+		// 	$paragraph = $("p#" + pid);
+		// 	showSideWindow($paragraph)
+		// 	showParagraphInfo(pid)
+		// });
 
 	});
 });
@@ -207,10 +210,29 @@ var showParagraphNotes = function(expressionid){
 
 var showParagraphInfo = function(itemid){
 	$.get("/text/info/" + itemid, function(data){
+		var inbox = data.inbox
 		var content = HandlebarsTemplates['textinfo'](data);
 		$("#lbp-side-window-container").html(content);
 
+		$.get(inbox, function(data){
+
+			data["ldp:contains"].forEach(function(l){
+				$.get(l["@id"], function(ldata){
+					if (ldata["motivation"] == "commenting") {
+						$("#ldn-comments-head").css({"display" : "block"})
+						var comments_tpl = HandlebarsTemplates['ldn-comments'](ldata);
+						$("#ldn-comments").append(comments_tpl);
+					}
+					if (ldata["motivation"] == "discussing") {
+						$("#ldn-discussions-head").css({"display" : "block"})
+						var discussions_tpl = HandlebarsTemplates['ldn-discussing'](ldata);
+						$("#ldn-discussions").append(discussions_tpl);
+					}
+				});
+			});
+		});
 	});
+
 }
 var showParagraphReference = function(url){
 	$("#lbp-bottom-window-container").load("/paragraphs/show2/?url=" + url, function(response, status, xhr){

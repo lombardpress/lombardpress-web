@@ -1,26 +1,26 @@
 <div id="lbp-comment-new-container" class="container-fluid">
 <% if @expression != nil %>
-		<h1>Comments for <%= @expression.title %>, paragraph <%= @expression.order_number %></h1>
+		<h1>Comments for <%= @expression.title %>, paragraph  <%= params[:pid] %></h1> <!-- @expression.order_number not working -->
 	<% else %>
 		<h1>Comments for <%= @expression.title %>, paragraph <%= params[:pid] %></h1>
 	<% end %>
 
 <%= form_for :comment, url: comments_path, :html => { id: "lbp-new-comment-form" } do |f| %>
-	<%= f.select :access_type do %> 
-	
+	<%= f.select :access_type do %>
+
 		<% Comment.access_types.each do |access_type, int| %>
 			<% if access_type == "editorial" %>
 				<% if check_editor_access(current_user, params[:itemid], params[:commentaryid]) || current_user.admin? %>
 					<%= content_tag(:option, access_type, value: access_type) %>
 				<% end %>
-			<% else %> 
+			<% else %>
 				<%= content_tag(:option, access_type, value: access_type) %>
-		  <% end %>    		
+		  <% end %>
 		<% end %>
 	<% end %>
-	<br/>	
+	<br/>
 	<%= f.text_area :comment, :class => 'ckeditor' %><br/>
-	
+
 	<%= f.hidden_field :user_id, value: params[:user] %>
 	<%= f.hidden_field :pid, value: params[:pid] %>
 	<%= f.hidden_field :itemid, value: params[:itemid] %>

@@ -1,6 +1,9 @@
-Version Log
+Change Log
 
-Feature Priorities for 0.6.0
+Version 0.7.0
+- update to use ruby 2.3.1
+- adds marginal note display in diplomatic transcriptions
+- adds support for sending and receiving data from linked data notification inbox
 
 Version 0.5.0
 

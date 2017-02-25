@@ -14,8 +14,8 @@ h1, h2, h3, h4, h5, h6 {font-size: 20px; text-align: center;}
 
 
 //span styles
-.lbp-folionumber {border-left: 2px solid gray; 
-	border-right: 2px solid gray; 
+.lbp-folionumber {border-left: 2px solid gray;
+	border-right: 2px solid gray;
 	padding-right: 3px; padding-left: 3px; color: gray; }
 
 .lbp-title {font-style: italic}
@@ -30,5 +30,27 @@ h1, h2, h3, h4, h5, h6 {font-size: 20px; text-align: center;}
 #lbp-collation-selector-form {text-align: center; select {height: 30px; background-color: white;} input {height: 30px;}}
 #lbp-collation-selector {border-bottom: 1px dashed black; margin-bottom: 7px; padding-bottom: 7px;}
 
-//toggle class required for javascript question filter 
+//toggle class required for javascript question filter
 .lbp-hidden {display: none}
+
+//marginal note style for diplomatic transcriptions
+.lbp-marginal-note {
+	position: absolute;
+	left: -150px;
+	width: 100px;
+	height: 20px;
+	overflow: hidden;
+	border-top: 1px solid $dark-color;
+	//background-color: $light-color;
+  background-color: white;
+	padding: 5px;
+	text-align:right;
+	line-height: 125%;
+	font-size: 10px;
+}
+.lbp-marginal-note:hover{
+	z-index: 1;
+	background-color: $light-color;
+	height: auto;
+	overflow: visible;
+}
