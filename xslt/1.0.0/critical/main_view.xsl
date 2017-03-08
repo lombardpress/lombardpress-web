@@ -412,7 +412,7 @@
       <xsl:if test="//tei:sourceDesc/tei:listBibl or //tei:sourceDesc/tei:listWit">
         <div id="sources">
           <p>Sources:</p>
-          <xsl:for-each select="//tei:sourceDesc/tei:listWit/tei:witness">
+          <xsl:for-each select="//tei:sourceDesc/tei:listWit/tei:witness[@n|text()]">
             <p style="padding-left: 10px"><xsl:value-of select="./@xml:id"/>: <xsl:value-of select="."/></p>
           </xsl:for-each>
           <xsl:for-each select="//tei:sourceDesc/tei:listBibl/tei:bibl">
