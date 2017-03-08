@@ -359,26 +359,48 @@
     <div id="lbp-pub-info">
       <h2><span id="sectionTitle" class="sectionTitle"><xsl:value-of select="//tei:titleStmt/tei:title"/></span></h2>
       <h4><xsl:value-of select="$by_phrase"/><xsl:text> </xsl:text><xsl:value-of select="//tei:titleStmt/tei:author"/></h4>
-      <p><xsl:value-of select="$edited_by_phrase"/><xsl:text> </xsl:text>
-        <xsl:for-each select="//tei:titleStmt/tei:editor">
-          <xsl:choose>
-            <xsl:when test="position() = last()">
-              <span><xsl:value-of select="."/></span><xsl:text/>
-            </xsl:when>
-            <xsl:otherwise>
-              <span><xsl:value-of select="."/></span><xsl:text>, </xsl:text>
-            </xsl:otherwise>
-          </xsl:choose>
-        </xsl:for-each>
-      </p>
-      <xsl:for-each select="//tei:titleStmt/tei:respStmt">
-        <p><span><xsl:value-of select="./tei:resp"/></span>: <span><xsl:value-of select="./tei:name"/></span></p>
-      </xsl:for-each>
+      <div style="font-size: 12px; max-height: 300px; overflow: scroll">
+      <xsl:if test="//tei:titleStmt/tei:editor/text() or //tei:titleStmt/tei:editor/@ref">
+        <p><xsl:value-of select="$edited_by_phrase"/><xsl:text> </xsl:text>
+          <xsl:for-each select="//tei:titleStmt/tei:editor">
+            <xsl:choose>
+              <xsl:when test="position() = last()">
+                <span><xsl:value-of select="."/></span><xsl:text/>
+              </xsl:when>
+              <xsl:otherwise>
+                <span><xsl:value-of select="."/></span><xsl:text>, </xsl:text>
+              </xsl:otherwise>
+            </xsl:choose>
+          </xsl:for-each>
+        </p>
+      </xsl:if>
+      <xsl:if test="//tei:titleStmt//tei:respStmt">
+        <div id="lbp-contributors">
+          <p>Contributors:</p>
+          <p style="padding-left: 10px">
+            <xsl:for-each select="//tei:titleStmt/tei:respStmt">
+              <xsl:choose>
+                <xsl:when test="./tei:resp/@when">
+                  - <span><xsl:value-of select="./tei:name"/></span>, 
+                  <span><xsl:value-of select="normalize-space(./tei:resp)"/></span>,
+                  <span><xsl:value-of select="./tei:resp/@when"/></span>
+                  <xsl:text> </xsl:text>
+                </xsl:when>
+                <xsl:otherwise>
+                  - <span><xsl:value-of select="./tei:name"/></span>, 
+                  <span><xsl:value-of select="normalize-space(./tei:resp)"/></span>
+                  <xsl:text> </xsl:text>
+                </xsl:otherwise>
+              </xsl:choose>
+            </xsl:for-each>
+          </p>
+        </div>
+      </xsl:if>
       <p>Edition: <span id="editionNumber"><xsl:value-of select="//tei:teiHeader/tei:fileDesc/tei:editionStmt/tei:edition/@n"/></span> | <xsl:value-of select="//tei:teiHeader/tei:fileDesc/tei:editionStmt/tei:edition/tei:date"/></p>
       <p>Authority: 
         <xsl:choose>
           <xsl:when test="//tei:teiHeader/tei:fileDesc/tei:publicationStmt/tei:authority/tei:ref">
-            <a href="{//tei:teiHeader/tei:fileDesc/tei:publicationStmt/tei:authority/tei:ref/@target}"><xsl:value-of select="//tei:teiHeader/tei:fileDesc/tei:publicationStmt/tei:authority"/></a>
+            <xsl:value-of select="//tei:teiHeader/tei:fileDesc/tei:publicationStmt/tei:authority"/>: <a href="{//tei:teiHeader/tei:fileDesc/tei:publicationStmt/tei:authority/tei:ref/@target}"><xsl:value-of select="//tei:teiHeader/tei:fileDesc/tei:publicationStmt/tei:authority/tei:ref/@target"/></a>
           </xsl:when>
           <xsl:otherwise>
             <xsl:value-of select="//tei:teiHeader/tei:fileDesc/tei:publicationStmt/tei:authority"/>
@@ -387,6 +409,18 @@
       </p>
       <p>License Availablity: <xsl:value-of select="//tei:teiHeader/tei:fileDesc/tei:publicationStmt/tei:availability/@status"/>, <xsl:value-of select="//tei:teiHeader/tei:fileDesc/tei:publicationStmt/tei:availability/tei:p"/> </p>
       <p style="display: none;"><span id="filestem"><xsl:value-of select="//tei:body/tei:div/@xml:id"/></span></p>
+      <xsl:if test="//tei:sourceDesc/tei:listBibl or //tei:sourceDesc/tei:listWit">
+        <div id="sources">
+          <p>Sources:</p>
+          <xsl:for-each select="//tei:sourceDesc/tei:listWit/tei:witness">
+            <p style="padding-left: 10px"><xsl:value-of select="./@xml:id"/>: <xsl:value-of select="."/></p>
+          </xsl:for-each>
+          <xsl:for-each select="//tei:sourceDesc/tei:listBibl/tei:bibl">
+            <p style="padding-left: 10px"><xsl:value-of select="./@xml:id"/>: <xsl:value-of select="."/></p>
+          </xsl:for-each>
+        </div>
+      </xsl:if>
+      </div>
 
     </div>
   </xsl:template>
