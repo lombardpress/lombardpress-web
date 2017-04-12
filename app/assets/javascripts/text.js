@@ -42,6 +42,7 @@ $(document).on('turbolinks:load', function () {
 			var msslug = $(this).attr("data-msslug");
 			showParaZoomImage(expressionid, msslug);
 		});
+    /* commented out because this seems to be handled by the document on function
 		$("a.js-show-folio-image").click(function(event){
 			event.preventDefault();
 			showSpinner("#lbp-bottom-window-container");
@@ -54,6 +55,7 @@ $(document).on('turbolinks:load', function () {
 			showFolioImage(canvasid, expressionid, surfaceid);
 
 		});
+    */
 
 		$("a.js-view-comments").click(function(event){
 			event.preventDefault();
@@ -249,8 +251,10 @@ var showParaZoomImage = function(expressionid, msslug){
 
 	// third: get image
 		$.get("/paragraphimage/showzoom/" + expressionid + "/" + msslug, function(data){
-			console.log(data);
-            var i = 1;
+			if (data.length === 0){
+        $("#lbp-para-picture-window").append("<div style='width: 300px; margin: auto; padding: 5px; background-color: #d8d6d6; '><p>Apologies for the inconvenice. This image is not yet available either because it is not yet <a href='http://iiif.io'>IIIF</a> compliant or we have not yet collected coordinates for this text region.</p></div>");
+      }
+      var i = 1;
 			data.forEach(function(zone){
                 console.log("test", zone);
 				id = Math.random()
@@ -266,30 +270,38 @@ var showParaZoomImage = function(expressionid, msslug){
 		});
 }
 var showFolioImage = function(canvasid, expressionid, surfaceid){
-	$.get("/paragraphimage/showfoliozoom?canvasid="+ canvasid + "&expressionid=" + expressionid + "&surfaceid=" + surfaceid , function(data){
-		id = Math.random();
+  $.ajax({
+    url: "/paragraphimage/showfoliozoom?canvasid="+ canvasid + "&expressionid=" + expressionid + "&surfaceid=" + surfaceid,
+    type: 'get',
+    error: function(XMLHttpRequest, textStatus, errorThrown){
+      $("#lbp-bottom-window-container").html("<div><p>Apologies for the inconvenience. This image is not yet <a href='http://iiif.io'>IIIF</a> compliant. When it becomes available via <a href='http://iiif.io'>IIIF</a>, it will be visible here.</div>");
+        console.log('status:' + XMLHttpRequest.status + ', status text: ' + XMLHttpRequest.statusText);
+    },
+    success: function(data){
+      id = Math.random();
 
-		function insertNext(data){
-			if (data.next_shortid !== null){
-			return	"<a class='js-show-folio-image' data-surfaceid='" + data.next_shortid + "'>Next</a>"
-			}
-			else {
-				return ""
-			}
-		}
-		function insertPrev(data){
-			if (data.previous_shortid !== null){
-				return	"<a class='js-show-folio-image' data-surfaceid='" + data.previous_shortid + "'>Previous</a>"
-			}
-			else {
-				return ""
-			}
-		}
-		var height = data.c_height;
-		var width = data.c_width;
-		var newHeight = 1170 / width * height
-		$("#lbp-bottom-window-container").html("<div id='folio-nav' style='text-align: center;'>" + insertPrev(data) + " " + insertNext(data) + "</div><div id='openseadragon-" + id + "' style='width: 1170;  height: " + newHeight + "px; margin: auto;'></div>");
-		showOpenseadragonFolio(id, data)
+  		function insertNext(data){
+  			if (data.next_shortid !== null){
+  			return	"<a class='js-show-folio-image' data-surfaceid='" + data.next_shortid + "'>Next</a>"
+  			}
+  			else {
+  				return ""
+  			}
+  		}
+  		function insertPrev(data){
+  			if (data.previous_shortid !== null){
+  				return	"<a class='js-show-folio-image' data-surfaceid='" + data.previous_shortid + "'>Previous</a>"
+  			}
+  			else {
+  				return ""
+  			}
+  		}
+  		var height = data.c_height;
+  		var width = data.c_width;
+  		var newHeight = 1170 / width * height
+  		$("#lbp-bottom-window-container").html("<div id='folio-nav' style='text-align: center;'>" + insertPrev(data) + " " + insertNext(data) + "</div><div id='openseadragon-" + id + "' style='width: 1170;  height: " + newHeight + "px; margin: auto;'></div>");
+  		showOpenseadragonFolio(id, data)
+    }
 	});
 
 }

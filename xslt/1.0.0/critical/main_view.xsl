@@ -146,7 +146,8 @@
   <!-- ref template -->
   <xsl:template match="tei:ref">
     <xsl:variable name="refid" select="translate(./@ana, '#', '')"/>
-    <span id="{@xml:id}" class="lbp-ref" data-ref="{$refid}">
+    <xsl:variable name="corresp" select="translate(./@corresp, '#', '')"/>
+    <span id="{@xml:id}" class="lbp-ref" data-ref="{$refid}" data-corresp="{$corresp}">
       <xsl:text/>
       <xsl:apply-templates/>
       <xsl:text/>
@@ -155,7 +156,7 @@
 
   <xsl:template match="tei:bibl/tei:ref">
     <xsl:choose>
-      <xsl:when test="./@type = 'commentary'">
+      <xsl:when test="contains(./@target, 'http://scta.info/resource/')">
         <a href="{@target}" data-url="{@target}" class='js-show-reference-paragraph'><xsl:apply-templates/></a> <a href="{@target}" target="_blank"> [SCTA Entry] </a>
       </xsl:when>
       <xsl:otherwise>
@@ -206,7 +207,7 @@
           <xsl:value-of select="substring-before($folio-and-side, '-')"/>
         </xsl:otherwise>
       </xsl:choose>
-      
+
     </xsl:variable>
     <!-- <xsl:variable name="side_column"><xsl:value-of select="substring($fullcn, $length+1)"/></xsl:variable> -->
     <xsl:variable name="column"><xsl:value-of select="./@n"/></xsl:variable>
@@ -329,7 +330,7 @@
       <xsl:number count="//tei:bibl" level="any" format="a"/></xsl:variable>
       <xsl:text> </xsl:text>
       <sup>
-        <a href="#lbp-footnote{$id}" name="lbp-footnotereference{$id}" class="footnote">
+        <a href="#lbp-footnote{$id}" id="lbp-footnotereference{$id}" class="footnote">
         [<xsl:value-of select="$id"/>]
         </a>
       </sup>
@@ -381,13 +382,13 @@
             <xsl:for-each select="//tei:titleStmt/tei:respStmt">
               <xsl:choose>
                 <xsl:when test="./tei:resp/@when">
-                  - <span><xsl:value-of select="./tei:name"/></span>, 
+                  - <span><xsl:value-of select="./tei:name"/></span>,
                   <span><xsl:value-of select="normalize-space(./tei:resp)"/></span>,
                   <span><xsl:value-of select="./tei:resp/@when"/></span>
                   <xsl:text> </xsl:text>
                 </xsl:when>
                 <xsl:otherwise>
-                  - <span><xsl:value-of select="./tei:name"/></span>, 
+                  - <span><xsl:value-of select="./tei:name"/></span>,
                   <span><xsl:value-of select="normalize-space(./tei:resp)"/></span>
                   <xsl:text> </xsl:text>
                 </xsl:otherwise>
@@ -397,7 +398,7 @@
         </div>
       </xsl:if>
       <p>Edition: <span id="editionNumber"><xsl:value-of select="//tei:teiHeader/tei:fileDesc/tei:editionStmt/tei:edition/@n"/></span> | <xsl:value-of select="//tei:teiHeader/tei:fileDesc/tei:editionStmt/tei:edition/tei:date"/></p>
-      <p>Authority: 
+      <p>Authority:
         <xsl:choose>
           <xsl:when test="//tei:teiHeader/tei:fileDesc/tei:publicationStmt/tei:authority/tei:ref">
             <xsl:value-of select="//tei:teiHeader/tei:fileDesc/tei:publicationStmt/tei:authority"/>: <a href="{//tei:teiHeader/tei:fileDesc/tei:publicationStmt/tei:authority/tei:ref/@target}"><xsl:value-of select="//tei:teiHeader/tei:fileDesc/tei:publicationStmt/tei:authority/tei:ref/@target"/></a>
