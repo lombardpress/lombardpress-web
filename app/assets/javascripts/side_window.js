@@ -78,12 +78,14 @@ $(document).on("mouseover", ".lbp-side-window-note", function(event){
 			var note = $(this).attr("data-note");
 			$(this).css({backgroundColor: "yellow"});
 			$("span#" + note).css({backgroundColor: "yellow"});
+      $("span[data-corresp=" + note + "]").css({backgroundColor: "yellow"});
 		});
 $(document).on("mouseout", ".lbp-side-window-note", function(event){
 			event.preventDefault();
 			var note = $(this).attr("data-note");
 			$(this).css({backgroundColor: "transparent"});
 			$("span#" + note).css({backgroundColor: "transparent"});
+      $("span[data-corresp=" + note + "]").css({backgroundColor: "transparent"});
 		});
 
 $(document).on("click", ".js-side-bar-scroll-to-paragraph", function(event){
