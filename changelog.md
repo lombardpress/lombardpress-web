@@ -1,5 +1,12 @@
 Change Log
 
+Version 0.7.1
+- minor updates over 0.7.0.
+- update to search controller to use new url to access scta search service. Search service is still in development so this will likely need to be adjusted again.
+- added more informative error messages when images are not available to be loaded.
+- made several adjustments to lbp-1.0.0 critical xslt to support enhanced connection when viewing notes and viewing external references
+- made adjustments to style sheets to show more publication information at the top of the text file.
+
 Version 0.7.0
 - update to use ruby 2.3.1
 - adds marginal note display in diplomatic transcriptions
