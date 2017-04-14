@@ -148,7 +148,7 @@ class ParagraphsController < ApplicationController
     xslt_param_array = ["pid", "'#{params[:itemid]}'"]
 
     schema_version = file.validating_schema_version
-    @para_variants = file.transform("#{Rails.root}/xslt/#{schema_version}/critical/para_variants.xsl", xslt_param_array)
+    @para_variants = file.transform("#{file.xslt_dir}/para_variants.xsl", xslt_param_array)
 
     render :layout => false
   end
@@ -161,7 +161,8 @@ class ParagraphsController < ApplicationController
     file = transcript.file(confighash: @config.confighash)
 
     xslt_param_array = ["pid", "'#{params[:itemid]}'"]
-    @para_notes = file.transform("#{Rails.root}/xslt/default/critical/para_notes.xsl", xslt_param_array)
+    
+    @para_notes = file.transform("#{file.xslt_dir}/para_notes.xsl", xslt_param_array)
     render :layout => false
   end
 end
