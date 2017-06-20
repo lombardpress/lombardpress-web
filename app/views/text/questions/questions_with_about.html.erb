@@ -2,6 +2,10 @@
   .status{display: none;}
   .itemLink:hover .status{display: inline;}
 </style>
+<script>
+
+
+</script>
 <div class="row container" style="margin: auto;">
 
   <div class="col-md-8" style="padding: 20px">
@@ -23,12 +27,14 @@
         <td><%= unless result[:status] == "Not Started" then link_to result[:title], link else result[:title]  end %></td>
         <td class="lbp-question-title"><%= unless result[:status] == "Not Started" || result[:questiontitle] == nil  then link_to result[:questiontitle], link else result[:questiontitle]  end %></td>
         <td><%= result[:status] %></td>
-        <td class="lbp-status">
-          <% unless result[:status] == "Not Started" %>
-            <img src="https://img.shields.io/wercker/ci/wercker/docs.svg"/>
-          <% else %>
+        <% if result[:item].to_s.split('/').last == "lectio1" %>
+          <td class="lbp-status" data-review-url="https://dll-review-registry.herokuapp.com/reviews/c9f73c2c-1c1f-4e91-abb5-2e08c961cb4a.json">
+        <% elsif result[:item].to_s.split('/').last == "lectio2" %>
+          <td class="lbp-status" data-review-url="https://dll-review-registry.herokuapp.com/reviews/e4fe60ea-d303-48ef-b4d6-4ff9b8368785.json">
+        <% else %>
+          <td class="lbp-status" >
             No Review
-          <% end %>
+        <% end %>
         </td>
         <td><%= link_to "View on GitHub", result[:gitRepository].to_s %></td>
       </tr>
