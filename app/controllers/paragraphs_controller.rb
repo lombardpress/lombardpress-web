@@ -12,29 +12,33 @@ class ParagraphsController < ApplicationController
   end
   def show2
     url = params[:url]
-    @expression = Lbp::Expression.find(url)
+    @resource = Lbp::Resource.find(url)
+    if @resource.class == Lbp::Expression
+      if @resource.structure_type.short_id == "structureItem"
+        @target_url = "/text/#{@resource.short_id}"
+      else
+        @target_url = "/text/#{@resource.item_level_expression.short_id}##{@resource.short_id}"
+      end
+      @target_title = @resource.title
+      #itemid = @para.itemid
+      #commentaryid = @para.cid
+      #pid = @para.pid
+      #commentaryurl = "http://scta.info/text/#{commentaryid}/commentary"
+      #commentary = Lbp::Collection.new(@config.confighash, commentaryurl)
+      #@commentary_title = commentary.title
+      #itemurl = "http://scta.info/text/#{commentaryid}/item/#{itemid}"
+      #@item = Lbp::Item.new(@config.confighash, itemurl)
 
-    if @expression.structure_type.short_id == "structureItem"
-      @target_url = "/text/#{@expression.short_id}"
+      #canonicalwit = @item.canonical_transcription_slug
+      transcript = get_transcript(params)
+      file = transcript.file_part(confighash: @config.confighash, partid: @resource.short_id)
+      #transcript = @item.transcription(source: "origin", wit: canonicalwit)
+
+      @text = file.transform_plain_text
     else
-      @target_url = "/text/#{@expression.item_level_expression.short_id}##{@expression.short_id}"
+      # this handles references to non-expressions, such as canonical quotations
+      @text = @resource.value("http://scta.info/property/quotation").to_s
     end
-    @target_title = @expression.title
-    #itemid = @para.itemid
-    #commentaryid = @para.cid
-    #pid = @para.pid
-    #commentaryurl = "http://scta.info/text/#{commentaryid}/commentary"
-    #commentary = Lbp::Collection.new(@config.confighash, commentaryurl)
-    #@commentary_title = commentary.title
-    #itemurl = "http://scta.info/text/#{commentaryid}/item/#{itemid}"
-    #@item = Lbp::Item.new(@config.confighash, itemurl)
-
-    #canonicalwit = @item.canonical_transcription_slug
-    transcript = get_transcript(params)
-    file = transcript.file_part(confighash: @config.confighash, partid: @expression.short_id)
-    #transcript = @item.transcription(source: "origin", wit: canonicalwit)
-
-    @text = file.transform_plain_text
     render :layout => false
   end
 
@@ -161,7 +165,7 @@ class ParagraphsController < ApplicationController
     file = transcript.file(confighash: @config.confighash)
 
     xslt_param_array = ["pid", "'#{params[:itemid]}'"]
-    
+
     @para_notes = file.transform("#{file.xslt_dir}/para_notes.xsl", xslt_param_array)
     render :layout => false
   end
