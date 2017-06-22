@@ -127,7 +127,11 @@ $(document).on("click", "div.tocdiv > :first-child", function(event){
 
 ///////////FUNCTIONS////////////////////
 
-var scrollToParagraph = function(element, highlight=false){
+var scrollToParagraph = function(element, highlight){
+  // this is the way of making a default parameter before es6/es2015
+  // when this becomes es 6 es2015
+  highlight = (typeof highlight !== 'undefined') ?  highlight : false;
+
   if (highlight){
     element.css({backgroundColor: "yellow"});
     element.animate({backgroundColor: "none"}, 5000);
