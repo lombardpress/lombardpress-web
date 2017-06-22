@@ -112,11 +112,26 @@ $(document).on("click", "a.js-show-paragraph-info", function(event){
 			showSideWindow($paragraph)
 			showParagraphInfo(pid)
 		});
+//table of contents onclick scroll to section
+$(document).on("click", "div.tocdiv > :first-child", function(event){
+			event.preventDefault();
+      console.log(this)
+			var element_id = $(this).attr("id");
+			$element = $("#" + element_id);
+			//showSpinner("div#lbp-side-window-container");
+			//showSideWindow($element)
+			scrollToParagraph($element, true)
+      //adjustAnchor(element_id)
+		});
 
 
 ///////////FUNCTIONS////////////////////
 
-var scrollToParagraph = function(element){
+var scrollToParagraph = function(element, highlight=false){
+  if (highlight){
+    element.css({backgroundColor: "yellow"});
+    element.animate({backgroundColor: "none"}, 5000);
+  }
 	if (element.length > 0) {
 	    $('html, body')
             .stop()
@@ -129,19 +144,25 @@ var scrollToParagraph = function(element){
 
 var getCurrentViewingParagraph = function(){
 	var $paragraphs = $('p.plaoulparagraph');
-	var viewerMidPoint = $(window).height()/2;
+	var viewerMidPoint = $(window).height()/4;
 	$paragraph = ($paragraphs.nearest({y: $(window).scrollTop() + viewerMidPoint, x: 0}));
 	return $paragraph;
 }
 
 var showSideWindow = function(element){
-
-	$("div#lbp-text-body").animate({"width": "50%", "margin-left": "45%"}, function(){
-		$("div#lbp-side-window").css("display", "block").promise().done(function(){
-			$("div#lbp-side-window").animate({"width": "40%"}, scrollToParagraph(element));
-		});
-	});
-
+  // this condition helps prevent resizing when the side window is already open
+  if ($("div#lbp-side-window").css('display') === 'none'){
+    $("div#lbp-text-body").animate({"width": "50%", "margin-left": "45%"}, function(){
+  		$("div#lbp-side-window").css("display", "block").promise().done(function(){
+  			$("div#lbp-side-window").animate({"width": "40%"}, scrollToParagraph(element));
+  		});
+  	});
+  }
+  else {
+    $("div#lbp-side-window").css("display", "block").promise().done(function(){
+      $("div#lbp-side-window").animate({"width": "40%"}, scrollToParagraph(element));
+    });
+  }
 };
 
 var hideSideWindow = function(element){
