@@ -254,8 +254,8 @@
   </xsl:template>
 
   <xsl:template match="tei:pb">
-  	<xsl:if test="not(//tei:cb)">
-	    <xsl:variable name="hashms"><xsl:value-of select="@ed"/></xsl:variable>
+	  <xsl:variable name="hashms"><xsl:value-of select="@ed"/></xsl:variable>
+    <xsl:if test="not(//tei:cb[@ed=$hashms])">
 	    <xsl:variable name="ms"><xsl:value-of select="translate($hashms, '#', '')"/></xsl:variable>
 	    <xsl:variable name="folio-and-side"><xsl:value-of select="@n"/></xsl:variable>
 	    <!-- this variable gets length of Ms abbrev and folio number after substracting side -->
@@ -275,7 +275,7 @@
 	    <xsl:variable name="side"><xsl:value-of select="substring-after($folio-and-side, '-')"/></xsl:variable>
 
 	    <!-- this variable gets the msslug associated with ms initial in the teiHeader -->
-	    <xsl:variable name="break-ms-slug" select="/tei:TEI/tei:teiHeader[1]/tei:fileDesc[1]/tei:sourceDesc[1]/tei:listWit[1]/tei:witness[1][@xml:id=$ms]/@n"/>
+	    <xsl:variable name="break-ms-slug" select="/tei:TEI/tei:teiHeader[1]/tei:fileDesc[1]/tei:sourceDesc[1]/tei:listWit[1]/tei:witness[@xml:id=$ms]/@n"/>
 	    <!-- get preceding paragraph id -->
 	    <xsl:variable name="expressionid" select="./preceding::tei:p/@xml:id"/>
 
@@ -301,7 +301,7 @@
 	      <!-- data-msslug needs to get info directly from final; default will not work -->
 	      <xsl:choose>
 	        <xsl:when test="$show-images = 'true'">
-	          <a href="#" class="js-show-folio-image" data-canvasid="{$canvasid}" data-surfaceid="{$surfaceid}" data-msslug="{$break-ms-slug}" data-expressionid="{$expressionid}">
+            <a href="#" class="js-show-folio-image" data-canvasid="{$canvasid}" data-surfaceid="{$surfaceid}" data-msslug="{$break-ms-slug}" data-expressionid="{$expressionid}">
 	          <xsl:value-of select="$ms"/>
 	          <xsl:value-of select="$folio"/>
 	          <xsl:value-of select="$side"/>
