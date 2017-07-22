@@ -17,6 +17,7 @@
             <td><%= link_to result[:transcript_title].to_s, link %></td>
             <td><%= "type: #{type}" %></td>
             <td><%= "status: #{status}" %></td>
+            <td><a href="http://print.lombardpress.org/compile?id=<%= result[:manifestation] %>&output=pdf">PDF</td>
           </tr>
       <% end %>
     </table>
