@@ -259,6 +259,13 @@ class TextController < ApplicationController
 		render :layout => false
 	end
 
+	def pdf
+		@response = open("http://print.lombardpress.org/compile?id=#{params[:id]}&output=pdf").read
+		redirect_to "http://" + JSON.parse(@response)["url"];
+
+
+	end
+
 	def draft_permissions
 
 	end
