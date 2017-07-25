@@ -50,16 +50,24 @@
 
     <xsl:element name="h{$number}"><xsl:attribute name="id"><xsl:value-of select="$id"/></xsl:attribute>
       <xsl:apply-templates/>
-      <!-- TODO: add button to get info about a section
-        <xsl:if test="./parent::tei:div[@xml:id] and not(./type='questionTitle')">
-          <a href="#" class='js-show-paragraph-info' data-itemid="{$itemid}" data-pid="{$parent-div-id}"><span class="glyphicon glyphicon-tasks" aria-hidden="true"></span></a>
-        </xsl:if>
-      -->
+      <!-- conditions shows info button only for divs with a header, with an xml:id
+      and on headers that are not question titles -->
+      <xsl:if test="$parent-div-id and not(./@type='question-title')">
+        <span class="small lbp-div-info">
+          <a href="#" class="js-show-paragraph-info" data-pid="{$parent-div-id}">
+            <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
+          </a>
+        </span>
+      </xsl:if>
+
     </xsl:element>
+
   </xsl:template>
 
   <xsl:template match="tei:div">
-    <div id="{@xml:id}" class="plaoulparagraph"><xsl:apply-templates/></div>
+    <div id="{@xml:id}" class="plaoulparagraph">
+      <xsl:apply-templates/>
+    </div>
   </xsl:template>
 
   <xsl:template match="tei:p">
