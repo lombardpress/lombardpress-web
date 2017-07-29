@@ -73,6 +73,8 @@ class TextController < ApplicationController
 			if @config.commentaryid == "scta"
 				@resource = Lbp::Resource.find("http://scta.info/resource/scta")
 				@results = @resource.parts_display
+				@expression_results = @resource.expressions_display
+				@info = @resource.info_display
 				render "text/questions/workgrouplist"
 			else
 				commentaryid = @config.commentaryid
