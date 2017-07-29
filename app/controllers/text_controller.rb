@@ -17,13 +17,11 @@ class TextController < ApplicationController
 				@resource = Lbp::Resource.find("http://scta.info/resource/#{params[:resourceid]}")
 			end
 
-			# TODO this first conditional should be changed to if resource is topLevelWorkGroup
-			if @resource.short_id == "scta"
+			if @resource.type.short_id == "workGroup"
 				@results = @resource.parts_display
+				@expression_results = @resource.expressions_display
+				@info = @resource.info_display
 				render "text/questions/workgrouplist"
-			elsif @resource.type.short_id == "workGroup"
-				@results = @resource.expressions_display
-				render "text/questions/expressionlist"
 			elsif @resource.type.short_id == "expressionType"
 				@results = @resource.structure_items_by_expression_display
 				@info = @resource.info_display
