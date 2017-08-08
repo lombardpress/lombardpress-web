@@ -235,10 +235,28 @@ class TextController < ApplicationController
 			# NOTE: itemid => expressionid
 			file = transcript.file_part(confighash: @config.confighash, partid: params[:itemid])
 		end
-		@plaintext = file.transform_plain_text
+		@plaintext = file.transform_plain_text.gsub(/[\s]+/, "\s")
 		render :plain => @plaintext
+	end
+	def clean
+		## TODO refactor: this code is almost identical to TOC except that
+		## it chooses a different transform options at the very end
+		expression = get_expression(params)
+		@expression_structure = expression.structure_type.short_id
 
+		check_permission(expression)
 
+		transcript = get_transcript(params)
+
+		if @expression_structure == "structureItem"
+			file = transcript.file(confighash: @config.confighash)
+		elsif @expression_structure == "structureBlock"
+			# NOTE: itemid => expressionid
+			file = transcript.file_part(confighash: @config.confighash, partid: params[:itemid])
+		end
+		 @cleantext = file.transform_clean.gsub(/[\s]+/, "\s")
+		#@cleantext = file.transform_clean;
+		render :plain => @cleantext
 	end
 	def toc
 		expression = get_expression(params)
