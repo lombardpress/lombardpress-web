@@ -50,16 +50,24 @@
 
     <xsl:element name="h{$number}"><xsl:attribute name="id"><xsl:value-of select="$id"/></xsl:attribute>
       <xsl:apply-templates/>
-      <!-- TODO: add button to get info about a section
-        <xsl:if test="./parent::tei:div[@xml:id] and not(./type='questionTitle')">
-          <a href="#" class='js-show-paragraph-info' data-itemid="{$itemid}" data-pid="{$parent-div-id}"><span class="glyphicon glyphicon-tasks" aria-hidden="true"></span></a>
-        </xsl:if>
-      -->
+      <!-- conditions shows info button only for divs with a header, with an xml:id
+      and on headers that are not question titles -->
+      <xsl:if test="$parent-div-id and not(./@type='question-title')">
+        <span class="small lbp-div-info">
+          <a href="#" class="js-show-paragraph-info" data-pid="{$parent-div-id}">
+            <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
+          </a>
+        </span>
+      </xsl:if>
+
     </xsl:element>
+
   </xsl:template>
 
   <xsl:template match="tei:div">
-    <div id="{@xml:id}" class="plaoulparagraph"><xsl:apply-templates/></div>
+    <div id="{@xml:id}" class="plaoulparagraph">
+      <xsl:apply-templates/>
+    </div>
   </xsl:template>
 
   <xsl:template match="tei:p">
@@ -254,8 +262,8 @@
   </xsl:template>
 
   <xsl:template match="tei:pb">
-  	<xsl:if test="not(//tei:cb)">
-	    <xsl:variable name="hashms"><xsl:value-of select="@ed"/></xsl:variable>
+	  <xsl:variable name="hashms"><xsl:value-of select="@ed"/></xsl:variable>
+    <xsl:if test="not(//tei:cb[@ed=$hashms])">
 	    <xsl:variable name="ms"><xsl:value-of select="translate($hashms, '#', '')"/></xsl:variable>
 	    <xsl:variable name="folio-and-side"><xsl:value-of select="@n"/></xsl:variable>
 	    <!-- this variable gets length of Ms abbrev and folio number after substracting side -->
@@ -275,7 +283,7 @@
 	    <xsl:variable name="side"><xsl:value-of select="substring-after($folio-and-side, '-')"/></xsl:variable>
 
 	    <!-- this variable gets the msslug associated with ms initial in the teiHeader -->
-	    <xsl:variable name="break-ms-slug" select="/tei:TEI/tei:teiHeader[1]/tei:fileDesc[1]/tei:sourceDesc[1]/tei:listWit[1]/tei:witness[1][@xml:id=$ms]/@n"/>
+	    <xsl:variable name="break-ms-slug" select="/tei:TEI/tei:teiHeader[1]/tei:fileDesc[1]/tei:sourceDesc[1]/tei:listWit[1]/tei:witness[@xml:id=$ms]/@n"/>
 	    <!-- get preceding paragraph id -->
 	    <xsl:variable name="expressionid" select="./preceding::tei:p/@xml:id"/>
 
@@ -301,7 +309,7 @@
 	      <!-- data-msslug needs to get info directly from final; default will not work -->
 	      <xsl:choose>
 	        <xsl:when test="$show-images = 'true'">
-	          <a href="#" class="js-show-folio-image" data-canvasid="{$canvasid}" data-surfaceid="{$surfaceid}" data-msslug="{$break-ms-slug}" data-expressionid="{$expressionid}">
+            <a href="#" class="js-show-folio-image" data-canvasid="{$canvasid}" data-surfaceid="{$surfaceid}" data-msslug="{$break-ms-slug}" data-expressionid="{$expressionid}">
 	          <xsl:value-of select="$ms"/>
 	          <xsl:value-of select="$folio"/>
 	          <xsl:value-of select="$side"/>
@@ -330,7 +338,7 @@
       <xsl:number count="//tei:bibl" level="any" format="a"/></xsl:variable>
       <xsl:text> </xsl:text>
       <sup>
-        <a href="#lbp-footnote{$id}" id="lbp-footnotereference{$id}" class="footnote">
+        <a href="#lbp-footnote{$id}" id="lbp-footnotereference{$id}" name="lbp-footnotereference{$id}" class="footnote">
         [<xsl:value-of select="$id"/>]
         </a>
       </sup>
@@ -342,7 +350,7 @@
     <xsl:variable name="id"><xsl:number count="//tei:app" level="any" format="1"/></xsl:variable>
     <span id="lbp-app-lem-{$id}" class="lemma"><xsl:apply-templates select="tei:lem"/>
     <xsl:text> </xsl:text>
-    <sup><a href="#lbp-variant{$id}" name="lbp-variantreference{$id}" class="appnote">[<xsl:value-of select="$id"/>]</a></sup>
+    <sup><a href="#lbp-variant{$id}" id="lbp-variantreference{$id}" name="lbp-variantreference{$id}" class="appnote">[<xsl:value-of select="$id"/>]</a></sup>
     </span>
     <xsl:text> </xsl:text>
   </xsl:template>

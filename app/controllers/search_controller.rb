@@ -5,6 +5,8 @@ class SearchController < ApplicationController
 			@results = open(open("http://exist.scta.info/exist/apps/scta-app/search/expressiontype/#{params[:expressionid]}?query=#{params[:searchterm]}")).read
 		elsif params[:use] == "author"
 			@results = open("http://exist.scta.info/exist/apps/scta-app/search/author/#{params[:authorid]}?query=#{params[:searchterm]}").read
+		elsif params[:use] == "workgroup"
+			@results = open("http://exist.scta.info/exist/apps/scta-app/search/workgroup/#{params[:workgroupid]}?query=#{params[:searchterm]}").read
 		else
 			expressionid = params[:expressionid] ? params[:expressionid] : "all"
 			@results = open("http://exist.scta.info/exist/apps/scta-app/search/expression/#{expressionid}?query=#{params[:searchterm]}").read

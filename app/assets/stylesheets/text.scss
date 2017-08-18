@@ -5,7 +5,12 @@
 #lbp-text-body {margin-top: 100px; width: 60%; max-width: 800px; text-align: justify}
 //#lbp-text-body{}
 #lbp-text-tool-bar {background-color: $light-color;}
-h1, h2, h3, h4, h5, h6 {font-size: 20px; text-align: center;}
+h1, h2, h3, h4, h5, h6 {font-size: 20px; text-align: center;
+	&:hover{
+		.lbp-div-info{display: inline}
+	}
+}
+.lbp-div-info {padding-left: 5px; display: none}
 .paragraphnumber {padding-right: 15px; margin-left: 0px; font-weight: bold;}
 
 ///test index page styles

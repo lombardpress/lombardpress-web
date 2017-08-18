@@ -17,13 +17,11 @@ class TextController < ApplicationController
 				@resource = Lbp::Resource.find("http://scta.info/resource/#{params[:resourceid]}")
 			end
 
-			# TODO this first conditional should be changed to if resource is topLevelWorkGroup
-			if @resource.short_id == "scta"
+			if @resource.type.short_id == "workGroup"
 				@results = @resource.parts_display
+				@expression_results = @resource.expressions_display
+				@info = @resource.info_display
 				render "text/questions/workgrouplist"
-			elsif @resource.type.short_id == "workGroup"
-				@results = @resource.expressions_display
-				render "text/questions/expressionlist"
 			elsif @resource.type.short_id == "expressionType"
 				@results = @resource.structure_items_by_expression_display
 				@info = @resource.info_display
@@ -75,6 +73,8 @@ class TextController < ApplicationController
 			if @config.commentaryid == "scta"
 				@resource = Lbp::Resource.find("http://scta.info/resource/scta")
 				@results = @resource.parts_display
+				@expression_results = @resource.expressions_display
+				@info = @resource.info_display
 				render "text/questions/workgrouplist"
 			else
 				commentaryid = @config.commentaryid
@@ -235,10 +235,28 @@ class TextController < ApplicationController
 			# NOTE: itemid => expressionid
 			file = transcript.file_part(confighash: @config.confighash, partid: params[:itemid])
 		end
-		@plaintext = file.transform_plain_text
+		@plaintext = file.transform_plain_text.gsub(/[\s]+/, "\s")
 		render :plain => @plaintext
+	end
+	def clean
+		## TODO refactor: this code is almost identical to TOC except that
+		## it chooses a different transform options at the very end
+		expression = get_expression(params)
+		@expression_structure = expression.structure_type.short_id
 
+		check_permission(expression)
 
+		transcript = get_transcript(params)
+
+		if @expression_structure == "structureItem"
+			file = transcript.file(confighash: @config.confighash)
+		elsif @expression_structure == "structureBlock"
+			# NOTE: itemid => expressionid
+			file = transcript.file_part(confighash: @config.confighash, partid: params[:itemid])
+		end
+		 @cleantext = file.transform_clean.gsub(/[\s]+/, "\s")
+		#@cleantext = file.transform_clean;
+		render :plain => @cleantext
 	end
 	def toc
 		expression = get_expression(params)
@@ -257,6 +275,13 @@ class TextController < ApplicationController
 		end
 		@toc = file.transform_toc
 		render :layout => false
+	end
+
+	def pdf
+		@response = open("http://print.lombardpress.org/compile?id=#{params[:id]}&output=pdf").read
+		redirect_to "http://" + JSON.parse(@response)["url"];
+
+
 	end
 
 	def draft_permissions

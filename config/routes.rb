@@ -70,11 +70,15 @@ scope "text" do
   get '' => 'text#index'
   get 'draft_permissions/:itemid' => 'text#draft_permissions'
   get 'questions(/:resourceid)' => 'text#questions', as: :table_of_questions
-  get 'info/:itemid' => 'text#info'
+  # costraint has to be added because we might have ids with periods in them.
+  # this contraint will likely need to be added to other routes above and below
+  get 'info/:itemid' => 'text#info', :constraints => { :itemid => /[0-9A-Za-z\-\.]+/ }
   get 'status/:itemid' => 'text#status'
   get 'toc/:itemid(/:msslug)' => 'text#toc'
   get 'plaintext/:itemid(/:msslug)(/:transcriptslug)' =>'text#plain_text', as: :plain_text
+  get 'clean/:itemid(/:msslug)(/:transcriptslug)' =>'text#clean', as: :clean
   get 'xml/:itemid(/:msslug)(/:transcriptslug)' => 'text#xml'
+  get 'pdf' => 'text#pdf'
   get ':itemid(/:msslug)(/:transcriptslug)' => 'text#show', as: :show_text
 end
 
