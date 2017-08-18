@@ -1,5 +1,16 @@
 Change Log
 
+Version 0.8.0
+
+- pdf link added to lbp service; link currently only viewable on the text/status page
+- better handling of workGroup and expression display on the same landing page
+- included prototype for review badge retrieval, viewable on the plaoulcommentary landing page
+- improved auto scroll in toc navigation
+- added button for info at division level, fixes issue 12
+- modified text/clean and text/plaintext routes to offer more cleaned up versions of the text with less extraneous whitespace
+- several bug fixes
+
+
 Version 0.7.1
 - minor updates over 0.7.0.
 - update to search controller to use new url to access scta search service. Search service is still in development so this will likely need to be adjusted again.
