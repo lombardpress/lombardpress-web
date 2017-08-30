@@ -235,7 +235,7 @@ class TextController < ApplicationController
 			# NOTE: itemid => expressionid
 			file = transcript.file_part(confighash: @config.confighash, partid: params[:itemid])
 		end
-		@plaintext = file.transform_plain_text.gsub(/[\s]+/, "\s")
+		@plaintext = file.transform_plain_text.to_s.gsub(/[\s]+/, "\s")
 		render :plain => @plaintext
 	end
 	def clean
