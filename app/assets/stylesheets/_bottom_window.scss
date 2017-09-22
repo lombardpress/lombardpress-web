@@ -1,16 +1,14 @@
-#lbp-bottom-window{position: fixed; 
-	top: 60%; 
-	height: 40%; 
-	width: 100%; 
+#lbp-bottom-window{position: fixed;
+	top: 60%;
+	height: 40%;
+	width: 100%;
 
-	padding-bottom: 50px; 
-	background-color: $dark-color; 
+	padding-bottom: 50px;
+	background-color: $dark-color;
 	display: none;
 	overflow: scroll;
-	z-index: 1;}
+	z-index: 1001;}
 
 #lbp-bottom-window-container{margin-bottom: 50px;}
 
 #lbp-bottom-window-nav-bar{border-bottom: 2px solid $light-color; margin-bottom: 5px;}
-
-

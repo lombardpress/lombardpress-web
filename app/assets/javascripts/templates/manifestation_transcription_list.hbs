@@ -1,14 +1,11 @@
 {{!-- this is handlebars template for text info --}}
 
-<div style="font-size: 12px;">
-	<div>
-    {{#each manifestations_structure}}
-  		<p>{{manifestation}}</a></p>
-      <table>
-      {{#each transcriptions}}
-        <tr><td><a href="#" class="js-show-reference-paragraph" data-url={{transcript}}>{{transcript}}</a></td></tr>
-      {{/each}}
-      </table>
+<div class="row" style="height: 400px">
+	<div class='col-sm-6 lbp-text-col' id="lbp-text-col-left" style="height: 100%; overflow: auto">
 
-  	{{/each}}
+	</div>
+	<div class='col-sm-6 lbp-text-col' id="lbp-text-col-right" style="height: 100%; overflow: auto">
+
+
+	</div>
 </div>
