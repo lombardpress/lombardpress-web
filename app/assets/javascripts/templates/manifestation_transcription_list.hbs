@@ -1,0 +1,14 @@
+{{!-- this is handlebars template for text info --}}
+
+<div style="font-size: 12px;">
+	<div>
+    {{#each manifestations_structure}}
+  		<p>{{manifestation}}</a></p>
+      <table>
+      {{#each transcriptions}}
+        <tr><td><a href="#" class="js-show-reference-paragraph" data-url={{transcript}}>{{transcript}}</a></td></tr>
+      {{/each}}
+      </table>
+
+  	{{/each}}
+</div>

@@ -116,6 +116,14 @@ $(document).on('turbolinks:load', function () {
 			var expressionid = $(this).attr("data-itemid");
 			showParagraphCollation(expressionid, "", "");
 		});
+		$("a.js-show-paragraph-comparison").click(function(event){
+			event.preventDefault();
+			showSpinner("#lbp-bottom-window-container");
+			showBottomWindow();
+			halfSizeBottomWindow();
+			var expressionid = $(this).attr("data-itemid");
+			showComparison(expressionid);
+		});
 
 
 	});
@@ -432,7 +440,19 @@ var showParagraphCollation = function(expressionid, base, comp){
     }
   });
 }
-
+//paragraph comparision
+var showComparison = function(expressionid){
+	$.get("/text/info/" + expressionid, function(data, status, xhr) {
+		if ( status == "error" ) {
+    	var msg = "Sorry but this view is not currently available for this paragraph";
+    	$("#lbp-bottom-window-container").html( msg + "(" + xhr.status + " " + xhr.statusText + ")");
+    }
+		else{
+			var content = HandlebarsTemplates['manifestation_transcription_list'](data);
+			$("#lbp-bottom-window-container").html(content);
+		}
+  });
+}
 
 //index search funciton
 var highlight = function(search, id){

@@ -106,6 +106,7 @@
                   <li><a href="#" class='js-show-paragraph-variants' data-itemid="{$itemid}" data-pid="{@xml:id}">Variants</a></li>
                   <li><a href="#" class='js-show-paragraph-notes' data-itemid="{$itemid}" data-pid="{@xml:id}">Notes</a></li>
                   <li><a href="#" class='js-show-paragraph-collation' data-itemid="{@xml:id}">Collation</a></li>
+                  <li><a href="#" class='js-show-paragraph-comparison' data-itemid="{@xml:id}">Compare</a></li>
                   <li><a href="#" class='js-show-paragraph-xml' data-itemid="{$itemid}" data-pid="{@xml:id}" data-msslug="{$default-msslug}">XML</a></li>
                   <li><a href="#" class='js-show-paragraph-info' data-itemid="{$itemid}" data-pid="{@xml:id}">Paragraph Info</a></li>
 

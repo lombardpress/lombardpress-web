@@ -20,20 +20,14 @@ class ParagraphsController < ApplicationController
         @target_url = "/text/#{@resource.item_level_expression.short_id}##{@resource.short_id}"
       end
       @target_title = @resource.title
-      #itemid = @para.itemid
-      #commentaryid = @para.cid
-      #pid = @para.pid
-      #commentaryurl = "http://scta.info/text/#{commentaryid}/commentary"
-      #commentary = Lbp::Collection.new(@config.confighash, commentaryurl)
-      #@commentary_title = commentary.title
-      #itemurl = "http://scta.info/text/#{commentaryid}/item/#{itemid}"
-      #@item = Lbp::Item.new(@config.confighash, itemurl)
-
-      #canonicalwit = @item.canonical_transcription_slug
       transcript = get_transcript(params)
       file = transcript.file_part(confighash: @config.confighash, partid: @resource.short_id)
-      #transcript = @item.transcription(source: "origin", wit: canonicalwit)
-
+      @text = file.transform_plain_text
+    elsif @resource.class == Lbp::Manifestation || @resource.class == Lbp::Transcription
+      @target_title = @resource.title
+      expression_short_id = @resource.short_id.split("/").first
+      transcript = get_transcript(params)
+      file = transcript.file_part(confighash: @config.confighash, partid: expression_short_id)
       @text = file.transform_plain_text
     else
       # this handles references to non-expressions, such as canonical quotations
