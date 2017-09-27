@@ -1,0 +1,22 @@
+<div id="question-search-form" style="margin-bottom: 20px;">
+  <h2>Search for a Question Title within the <a href="http://scta.info">SCTA</a> corpus</h2>
+  <br/>
+  <form class="center">
+    <h3>Filter Search</h3>
+    <br/>
+    <label>Search Term</label>
+    <input type="text" name="searchterm" value="<%= params[:searchterm] %>">
+    <label>Expression Id</label>
+    <input type="text" name="expressionid" value="<%= params[:expressionid] %>">
+    <label>Work Group Id</label>
+    <input type="text" name="workgroupid" value="<%= params[:workgroupid] %>"
+    <label>Author Id</label>
+    <input type="text" name="authorid" value="<%= params[:authorid] %>">
+    <input type="hidden" name="type" value="questions">
+    <input type="submit">
+  </form>
+  <% if @results%>
+  <h2> Search results (<%= @results.count %> hits)</h2>
+  <% end %>
+
+</div>
