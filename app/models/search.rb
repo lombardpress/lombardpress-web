@@ -1,5 +1,5 @@
 class Search < Lbp::Query
-	def questions(expressionid: nil, authorid: nil, workGroupId: nil, searchterm: "")
+	def questions(expressionid: nil, authorid: nil, workGroupId: nil, expressiontypeid: nil, searchterm: "")
     expressionidSparql = ''
     if expressionid
       expressionidSparql = "
@@ -29,6 +29,15 @@ class Search < Lbp::Query
       <#{workGroupId}> <http://scta.info/property/hasExpression> ?toplevel	.
       "
     end
+    ## this expression type is only going to get question titles of items belonging to higher level collections
+    ## TODO add JOIN to get resources that lower level sections
+    expressionTypeSparql = ''
+    if expressiontypeid
+      expressionTypeSparql = "
+      ?expression <http://scta.info/property/expressionType> <#{expressiontypeid}>  .
+      ?expression <http://scta.info/property/hasStructureItem> ?resource	.
+      "
+    end
 		query = "#{@prefixes}
       SELECT ?resource ?resource_short_id ?resource_title ?resource_status ?qtitle ?author_title ?author_short_id ?toplevel_expression ?toplevel_expression_title ?toplevel_expression_short_id ?structure_type ?parent_item ?parent_item_title ?parent_item_short_id ?parent_item_author ?parent_item_author_title ?parent_item_author_short_id ?parent_item_status
       {
@@ -36,6 +45,7 @@ class Search < Lbp::Query
         #{expressionidSparql}
         #{authoridSparql}
         #{workGroupSparql}
+        #{expressionTypeSparql}
         FILTER (REGEX(STR(?qtitle), '#{searchterm}', 'i')) .
         ?resource <http://purl.org/dc/elements/1.1/title> ?resource_title .
         ?resource <http://scta.info/property/structureType> ?structure_type .

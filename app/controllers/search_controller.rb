@@ -2,28 +2,37 @@ class SearchController < ApplicationController
 	def show
 		if params[:type] == 'questions'
 			expressionid = if !params[:expressionid].blank? then "http://scta.info/resource/#{params[:expressionid]}" else nil end
+			expressiontypeid = if !params[:expressiontypeid].blank? then "http://scta.info/resource/#{params[:expressiontypeid]}" else nil end
 			authorid = if !params[:authorid].blank? then "http://scta.info/resource/#{params[:authorid]}" else nil end
 			workgroupid = if !params[:workgroupid].blank? then "http://scta.info/resource/#{params[:workgroupid]}" else nil end
 			searchterm = if !params[:searchterm].blank? then params[:searchterm] else '' end
 			search = Search.new()
-			@results = search.questions(expressionid: expressionid, searchterm: searchterm, authorid: authorid, workGroupId: workgroupid)
+			@results = search.questions(expressionid: expressionid, searchterm: searchterm, authorid: authorid, workGroupId: workgroupid, expressiontypeid: expressiontypeid)
 			if @results.nil?
 				@results = []
 			end
-			
+
 			render :questions_new
 		else
-			if params[:use] == "expressiontype"
-				expressionid = params[:expressionid] ? params[:expressionid] : "all"
-				@results = open(open("http://exist.scta.info/exist/apps/scta-app/search/expressiontype/#{params[:expressionid]}?query=#{params[:searchterm]}")).read
-			elsif params[:use] == "author"
+			if !params[:expressiontypeid].blank?
+				expressiontypeid = params[:expressiontypeid] ? params[:expressiontypeid] : "all"
+				@results = open("http://exist.scta.info/exist/apps/scta-app/search/expressiontype/#{params[:expressiontypeid]}?query=#{params[:searchterm]}").read
+			elsif !params[:authorid].blank?
 				@results = open("http://exist.scta.info/exist/apps/scta-app/search/author/#{params[:authorid]}?query=#{params[:searchterm]}").read
-			elsif params[:use] == "workgroup"
+			elsif !params[:workgroupid].blank?
 				@results = open("http://exist.scta.info/exist/apps/scta-app/search/workgroup/#{params[:workgroupid]}?query=#{params[:searchterm]}").read
-			else
+			elsif !params[:expressionid].blank?
 				expressionid = params[:expressionid] ? params[:expressionid] : "all"
 				@results = open("http://exist.scta.info/exist/apps/scta-app/search/expression/#{expressionid}?query=#{params[:searchterm]}").read
+			else
+				expressionid = "all"
+				if params[:searchterm].blank?
+					@results = "No search term provided"
+				else
+					@results = open("http://exist.scta.info/exist/apps/scta-app/search/expression/#{expressionid}?query=#{params[:searchterm]}").read
+				end
 			end
+
 			render :show
 		end
 
