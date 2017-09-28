@@ -74,6 +74,36 @@ module TextMethods
 					expressionid = expressionObj.short_id
 					redirect_to "/text/status/#{expressionid}", :alert => "A critical/normalized edition of this text does not exist yet. Below are the available transcriptions." and return
 		end
+  end
+  def transcriptions_by_manifestation(results, manifestation)
+    transcriptions = []
+    results.each do |result|
+      if result[:manifestation].to_s == manifestation
+        transcription = {
+          transcript: result[:transcript].to_s,
+          transcript_title: result[:transcript_title].to_s,
+          transcript_status: result[:transcript_status].to_s,
+          transcript_type: result[:transcript_type].to_s,
+          transcript_link: "/text/#{result[:transcript].to_s.split('/resource/').last}"
+        }
+        transcriptions << transcription
+      end
+    end
+    return transcriptions
+  end
+  def order_manifestations(resource)
+    #results = Lbp::Query.new.item_query(url)
+    results = resource.manifestation_display
+    results.order_by(:transcript_type)
+    translation_results = resource.translation_display
 
-	end
+    manifestations = results.map do |result|
+      {
+        manifestation: result[:manifestation].to_s,
+        manifestation_title: result[:manifestation_title].to_s,
+        transcriptions: transcriptions_by_manifestation(results, result[:manifestation].to_s)
+      }
+    end
+    return manifestations.uniq
+  end
 end

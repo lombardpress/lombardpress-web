@@ -1,0 +1,72 @@
+<div style="padding: 2px; margin: 2px; overflow: scroll;">
+  <p style="font-weight: bold">Available Manifestations</p>
+  {{#each manifestations_structure}}
+    <p style="font-weight: bold">{{manifestation}}</a></p>
+    <table class="table" style="padding-left: 5px">
+      <p>Available Transciptions</p>
+      {{#each transcriptions}}
+        <tr><td><a href="#" class="js-show-comparison-text" data-url={{transcript}}>{{transcript}}</a></td></tr>
+      {{/each}}
+    </table>
+  {{/each}}
+  <p style="font-weight: bold">Related Passages</p>
+    {{#if abbreviates}}
+      {{#each abbreviates}}
+        <p>Abbreviates <a class="js-show-slot" data-url="{{this}}">{{this}}</a></p>
+      {{/each}}
+    {{/if}}
+    {{#if abbreviatedBy}}
+      {{#each abbreviatedBy}}
+        <p>Abbreviated by <a class="js-show-slot" data-url="{{this}}">{{this}}</a></p>
+
+      {{/each}}
+    {{/if}}
+    {{#if references}}
+      {{#each references}}
+        <p>References <a class="js-show-slot" data-url="{{this}}">{{this}}</a></p>
+
+      {{/each}}
+    {{/if}}
+    {{#if referencedBy}}
+      {{#each referencedBy}}
+        <p>Referenced by <a class="js-show-slot" data-url="{{this}}">{{this}}</a></p>
+      {{/each}}
+    {{/if}}
+    {{#if copies}}
+      {{#each copies}}
+        <p>Copies <a class="js-show-slot" data-url="{{this}}">{{this}}</a></p>
+      {{/each}}
+    {{/if}}
+    {{#if copiedBy}}
+      {{#each copiedBy}}
+        <p>Copied by <a class="js-show-slot" data-url="{{this}}">{{this}}</a></p>
+      {{/each}}
+    {{/if}}
+    {{#if isRelatedTo}}
+      {{#each isRelatedTo}}
+        <p>Is related to <a class="js-show-slot" data-url="{{this}}">{{this}}</a></p>
+      {{/each}}
+    {{/if}}
+    {{#if quotes}}
+      {{#each quotes}}
+        <p>Quotes <a class="js-show-slot" data-url="{{this}}">{{this}}</a></p>
+      {{/each}}
+    {{/if}}
+    {{#if quotedBy}}
+      {{#each quotedBy}}
+        <p>Quoted by <a class="js-show-slot" data-url="{{this}}">{{this}}</a></p>
+      {{/each}}
+    {{/if}}
+    {{#if mentions}}
+      {{#each mentions}}
+        <p>Mentions <a data-url="{{this}}">{{this}}</a></p>
+      {{/each}}
+    {{/if}}
+  </div>
+  <div class="lbp-compare-text-wrapper" style="position: absolute; top: 0; z-index: 1; height: 100%; width: 95%; background-color: #BBCEBE; display: none">
+    <button type="button" class="close" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    <div class="lbp-compare-text">
+    </div>
+  </div>

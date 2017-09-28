@@ -88,7 +88,7 @@ class TextController < ApplicationController
 		# para variable here is simpy the expressionObj
     expression = get_expression(params)
     number = expression.order_number
-
+		manifestations = order_manifestations(expression)
 		expression_hash = {
         #:pid => pid,
         :itemid => params[:itemid],
@@ -99,6 +99,7 @@ class TextController < ApplicationController
 				:inbox => if expression.inbox.to_s != nil then expression.inbox.to_s else nil end,
 				:is_structure_block => if expression.structure_type.short_id == "structureBlock" then true else false end,
         :manifestations => expression.manifestations.map {|m| m.to_s},
+				:manifestations_structure => manifestations,
 				:translations => expression.translations.map {|m| m.to_s},
         :abbreviates => expression.abbreviates.map {|item| item.to_s},
         :abbreviatedBy => expression.abbreviatedBy.map {|item| item.to_s},
@@ -120,19 +121,14 @@ class TextController < ApplicationController
 	end
 
 	def status
-		#commentaryid = @config.commentaryid
 		url = "http://scta.info/resource/#{params[:itemid]}"
-		#results = Lbp::Query.new.item_query(url)
-		@resource = Lbp::Resource.find(url)
-		@results = @resource.manifestation_display
-		@results.order_by(:transcript_type)
-		@translation_results = @resource.translation_display
-		# @itemid is equivalent to @expression id will be changed as part of global change
-		@itemid = params[:itemid]
-
-		if @results.count == 0
+		resource = Lbp::Resource.find(url)
+		@title = resource.title
+		@manifestations = order_manifestations(resource)
+		if @manifestations.count == 0
 			flash.clear
 		end
+		render :status2
 	end
 
 	def show

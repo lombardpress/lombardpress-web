@@ -24,7 +24,9 @@ $(document).on('turbolinks:load', function () {
 		$("a.js-show-para-image-window").click(function(event){
 			event.preventDefault();
 			showSpinner("#lbp-bottom-window-container");
-			showBottomWindow();
+			var pid = $(this).attr("data-pid");
+			var $paragraph = $("p#" + pid);
+			showBottomWindow($paragraph);
 			halfSizeBottomWindow();
 
 			var msslug = $(this).attr("data-msslug");
@@ -35,11 +37,14 @@ $(document).on('turbolinks:load', function () {
 
 		$("a.js-show-para-image-zoom-window").click(function(event){
 			event.preventDefault();
-			showSpinner("#lbp-bottom-window-container");
-			showBottomWindow();
-			halfSizeBottomWindow();
 			var expressionid = $(this).attr("data-expressionid");
 			var msslug = $(this).attr("data-msslug");
+			var $paragraph = $("p#" + expressionid);
+			showSpinner("#lbp-bottom-window-container");
+
+			showBottomWindow($paragraph);
+			halfSizeBottomWindow();
+
 			showParaZoomImage(expressionid, msslug);
 		});
     /* commented out because this seems to be handled by the document on function
@@ -59,21 +64,21 @@ $(document).on('turbolinks:load', function () {
 
 		$("a.js-view-comments").click(function(event){
 			event.preventDefault();
-			showSpinner("#lbp-bottom-window-container");
-			showBottomWindow();
-			halfSizeBottomWindow();
-
 			var itemid = $(this).attr("data-itemid");
 			var pid = $(this).attr("data-pid");
+			var $paragraph = $("p#" + pid);
+			showSpinner("#lbp-bottom-window-container");
+			showBottomWindow($paragraph);
+			halfSizeBottomWindow();
 			showComments(itemid, pid);
 		});
 		$("a.js-new-comment").click(function(event){
 			event.preventDefault();
-			showBottomWindow();
-			halfSizeBottomWindow();
-
 			var itemid = $(this).attr("data-itemid");
 			var pid = $(this).attr("data-pid");
+			var $paragraph = $("p#" + pid);
+			showBottomWindow($paragraph);
+			halfSizeBottomWindow();
 			newComment(itemid, pid);
 		});
 
@@ -89,12 +94,13 @@ $(document).on('turbolinks:load', function () {
 		});
 		$("a.js-show-paragraph-xml").click(function(event){
 			event.preventDefault();
-			showSpinner("#lbp-bottom-window-container");
-			showBottomWindow();
-			halfSizeBottomWindow();
 			var itemid = $(this).attr("data-itemid");
 			var pid = $(this).attr("data-pid");
 			var msslug = $(this).attr("data-msslug");
+			var $paragraph = $("p#" + pid);
+			showSpinner("#lbp-bottom-window-container");
+			showBottomWindow($paragraph);
+			halfSizeBottomWindow();
 			showParagraphXML(itemid, pid, msslug);
 		});
 
@@ -115,6 +121,16 @@ $(document).on('turbolinks:load', function () {
 			halfSizeBottomWindow();
 			var expressionid = $(this).attr("data-itemid");
 			showParagraphCollation(expressionid, "", "");
+		});
+		$("a.js-show-paragraph-comparison").click(function(event){
+			event.preventDefault();
+			showSpinner("#lbp-bottom-window-container");
+			var pid = $(this).attr("data-itemid");
+			$paragraph = $("p#" + pid);
+			showBottomWindow($paragraph);
+			halfSizeBottomWindow();
+			var expressionid = $(this).attr("data-itemid");
+			showComparison(expressionid);
 		});
 
 
@@ -158,29 +174,73 @@ $(document).on("submit", "#lbp-collation-selector-form", function(event){
 
 $(document).on("click", ".js-show-folio-image", function(event){
 	event.preventDefault();
-	showSpinner("#lbp-bottom-window-container");
-	showBottomWindow();
-	//halfSizeBottomWindow();
 	var expressionid = $(this).attr("data-expressionid");
 	var canvasid = $(this).attr("data-canvasid");
 	var surfaceid = $(this).attr("data-surfaceid");
+	showSpinner("#lbp-bottom-window-container");
+	showBottomWindow();
+	//halfSizeBottomWindow();
+
 	showFolioImage(canvasid, expressionid, surfaceid);
 });
 
+//TODO: consider making this a generic .js-close that can be resued for any close function
+$(document).on("click", ".close", function(event){
+	event.preventDefault();
+	$(this).parent().css({"display": "none"});
 
+});
+$(document).on("click", ".js-show-comparison-text", function(event){
+	event.preventDefault();
+	var url = $(this).attr("data-url");
+	var slot = $(this).closest(".lbp-text-col").attr("id");
+	console.log(slot);
+	showComparisonText(url, slot);
+});
+
+$(document).on("click", ".js-show-slot", function(event){
+	event.preventDefault();
+	var url = $(this).attr("data-url");
+	var slot = $(this).closest(".lbp-text-col").attr("id");
+	showSlot(url, slot);
+});
+
+$(document).on("click", ".js-toggle-scroll-lock", function(event){
+	event.preventDefault();
+	if ($(this).hasClass("locked")){
+		unlockBodyScroll();
+		$(this).html("Lock Scroll");
+		$(this).toggleClass("locked");
+	}
+	else{
+		lockBodyScroll();
+		$(this).html("Unlock Scroll");
+		$(this).toggleClass("locked");
+
+	}
+});
 //end of event bindings
 
 // begin functions
-
 
 var showParagraphMenu = function(){
 	$(this).parent().parent().next('nav.paradiv').toggle("slow");
 };
 
-var showBottomWindow = function(){
+var showBottomWindow = function(element){
 	//event.preventDefault();
 	$("div#lbp-bottom-window").show("slow");
+	if (element){
+		scrollToParagraph(element)
+	}
 };
+
+var lockBodyScroll = function(){
+	$("body").addClass("noScroll");
+}
+var unlockBodyScroll = function(){
+	$("body").removeClass("noScroll");
+}
 
 var hideBottomWindow = function(){
 	//event.preventDefault();
@@ -431,6 +491,56 @@ var showParagraphCollation = function(expressionid, base, comp){
     	$("#lbp-bottom-window-container").html( msg + "(" + xhr.status + " " + xhr.statusText + ")");
     }
   });
+}
+//paragraph comparision
+var showComparison = function(expressionid){
+	$.get("/text/info/" + expressionid, function(data, status, xhr) {
+		if ( status == "error" ) {
+    	var msg = "Sorry but this view is not currently available for this paragraph";
+    	$("#lbp-bottom-window-container").html( msg + "(" + xhr.status + " " + xhr.statusText + ")");
+    }
+		else{
+			var content = HandlebarsTemplates['manifestation_transcription_list']();
+			var slot = HandlebarsTemplates['slot'](data);
+			$("#lbp-bottom-window-container").html(content);
+			$("#lbp-text-col-left").html(slot);
+			$("#lbp-text-col-right").html(slot);
+		}
+  });
+}
+
+var showSlot = function(url, slot){
+	var expressionid = url.split("/resource/")[1];
+	showSpinner("#" + slot);
+
+	$.get("/text/info/" + expressionid, function(data, status, xhr) {
+		if ( status == "error" ) {
+    	var msg = "Sorry but this view is not currently available for this paragraph";
+    	$("#lbp-bottom-window-container").html( msg + "(" + xhr.status + " " + xhr.statusText + ")");
+    }
+		else{
+			var slotTpl = HandlebarsTemplates['slot'](data);
+			$("#" + slot).html(slotTpl);
+		}
+  });
+
+}
+
+var showComparisonText = function(url, slot){
+	var $textWindowWrapper = $("#" + slot).find(".lbp-compare-text-wrapper");
+	var $textWindow = $textWindowWrapper.find(".lbp-compare-text");
+	showSpinner("#" + slot + " .lbp-compare-text-wrapper .lbp-compare-text");
+	$textWindowWrapper.css({"display": "block"})
+	$.get("/paragraphs/show2/?url=" + url, function(data, status, xhr){
+
+		if ( status == "error" ) {
+			var msg = "Sorry but something went wrong";
+			$textWindow.html( msg + "(" + xhr.status + " " + xhr.statusText + ")");
+		}
+		else{
+			$textWindow.html(data);
+		}
+	});
 }
 
 

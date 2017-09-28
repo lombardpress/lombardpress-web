@@ -3,7 +3,7 @@
 body {padding-bottom: 50px;}
 </style>
 <!-- end of style override -->
- 
+
 <%= render "text_nav_bar" %>
 
 <% if params[:search] != nil %>
@@ -19,8 +19,8 @@ body {padding-bottom: 50px;}
 		<div class="container-fluid">
 			<ul class="nav navbar-nav">
 				<li><a class="js-close-side-window">Close</span></a></li>
-				<li id="lbp-min-side-window"><a class="js-minimize-side-window">Min</span></a></li> 
-				<li id="lbp-max-side-window"><a class="js-maximize-side-window">Max</span></a></li> 
+				<li id="lbp-min-side-window"><a class="js-minimize-side-window">Min</span></a></li>
+				<li id="lbp-max-side-window"><a class="js-maximize-side-window">Max</span></a></li>
 			</ul>
 		</div>
 	</nav>
@@ -47,14 +47,15 @@ body {padding-bottom: 50px;}
 								<span class="caret"></span>
 							</span>
 						</a>
-					</li> 
+					</li>
 					<li><a class="js-halfsize-para-comment">50%</a></li>
-					<li><a class="js-minimize-para-comment">Min<span class="caret"></span></a></li> 
+					<li><a class="js-minimize-para-comment">Min<span class="caret"></span></a></li>
 					<li><a class="js-close-para-comment">Close</span></a></li>
+          <li><a href="#" class="js-toggle-scroll-lock">Lock Scroll</span></a></li>
 				</ul>
 			</div>
-		</div>	
+		</div>
 	</nav>
 	<div id="lbp-bottom-window-container" class="container">
 	</div>
-</div>	
+</div>

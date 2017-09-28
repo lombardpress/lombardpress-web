@@ -75,6 +75,7 @@
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Paragraph Text Tools<span class="caret"></span></a>
                 <ul class="dropdown-menu" role="menu">
                   <li><a href="#" class='js-show-paragraph-collation' data-itemid="{@xml:id}">Collation</a></li>
+                  <li><a href="#" class='js-show-paragraph-comparison' data-itemid="{@xml:id}">Compare</a></li>
                   <li><a href="#" class='js-show-paragraph-xml' data-itemid="{$itemid}" data-pid="{@xml:id}" data-msslug="{$default-msslug}">XML</a></li>
                   <li><a href="#" class='js-show-paragraph-info' data-itemid="{$itemid}" data-pid="{@xml:id}">Paragraph Info</a></li>
 
@@ -180,7 +181,7 @@
     <span class="lbp-glyph lbp-pilcrow">&#182;</span><xsl:text> </xsl:text>
   </xsl:template>
   <xsl:template match="tei:lb">
-    <br/> 
+    <br/>
   </xsl:template>
 
 
@@ -205,8 +206,8 @@
         </xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
-      
-      
+
+
     <!-- <xsl:variable name="length"><xsl:value-of select="string-length($folio-and-side)-2"/></xsl:variable> -->
     <xsl:variable name="folio">
       <xsl:choose>
@@ -298,8 +299,8 @@
           </xsl:otherwise>
         </xsl:choose>
       </xsl:variable>
-     
-      
+
+
 
       <span class="lbp-folionumber">
         <xsl:choose>
@@ -320,7 +321,7 @@
       <xsl:text> </xsl:text>
     </xsl:if>
   </xsl:template>
-  
+
   <xsl:template match="tei:note[@type='marginal-note']">
     <xsl:variable name="place" select="./@place"/>
     <xsl:variable name="preceding-line" select="./preceding::tei:lb[1]"/>
@@ -365,13 +366,13 @@
               <xsl:for-each select="//tei:titleStmt/tei:respStmt">
                 <xsl:choose>
                   <xsl:when test="./tei:resp/@when">
-                    - <span><xsl:value-of select="./tei:name"/></span>, 
+                    - <span><xsl:value-of select="./tei:name"/></span>,
                     <span><xsl:value-of select="normalize-space(./tei:resp)"/></span>,
                     <span><xsl:value-of select="./tei:resp/@when"/></span>
                     <xsl:text> </xsl:text>
                   </xsl:when>
                   <xsl:otherwise>
-                    - <span><xsl:value-of select="./tei:name"/></span>, 
+                    - <span><xsl:value-of select="./tei:name"/></span>,
                     <span><xsl:value-of select="normalize-space(./tei:resp)"/></span>
                     <xsl:text> </xsl:text>
                   </xsl:otherwise>
@@ -381,7 +382,7 @@
           </div>
         </xsl:if>
         <p>Edition: <span id="editionNumber"><xsl:value-of select="//tei:teiHeader/tei:fileDesc/tei:editionStmt/tei:edition/@n"/></span> | <xsl:value-of select="//tei:teiHeader/tei:fileDesc/tei:editionStmt/tei:edition/tei:date"/></p>
-        <p>Authority: 
+        <p>Authority:
           <xsl:choose>
             <xsl:when test="//tei:teiHeader/tei:fileDesc/tei:publicationStmt/tei:authority/tei:ref">
               <xsl:value-of select="//tei:teiHeader/tei:fileDesc/tei:publicationStmt/tei:authority"/>: <a href="{//tei:teiHeader/tei:fileDesc/tei:publicationStmt/tei:authority/tei:ref/@target}"><xsl:value-of select="//tei:teiHeader/tei:fileDesc/tei:publicationStmt/tei:authority/tei:ref/@target"/></a>
@@ -405,8 +406,8 @@
           </div>
         </xsl:if>
       </div>
-      
+
     </div>
   </xsl:template>
-  
+
 </xsl:stylesheet>

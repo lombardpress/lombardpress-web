@@ -55,11 +55,20 @@ module Lbp
 			articles = articles[0][:article] == nil ? [] : articles
 		end
 		def manifestation_display
-			query ="SELECT ?item_title ?transcript ?transcript_title ?transcript_status ?transcript_type ?manifestation
+			query ="SELECT ?item_title ?transcript ?transcript_title ?transcript_status ?transcript_type ?manifestation ?manifestation_title ?language ?canonical_transcript
 	    {
       	<http://scta.info/resource/#{short_id}> <http://purl.org/dc/elements/1.1/title> ?item_title .
       	?manifestation <http://scta.info/property/isManifestationOf> <http://scta.info/resource/#{short_id}> .
+				?manifestation <http://scta.info/property/isManifestationOf> <http://scta.info/resource/#{short_id}> .
+				OPTIONAL{
+					?manifestation <http://purl.org/dc/elements/1.1/language> ?language .
+				}
+				?manifestation <http://purl.org/dc/elements/1.1/title> ?manifestation_title  .
+				?manifestation <http://scta.info/property/hasTranscription> ?transcript .
 				?transcript <http://scta.info/property/isTranscriptionOf> ?manifestation .
+				OPTIONAL {
+					?manifestation <http://scta.info/property/hasCanonicalTranscription> ?canonical_transcript .
+				}
 				?transcript <http://purl.org/dc/elements/1.1/title> ?transcript_title  .
         ?transcript <http://scta.info/property/status> ?transcript_status .
         ?transcript <http://scta.info/property/transcriptionType> ?transcript_type .
