@@ -2,18 +2,23 @@ class Search < Lbp::Query
 	def questions(expressionid: nil, authorid: nil, workGroupId: nil, expressiontypeid: nil, searchterm: "")
     expressionidSparql = ''
     if expressionid
-      expressionidSparql = "
-      {
-        {
-          ?resource <http://scta.info/property/isPartOfStructureItem> ?structureItem .
-          <#{expressionid}> <http://scta.info/property/hasStructureItem> ?structureItem .
-        }
-      UNION
-        {
-          <#{expressionid}> <http://scta.info/property/hasStructureItem> ?resource .
-        }
-      }
-      "
+			# QUERY BEFORE isMemberOf Property
+
+			# expressionidSparql = "
+      # {
+      #   {
+      #     ?resource <http://scta.info/property/isPartOfStructureItem> ?structureItem .
+      #     <#{expressionid}> <http://scta.info/property/hasStructureItem> ?structureItem .
+      #   }
+      # UNION
+      #   {
+      #     <#{expressionid}> <http://scta.info/property/hasStructureItem> ?resource .
+      #   }
+      # }
+      # "
+
+			#QUERY AFTER isMemberOf Property
+			expressionidSparql = "?resource <http://scta.info/property/isMemberOf> <#{expressionid}> ."
     end
     authoridSparql = ''
     if authorid
@@ -29,13 +34,28 @@ class Search < Lbp::Query
       <#{workGroupId}> <http://scta.info/property/hasExpression> ?toplevel	.
       "
     end
-    ## this expression type is only going to get question titles of items belonging to higher level collections
-    ## TODO add JOIN to get resources that lower level sections
+
     expressionTypeSparql = ''
     if expressiontypeid
-      expressionTypeSparql = "
-      ?expression <http://scta.info/property/expressionType> <#{expressiontypeid}>  .
-      ?expression <http://scta.info/property/hasStructureItem> ?resource	.
+			# query before isMemberOf property
+			## this expression type is only going to get question titles of items belonging to higher level collections
+
+      # expressionTypeSparql = "
+      # ?expression <http://scta.info/property/expressionType> <#{expressiontypeid}>  .
+      # ?expression <http://scta.info/property/hasStructureItem> ?resource	.
+      # "
+
+			expressionTypeSparql = "
+			\n #check for all resources that are a member of the expression type \n
+      {
+				?expression <http://scta.info/property/expressionType> <#{expressiontypeid}>  .
+      	?resource <http://scta.info/property/isMemberOf> ?expression	.
+			}
+			UNION
+			\n #check for all resources have this expression type \n
+			{
+				?resource <http://scta.info/property/expressionType> <#{expressiontypeid}>  .
+      }
       "
     end
 		query = "#{@prefixes}
