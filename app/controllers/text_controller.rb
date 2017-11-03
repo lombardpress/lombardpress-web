@@ -194,6 +194,7 @@ class TextController < ApplicationController
 				@transform = file.transform_plain_text(xslt_param_array)
 			end
 		end
+		@file_path = file.file_path.to_s
 	end
 
 	def xml

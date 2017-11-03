@@ -11,6 +11,7 @@ body {padding-bottom: 50px;}
 <% else %>
 	<div id="lbp-text-body" class="container">
 <% end %>
+	<div id="lbp-review-display" data-file-url="<%= @file_path %>"></div>
 	<%= raw(@transform) %>
 </div>
 <!-- side window -->

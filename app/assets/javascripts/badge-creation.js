@@ -13,5 +13,23 @@ $(document).on('turbolinks:load', function () {
       }
 
     });
+		$("div#lbp-review-display").each(function(index){
+      var fileUrl = $(this).attr("data-file-url")
+			var reviewUrl = "http://localhost:4567/api/v1/reviews/?url=" + fileUrl + "?society=MAA"
+
+			$.get(reviewUrl, function(data){
+				if (data.length > 0){
+	        var img_url = data[0]["badge-url"];
+					var reviewid = data[0]["id"];
+					var html_link = "http://localhost:4567/reviews/" + reviewid + ".html";
+					var rubric_link = data[0]["badge-rubric"];
+					var summary = data[0]["review-summary"];
+	        $("div#lbp-review-display").append("<p>Reviews:</p> <div><a class='badge-img' href='"+ html_link +"' target='_blank'><img src='" + img_url + "'/></a></div>");
+				}
+			});
+
+
+    });
+
   });
 });
