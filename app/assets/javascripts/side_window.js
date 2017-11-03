@@ -107,11 +107,20 @@ $(document).on("click", "a.js-show-paragraph-info", function(event){
 			event.preventDefault();
 			// pid stands for expression short id here
 			var pid = $(this).attr("data-pid");
+			var view = $(this).attr("data-view");
 			state.setFocus(pid);
 			$paragraph = $("p#" + pid);
 			showSpinner("div#lbp-side-window-container");
 			showSideWindow($paragraph)
-			showParagraphInfo(pid)
+			if (view === "notes"){
+				showParagraphNotes(pid)
+			}
+			else if (view === "variants"){
+				showParagraphVariants(pid)
+			}
+			else{
+				showParagraphInfo(pid)
+			}
 		});
 //table of contents onclick scroll to section
 $(document).on("click", "div.tocdiv > :first-child", function(event){
@@ -216,23 +225,31 @@ var showOutline = function(itemid){
 }
 
 var showParagraphVariants = function(expressionid){
-	$("#lbp-side-window-container").load("/paragraphs/variants/" + expressionid  + "#lbp-" + expressionid + "-variant-list", function( response, status, xhr) {
-		console.log(status);
-  	if ( status == "error" ) {
+	state.info.then(function(result){
+		var content = HandlebarsTemplates['variants'](result);
+		$("#lbp-side-window-container").html(content);
+
+		$("#lbp-variants").load("/paragraphs/variants/" + expressionid  + "#lbp-" + expressionid + "-variant-list", function( response, status, xhr) {
+		if ( status == "error" ) {
     	var msg = "<h3>Sorry, but there are no variants for this paragraph.</h3>";
-    	$("#lbp-side-window-container").html( msg);
+    	$("#lbp-variants").html( msg);
     		console.log(xhr.status + " " + xhr.statusText);
-    }
+    	}
+		});
 	});
 }
 var showParagraphNotes = function(expressionid){
-	$("#lbp-side-window-container").load("/paragraphs/notes/" + expressionid + "#lbp-" + expressionid + "-notes-list", function( response, status, xhr) {
-		console.log(status);
-  	if ( status == "error" ) {
-    	var msg = "<h3>Sorry, but there are no variants for this paragraph.</h3>";
-    	$("#lbp-side-window-container").html( msg);
-    		console.log(xhr.status + " " + xhr.statusText);
-    }
+	state.info.then(function(result){
+		var content = HandlebarsTemplates['notes'](result);
+		$("#lbp-side-window-container").html(content);
+
+		$("#lbp-notes").load("/paragraphs/notes/" + expressionid + "#lbp-" + expressionid + "-notes-list", function( response, status, xhr) {
+			if ( status == "error" ) {
+	    	var msg = "<h3>Sorry, but there are no variants for this paragraph.</h3>";
+	    	$("#lbp-notes").html( msg);
+	    		console.log(xhr.status + " " + xhr.statusText);
+	    }
+		});
 	});
 }
 

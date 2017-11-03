@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   xmlns:tei="http://www.tei-c.org/ns/1.0" version="1.0">
-  
+
   <xsl:output method="html" indent="yes"/>
-  <xsl:param name="pid">l1-cpspfs</xsl:param>  
-  
+  <xsl:param name="pid">l1-cpspfs</xsl:param>
+
   <xsl:template match="/">
     <xsl:variable name="pn"><xsl:number level="any" from="tei:text"/></xsl:variable>
-    <h3 class="lbp-side-bar-paragraph-heading"><a class="js-side-bar-scroll-to-paragraph" data-pid="{$pid}">Variants for paragraph <xsl:value-of select="count(//tei:body//tei:p) - count(//tei:p[@xml:id=$pid]//following::tei:p)"/></a></h3>
+    <h3 class="lbp-side-bar-paragraph-heading"><a class="js-side-bar-scroll-to-paragraph" data-pid="{$pid}">Variants</a></h3>
     <ul id="{$pid}-variant-list" class="lbp-paragraph-variant-list">
-    <xsl:variable name="test" select="$pid"/>  
+    <xsl:variable name="test" select="$pid"/>
       <xsl:apply-templates select="//tei:*[@xml:id=$pid]//tei:app"/>
     </ul>
   </xsl:template>
-  
+
   <xsl:template match="tei:app">
     <xsl:variable name="appnum" select="count(preceding::tei:app) + 1"></xsl:variable>
     <li class="lbp-side-window-variant" data-lem-ref="lbp-app-lem-{$appnum}">
@@ -78,11 +78,11 @@
         </xsl:for-each>
         </ul>
       </xsl:if>
-    </li>    
-    
+    </li>
+
   </xsl:template>
   <xsl:template match="tei:note" name="app-notes">
     <li><xsl:apply-templates/></li>
   </xsl:template>
-  
+
 </xsl:stylesheet>
