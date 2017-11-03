@@ -107,6 +107,7 @@ $(document).on("click", "a.js-show-paragraph-info", function(event){
 			event.preventDefault();
 			// pid stands for expression short id here
 			var pid = $(this).attr("data-pid");
+			state.setFocus(pid);
 			$paragraph = $("p#" + pid);
 			showSpinner("div#lbp-side-window-container");
 			showSideWindow($paragraph)
@@ -236,31 +237,77 @@ var showParagraphNotes = function(expressionid){
 }
 
 var showParagraphInfo = function(itemid){
-	$.get("/text/info/" + itemid, function(data){
-		var inbox = data.inbox
-		var content = HandlebarsTemplates['textinfo'](data);
+	state.info.then(function(result){
+		var content = HandlebarsTemplates['textinfo'](result);
 		$("#lbp-side-window-container").html(content);
-
-		$.get(inbox, function(data){
-
-			data["ldp:contains"].forEach(function(l){
-				$.get(l["@id"], function(ldata){
-					if (ldata["motivation"] == "commenting") {
-						$("#ldn-comments-head").css({"display" : "block"})
-						var comments_tpl = HandlebarsTemplates['ldn-comments'](ldata);
-						$("#ldn-comments").append(comments_tpl);
-					}
-					if (ldata["motivation"] == "discussing") {
-						$("#ldn-discussions-head").css({"display" : "block"})
-						var discussions_tpl = HandlebarsTemplates['ldn-discussing'](ldata);
-						$("#ldn-discussions").append(discussions_tpl);
-					}
+		state.inboxData.then(function(result){
+			result["ldp:contains"].forEach(function(r){
+				getInboxComment(r["@id"]).then(function(data){
+					var comments_tpl = HandlebarsTemplates['ldn-comments'](data);
+					$("#ldn-comments").append(comments_tpl);
 				});
-			});
+				getInboxDiscussing(r["@id"]).then(function(data){
+					var comments_tpl = HandlebarsTemplates['ldn-discussing'](data);
+					$("#ldn-discussions").append(comments_tpl);
+				});
+
+		}, function(err){
+			console.log(err);
 		});
+
+	}, function(err){
+		console.log(err);
 	});
 
+});
 }
+
+var getInboxComment = function(url){
+	return promise = new Promise(function(resolve, reject){
+		$.get(url, function(ldata){
+			if (ldata["motivation"] == "commenting") {
+				resolve(ldata);
+			}
+		});
+	});
+}
+var getInboxDiscussing = function(url){
+	return promise = new Promise(function(resolve, reject){
+		$.get(url, function(ldata){
+			if (ldata["motivation"] == "discussing") {
+				resolve(ldata);
+			}
+		});
+	});
+}
+
+	//$.get("/text/info/" + itemid, function(data){
+		//var inbox = data.inbox
+		//var content = HandlebarsTemplates['textinfo'](data);
+
+
+
+
+		// $.get(inbox, function(data){
+		//
+		// 	data["ldp:contains"].forEach(function(l){
+		// 		$.get(l["@id"], function(ldata){
+		// 			if (ldata["motivation"] == "commenting") {
+		// 				$("#ldn-comments-head").css({"display" : "block"})
+		// 				var comments_tpl = HandlebarsTemplates['ldn-comments'](ldata);
+		// 				$("#ldn-comments").append(comments_tpl);
+		// 			}
+		// 			if (ldata["motivation"] == "discussing") {
+		// 				$("#ldn-discussions-head").css({"display" : "block"})
+		// 				var discussions_tpl = HandlebarsTemplates['ldn-discussing'](ldata);
+		// 				$("#ldn-discussions").append(discussions_tpl);
+		// 			}
+		// 		});
+		// 	});
+		// });
+	//});
+
+
 var showParagraphReference = function(url){
 	$("#lbp-bottom-window-container").load("/paragraphs/show2/?url=" + url, function(response, status, xhr){
 		if ( status == "error" ) {
