@@ -391,16 +391,21 @@ var getInboxDiscussing = function(url){
 
 
 var showParagraphReference = function(url){
+	console.log("test");
 	$.get("/paragraphs/show2/?url=" + url, function(response, status, xhr){
+
 		if ( status == "error" ) {
-    	var msg = "Sorry but something went wrong";
+    	var msg = "Sorry, this text isn't available yet";
     	$("#lbp-bottom-window-container").html( msg + "(" + xhr.status + " " + xhr.statusText + ")");
     }
 		else{
 			$("#lbp-bottom-window-container").html("<p><a class='js-show-reference-in-compare' data-url='" + url + "'>View in Compare Mode</a></p>")
 			$("#lbp-bottom-window-container").append(response)
 		}
-  });
+  }).error(function(){
+		var msg = "Sorry, this text isn't available yet";
+		$("#lbp-bottom-window-container").html( msg );
+	});
 }
 
 var getParagraphIdFromNumber = function(n){

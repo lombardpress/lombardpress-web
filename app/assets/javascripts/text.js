@@ -142,7 +142,8 @@ $(document).on('turbolinks:load', function () {
 			showBottomWindow($paragraph);
 			halfSizeBottomWindow();
 			var expressionid = $(this).attr("data-itemid");
-			showComparison(expressionid);
+			changeFocus(expressionid, "bottomWindow");
+			//showComparison(expressionid);
 		});
 
 
