@@ -104,10 +104,19 @@ $(document).on("click", ".js-show-reference-paragraph", function(event){
 			var url = $(this).attr("data-url");
 			var splitArray = url.split("/");
 			var shortId = splitArray[splitArray.length-1];
-			// Instead of using showParagraphReference I've switched it to use the showComparison
-				//showParagraphReference(url);
-				showComparison();
-				showSlot(url, 'lbp-text-col-left');
+			showParagraphReference(url);
+
+		});
+	$(document).on("click", ".js-show-reference-in-compare", function(event){
+			event.preventDefault();
+			showSpinner("#lbp-bottom-window-container");
+			showBottomWindow();
+			halfSizeBottomWindow();
+			var url = $(this).attr("data-url");
+			var splitArray = url.split("/");
+			var shortId = splitArray[splitArray.length-1];
+			showComparison();
+			showSlot(url, 'lbp-text-col-left');
 		});
 //note redundancy here; copying document ready functions
 $(document).on("click", "a.js-show-paragraph-info", function(event){
@@ -382,11 +391,15 @@ var getInboxDiscussing = function(url){
 
 
 var showParagraphReference = function(url){
-	$("#lbp-bottom-window-container").load("/paragraphs/show2/?url=" + url, function(response, status, xhr){
+	$.get("/paragraphs/show2/?url=" + url, function(response, status, xhr){
 		if ( status == "error" ) {
     	var msg = "Sorry but something went wrong";
     	$("#lbp-bottom-window-container").html( msg + "(" + xhr.status + " " + xhr.statusText + ")");
     }
+		else{
+			$("#lbp-bottom-window-container").html("<p><a class='js-show-reference-in-compare' data-url='" + url + "'>View in Compare Mode</a></p>")
+			$("#lbp-bottom-window-container").append(response)
+		}
   });
 }
 
