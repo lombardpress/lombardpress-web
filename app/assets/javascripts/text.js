@@ -231,6 +231,16 @@ $(document).on("click", ".js-toggle-scroll-lock", function(event){
 
 	}
 });
+$(document).on("click", ".js-toggle-sync", function(event){
+	event.preventDefault();
+	state.panelSync = !state.panelSync;
+	if (state.panelSync){
+		$("a.js-toggle-sync").html("Unsync Panels");
+	}
+	else{
+		$("a.js-toggle-sync").html("Sync Panels");
+	}
+});
 //end of event bindings
 
 // begin functions
@@ -241,6 +251,7 @@ var showParagraphMenu = function(){
 
 var showBottomWindow = function(element){
 	//event.preventDefault();
+	state.bottomWindowVisible = true;
 	$("div#lbp-bottom-window").show("slow");
 	if (element){
 		scrollToParagraph(element)
@@ -256,6 +267,7 @@ var unlockBodyScroll = function(){
 
 var hideBottomWindow = function(){
 	//event.preventDefault();
+	state.bottomWindowVisible = false;
 	$("div#lbp-bottom-window").hide("slow");
 };
 
@@ -505,20 +517,28 @@ var showParagraphCollation = function(expressionid, base, comp){
   });
 }
 //paragraph comparision
-var showComparison = function(expressionid){
-	$.get("/text/info/" + expressionid, function(data, status, xhr) {
-		if ( status == "error" ) {
-    	var msg = "Sorry but this view is not currently available for this paragraph";
-    	$("#lbp-bottom-window-container").html( msg + "(" + xhr.status + " " + xhr.statusText + ")");
-    }
-		else{
-			var content = HandlebarsTemplates['manifestation_transcription_list']();
-			var slot = HandlebarsTemplates['slot'](data);
-			$("#lbp-bottom-window-container").html(content);
-			$("#lbp-text-col-left").html(slot);
-			$("#lbp-text-col-right").html(slot);
-		}
-  });
+var showComparison = function(){
+	state.info.then(function(result){
+		var content = HandlebarsTemplates['manifestation_transcription_list'](result);
+		var slot = HandlebarsTemplates['slot'](result);
+		$("#lbp-bottom-window-container").html(content);
+		$("#lbp-text-col-left").html(slot);
+		$("#lbp-text-col-right").html(slot);
+	});
+	//
+	// $.get("/text/info/" + expressionid, function(data, status, xhr) {
+	// 	if ( status == "error" ) {
+  //   	var msg = "Sorry but this view is not currently available for this paragraph";
+  //   	$("#lbp-bottom-window-container").html( msg + "(" + xhr.status + " " + xhr.statusText + ")");
+  //   }
+	// 	else{
+	// 		var content = HandlebarsTemplates['manifestation_transcription_list']();
+	// 		var slot = HandlebarsTemplates['slot'](data);
+	// 		$("#lbp-bottom-window-container").html(content);
+	// 		$("#lbp-text-col-left").html(slot);
+	// 		$("#lbp-text-col-right").html(slot);
+	// 	}
+  // });
 }
 
 var showSlot = function(url, slot){

@@ -6,6 +6,10 @@ function State(){
   this.focus = null;
   this.info = null;
   this.comments = null;
+  this.sideWindowVisible = false;
+  this.sideWindowContent = false
+  this.bottomWindowVisible = false;
+  this.panelSync = false;
 }
 
 State.prototype = {

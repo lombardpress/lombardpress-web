@@ -33,6 +33,7 @@ $(document).on('turbolinks:load', function () {
 			// pid is functioning as expression id here
 			var pid = $(this).attr("data-pid");
 			$paragraph = $("p#" + pid);
+			state.sideWindowContent = "variants";
 			showSideWindow($paragraph);
 			showParagraphVariants(pid);
 		});
@@ -42,6 +43,7 @@ $(document).on('turbolinks:load', function () {
 			// pid is functioning as expression id here
 			var pid = $(this).attr("data-pid");
 			$paragraph = $("p#" + pid);
+			state.sideWindowContent = "notes";
 			showSideWindow($paragraph);
 			showParagraphNotes(pid);
 		});
@@ -100,27 +102,80 @@ $(document).on("click", ".js-show-reference-paragraph", function(event){
 			showBottomWindow();
 			halfSizeBottomWindow();
 			var url = $(this).attr("data-url");
-			showParagraphReference(url);
+			var splitArray = url.split("/");
+			var shortId = splitArray[splitArray.length-1];
+			// Instead of using showParagraphReference I've switched it to use the showComparison
+				//showParagraphReference(url);
+				showComparison();
+				showSlot(url, 'lbp-text-col-left');
 		});
 //note redundancy here; copying document ready functions
 $(document).on("click", "a.js-show-paragraph-info", function(event){
 			event.preventDefault();
+
 			// pid stands for expression short id here
 			var pid = $(this).attr("data-pid");
 			var view = $(this).attr("data-view");
-			state.setFocus(pid);
+			var panelSource = "sideWindow";
+			//state.setFocus(pid);
 			$paragraph = $("p#" + pid);
-			showSpinner("div#lbp-side-window-container");
-			showSideWindow($paragraph)
 			if (view === "notes"){
-				showParagraphNotes(pid)
+				state.sideWindowContent = view;
+				// showSpinner("div#lbp-side-window-container");
+				// showSideWindow($paragraph)
+				// showParagraphNotes(pid)
 			}
 			else if (view === "variants"){
-				showParagraphVariants(pid)
+				state.sideWindowContent = view;
+				// showSpinner("div#lbp-side-window-container");
+				// showSideWindow($paragraph)
+				// showParagraphVariants(pid)
+			}
+			else if (view === "compare"){
+				panelSource = "bottomWindow";
+				// showSpinner("#lbp-bottom-window-container");
+				// scrollToParagraph($paragraph);
+				// showComparison(pid);
+				// if (state.sideWindowVisible){
+				// 	if (state.sideWindowContent === "notes"){
+				// 		showSpinner("div#lbp-side-window-container");
+				// 		showSideWindow($paragraph)
+				// 		showParagraphNotes(pid)
+				// 	}
+				// 	else if (state.sideWindowContent === "variants"){
+				// 		console.log("test");
+				// 		showSpinner("div#lbp-side-window-container");
+				// 		//showSideWindow($paragraph)
+				// 		showParagraphVariants(pid)
+				// 	}
+				// 	else if (state.sideWindowContent === "info"){
+				// 		showSpinner("div#lbp-side-window-container");
+				// 		showSideWindow($paragraph)
+				// 		showParagraphInfo(pid)
+				// 	}
+				// 	else{
+				// 		showSpinner("div#lbp-side-window-container");
+				// 		showSideWindow($paragraph)
+				// 		showParagraphInfo(pid)
+				// 	}
+				// }
+			}
+			else if (view === "info"){
+				state.sideWindowVisible = true;
+				state.sideWindowContent = "info";
+				// showSpinner("div#lbp-side-window-container");
+				// showSideWindow($paragraph)
+				// showParagraphInfo(pid)
 			}
 			else{
-				showParagraphInfo(pid)
+				state.sideWindowVisible = true;
+				state.sideWindowContent = "info";
+				// showSpinner("div#lbp-side-window-container");
+				// showSideWindow($paragraph)
+				// showParagraphInfo(pid)
 			}
+			var updateTarget = state.panelSync ? "sync" : panelSource;
+			changeFocus(pid, updateTarget);
 		});
 //table of contents onclick scroll to section
 $(document).on("click", "div.tocdiv > :first-child", function(event){
@@ -164,6 +219,7 @@ var getCurrentViewingParagraph = function(){
 }
 
 var showSideWindow = function(element){
+	state.sideWindowVisible = true;
   // this condition helps prevent resizing when the side window is already open
   if ($("div#lbp-side-window").css('display') === 'none'){
     $("div#lbp-text-body").animate({"width": "50%", "margin-left": "45%"}, function(){
@@ -180,7 +236,7 @@ var showSideWindow = function(element){
 };
 
 var hideSideWindow = function(element){
-
+	state.sideWindowVisible = false;
 	$("li#lbp-max-side-window").css("display", "none").promise().done(function(){
 		$("li#lbp-min-side-window").css("display", "block").promise().done(function(){
 			$("div#lbp-side-window").animate({"width": "0"}, function(){
@@ -348,4 +404,54 @@ var getNextParagraph = function(pid){
 var getPreviousParagraph = function(pid){
 	$previousparagraph = $("p#" + pid).prev("p")
 	return $previousparagraph;
+}
+
+var updateSidePanel = function(){
+	var content = state.sideWindowContent;
+	var eid = state.focus;
+	if (state.sideWindowVisible){
+		showSpinner("div#lbp-side-window-container");
+		$paragraph = $("p#" + eid);
+		showSideWindow($paragraph)
+		if (content === "variants"){
+			showParagraphVariants(eid)
+		}
+		else if (content === "notes"){
+			showParagraphNotes(eid)
+		}
+		else if (content === "info"){
+			showParagraphInfo(eid)
+		}
+		else
+			showParagraphInfo(eid)
+		}
+
+}
+var updateBottomPanel = function(){
+	var content = state.sideWindowContent;
+	var eid = state.focus;
+	if (state.bottomWindowVisible){
+		showSpinner("#lbp-bottom-window-container");
+		$paragraph = $("p#" + eid);
+		scrollToParagraph($paragraph);
+		if (content === "compare"){
+			showComparison(eid);
+		}
+		else{
+			showComparison(eid);
+		}
+	}
+}
+var changeFocus = function(pid, panelSource){
+	state.setFocus(pid);
+	if (panelSource === "sync"){
+		updateBottomPanel();
+		updateSidePanel();
+	}
+	else if (panelSource === "sideWindow"){
+		updateSidePanel();
+	}
+	else if (panelSource === "bottomWindow"){
+		updateBottomPanel();
+	}
 }
