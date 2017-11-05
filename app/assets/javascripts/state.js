@@ -17,7 +17,7 @@ State.prototype = {
     this.info = this.getInfo();
     this.inboxData = this.getInboxData();
   },
-  setDataFileUrl(url){
+  setDataFileUrl: function(url){
     this.dataFileUrl = url;
     this.reviewInfo = this.getReviewInfo(url);
   },
