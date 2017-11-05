@@ -1,5 +1,4 @@
-
-function State(){
+function State() {
   this.dataFileUrl = null;
   this.reviewInfo = null;
   this.itemid = null;
