@@ -23,7 +23,6 @@ $(document).on('turbolinks:load', function () {
 					$("div#lbp-review-display").append("<p>Reviews: <a class='badge-img' href='"+ data.html_link +"' target='_blank'><img src='" + data.img_url + "'/></a></p>");
 				}).catch(function(err){
 					state.getDataSource().then(function(data){
-						console.log("data", data)
 						$("div#lbp-review-display").append("<p>Data-source: <a href='http://gateway.scta.info/ipfs/" + data + "'>" + data + "</a></p>");
 					}).catch(function(err){
 						$("div#lbp-review-display").append("<p>Data-source: <a href='" + fileUrl + "'>" + fileUrl + "</a></p>");
