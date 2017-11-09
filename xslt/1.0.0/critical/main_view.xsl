@@ -9,6 +9,7 @@
 
   <!-- this param needs to change if, for example, you want the show xml function to display XML for something other than "critical"; Alternatively, this slug could be found somewhere in the TEI document being processed -->
   <xsl:param name="default-msslug">critical</xsl:param>
+  <xsl:param name="file-path"/>
 
   <!-- these params provide different language locales inherited from rails app -->
   <xsl:param name="by_phrase">By</xsl:param>
@@ -417,6 +418,7 @@
           </xsl:otherwise>
         </xsl:choose>
       </p>
+      <div id="lbp-review-display" data-file-url="{$file-path}"></div>
       <p>License Availablity: <xsl:value-of select="//tei:teiHeader/tei:fileDesc/tei:publicationStmt/tei:availability/@status"/>, <xsl:value-of select="//tei:teiHeader/tei:fileDesc/tei:publicationStmt/tei:availability/tei:p"/> </p>
       <p style="display: none;"><span id="filestem"><xsl:value-of select="//tei:body/tei:div/@xml:id"/></span></p>
       <xsl:if test="//tei:sourceDesc/tei:listBibl or //tei:sourceDesc/tei:listWit">

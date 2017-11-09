@@ -183,18 +183,21 @@ class TextController < ApplicationController
 		#for the expression at any level in the hierarchy
 		if params[:path] == "file"
 			file = transcript.file(confighash: @config.confighash, path: params[:path])
+			xslt_param_array += ["file-path", "'#{file.file_path.to_s}'"]
 			@transform = file.transform_main_view(xslt_param_array)
 		else
 			if @expression_structure == "structureItem"
 				file = params[:branch] ? transcript.file(branch: params[:branch], confighash: @config.confighash, path: "doc") : transcript.file(confighash: @config.confighash, path: "doc")
+				xslt_param_array += ["file-path", "'#{file.file_path.to_s}'"]
 				@transform = file.transform_main_view(xslt_param_array)
 			elsif @expression_structure == "structureBlock"
 				#path = params[:path] ? params[:path] : "doc"
 				file = transcript.file_part(confighash: @config.confighash, partid: params[:itemid], path: "doc")
+				xslt_param_array += ["file-path", "'#{file.file_path.to_s}'"]
 				@transform = file.transform_plain_text(xslt_param_array)
 			end
 		end
-		@file_path = file.file_path.to_s
+
 	end
 
 	def xml

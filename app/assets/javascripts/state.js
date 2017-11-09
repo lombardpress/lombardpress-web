@@ -57,6 +57,24 @@ State.prototype = {
           }
           resolve(reviewObject);
         }
+        else {
+          reject("fail")
+        }
+      });
+    });
+  },
+  getDataSource: function(){
+    var dataFileUrl = this.dataFileUrl
+    var reviewUrl = "http://dll-review-registry.scta.info/api/v1/hash?url=" + dataFileUrl
+    return promise = new Promise(function(resolve, reject){
+      $.get(reviewUrl, function(data){
+        console.log("data1", data);
+        if (data["ipfs-hash"]){
+          resolve(data["ipfs-hash"]);
+        }
+        else {
+          reject("fail")
+        }
       });
     });
   }

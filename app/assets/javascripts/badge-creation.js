@@ -14,11 +14,22 @@ $(document).on('turbolinks:load', function () {
 
     });
 		var fileUrl = $("div#lbp-review-display").attr("data-file-url")
+
 	  state.setDataFileUrl(fileUrl);
+
 		if (state.reviewInfo){
 			state.reviewInfo.then(function(data){
-				$("div#lbp-review-display").append("<p>Reviews for data-source <a href='http://gateway.scta.info/ipfs/" + data.ipfsHash + "'>" + data.ipfsHash + ":</p> <div><a class='badge-img' href='"+ data.html_link +"' target='_blank'><img src='" + data.img_url + "'/></a></div>");
-			});
+					$("div#lbp-review-display").append("<p>Data-source: <a href='http://gateway.scta.info/ipfs/" + data.ipfsHash + "'>" + data.ipfsHash + "</a></p>");
+					$("div#lbp-review-display").append("<p>Reviews: <a class='badge-img' href='"+ data.html_link +"' target='_blank'><img src='" + data.img_url + "'/></a></p>");
+				}).catch(function(err){
+					state.getDataSource().then(function(data){
+						console.log("data", data)
+						$("div#lbp-review-display").append("<p>Data-source: <a href='http://gateway.scta.info/ipfs/" + data + "'>" + data + "</a></p>");
+					}).catch(function(err){
+						$("div#lbp-review-display").append("<p>Data-source: <a href='" + fileUrl + "'>" + fileUrl + "</a></p>");
+					});
+
+				});
 		}
 		// $("div#lbp-review-display").each(function(index){
     //   var fileUrl = $(this).attr("data-file-url")
