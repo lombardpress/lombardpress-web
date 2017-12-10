@@ -3,50 +3,81 @@
   .itemLink:hover .status{display: inline;}
 </style>
 <script>
-
+$(document).ready(function(){
+$("#collapseOne").addClass("in");
+$("#collapseTwo").addClass("in");
+});
 
 </script>
 <div class="row container" style="margin: auto;">
 
   <div class="col-md-8" style="padding: 20px">
       <h1><%= @resource.title %></h1>
+      <h2><%= @resource.value("http://scta.info/property/questionTitle").to_s %></h1>
   </div>
   <div class="col-md-4">
   <!-- this div left empty -->
   </div>
 
   <div id="lbp-question-container" class="container col-md-8">
-    <h1 class="center"><%= t(:toq) %></h1>
 
     <%= render "text/questions/question_filter_form" %>
 
-    <table class="table table-striped table-hover">
-      <% @results.each do |result| %>
-      <% link = "/text/" + result[:item].to_s.split('/').last %>
-      <tr class="lbp-question-row">
-        <td><%= unless result[:status] == "Not Started" then link_to result[:title], link else result[:title]  end %></td>
-        <td class="lbp-question-title"><%= unless result[:status] == "Not Started" || result[:questiontitle] == nil  then link_to result[:questiontitle], link else result[:questiontitle]  end %></td>
-        <td><%= result[:status] %></td>
-        <% if result[:item].to_s.split('/').last == "lectio1" %>
-          <td class="lbp-status" data-review-url="https://dll-review-registry.herokuapp.com/reviews/c9f73c2c-1c1f-4e91-abb5-2e08c961cb4a.json">
-        <% elsif result[:item].to_s.split('/').last == "lectio2" %>
-          <td class="lbp-status" data-review-url="https://dll-review-registry.herokuapp.com/reviews/e4fe60ea-d303-48ef-b4d6-4ff9b8368785.json">
-        <% else %>
-          <td class="lbp-status" >
-            No Review
-        <% end %>
-        </td>
-        <td><%= link_to "View on GitHub", result[:gitRepository].to_s %></td>
-      </tr>
+    <div id="accordion" role="tablist">
+      <% if @parts.length > 0 %>
+      <div class="card">
+        <div class="card-header" role="tab" id="headingOne">
+          <h3 style="text-align: left">
+            <a data-toggle="collapse" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">Parts</a>
+          </h3>
+        </div>
 
+        <div id="collapseOne" class="collapse" role="tabpanel" aria-labelledby="headingOne" data-parent="#accordion">
+          <div class="card-body">
+            <table class="table table-striped table-hover">
 
+                <% @parts.each do |part| %>
+                <% link = "/" + part[:part].to_s.split('/').last %>
+                <tr class="lbp-question-row">
+                  <td><%= link_to part[:partTitle], link %></td>
+                  <td><%= link_to part[:partQuestionTitle], link %></td>
+                </tr>
+                <% end %>
+
+            </table>
+          </div>
+        </div>
+      </div>
       <% end %>
-    </table>
+      <div class="card">
+        <div class="card-header" role="tab" id="headingTwo">
+          <h3 style="text-align: left">
+            <a class="collapsed" data-toggle="collapse" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+              All Text Items
+            </a>
+          </h3>
+        </div>
+        <div id="collapseTwo" class="collapse" role="tabpanel" aria-labelledby="headingTwo" data-parent="#accordion">
+          <div class="card-body">
+            <table class="table table-striped table-hover">
+
+              <% @results.each do |result| %>
+              <% link = "/text/" + result[:item].to_s.split('/').last %>
+              <tr class="lbp-question-row">
+                <td><%= unless result[:status] == "Not Started" then link_to result[:title], link else result[:title]  end %></td>
+                <td class="lbp-question-title"><%= unless result[:status] == "Not Started" || result[:questiontitle] == nil  then link_to result[:questiontitle], link else result[:questiontitle]  end %></td>
+              </tr>
+              <% end %>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
   <div class="col-md-4">
     <!-- search menu -->
     <!-- 42 padding is to align contents in row. TODO: Should be a better way to creat this alignment -->
-    <div style="margin-bottom: 20px; padding-top: 42px;">
+    <div style="margin-bottom: 20px; padding-top: 10px;">
         <form  action="/search" method="get" >
         <div>
           <input id="expression-search-field" type="text" class="form-control" placeholder="<%= t(:search_text) %>" name="searchterm">
@@ -69,13 +100,13 @@
           <img height="20" src="http://www.e-codices.unifr.ch/img/logo-iiif-34x30.png" alt="IIIF Drag-n-drop"/>
           </a>
           <a href="http://scta.info/iiif/<%= @resource.short_id %>/collection" title="Raw Json for collection" style="padding: 0 5px">IIIF Collection</a>
-          <a target="_blank" class="btn btn-default btn-sm" title="View in Mirador Image Viewer" href="http://reactmirador.herokuapp.com/#<%= @resource.short_id %>" style="padding: 0 5px"><img alt="Mirador" src="http://www.e-codices.unifr.ch/mirador/mirador-logo.png">Open in Mirador</a>
+          <a target="_blank" class="btn btn-default btn-sm" title="View in Mirador Image Viewer" href="http://mirador.scta.info/?resourceid=<%= @resource.short_id %>" style="padding: 0 5px"><img alt="Mirador" src="http://www.e-codices.unifr.ch/mirador/mirador-logo.png">Open in Mirador</a>
           </div>
           <!-- TODO: the full collection URL should actually come directly from the database; and only display if a url is available -->
         </td>
       </tr>
       <tr>
-        <td>Is Part Of <%= link_to @info[0][:isPartOf].to_s.split("/").last.capitalize, "/text/questions/#{@info[0][:isPartOf].to_s.split('/').last}" %> Work Group</td>
+        <td>Is Part Of <%= link_to @info[0][:isPartOfTitle].to_s.split("/").last.capitalize, "/#{@info[0][:isPartOf].to_s.split('/').last}" %></td>
       </tr>
       <% @sponsors.each do |sponsor| %>
         <tr>

@@ -2,6 +2,13 @@
   .status{display: none;}
   .itemLink:hover .status{display: inline;}
 </style>
+<script>
+$(document).ready(function(){
+$("#collapseOne").addClass("in");
+$("#collapseTwo").addClass("in");
+});
+
+</script>
 <div class="row container" style="margin: auto auto 20px auto;">
   <div class="col-md-8" style="padding: 20px">
       <h1><%= @info[0][:work_group_title] %></h1>
@@ -12,39 +19,66 @@
 
   <div id="lbp-question-container" class="container col-md-8">
     <%= render "text/questions/question_filter_form" %>
-    <table class="table table-striped table-hover">
+
+    <div id="accordion" role="tablist">
       <% if @results.count > 0 %>
-        <h2>Subcollections in collection </h2>
+      <div class="card">
+        <div class="card-header" role="tab" id="headingOne">
+          <h3 style="text-align: left">
+            <a data-toggle="collapse" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">Subcollections in collection</a>
+          </h3>
+        </div>
+
+        <div id="collapseOne" class="collapse" role="tabpanel" aria-labelledby="headingOne" data-parent="#accordion">
+          <div class="card-body">
+            <table class="table table-striped table-hover">
+              <% @results.each do |result| %>
+
+                <% link = "/" + result[:sub_workgroup].to_s.split('/').last %>
+                <tr class="lbp-question-row">
+                  <td><%= link_to result[:sub_workgroup_title], link %>
+                  <br/><%=  result[:sub_workgroup_type] %> <%=result[:sub_workgroup_desc] %></td>
+                </tr>
+
+              <% end %>
+            </table>
+          </div>
+        </div>
+      </div>
       <% end %>
-      <% @results.each do |result| %>
+      <div class="card">
+        <div class="card-header" role="tab" id="headingTwo">
+          <h3 style="text-align: left">
+            <a class="collapsed" data-toggle="collapse" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+              Titles in Collection
+            </a>
+          </h3>
+        </div>
+        <div id="collapseTwo" class="collapse" role="tabpanel" aria-labelledby="headingTwo" data-parent="#accordion">
+          <div class="card-body">
+            <table class="table table-striped table-hover">
 
-        <% link = "/text/questions/" + result[:sub_workgroup].to_s.split('/').last %>
-        <tr class="lbp-question-row">
-          <td><%= link_to result[:sub_workgroup_title], link %>
-          <br/><%=  result[:sub_workgroup_type] %> <%=result[:sub_workgroup_desc] %></td>
-        </tr>
+              <% @expression_results.each do |result| %>
 
-      <% end %>
-    </table>
-    <table class="table table-striped table-hover">
-      <h2>Titles in Collection</h2>
-      <% @expression_results.each do |result| %>
+              <% link = "/" + result[:expression].to_s.split('/').last %>
+              <% author_link = result[:author].to_s.split("/").last %>
+              <tr class="lbp-question-row">
+                <% if result[:authorTitle] != nil %>
+                  <td><%= link_to result[:authorTitle], author_link %></td>
+                <% else %>
+                  <td></td>
+                <% end %>
 
-      <% link = "/text/questions/" + result[:expression].to_s.split('/').last %>
-      <% author_link = result[:author].to_s.split("/").last %>
-      <tr class="lbp-question-row">
-        <% if result[:authorTitle] != nil %>
-          <td><%= link_to result[:authorTitle], author_link %></td>
-        <% else %>
-          <td></td>
-        <% end %>
+                <td><%= link_to result[:expressiontitle], link %></td>
 
-        <td><%= link_to result[:expressiontitle], link %></td>
+              </tr>
 
-      </tr>
-
-      <% end %>
-    </table>
+              <% end %>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
   <div class="col-md-4">
     <div style="margin-bottom: 20px; padding-top: 10px">
@@ -64,7 +98,7 @@
       </tr>
       <% if @info[0][:isPartOf] != nil %>
       <tr>
-        <td>Is Part Of <%= link_to @info[0][:isPartOf].to_s.split("/").last.capitalize, "/text/questions/#{@info[0][:isPartOf].to_s.split('/').last}" %> Work Group</td>
+        <td>Is Part Of <%= link_to @info[0][:isPartOf].to_s.split("/").last.capitalize, "/#{@info[0][:isPartOf].to_s.split('/').last}" %> Work Group</td>
       </tr>
       <% end %>
     </table>

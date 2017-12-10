@@ -20,39 +20,64 @@ module Lbp
 	      ORDER BY ?order"
 				results = Query.new.query(query)
 		end
+		def has_parts_display
+			#url =  "<http://scta.info/resource/#{short_id}>"
+			#Lbp::Query.new().collection_query(url)
+			query = "
+				SELECT ?part ?partTitle ?partQuestionTitle ?order
+	      {
+	        <http://scta.info/resource/#{short_id}> <http://purl.org/dc/terms/hasPart> ?part .
+	        ?part <http://purl.org/dc/elements/1.1/title> ?partTitle .
+					?part <http://scta.info/property/totalOrderNumber> ?order .
+					MINUS {
+						?part <http://scta.info/property/structureType> <http://scta.info/resource/structureItem> .
+					}
+					OPTIONAL
+	      	{
+	      	?part <http://scta.info/property/questionTitle> ?partQuestionTitle  .
+	      	}
+	      }
+	      ORDER BY ?order"
+				results = Query.new.query(query)
+		end
 		def info_display
-			query = "SELECT ?description ?isPartOf ?hasPart ?sponsor ?sponsorTitle ?sponsorLogo ?sponsorLink ?article ?articleTitle
+			query = "SELECT ?description ?isPartOf ?isPartOfTitle ?sponsor ?sponsorTitle ?sponsorLogo ?sponsorLink ?article ?articleTitle
       {
-         <http://scta.info/resource/#{short_id}> <http://purl.org/dc/elements/1.1/description> ?description .
-
-         <http://scta.info/resource/#{short_id}> <http://purl.org/dc/terms/isPartOf> ?isPartOf .
-         OPTIONAL {
-           <http://scta.info/resource/#{short_id}> <http://scta.info/property/hasSponsor> ?sponsor .
-           ?sponsor <http://purl.org/dc/elements/1.1/title> ?sponsorTitle .
-           ?sponsor <http://scta.info/property/link> ?sponsorLink .
-           ?sponsor <http://scta.info/property/logo> ?sponsorLogo .
-         }
-         OPTIONAL {
-          ?article <http://scta.info/property/isArticleOf> <http://scta.info/resource/#{short_id}> .
-          ?article <http://purl.org/dc/elements/1.1/title> ?articleTitle .
-         }
-				 OPTIONAL {
-          <http://scta.info/resource/#{short_id}> <http://purl.org/dc/terms/hasPart> ?hasPart .
-         }
-      }"
+				OPTIONAL {
+        	<http://scta.info/resource/#{short_id}> <http://purl.org/dc/elements/1.1/description> ?description .
+			 	}
+				OPTIONAL {
+        	<http://scta.info/resource/#{short_id}> <http://purl.org/dc/terms/isPartOf> ?isPartOf .
+					?isPartOf <http://purl.org/dc/elements/1.1/title> ?isPartOfTitle .
+			 	}
+       OPTIONAL {
+         <http://scta.info/resource/#{short_id}> <http://scta.info/property/hasSponsor> ?sponsor .
+         ?sponsor <http://purl.org/dc/elements/1.1/title> ?sponsorTitle .
+         ?sponsor <http://scta.info/property/link> ?sponsorLink .
+         ?sponsor <http://scta.info/property/logo> ?sponsorLogo .
+       }
+       OPTIONAL {
+        ?article <http://scta.info/property/isArticleOf> <http://scta.info/resource/#{short_id}> .
+        ?article <http://purl.org/dc/elements/1.1/title> ?articleTitle .
+       }
+			}"
       results = Query.new.query(query)
 		end
 		def sponsors_display(info)
 			sponsors = info.map {|r| {sponsor: r[:sponsor], sponsorTitle: r[:sponsorTitle], sponsorLogo: r[:sponsorLogo], sponsorLink: r[:sponsorLink]}}
 			sponsors.uniq!
 			# check to see if sponsors array is actaully empty. If it is, set it to empty array
-			sponsors = sponsors[0][:sponsor] == nil ? [] : sponsors
+
+				sponsors = sponsors[0][:sponsor] == nil ? [] : sponsors
+
 		end
 		def articles_display(info)
 			articles = info.map {|r| {article: r[:article], articleTitle: r[:articleTitle]}}
 			articles.uniq!
 			# check to see if articles array is actaully empty. If it is, set it to empty array
-			articles = articles[0][:article] == nil ? [] : articles
+
+				articles = articles[0][:article] == nil ? [] : articles
+
 		end
 		def manifestation_display
 			query ="SELECT ?item_title ?transcript ?transcript_title ?transcript_status ?transcript_type ?manifestation ?manifestation_title ?language ?canonical_transcript

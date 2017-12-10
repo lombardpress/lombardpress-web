@@ -55,18 +55,21 @@ class TextController < ApplicationController
 				@order = @resource.value("http://rcs.philsem.unibas.ch/resource/religiousOrder")
 				@sinfo = @resource.values("http://rcs.philsem.unibas.ch/resource/sententiariusInfo")
 				render "text/questions/authorlist"
+			elsif @resource.structure_type.to_s.include? "structureItem"
+				redirect_to "/text/#{params[:resourceid]}"
 			elsif params[:resourceid]
 				@results = @resource.structure_items_display
-				if @resource.level == 1
+				@parts = @resource.has_parts_display
+				#if @resource.level == 1
 					@info = @resource.info_display
 					@sponsors = @resource.sponsors_display(@info)
 					@articles = @resource.articles_display(@info)
 					@questionEditor = @resource.value("http://scta.info/property/questionListEditor")
 					@questionEncoder = @resource.value("http://scta.info/property/questionListEncoder")
 					render "text/questions/questions_with_about"
-				else
-					render "text/questions/questions"
-				end
+				#else
+					#render "text/questions/questions"
+				#end
 			end
 		# TODO review which part if any of the conditional below is necessary
 		else
