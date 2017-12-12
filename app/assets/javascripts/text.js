@@ -188,11 +188,12 @@ $(document).on("click", ".js-show-folio-image", function(event){
 	var expressionid = $(this).attr("data-expressionid");
 	var canvasid = $(this).attr("data-canvasid");
 	var surfaceid = $(this).attr("data-surfaceid");
+	var isurfaceid = $(this).attr("data-isurfaceid");
 	showSpinner("#lbp-bottom-window-container");
 	showBottomWindow();
 	//halfSizeBottomWindow();
 
-	showFolioImage(canvasid, expressionid, surfaceid);
+	showFolioImage(canvasid, expressionid, surfaceid, isurfaceid);
 });
 
 //TODO: consider making this a generic .js-close that can be resued for any close function
@@ -352,8 +353,8 @@ var showParaZoomImage = function(expressionid, msslug){
 			});
 		});
 };
-var showFolioImage = function(canvasid, expressionid, surfaceid){
-  $.ajax({
+var showFolioImage = function(canvasid, expressionid, surfaceid, isurfaceid){
+	$.ajax({
     url: "/paragraphimage/showfoliozoom?canvasid="+ canvasid + "&expressionid=" + expressionid + "&surfaceid=" + surfaceid,
     type: 'get',
     error: function(XMLHttpRequest, textStatus, errorThrown){
@@ -361,33 +362,58 @@ var showFolioImage = function(canvasid, expressionid, surfaceid){
         console.log('status:' + XMLHttpRequest.status + ', status text: ' + XMLHttpRequest.statusText);
     },
     success: function(data){
-      id = Math.random();
+			console.log(isurfaceid);
+			var index = 0
+			if (isurfaceid){
+				index = data.findIndex(function(entry){
+					console.log(entry.isurface_shortid === isurfaceid)
+					return entry.isurface_shortid === isurfaceid
+				});
+			}
+			else {
+				index = 0
+			}
 
-  		function insertNext(data){
-  			if (data.next_shortid !== null){
-  			return	"<a class='js-show-folio-image' data-surfaceid='" + data.next_shortid + "'>Next</a>";
-  			}
-  			else {
-  				return "";
-  			}
-  		}
-  		function insertPrev(data){
-  			if (data.previous_shortid !== null){
-  				return	"<a class='js-show-folio-image' data-surfaceid='" + data.previous_shortid + "'>Previous</a>";
-  			}
-  			else {
-  				return "";
-  			}
-  		}
-  		var height = data.c_height;
-  		var width = data.c_width;
-  		var newHeight = 1170 / width * height;
-  		$("#lbp-bottom-window-container").html("<div id='folio-nav' style='text-align: center;'>" + insertPrev(data) + " " + insertNext(data) + "</div><div id='openseadragon-" + id + "' style='width: 1170;  height: " + newHeight + "px; margin: auto;'></div>");
-  		showOpenseadragonFolio(id, data);
+			function insertNext(data){
+				if (data.next_shortid !== null){
+				return	"<a class='js-show-folio-image' data-surfaceid='" + data[0].next_shortid + "'>Next</a>";
+				}
+				else {
+					return "";
+				}
+			}
+			function insertPrev(data){
+				if (data.previous_shortid !== null){
+					return	"<a class='js-show-folio-image' data-surfaceid='" + data[0].previous_shortid + "'>Previous</a>";
+				}
+				else {
+					return "";
+				}
+			}
+
+			$("#lbp-bottom-window-container").html("<div id='folio-nav' style='text-align: center;'>" + insertPrev(data) + " | " + data[0].surfaceTitle + " | " + insertNext(data) + "<div id='isurfaces'></div></div>");
+			if (data.length > 1){
+				for (i = 0; i < data.length; i++){
+					$("#isurfaces").append("<a class='js-show-folio-image' data-surfaceid='" + data[i].current_shortid + "' data-isurfaceid='" + data[i].isurface_shortid + "'>" + data[i].icodexTitle + ":" + data[i].isurfaceTitle + "</a> ");
+				}
+			}
+			loadOpenSeaDragonFolio(data[index])
+
     }
 	});
 
 };
+
+var loadOpenSeaDragonFolio = function(data){
+		id = Math.random();
+		var height = data.c_height;
+		var width = data.c_width;
+		var newHeight = 1170 / width * height;
+		$("#lbp-bottom-window-container").append("<div id='openseadragon-" + id + "' style='width: 1170;  height: " + newHeight + "px; margin: auto;'></div>");
+		showOpenseadragonFolio(id, data);
+};
+
+
 
 var showParaAltImage = function(itemid, msslug, pid){
 	$.get("/paragraphimage/" + itemid + "/" + msslug + "/" + pid + " #lbp-image-text-container", function(data, status, xhr) {
