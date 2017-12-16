@@ -105,9 +105,11 @@ $("#collapseTwo").addClass("in");
           <!-- TODO: the full collection URL should actually come directly from the database; and only display if a url is available -->
         </td>
       </tr>
+      <% if @info[0][:isPartOfTitle] %>
       <tr>
         <td>Is Part Of <%= link_to @info[0][:isPartOfTitle].to_s.split("/").last.capitalize, "/#{@info[0][:isPartOf].to_s.split('/').last}" %></td>
       </tr>
+      <% end %>
       <% @sponsors.each do |sponsor| %>
         <tr>
           <td>Supported by <%= link_to sponsor[:sponsorTitle], sponsor[:sponsorLink].to_s %> <img height="32px" src="<%= sponsor[:sponsorLogo].to_s %>"/></td>
