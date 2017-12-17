@@ -100,16 +100,25 @@ class ParagraphimageController < ApplicationController
 		#results = MiscQuery.new.folio_info(canvasid)
 		full_surfaceid = "http://scta.info/resource/#{params[:surfaceid]}"
 		results = MiscQuery.new.folio_info2(full_surfaceid)
-		
-		@image_info = {
-			:image_url => results.first[:imageurl].to_s,
-			:c_width => results.first[:c_width].to_i,
-			:c_height => results.first[:c_height].to_i,
-			:next_shortid => if results.first[:next_surface] then results.first[:next_surface].to_s.split("resource/").last else nil end,
-			:previous_shortid => if results.first[:previous_surface] then results.first[:previous_surface].to_s.split("resource/").last else nil end,
+		image_info = results.map do |result|
+		info = {
+			:surfaceTitle => result[:surfaceTitle].to_s,
+			:isurface => result[:isurface].to_s,
+			:isurface_shortid => result[:isurface].to_s.split("resource/").last,
+			:isurfaceTitle => if result[:isurfaceTitle] then result[:isurfaceTitle].to_s else nil end,
+			:icodexTitle => if result[:icodexTitle] then result[:icodexTitle].to_s else nil end,
+			:image_url => result[:imageurl].to_s,
+			:c_width => result[:c_width].to_i,
+			:c_height => result[:c_height].to_i,
+			:current_shortid => params[:surfaceid],
+			:next_shortid => if result[:next_surface] then result[:next_surface].to_s.split("resource/").last else nil end,
+			:previous_shortid => if result[:previous_surface] then result[:previous_surface].to_s.split("resource/").last else nil end,
 		}
 
-		render :json => @image_info
+		end
+
+
+		render :json => image_info
 	end
 
 end

@@ -40,14 +40,20 @@ class MiscQuery < Lbp::Query
 	 #replaces folio_info
 	 def folio_info2(surfaceid)
       query = "#{@prefixes}
-         SELECT DISTINCT ?zone ?ulx ?uly ?lry ?lrx ?position ?c_height ?c_width ?canvasurl ?imageurl ?next_surface ?previous_surface
+         SELECT DISTINCT ?surfaceTitle ?zone ?ulx ?uly ?lry ?lrx ?position ?c_height ?c_width ?isurface ?isurfaceTitle ?icodexTitle ?canvasurl ?imageurl ?next_surface ?previous_surface
       {
-        <#{surfaceid}> <http://scta.info/property/hasISurface> ?isurface .
+				<#{surfaceid}> <http://purl.org/dc/elements/1.1/title> ?surfaceTitle .
+				<#{surfaceid}> <http://scta.info/property/hasISurface> ?isurface .
 				OPTIONAL{
 					<#{surfaceid}> <http://scta.info/property/next> ?next_surface .
 				}
 				OPTIONAL{
 					<#{surfaceid}> <http://scta.info/property/previous> ?previous_surface .
+				}
+				OPTIONAL{
+					?isurface <http://purl.org/dc/elements/1.1/title> ?isurfaceTitle .
+					?isurface <http://purl.org/dc/elements/1.1/isPartOf> ?icodex .
+					?icodex <http://purl.org/dc/elements/1.1/title> ?icodexTitle
 				}
 				?isurface <http://scta.info/property/hasCanvas> ?canvas .
 				OPTIONAL{

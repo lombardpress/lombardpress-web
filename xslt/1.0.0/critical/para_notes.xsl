@@ -7,7 +7,7 @@
 
   <xsl:template match="/">
     <xsl:variable name="pn"><xsl:number level="any" from="tei:text"/></xsl:variable>
-    <h3 class="lbp-side-bar-paragraph-heading"><a class="js-side-bar-scroll-to-paragraph" data-pid="{$pid}">Notes for paragraph <xsl:value-of select="count(//tei:body//tei:p) - count(//tei:p[@xml:id=$pid]//following::tei:p)"/></a></h3>
+    <h3 class="lbp-side-bar-paragraph-heading"><a class="js-side-bar-scroll-to-paragraph" data-pid="{$pid}">Notes</a></h3>
     <ul id="{$pid}-notes-list" class="lbp-paragraph-notes-list">
       <xsl:apply-templates select="//tei:*[@xml:id=$pid]//tei:cit"/>
     </ul>

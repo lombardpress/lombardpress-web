@@ -41,9 +41,9 @@
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><%= t(:text) %> <span class="caret"></span></a>
           <ul class="dropdown-menu" role="menu">
             <!--<li><a href="/text"><%= t(:toc) %></a></li> -->
-            <li><%= link_to t(:catalogue), "/text/questions", data: { keybinding: 'q' } %></li>
+            <li><%= link_to t(:catalogue), "/scta", data: { keybinding: 'q' } %></li>
             <li><%= link_to t(:index), "/index", data: { keybinding: 'i' } %></li>
-            <li><%= link_to "Search Questions", "/search/questions" %></li>
+            <li><%= link_to "Search", "/search" %></li>
           </ul>
         </li>
 
@@ -79,6 +79,7 @@
             <li><a href="http://mirador.scta.info" target="_blank">The SCTA Image Viewer</a></li>
           </ul>
         </li>
+        <li><a href="https://scta.info/donate" target="_blank">Donate</a></li>
       </ul>
 
       <ul class="nav navbar-nav navbar-right">

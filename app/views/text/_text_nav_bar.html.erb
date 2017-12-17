@@ -15,9 +15,9 @@
     <div id="lbp-text-tool-bar-collapse" class="collapse navbar-collapse" >
       <ul class="nav navbar-nav">
         <% if @expression.level == 1 %>
-        <li><%= link_to "Text Home", "/text/questions/#{@expression.short_id}" %></li>
+        <li><%= link_to "Text Home", "/#{@expression.short_id}" %></li>
         <% else %>
-        <li><%= link_to "Text Home", "/text/questions/#{@expression.top_level_expression.short_id}" %></li>
+        <li><%= link_to "Text Home", "/#{@expression.top_level_expression.short_id}" %></li>
         <% end %>
         <% unless (params.has_key?(:msslug) && params[:msslug] != "critical") || @expression_structure == "structureBlock" %>
           <li><a class="js-show-outline" data-itemid="<%= params[:itemid] %>"><%= t(:text_outline) %></a></li>

@@ -13,5 +13,40 @@ $(document).on('turbolinks:load', function () {
       }
 
     });
+		var fileUrl = $("div#lbp-review-display").attr("data-file-url")
+
+	  state.setDataFileUrl(fileUrl);
+
+		if (state.reviewInfo){
+			state.reviewInfo.then(function(data){
+					$("div#lbp-review-display").append("<p>Data-source: <a href='http://gateway.scta.info/ipfs/" + data.ipfsHash + "'>" + data.ipfsHash + "</a></p>");
+					$("div#lbp-review-display").append("<p>Reviews: <a class='badge-img' href='"+ data.html_link +"' target='_blank'><img src='" + data.img_url + "'/></a></p>");
+				}).catch(function(err){
+					state.getDataSource().then(function(data){
+						$("div#lbp-review-display").append("<p>Data-source: <a href='http://gateway.scta.info/ipfs/" + data + "'>" + data + "</a></p>");
+					}).catch(function(err){
+						$("div#lbp-review-display").append("<p>Data-source: <a href='" + fileUrl + "'>" + fileUrl + "</a></p>");
+					});
+
+				});
+		}
+		// $("div#lbp-review-display").each(function(index){
+    //   var fileUrl = $(this).attr("data-file-url")
+		// 	var reviewUrl = "http://localhost:4567/api/v1/reviews/?url=" + fileUrl + "?society=MAA"
+		// 	)
+		// 	$.get(reviewUrl, function(data){
+		// 		if (data.length > 0){
+	  //       var img_url = data[0]["badge-url"];
+		// 			var reviewid = data[0]["id"];
+		// 			var html_link = "http://localhost:4567/reviews/" + reviewid + ".html";
+		// 			var rubric_link = data[0]["badge-rubric"];
+		// 			var summary = data[0]["review-summary"];
+	  //       $("div#lbp-review-display").append("<p>Reviews:</p> <div><a class='badge-img' href='"+ html_link +"' target='_blank'><img src='" + img_url + "'/></a></div>");
+		// 		}
+		// 	});
+
+
+    //});
+
   });
 });

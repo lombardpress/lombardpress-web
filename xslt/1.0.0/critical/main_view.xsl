@@ -9,6 +9,7 @@
 
   <!-- this param needs to change if, for example, you want the show xml function to display XML for something other than "critical"; Alternatively, this slug could be found somewhere in the TEI document being processed -->
   <xsl:param name="default-msslug">critical</xsl:param>
+  <xsl:param name="file-path"/>
 
   <!-- these params provide different language locales inherited from rails app -->
   <xsl:param name="by_phrase">By</xsl:param>
@@ -114,6 +115,7 @@
                   <li><a href="#" class='js-show-paragraph-variants' data-itemid="{$itemid}" data-pid="{@xml:id}">Variants</a></li>
                   <li><a href="#" class='js-show-paragraph-notes' data-itemid="{$itemid}" data-pid="{@xml:id}">Notes</a></li>
                   <li><a href="#" class='js-show-paragraph-collation' data-itemid="{@xml:id}">Collation</a></li>
+                  <li><a href="#" class='js-show-paragraph-comparison' data-itemid="{@xml:id}">Compare</a></li>
                   <li><a href="#" class='js-show-paragraph-xml' data-itemid="{$itemid}" data-pid="{@xml:id}" data-msslug="{$default-msslug}">XML</a></li>
                   <li><a href="#" class='js-show-paragraph-info' data-itemid="{$itemid}" data-pid="{@xml:id}">Paragraph Info</a></li>
 
@@ -416,6 +418,7 @@
           </xsl:otherwise>
         </xsl:choose>
       </p>
+      <div id="lbp-review-display" data-file-url="{$file-path}"></div>
       <p>License Availablity: <xsl:value-of select="//tei:teiHeader/tei:fileDesc/tei:publicationStmt/tei:availability/@status"/>, <xsl:value-of select="//tei:teiHeader/tei:fileDesc/tei:publicationStmt/tei:availability/tei:p"/> </p>
       <p style="display: none;"><span id="filestem"><xsl:value-of select="//tei:body/tei:div/@xml:id"/></span></p>
       <xsl:if test="//tei:sourceDesc/tei:listBibl or //tei:sourceDesc/tei:listWit">

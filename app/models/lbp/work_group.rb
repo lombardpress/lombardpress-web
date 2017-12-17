@@ -6,6 +6,7 @@ module Lbp
   	      {
   	        <http://scta.info/resource/#{short_id}> <http://purl.org/dc/elements/1.1/title> ?title .
   	        <http://scta.info/resource/#{short_id}> <http://scta.info/property/hasExpression> ?expression .
+						?expression <http://scta.info/property/level> '1' .
   	        ?expression <http://purl.org/dc/elements/1.1/title> ?expressiontitle  .
   	        OPTIONAL
   	      	{

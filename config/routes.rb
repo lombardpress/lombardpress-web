@@ -99,7 +99,8 @@ end
   post 'accesspoints/:id' => 'access_points#create', as: :create_access_point
   delete 'accesspoints/:id' => 'access_points#destroy', as: :delete_access_point
 
-
+  ## these route should always go last, all other routes should override it, but if ia resource shortid is used it should take you to the questions page.
+  get ':resourceid' => 'text#questions'
 
 
 

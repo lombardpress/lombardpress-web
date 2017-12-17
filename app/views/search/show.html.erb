@@ -1,4 +1,9 @@
-<div class="container" style="margin-top: 100px; margin-bottom: 100px; width: 60%;">
-	<h1>Search results for <%= params[:searchterm] %></h1>
-	<%= raw(@results) %>
+<div class="row" style="width: 60%; margin: 50px auto">
+	<div class="col-sm-3 lbp-search-sidebar">
+      <%= render "filters" %>
+  </div>
+	<div id="lbp-search-results" class="col-sm-9 list-group">
+		<h1>Search results for <%= params[:searchterm] %></h1>
+		<%= raw(@results) %>
+	</div>
 </div>

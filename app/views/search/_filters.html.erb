@@ -1,0 +1,32 @@
+<div id="question-search-form" style="margin-bottom: 20px;">
+  <form class="center form-group">
+    <h3>Filter Search</h3>
+    <br/>
+    <label>Search type</label>
+    <select class="form-control" name="type" value="<%= params[:type] %>">
+      <option>select</option>
+      <% if params[:type] == "text" %>
+      <option value="text" selected="selected">Text</option>
+      <% else %>
+      <option value="text">Text</option>
+      <% end %>
+      <% if params[:type] == "questions" %>
+        <option value="questions" selected="selected">Questions</option>
+      <% else %>
+        <option value="questions">Questions</option>
+      <% end %>
+    </select>
+    <label>Search Term</label>
+    <input class="form-control" type="text" name="searchterm" value="<%= params[:searchterm] %>"/>
+    <label>Expression Id</label>
+    <input class="form-control" type="text" name="expressionid" value="<%= params[:expressionid] %>"/>
+    <label>Expression Type Id</label>
+    <input class="form-control" type="text" name="expressiontypeid" value="<%= params[:expressiontypeid] %>"/>
+    <label>Work Group Id</label>
+    <input class="form-control" type="text" name="workgroupid" value="<%= params[:workgroupid] %>"/>
+    <label>Author Id</label>
+    <input class="form-control" type="text" name="authorid" value="<%= params[:authorid] %>">
+    <br/>
+    <button type="submit" class="btn btn-default">Submit</button>
+  </form>
+</div>

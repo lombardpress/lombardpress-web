@@ -9,6 +9,7 @@
 
   <!-- this param needs to change if, for example, you want the show xml function to display XML for something other than "critical"; Alternatively, this slug could be found somewhere in the TEI document being processed -->
   <xsl:param name="default-msslug">critical</xsl:param>
+  <xsl:param name="file-path"/>
 
   <!-- variables-->
   <xsl:variable name="itemid"><xsl:value-of select="/tei:TEI/tei:text/tei:body/tei:div/@xml:id"/></xsl:variable>
@@ -75,6 +76,7 @@
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Paragraph Text Tools<span class="caret"></span></a>
                 <ul class="dropdown-menu" role="menu">
                   <li><a href="#" class='js-show-paragraph-collation' data-itemid="{@xml:id}">Collation</a></li>
+                  <li><a href="#" class='js-show-paragraph-comparison' data-itemid="{@xml:id}">Compare</a></li>
                   <li><a href="#" class='js-show-paragraph-xml' data-itemid="{$itemid}" data-pid="{@xml:id}" data-msslug="{$default-msslug}">XML</a></li>
                   <li><a href="#" class='js-show-paragraph-info' data-itemid="{$itemid}" data-pid="{@xml:id}">Paragraph Info</a></li>
 
@@ -180,7 +182,7 @@
     <span class="lbp-glyph lbp-pilcrow">&#182;</span><xsl:text> </xsl:text>
   </xsl:template>
   <xsl:template match="tei:lb">
-    <br/> 
+    <br/>
   </xsl:template>
 
 
@@ -205,8 +207,8 @@
         </xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
-      
-      
+
+
     <!-- <xsl:variable name="length"><xsl:value-of select="string-length($folio-and-side)-2"/></xsl:variable> -->
     <xsl:variable name="folio">
       <xsl:choose>
@@ -298,8 +300,8 @@
           </xsl:otherwise>
         </xsl:choose>
       </xsl:variable>
-     
-      
+
+
 
       <span class="lbp-folionumber">
         <xsl:choose>
@@ -320,7 +322,7 @@
       <xsl:text> </xsl:text>
     </xsl:if>
   </xsl:template>
-  
+
   <xsl:template match="tei:note[@type='marginal-note']">
     <xsl:variable name="place" select="./@place"/>
     <xsl:variable name="preceding-line" select="./preceding::tei:lb[1]"/>
@@ -365,13 +367,13 @@
               <xsl:for-each select="//tei:titleStmt/tei:respStmt">
                 <xsl:choose>
                   <xsl:when test="./tei:resp/@when">
-                    - <span><xsl:value-of select="./tei:name"/></span>, 
+                    - <span><xsl:value-of select="./tei:name"/></span>,
                     <span><xsl:value-of select="normalize-space(./tei:resp)"/></span>,
                     <span><xsl:value-of select="./tei:resp/@when"/></span>
                     <xsl:text> </xsl:text>
                   </xsl:when>
                   <xsl:otherwise>
-                    - <span><xsl:value-of select="./tei:name"/></span>, 
+                    - <span><xsl:value-of select="./tei:name"/></span>,
                     <span><xsl:value-of select="normalize-space(./tei:resp)"/></span>
                     <xsl:text> </xsl:text>
                   </xsl:otherwise>
@@ -381,7 +383,7 @@
           </div>
         </xsl:if>
         <p>Edition: <span id="editionNumber"><xsl:value-of select="//tei:teiHeader/tei:fileDesc/tei:editionStmt/tei:edition/@n"/></span> | <xsl:value-of select="//tei:teiHeader/tei:fileDesc/tei:editionStmt/tei:edition/tei:date"/></p>
-        <p>Authority: 
+        <p>Authority:
           <xsl:choose>
             <xsl:when test="//tei:teiHeader/tei:fileDesc/tei:publicationStmt/tei:authority/tei:ref">
               <xsl:value-of select="//tei:teiHeader/tei:fileDesc/tei:publicationStmt/tei:authority"/>: <a href="{//tei:teiHeader/tei:fileDesc/tei:publicationStmt/tei:authority/tei:ref/@target}"><xsl:value-of select="//tei:teiHeader/tei:fileDesc/tei:publicationStmt/tei:authority/tei:ref/@target"/></a>
@@ -392,6 +394,7 @@
           </xsl:choose>
         </p>
         <p>License Availablity: <xsl:value-of select="//tei:teiHeader/tei:fileDesc/tei:publicationStmt/tei:availability/@status"/>, <xsl:value-of select="//tei:teiHeader/tei:fileDesc/tei:publicationStmt/tei:availability/tei:p"/> </p>
+        <div id="lbp-review-display" data-file-url="{$file-path}"></div>
         <p style="display: none;"><span id="filestem"><xsl:value-of select="//tei:body/tei:div/@xml:id"/></span></p>
         <xsl:if test="//tei:sourceDesc/tei:listBibl or //tei:sourceDesc/tei:listWit">
           <div id="sources">
@@ -405,8 +408,8 @@
           </div>
         </xsl:if>
       </div>
-      
+
     </div>
   </xsl:template>
-  
+
 </xsl:stylesheet>

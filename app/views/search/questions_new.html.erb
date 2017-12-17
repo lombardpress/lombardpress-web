@@ -1,20 +1,12 @@
-<div class="container" style="margin-top: 100px; margin-bottom: 100px; width: 60%;">
-  <div id="question-search-form" style="margin-bottom: 20px;">
-	  <% if @searchterm %>
-    <h2><%= @results.count %> search results for <%= params[:searchterm] %></h2>
-    <% else %>
-    <h2>Search for a Question Title within the <a href="http://scta.info">SCTA</a> corpus</h2>
-    <% end %>
-    <form class="center">
-      <input type="text" name="searchterm">
-      <input type="submit">
-    </form>
+<div class="row" style="width: 60%; margin: 50px auto">
+  <div class="col-sm-3 lbp-search-sidebar">
+      <%= render "filters" %>
   </div>
-	<div id="lbp-question-results" class="list-group">
+  <div id="lbp-question-results" class="col-sm-9 list-group">
     <style type="text/css">
     .lbp-question-search-result:hover {background-color: lightgray}
     </style>
-
+    <h2> Search results (<%= @results.count %> hits)</h2>
     <% @results.each do |result| %>
         <div class="list-group-item lbp-question-search-result">
 

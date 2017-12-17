@@ -33,6 +33,7 @@ $(document).on('turbolinks:load', function () {
 			// pid is functioning as expression id here
 			var pid = $(this).attr("data-pid");
 			$paragraph = $("p#" + pid);
+			state.sideWindowContent = "variants";
 			showSideWindow($paragraph);
 			showParagraphVariants(pid);
 		});
@@ -42,6 +43,7 @@ $(document).on('turbolinks:load', function () {
 			// pid is functioning as expression id here
 			var pid = $(this).attr("data-pid");
 			$paragraph = $("p#" + pid);
+			state.sideWindowContent = "notes";
 			showSideWindow($paragraph);
 			showParagraphNotes(pid);
 		});
@@ -100,17 +102,89 @@ $(document).on("click", ".js-show-reference-paragraph", function(event){
 			showBottomWindow();
 			halfSizeBottomWindow();
 			var url = $(this).attr("data-url");
+			var splitArray = url.split("/");
+			var shortId = splitArray[splitArray.length-1];
 			showParagraphReference(url);
+
+		});
+	$(document).on("click", ".js-show-reference-in-compare", function(event){
+			event.preventDefault();
+			showSpinner("#lbp-bottom-window-container");
+			showBottomWindow();
+			halfSizeBottomWindow();
+			var url = $(this).attr("data-url");
+			var splitArray = url.split("/");
+			var shortId = splitArray[splitArray.length-1];
+			showComparison();
+			showSlot(url, 'lbp-text-col-left');
 		});
 //note redundancy here; copying document ready functions
 $(document).on("click", "a.js-show-paragraph-info", function(event){
 			event.preventDefault();
+
 			// pid stands for expression short id here
 			var pid = $(this).attr("data-pid");
+			var view = $(this).attr("data-view");
+			var panelSource = "sideWindow";
+			//state.setFocus(pid);
 			$paragraph = $("p#" + pid);
-			showSpinner("div#lbp-side-window-container");
-			showSideWindow($paragraph)
-			showParagraphInfo(pid)
+			if (view === "notes"){
+				state.sideWindowContent = view;
+				// showSpinner("div#lbp-side-window-container");
+				// showSideWindow($paragraph)
+				// showParagraphNotes(pid)
+			}
+			else if (view === "variants"){
+				state.sideWindowContent = view;
+				// showSpinner("div#lbp-side-window-container");
+				// showSideWindow($paragraph)
+				// showParagraphVariants(pid)
+			}
+			else if (view === "compare"){
+				panelSource = "bottomWindow";
+				// showSpinner("#lbp-bottom-window-container");
+				// scrollToParagraph($paragraph);
+				// showComparison(pid);
+				// if (state.sideWindowVisible){
+				// 	if (state.sideWindowContent === "notes"){
+				// 		showSpinner("div#lbp-side-window-container");
+				// 		showSideWindow($paragraph)
+				// 		showParagraphNotes(pid)
+				// 	}
+				// 	else if (state.sideWindowContent === "variants"){
+				// 		console.log("test");
+				// 		showSpinner("div#lbp-side-window-container");
+				// 		//showSideWindow($paragraph)
+				// 		showParagraphVariants(pid)
+				// 	}
+				// 	else if (state.sideWindowContent === "info"){
+				// 		showSpinner("div#lbp-side-window-container");
+				// 		showSideWindow($paragraph)
+				// 		showParagraphInfo(pid)
+				// 	}
+				// 	else{
+				// 		showSpinner("div#lbp-side-window-container");
+				// 		showSideWindow($paragraph)
+				// 		showParagraphInfo(pid)
+				// 	}
+				// }
+			}
+			else if (view === "info"){
+				state.sideWindowVisible = true;
+				state.sideWindowContent = "info";
+				// showSpinner("div#lbp-side-window-container");
+				// showSideWindow($paragraph)
+				// showParagraphInfo(pid)
+			}
+			else{
+				state.sideWindowVisible = true;
+				state.sideWindowContent = "info";
+				// showSpinner("div#lbp-side-window-container");
+				// showSideWindow($paragraph)
+				// showParagraphInfo(pid)
+			}
+			var updateTarget = state.panelSync ? "sync" : panelSource;
+			changeFocus(pid, updateTarget);
 		});
 //table of contents onclick scroll to section
 $(document).on("click", "div.tocdiv > :first-child", function(event){
@@ -154,6 +228,7 @@ var getCurrentViewingParagraph = function(){
 }
 
 var showSideWindow = function(element){
+	state.sideWindowVisible = true;
   // this condition helps prevent resizing when the side window is already open
   if ($("div#lbp-side-window").css('display') === 'none'){
     $("div#lbp-text-body").animate({"width": "50%", "margin-left": "45%"}, function(){
@@ -170,7 +245,7 @@ var showSideWindow = function(element){
 };
 
 var hideSideWindow = function(element){
-
+	state.sideWindowVisible = false;
 	$("li#lbp-max-side-window").css("display", "none").promise().done(function(){
 		$("li#lbp-min-side-window").css("display", "block").promise().done(function(){
 			$("div#lbp-side-window").animate({"width": "0"}, function(){
@@ -215,59 +290,122 @@ var showOutline = function(itemid){
 }
 
 var showParagraphVariants = function(expressionid){
-	$("#lbp-side-window-container").load("/paragraphs/variants/" + expressionid  + "#lbp-" + expressionid + "-variant-list", function( response, status, xhr) {
-		console.log(status);
-  	if ( status == "error" ) {
+	state.info.then(function(result){
+		var content = HandlebarsTemplates['variants'](result);
+		$("#lbp-side-window-container").html(content);
+
+		$("#lbp-variants").load("/paragraphs/variants/" + expressionid  + "#lbp-" + expressionid + "-variant-list", function( response, status, xhr) {
+		if ( status == "error" ) {
     	var msg = "<h3>Sorry, but there are no variants for this paragraph.</h3>";
-    	$("#lbp-side-window-container").html( msg);
+    	$("#lbp-variants").html( msg);
     		console.log(xhr.status + " " + xhr.statusText);
-    }
+    	}
+		});
 	});
 }
 var showParagraphNotes = function(expressionid){
-	$("#lbp-side-window-container").load("/paragraphs/notes/" + expressionid + "#lbp-" + expressionid + "-notes-list", function( response, status, xhr) {
-		console.log(status);
-  	if ( status == "error" ) {
-    	var msg = "<h3>Sorry, but there are no variants for this paragraph.</h3>";
-    	$("#lbp-side-window-container").html( msg);
-    		console.log(xhr.status + " " + xhr.statusText);
-    }
+	state.info.then(function(result){
+		var content = HandlebarsTemplates['notes'](result);
+		$("#lbp-side-window-container").html(content);
+
+		$("#lbp-notes").load("/paragraphs/notes/" + expressionid + "#lbp-" + expressionid + "-notes-list", function( response, status, xhr) {
+			if ( status == "error" ) {
+	    	var msg = "<h3>Sorry, but there are no variants for this paragraph.</h3>";
+	    	$("#lbp-notes").html( msg);
+	    		console.log(xhr.status + " " + xhr.statusText);
+	    }
+		});
 	});
 }
 
 var showParagraphInfo = function(itemid){
-	$.get("/text/info/" + itemid, function(data){
-		var inbox = data.inbox
-		var content = HandlebarsTemplates['textinfo'](data);
+	state.info.then(function(result){
+		var content = HandlebarsTemplates['textinfo'](result);
 		$("#lbp-side-window-container").html(content);
-
-		$.get(inbox, function(data){
-
-			data["ldp:contains"].forEach(function(l){
-				$.get(l["@id"], function(ldata){
-					if (ldata["motivation"] == "commenting") {
-						$("#ldn-comments-head").css({"display" : "block"})
-						var comments_tpl = HandlebarsTemplates['ldn-comments'](ldata);
-						$("#ldn-comments").append(comments_tpl);
-					}
-					if (ldata["motivation"] == "discussing") {
-						$("#ldn-discussions-head").css({"display" : "block"})
-						var discussions_tpl = HandlebarsTemplates['ldn-discussing'](ldata);
-						$("#ldn-discussions").append(discussions_tpl);
-					}
+		state.inboxData.then(function(result){
+			result["ldp:contains"].forEach(function(r){
+				getInboxComment(r["@id"]).then(function(data){
+					var comments_tpl = HandlebarsTemplates['ldn-comments'](data);
+					$("#ldn-comments").append(comments_tpl);
 				});
-			});
+				getInboxDiscussing(r["@id"]).then(function(data){
+					var comments_tpl = HandlebarsTemplates['ldn-discussing'](data);
+					$("#ldn-discussions").append(comments_tpl);
+				});
+
+		}, function(err){
+			console.log(err);
 		});
+
+	}, function(err){
+		console.log(err);
 	});
 
+});
 }
+
+var getInboxComment = function(url){
+	return promise = new Promise(function(resolve, reject){
+		$.get(url, function(ldata){
+			if (ldata["motivation"] == "commenting") {
+				resolve(ldata);
+			}
+		});
+	});
+}
+var getInboxDiscussing = function(url){
+	return promise = new Promise(function(resolve, reject){
+		$.get(url, function(ldata){
+			if (ldata["motivation"] == "discussing") {
+				resolve(ldata);
+			}
+		});
+	});
+}
+
+	//$.get("/text/info/" + itemid, function(data){
+		//var inbox = data.inbox
+		//var content = HandlebarsTemplates['textinfo'](data);
+
+
+
+
+		// $.get(inbox, function(data){
+		//
+		// 	data["ldp:contains"].forEach(function(l){
+		// 		$.get(l["@id"], function(ldata){
+		// 			if (ldata["motivation"] == "commenting") {
+		// 				$("#ldn-comments-head").css({"display" : "block"})
+		// 				var comments_tpl = HandlebarsTemplates['ldn-comments'](ldata);
+		// 				$("#ldn-comments").append(comments_tpl);
+		// 			}
+		// 			if (ldata["motivation"] == "discussing") {
+		// 				$("#ldn-discussions-head").css({"display" : "block"})
+		// 				var discussions_tpl = HandlebarsTemplates['ldn-discussing'](ldata);
+		// 				$("#ldn-discussions").append(discussions_tpl);
+		// 			}
+		// 		});
+		// 	});
+		// });
+	//});
+
+
 var showParagraphReference = function(url){
-	$("#lbp-bottom-window-container").load("/paragraphs/show2/?url=" + url, function(response, status, xhr){
+	console.log("test");
+	$.get("/paragraphs/show2/?url=" + url, function(response, status, xhr){
+
 		if ( status == "error" ) {
-    	var msg = "Sorry but something went wrong";
+    	var msg = "Sorry, this text isn't available yet";
     	$("#lbp-bottom-window-container").html( msg + "(" + xhr.status + " " + xhr.statusText + ")");
     }
-  });
+		else{
+			$("#lbp-bottom-window-container").html("<p><a class='js-show-reference-in-compare' data-url='" + url + "'>View in Compare Mode</a></p>")
+			$("#lbp-bottom-window-container").append(response)
+		}
+  }).error(function(){
+		var msg = "Sorry, this text isn't available yet";
+		$("#lbp-bottom-window-container").html( msg );
+	});
 }
 
 var getParagraphIdFromNumber = function(n){
@@ -284,4 +422,54 @@ var getNextParagraph = function(pid){
 var getPreviousParagraph = function(pid){
 	$previousparagraph = $("p#" + pid).prev("p")
 	return $previousparagraph;
+}
+
+var updateSidePanel = function(){
+	var content = state.sideWindowContent;
+	var eid = state.focus;
+	if (state.sideWindowVisible){
+		showSpinner("div#lbp-side-window-container");
+		$paragraph = $("p#" + eid);
+		showSideWindow($paragraph)
+		if (content === "variants"){
+			showParagraphVariants(eid)
+		}
+		else if (content === "notes"){
+			showParagraphNotes(eid)
+		}
+		else if (content === "info"){
+			showParagraphInfo(eid)
+		}
+		else
+			showParagraphInfo(eid)
+		}
+
+}
+var updateBottomPanel = function(){
+	var content = state.sideWindowContent;
+	var eid = state.focus;
+	if (state.bottomWindowVisible){
+		showSpinner("#lbp-bottom-window-container");
+		$paragraph = $("p#" + eid);
+		scrollToParagraph($paragraph);
+		if (content === "compare"){
+			showComparison(eid);
+		}
+		else{
+			showComparison(eid);
+		}
+	}
+}
+var changeFocus = function(pid, panelSource){
+	state.setFocus(pid);
+	if (panelSource === "sync"){
+		updateBottomPanel();
+		updateSidePanel();
+	}
+	else if (panelSource === "sideWindow"){
+		updateSidePanel();
+	}
+	else if (panelSource === "bottomWindow"){
+		updateBottomPanel();
+	}
 }

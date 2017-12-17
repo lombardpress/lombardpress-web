@@ -55,18 +55,21 @@ class TextController < ApplicationController
 				@order = @resource.value("http://rcs.philsem.unibas.ch/resource/religiousOrder")
 				@sinfo = @resource.values("http://rcs.philsem.unibas.ch/resource/sententiariusInfo")
 				render "text/questions/authorlist"
+			elsif @resource.structure_type.to_s.include? "structureItem"
+				redirect_to "/text/#{params[:resourceid]}"
 			elsif params[:resourceid]
 				@results = @resource.structure_items_display
-				if @resource.level == 1
+				@parts = @resource.has_parts_display
+				#if @resource.level == 1
 					@info = @resource.info_display
 					@sponsors = @resource.sponsors_display(@info)
 					@articles = @resource.articles_display(@info)
 					@questionEditor = @resource.value("http://scta.info/property/questionListEditor")
 					@questionEncoder = @resource.value("http://scta.info/property/questionListEncoder")
 					render "text/questions/questions_with_about"
-				else
-					render "text/questions/questions"
-				end
+				#else
+					#render "text/questions/questions"
+				#end
 			end
 		# TODO review which part if any of the conditional below is necessary
 		else
@@ -88,7 +91,7 @@ class TextController < ApplicationController
 		# para variable here is simpy the expressionObj
     expression = get_expression(params)
     number = expression.order_number
-
+		manifestations = order_manifestations(expression)
 		expression_hash = {
         #:pid => pid,
         :itemid => params[:itemid],
@@ -99,6 +102,7 @@ class TextController < ApplicationController
 				:inbox => if expression.inbox.to_s != nil then expression.inbox.to_s else nil end,
 				:is_structure_block => if expression.structure_type.short_id == "structureBlock" then true else false end,
         :manifestations => expression.manifestations.map {|m| m.to_s},
+				:manifestations_structure => manifestations,
 				:translations => expression.translations.map {|m| m.to_s},
         :abbreviates => expression.abbreviates.map {|item| item.to_s},
         :abbreviatedBy => expression.abbreviatedBy.map {|item| item.to_s},
@@ -120,19 +124,14 @@ class TextController < ApplicationController
 	end
 
 	def status
-		#commentaryid = @config.commentaryid
 		url = "http://scta.info/resource/#{params[:itemid]}"
-		#results = Lbp::Query.new.item_query(url)
-		@resource = Lbp::Resource.find(url)
-		@results = @resource.manifestation_display
-		@results.order_by(:transcript_type)
-		@translation_results = @resource.translation_display
-		# @itemid is equivalent to @expression id will be changed as part of global change
-		@itemid = params[:itemid]
-
-		if @results.count == 0
+		resource = Lbp::Resource.find(url)
+		@title = resource.title
+		@manifestations = order_manifestations(resource)
+		if @manifestations.count == 0
 			flash.clear
 		end
+		render :status2
 	end
 
 	def show
@@ -187,17 +186,21 @@ class TextController < ApplicationController
 		#for the expression at any level in the hierarchy
 		if params[:path] == "file"
 			file = transcript.file(confighash: @config.confighash, path: params[:path])
+			xslt_param_array += ["file-path", "'#{file.file_path.to_s}'"]
 			@transform = file.transform_main_view(xslt_param_array)
 		else
 			if @expression_structure == "structureItem"
 				file = params[:branch] ? transcript.file(branch: params[:branch], confighash: @config.confighash, path: "doc") : transcript.file(confighash: @config.confighash, path: "doc")
+				xslt_param_array += ["file-path", "'#{file.file_path.to_s}'"]
 				@transform = file.transform_main_view(xslt_param_array)
 			elsif @expression_structure == "structureBlock"
 				#path = params[:path] ? params[:path] : "doc"
 				file = transcript.file_part(confighash: @config.confighash, partid: params[:itemid], path: "doc")
+				xslt_param_array += ["file-path", "'#{file.file_path.to_s}'"]
 				@transform = file.transform_plain_text(xslt_param_array)
 			end
 		end
+
 	end
 
 	def xml
