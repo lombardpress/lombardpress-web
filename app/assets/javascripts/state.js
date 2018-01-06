@@ -20,6 +20,7 @@ State.prototype = {
   setDataFileUrl: function(url){
     this.dataFileUrl = url;
     this.reviewInfo = this.getReviewInfo(url);
+    this.dataSource = this.getDataSource(url);
   },
   getInfo: function(){
     var itemid = this.focus;
@@ -74,6 +75,9 @@ State.prototype = {
         else {
           reject("fail")
         }
+      }).
+      fail(function() {
+        resolve("fail")
       });
     });
   }

@@ -121,7 +121,7 @@
 
                 </ul>
               </li>
-              <!--<li><a>How To Cite</a></li> -->
+              <li><a href="#" class='js-show-paragraph-info' data-itemid="{$itemid}" data-pid="{@xml:id}" data-view="howtocite">How To Cite</a></li>
             </ul>
           </div>
         </nav>
