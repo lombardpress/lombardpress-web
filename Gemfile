@@ -46,6 +46,8 @@ gem 'ckeditor_rails'
 
 #handle bars assets allows me to call HandlebarsTemplates['template'](data) in javascript files
 gem 'handlebars_assets', :git => "https://github.com/leshill/handlebars_assets.git"
+# javascript formatter for updateSidePanel
+gem 'momentjs-rails'
 
 gem 'lbp', :git => "https://github.com/lombardpress/lbp.rb.git", :branch => "develop"
 #gem 'lbp'
