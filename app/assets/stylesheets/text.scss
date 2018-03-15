@@ -3,7 +3,18 @@
 // You can use Sass (SCSS) here: http://sass-lang.com/
 @import "globalvariables";
 
-#lbp-text-body {margin-top: 100px; width: 60%; max-width: 800px; text-align: justify;}
+#lbp-text-body
+{
+	margin-top: 100px;
+	width: 60%;
+	max-width: 800px;
+	text-align: justify;
+}
+@media (max-width: 800px){
+	#lbp-text-body {
+  	width: 90%;
+  }
+}
 //#lbp-text-body{}
 #lbp-text-tool-bar {background-color: $light-color;}
 h1, h2, h3, h4, h5, h6 {font-size: 20px; text-align: center;

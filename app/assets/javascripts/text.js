@@ -2,17 +2,15 @@ $(document).on('turbolinks:load', function () {
   // Actions to do
 	$(document).ready(function(){
 
-		// $("p.plaoulparagraph").click(function(){
-		// 	var focus = $(this).attr("id");
-		// 	state.setFocus(focus);
-		// 	console.log(state);
-		// 	state.info.then(function(result){
-		// 		console.log(result);
-		//
-		// 	}, function(err){
-		// 		console.log(err);
-		// 	});
-		// });
+		$("p.plaoulparagraph").click(function(){
+			var focus = $(this).attr("id");
+			state.setFocus(focus);
+			state.info.then(function(result){
+				console.log(result);
+			}, function(err){
+				console.log(err);
+			});
+		});
 
 
 

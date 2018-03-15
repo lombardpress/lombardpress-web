@@ -125,6 +125,7 @@ $(document).on("click", "a.js-show-paragraph-info", function(event){
 			// pid stands for expression short id here
 			var pid = $(this).attr("data-pid");
 			var view = $(this).attr("data-view");
+			console.log("view", view);
 			var panelSource = "sideWindow";
 			//state.setFocus(pid);
 			$paragraph = $("p#" + pid);
@@ -135,6 +136,13 @@ $(document).on("click", "a.js-show-paragraph-info", function(event){
 				// showParagraphNotes(pid)
 			}
 			else if (view === "variants"){
+				state.sideWindowContent = view;
+				// showSpinner("div#lbp-side-window-container");
+				// showSideWindow($paragraph)
+				// showParagraphVariants(pid)
+			}
+			else if (view === "howtocite"){
+				state.sideWindowVisible = true;
 				state.sideWindowContent = view;
 				// showSpinner("div#lbp-side-window-container");
 				// showSideWindow($paragraph)
@@ -318,6 +326,19 @@ var showParagraphNotes = function(expressionid){
 	});
 }
 
+var showHowToCite = function(expressionid){
+	console.log("test1", state);
+	state.info.then(function(result){
+		console.log("test2", result);
+		state.dataSource.then(function(result2){
+			result["dataSource"] = result2;
+			var content = HandlebarsTemplates['howtocite'](result);
+			console.log("test3", result);
+			$("#lbp-side-window-container").html(content);
+		});
+	});
+}
+
 var showParagraphInfo = function(itemid){
 	state.info.then(function(result){
 		var content = HandlebarsTemplates['textinfo'](result);
@@ -436,6 +457,9 @@ var updateSidePanel = function(){
 		}
 		else if (content === "notes"){
 			showParagraphNotes(eid)
+		}
+		else if (content === "howtocite"){
+			showHowToCite(eid)
 		}
 		else if (content === "info"){
 			showParagraphInfo(eid)

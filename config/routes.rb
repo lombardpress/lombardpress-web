@@ -79,6 +79,7 @@ scope "text" do
   get 'clean/:itemid(/:msslug)(/:transcriptslug)' =>'text#clean', as: :clean
   get 'xml/:itemid(/:msslug)(/:transcriptslug)' => 'text#xml'
   get 'pdf' => 'text#pdf'
+  get 'archive' => 'text#archive'
   get ':itemid(/:msslug)(/:transcriptslug)' => 'text#show', as: :show_text
 end
 

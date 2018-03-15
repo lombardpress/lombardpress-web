@@ -140,6 +140,8 @@ GEM
     mime-types-data (3.2016.0521)
     mini_portile2 (2.1.0)
     minitest (5.9.0)
+    momentjs-rails (2.17.1)
+      railties (>= 3.1)
     mousetrap-rails (1.4.6)
     multi_json (1.12.1)
     multipart-post (2.0.0)
@@ -304,6 +306,7 @@ DEPENDENCIES
   jquery-rails
   lbp!
   letter_opener
+  momentjs-rails
   mousetrap-rails
   osullivan
   pg

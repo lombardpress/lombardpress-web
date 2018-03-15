@@ -113,5 +113,15 @@ module Lbp
       }"
 			results = Query.new.query(query)
 		end
+		def block_author
+			query ="SELECT ?author_title
+	    {
+      	<http://scta.info/resource/#{short_id}> <http://scta.info/property/isPartOfStructureItem> ?item .
+				?item <http://www.loc.gov/loc.terms/relators/AUT> ?author .
+      	?author <http://purl.org/dc/elements/1.1/title> ?author_title .
+			}"
+			
+			results = Query.new.query(query)
+		end
 	end
 end

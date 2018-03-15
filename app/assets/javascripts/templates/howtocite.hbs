@@ -1,0 +1,58 @@
+{{!-- this is handlebars template for text info --}}
+
+<div style="font-size: 12px;">
+	<div>
+	<h1>
+		{{#if is_structure_block}}
+			{{#if previous}}
+				<small><a href="#" id="lbp-previous-paragraph" class="js-show-paragraph-info" data-pid="{{previous}}" data-itemid="{{itemid}}" data-view="howtocite">Previous</a></small>
+			{{/if}}
+
+			<a href="#" class="js-show-paragraph-info" data-pid="{{itemid}}" data-itemid="{{itemid}}" data-view="notes">Paragraph {{number}}</a>
+
+			{{#if next}}
+				<small><a href="#" id="lbp-next-paragraph" class="js-show-paragraph-info" data-pid="{{next}}" data-itemid="{{itemid}}" data-view="howtocite">Next</a></small>
+			{{/if}}
+		{{/if}}
+	</h1>
+	</div>
+  <div id="lbp-how-to-cite">
+		<h1>How to Cite</h1>
+		<p style="font-weight: bold">Full Citation</p>
+		<p>
+			<span style="background-color: lightblue">{{author}},
+			{{long_title}}, [n. {{number}}],
+			SCTA Expression Url <a href="{{expression_url}}" target="_blank">{{expression_url}}</a></span>;
+			<span style="background-color: lightpink">ed. EditorName,
+			SCTA Manifestion Url {{expression_url}},
+			Transcription Data Source <a href="http://gateway.scta.info/ipfs/{{dataSource}}">{{dataSource}}</a></span>;
+			<span style="background-color: lightgreen">Accessed at <a href="http://scta.lombardpress.org/text/{{itemid}}">http://scta.lombardpress.org/text/{{itemid}}</a> on {{date}},
+			Archived at <a href="/text/archive?datasource=http://gateway.scta.info/ipfs/{{dataSource}}" target="_blank">http://scta.lombardpress.org/text/archive?datasource={{dataSource}}</a></span>
+		</p>
+		<hr>
+		<p style="font-weight: bold">Short Citation</p>
+		<p>
+			{{author}}, {{long_title}}, [n. {{number}}], {{dataSource}},  Accessed on {{date}}
+		</p>
+		<hr>
+		<p style="font-weight: bold">Explanation of Citation Practices</p>
+		<p>
+			The citation of a text that has survived through a historical succession of
+			manifestations is a complicated endeavor. Today, when transcriptions
+		 	of these manifestations can be published as data, separate from any presentation,
+			and thereby can be presented in a variety of ways,
+			a full citation inevitably becomes even more complex.
+			In order to identify both a specific dataset and the specific presentation of that data,
+			specificity and precision are needed.</p>
+
+			<p>Full citations identify three aspects of the text currently being viewed.</p>
+
+			<p>First (<span style="background-color: lightblue">blue</span>) it identifies the idea of the paragraph in question situated within
+			the conceptual hierarchy of the text.</p>
+
+			<p>Second (<span style="background-color: lightpink">red</span>) it identifies the transcription data source used to represent a particular manifestion of this passage</p>
+
+			<p>Third (<span style="background-color: lightgreen">green</span>) it identifies specific presentation of the data source currently being viewed.</p>
+		</p>
+	</div>
+</div>
