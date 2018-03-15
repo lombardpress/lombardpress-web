@@ -5,13 +5,13 @@
 	<h1>
 		{{#if is_structure_block}}
 			{{#if previous}}
-				<small><a href="#" id="lbp-previous-paragraph" class="js-show-paragraph-info" data-pid="{{previous}}" data-itemid="{{itemid}}" data-view="variants">Previous</a></small>
+				<small><a href="#" id="lbp-previous-paragraph" class="js-show-paragraph-info" data-pid="{{previous}}" data-itemid="{{itemid}}" data-view="howtocite">Previous</a></small>
 			{{/if}}
 
 			<a href="#" class="js-show-paragraph-info" data-pid="{{itemid}}" data-itemid="{{itemid}}" data-view="notes">Paragraph {{number}}</a>
 
 			{{#if next}}
-				<small><a href="#" id="lbp-next-paragraph" class="js-show-paragraph-info" data-pid="{{next}}" data-itemid="{{itemid}}" data-view="variants">Next</a></small>
+				<small><a href="#" id="lbp-next-paragraph" class="js-show-paragraph-info" data-pid="{{next}}" data-itemid="{{itemid}}" data-view="howtocite">Next</a></small>
 			{{/if}}
 		{{/if}}
 	</h1>
@@ -20,22 +20,19 @@
 		<h1>How to Cite</h1>
 		<p style="font-weight: bold">Full Citation</p>
 		<p>
-			<span style="background-color: lightblue">Author,
-			<em>Title</em>,
-			Parts {{number}},
-			SCTA Expression Url {{expression_url}}</span>;
+			<span style="background-color: lightblue">{{author}},
+			{{long_title}}, [n. {{number}}],
+			SCTA Expression Url <a href="{{expression_url}}" target="_blank">{{expression_url}}</a></span>;
 			<span style="background-color: lightpink">ed. EditorName,
 			SCTA Manifestion Url {{expression_url}},
 			Transcription Data Source <a href="http://gateway.scta.info/ipfs/{{dataSource}}">{{dataSource}}</a></span>;
 			<span style="background-color: lightgreen">Accessed at <a href="http://scta.lombardpress.org/text/{{itemid}}">http://scta.lombardpress.org/text/{{itemid}}</a> on {{date}},
-			Archived at http://scta.lombardpress.org/archive?datasource={{dataSource}}</span>
+			Archived at <a href="/text/archive?datasource={{dataSource}}" target="_blank">http://scta.lombardpress.org/text/archive?datasource={{dataSource}}</a></span>
 		</p>
 		<hr>
 		<p style="font-weight: bold">Short Citation</p>
 		<p>
-			Author,
-			<em>Title</em>,
-			Parts {{number}}, {{dataSource}},  Accessed on {{date}}
+			{{author}}, {{long_title}}, [n. {{number}}], {{dataSource}},  Accessed on {{date}}
 		</p>
 		<hr>
 		<p style="font-weight: bold">Explanation of Citation Practices</p>

@@ -92,9 +92,13 @@ class TextController < ApplicationController
     expression = get_expression(params)
     number = expression.order_number
 		manifestations = order_manifestations(expression)
+		#TODO: getting author label here requires second query. This not ideal
+		author_title = expression.block_author[0][:author_title].to_s
 		expression_hash = {
         #:pid => pid,
         :itemid => params[:itemid],
+				:long_title => expression.value("http://scta.info/property/longTitle").to_s,
+				:author => author_title,
 				:expression_url => expression.url,
         :next => if expression.next != nil then expression.next.to_s.split("/").last else nil end,
         :previous => if expression.previous != nil then expression.previous.to_s.split("/").last else nil end,
@@ -283,6 +287,14 @@ class TextController < ApplicationController
 	def pdf
 		@response = open("http://print.lombardpress.org/compile?id=#{params[:id]}&output=pdf").read
 		redirect_to "http://" + JSON.parse(@response)["url"];
+
+	end
+
+	def archive
+		datasource = params[:datasource]
+		file = Lbp::File.new(datasource, "Critical", $config)
+		@text = file.transform("#{Rails.root}/xslt/archive.xsl")
+
 
 
 	end

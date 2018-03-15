@@ -1,0 +1,16 @@
+.archive
+{
+	margin-top: 100px;
+	width: 60%;
+	max-width: 800px;
+	text-align: justify;
+}
+@media (max-width: 800px){
+	#archive {
+  	width: 90%;
+  }
+}
+.archive_num {
+	padding-right: 10px;
+	font-weight: bold;
+}

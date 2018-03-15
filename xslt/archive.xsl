@@ -1,16 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:tei="http://www.tei-c.org/ns/1.0">
-
+<xsl:output method="html"/>
     <xsl:template match="/">
-        <html>
-            <body>
+        <div class="container archive">
                 <xsl:apply-templates/>
+        </div>
 
 
-            </body>
-
-
-        </html>
 
     </xsl:template>
 
@@ -33,12 +29,13 @@
     </xsl:template>
 
     <xsl:template match="tei:div">
-        <div id="{@xml:id}" class="plaoulparagraph"><xsl:apply-templates/></div>
+        <div id="{@xml:id}"><xsl:apply-templates/></div>
     </xsl:template>
 
 
     <xsl:template match="tei:p">
-    <p id="{@xml:id}"><xsl:apply-templates/></p>
+      <xsl:variable name="pn"><xsl:number level="any" from="tei:text"/></xsl:variable>
+    <p id="{@xml:id}"><span class="archive_num"><xsl:value-of select="$pn"/></span> <xsl:apply-templates/></p>
     </xsl:template>
 
     <xsl:template match="tei:note | tei:rdg | tei:bibl ">
