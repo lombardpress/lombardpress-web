@@ -1,5 +1,10 @@
 Change Log
 
+Version 0.9.1
+- Mostly a hot fix release that fixes an error in the javascript state
+- also includes the beginnings of a how to cite feature. The feature is operational but not complete
+
+
 Version 0.9.0
 - This is a big release that create the foundation of a lot of new developments and also create the need for further development. The biggest changes include:
 - Creation of a client side application state. The state is used for such thing like keeping the side panel and bottom panel in sync.
