@@ -1,10 +1,10 @@
 class MiscQuery < Lbp::Query
-	def zone_info(transcripturl)
+	def zone_info(manifestationurl)
 		nameurl = "<#{nameurl}>"
 		query = "#{@prefixes}
 			SELECT DISTINCT ?zone ?ulx ?uly ?lry ?lrx ?position ?height ?width ?canvasurl ?imageurl ?totalHeight ?totalWidth
       {
-        <#{transcripturl}> <http://scta.info/property/hasZone> ?zone .
+        <#{manifestationurl}> <http://scta.info/property/isOnZone> ?zone .
          ?zone <http://scta.info/property/ulx> ?ulx .
          ?zone <http://scta.info/property/uly> ?uly .
          ?zone <http://scta.info/property/lry> ?lry .
@@ -12,7 +12,7 @@ class MiscQuery < Lbp::Query
          ?zone <http://scta.info/property/position> ?position .
          ?zone <http://scta.info/property/height> ?height .
          ?zone <http://scta.info/property/width> ?width .
-         ?zone <http://scta.info/property/hasSurface> ?surface .
+         ?zone <http://scta.info/property/isPartOfSurface> ?surface .
 				 ?surface <http://scta.info/property/hasISurface> ?isurface .
 				 ?isurface <http://scta.info/property/hasCanvas> ?canvasurl .
          ?canvasurl <http://www.w3.org/2003/12/exif/ns#height> ?totalHeight .

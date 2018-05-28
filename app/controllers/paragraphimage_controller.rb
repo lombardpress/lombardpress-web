@@ -34,7 +34,7 @@ class ParagraphimageController < ApplicationController
 
 		#TODO: not ideal to be hardcoding "transcription" here. If there were more than one transcription
 		# of this manifestation there would be a problem
-		transcripturl = "http://scta.info/resource/#{params[:itemid]}/#{params[:msslug]}/transcription"
+		transcripturl = "http://scta.info/resource/#{params[:itemid]}/#{params[:msslug]}"
 
 		results = MiscQuery.new.zone_info(transcripturl)
 
