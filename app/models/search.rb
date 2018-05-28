@@ -107,4 +107,45 @@ class Search < Lbp::Query
     return result
 
 	end
+	def search_list_expressions
+
+		expressionsQuery = "
+			SELECT ?expression ?expression_title ?expression_short_id ?author ?author_short_id ?author_title
+			{
+				?expression a <http://scta.info/resource/expression> .
+				?expression <http://scta.info/property/level> '1' .
+				?expression <http://purl.org/dc/elements/1.1/title> ?expression_title .
+				?expression <http://scta.info/property/shortId> ?expression_short_id .
+				?expression <http://www.loc.gov/loc.terms/relators/AUT> ?author	.
+				?author <http://scta.info/property/shortId> ?author_short_id .
+				?author <http://purl.org/dc/elements/1.1/title> ?author_title .
+			}
+			ORDER BY ?author_title
+		"
+		return self.query(expressionsQuery)
+	end
+	def search_list_expressionTypes
+	expressionTypesQuery = "
+		SELECT ?expressionType ?expressionType_title ?expressionType_short_id
+		{
+			?expressionType a <http://scta.info/resource/expressionType> .
+			?expressionType <http://purl.org/dc/elements/1.1/title> ?expressionType_title .
+			?expressionType <http://scta.info/property/shortId> ?expressionType_short_id .
+		}
+		ORDER BY ?expressionType_title
+		"
+		return self.query(expressionTypesQuery)
+	end
+	def search_list_workGroups
+	workGroupsQuery = "
+		SELECT ?workGroup ?workGroup_title ?workGroup_short_id
+		{
+			?workGroup a <http://scta.info/resource/workGroup> .
+			?workGroup <http://purl.org/dc/elements/1.1/title> ?workGroup_title .
+			?workGroup <http://scta.info/property/shortId> ?workGroup_short_id .
+		}
+		ORDER BY ?workGroup_title
+		"
+		return self.query(workGroupsQuery)
+	end
 end
