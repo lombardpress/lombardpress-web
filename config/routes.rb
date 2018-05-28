@@ -65,7 +65,7 @@ end
 
   get 'search' => 'search#show', as: :show_search
   get 'search/questions' => 'search#questions', as: :search_questions
-
+  get 'search/index' => 'search#index', as: :show_search_index
 scope "text" do
   get '' => 'text#index'
   get 'draft_permissions/:itemid' => 'text#draft_permissions'

@@ -1,5 +1,9 @@
 Change Log
 
+Version 0.10.0
+- improved search form to populate with lists; it is still not idea but better than it was.
+- updated image queries to use new isOnSurface and isOnZone properties on manifestations rather than transcriptions per update in SCTA rdf database
+
 Version 0.9.1
 - Mostly a hot fix release that fixes an error in the javascript state
 - also includes the beginnings of a how to cite feature. The feature is operational but not complete

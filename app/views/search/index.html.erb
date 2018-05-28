@@ -1,0 +1,15 @@
+<div class="row" style="width: 60%; margin: 50px auto">
+	<div class="col-sm-3 lbp-search-sidebar">
+      <%= render "filters" %>
+  </div>
+	<div id="lbp-search-results" class="col-sm-9 list-group">
+		<h1>Search results for <%= params[:searchterm] %></h1>
+    <ul>
+		<% @expressions.each do |e| %>
+    <li>
+      <%=  e.expression_title %>
+    </li>
+    <% end %>
+    <ul>
+	</div>
+</div>

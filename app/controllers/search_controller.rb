@@ -1,5 +1,16 @@
 class SearchController < ApplicationController
 	def show
+		# query to move to model
+		@expressions = Search.new.search_list_expressions
+		@expressionTypes = Search.new.search_list_expressionTypes
+		@workGroups = Search.new.search_list_workGroups
+		@authors = @expressions.map do |e|
+			author = {
+				authorTitle: e.author_title,
+				authorShortId: e.author_short_id
+			}
+		end
+
 		if params[:type] == 'questions'
 			expressionid = if !params[:expressionid].blank? then "http://scta.info/resource/#{params[:expressionid]}" else nil end
 			expressiontypeid = if !params[:expressiontypeid].blank? then "http://scta.info/resource/#{params[:expressiontypeid]}" else nil end

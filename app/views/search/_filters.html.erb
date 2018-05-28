@@ -19,13 +19,37 @@
     <label>Search Term</label>
     <input class="form-control" type="text" name="searchterm" value="<%= params[:searchterm] %>"/>
     <label>Expression Id</label>
-    <input class="form-control" type="text" name="expressionid" value="<%= params[:expressionid] %>"/>
+    <select class="form-control" name="expressionid">
+      <option value="">All</option>
+      <% @expressions.each do |e| %>
+      <option value="<%= e.expression_short_id %>" <%= e.expression_short_id == params[:expressionid] && "selected" %>><%=  e.author_title %> -- <%= e.expression_title %></option>
+      <% end %>
+    </select>
+    <!-- <input class="form-control" type="text" name="expressionid" value="<%= params[:expressionid] %>"/> -->
     <label>Expression Type Id</label>
-    <input class="form-control" type="text" name="expressiontypeid" value="<%= params[:expressiontypeid] %>"/>
+    <select class="form-control" name="expressiontypeid">
+      <option value="">All</option>
+      <% @expressionTypes.each do |e| %>
+        <option value="<%= e.expressionType_short_id %>" <%= e.expressionType_short_id == params[:expressiontypeid] && "selected" %>><%= e.expressionType_title %></option>
+      <% end %>
+    </select>
+    <!-- <input class="form-control" type="text" name="expressiontypeid" value="<%= params[:expressiontypeid] %>"/> -->
     <label>Work Group Id</label>
-    <input class="form-control" type="text" name="workgroupid" value="<%= params[:workgroupid] %>"/>
+    <select class="form-control" name="workgroupid">
+      <option value="">All</option>
+      <% @workGroups.each do |e| %>
+      <option value="<%= e.workGroup_short_id %>" <%= e.workGroup_short_id == params[:workgroupid] && "selected" %>><%= e.workGroup_title %></option>
+      <% end %>
+    </select>
+    <!-- <input class="form-control" type="text" name="workgroupid" value="<%= params[:workgroupid] %>"/> -->
     <label>Author Id</label>
-    <input class="form-control" type="text" name="authorid" value="<%= params[:authorid] %>">
+    <select class="form-control" name="authorid" value="<%= params[:authorid] %>">
+      <option value="">All</option>
+      <% @authors.uniq.each do |e| %>
+      <option value="<%= e[:authorShortId] %>" <%= e[:authorShortId] == params[:authorid] && "selected" %>><%= e[:authorTitle] %></option>
+      <% end %>
+    </select>
+    <!-- <input class="form-control" type="text" name="authorid" value="<%= params[:authorid] %>"> -->
     <br/>
     <button type="submit" class="btn btn-default">Submit</button>
   </form>
