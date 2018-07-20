@@ -163,7 +163,7 @@ GEM
       activesupport (>= 3.2.18)
       faraday (~> 0.9.0)
       json
-    pg (1.0.0)
+    pg (0.21.0)
     postmark (1.7.1)
       json
       rake
@@ -323,7 +323,7 @@ DEPENDENCIES
   momentjs-rails
   mousetrap-rails
   osullivan
-  pg
+  pg (~> 0.15)
   postmark-rails (~> 0.12.0)
   pry
   puma
