@@ -63,7 +63,7 @@ gem 'osullivan'
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 group :production do
-  gem 'pg'
+  gem 'pg', '~>0.15'
   # Use Unicorn as the app server
   # gem 'unicorn'
   # Using Puma as web server
