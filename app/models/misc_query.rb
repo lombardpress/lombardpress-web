@@ -121,7 +121,11 @@ class MiscQuery < Lbp::Query
 					 ?article <http://scta.info/property/isArticleOf> <http://scta.info/resource/#{author_short_id}> .
            ?article <http://purl.org/dc/elements/1.1/title> ?articletitle .
 					 ?article <http://scta.info/property/shortId> ?article_short_id .
+					 MINUS{
+						 ?article <http://scta.info/property/hasSuccessor> ?successor .
+					 }
         }
+				ORDER BY ?articletitle
 				"
 
       result = self.query(query)
@@ -135,7 +139,11 @@ class MiscQuery < Lbp::Query
 					 ?resource <http://www.loc.gov/loc.terms/relators/AUT> <http://scta.info/resource/#{author_short_id}> .
            ?article <http://purl.org/dc/elements/1.1/title> ?articletitle .
 					 ?article <http://scta.info/property/shortId> ?article_short_id .
+					 MINUS{
+						 ?article <http://scta.info/property/hasSuccessor> ?successor .
+					 }
         }
+				ORDER BY ?articletitle
 				"
 
       result = self.query(query)

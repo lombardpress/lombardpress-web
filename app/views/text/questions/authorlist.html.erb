@@ -25,14 +25,20 @@
       </tr>
       <% end %>
     </table>
+    <% if @articleresults.count > 0 %>
     <table class="table table-striped table-hover">
-      <h3>Related Articles</h3>
+      <h3>Author Related Articles</h3>
       <% @articleresults.each do |result| %>
       <tr class="lbp-question-row">
         <% link = "/articles/" + result[:article_short_id] %>
         <td><%= link_to result[:articletitle], link %></td>
       </tr>
       <% end %>
+    </table>
+    <% end %>
+    <% if @article_members_results.count > 0 %>
+    <table class="table table-striped table-hover">
+        <h3>Text Specific Related Articles</h3>
       <% @article_members_results.each do |result| %>
       <tr class="lbp-question-row">
         <% link = "/articles/" + result[:article_short_id] %>
@@ -40,6 +46,7 @@
       </tr>
       <% end %>
     </table>
+    <% end %>
   </div>
   <div class="col-md-4">
     <div style="margin-bottom: 20px; padding-top: 10px">

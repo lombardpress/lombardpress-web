@@ -59,11 +59,17 @@ module Lbp
        OPTIONAL {
         ?article <http://scta.info/property/isArticleOf> <http://scta.info/resource/#{short_id}> .
         ?article <http://purl.org/dc/elements/1.1/title> ?articleTitle .
+				MINUS{
+					?author_article <http://scta.info/property/hasSuccessor> ?successor .
+				}
        }
 			 OPTIONAL {
 				 <http://scta.info/resource/#{short_id}> <http://www.loc.gov/loc.terms/relators/AUT> ?author .
 				 ?author_article <http://scta.info/property/isArticleOf> ?author .
 				 ?author_article <http://purl.org/dc/elements/1.1/title> ?author_articleTitle .
+				 MINUS{
+					 ?author_article <http://scta.info/property/hasSuccessor> ?successor .
+				 }
 			}
 		}"
 		  results = Query.new.query(query)
@@ -91,7 +97,7 @@ module Lbp
 			# check to see if articles array is actaully empty. If it is, set it to empty array
 
 				articles = articles[0][:articleTitle] == nil ? [] : articles
-			
+
 
 
 		end
