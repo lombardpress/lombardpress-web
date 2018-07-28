@@ -41,7 +41,7 @@ module Lbp
 				results = Query.new.query(query)
 		end
 		def info_display
-			query = "SELECT ?description ?isPartOf ?isPartOfTitle ?sponsor ?sponsorTitle ?sponsorLogo ?sponsorLink ?article ?articleTitle
+			query = "SELECT ?description ?isPartOf ?isPartOfTitle ?sponsor ?sponsorTitle ?sponsorLogo ?sponsorLink ?article ?articleTitle ?author_article ?author_articleTitle
       {
 				OPTIONAL {
         	<http://scta.info/resource/#{short_id}> <http://purl.org/dc/elements/1.1/description> ?description .
@@ -60,8 +60,13 @@ module Lbp
         ?article <http://scta.info/property/isArticleOf> <http://scta.info/resource/#{short_id}> .
         ?article <http://purl.org/dc/elements/1.1/title> ?articleTitle .
        }
-			}"
-      results = Query.new.query(query)
+			 OPTIONAL {
+				 <http://scta.info/resource/#{short_id}> <http://www.loc.gov/loc.terms/relators/AUT> ?author .
+				 ?author_article <http://scta.info/property/isArticleOf> ?author .
+				 ?author_article <http://purl.org/dc/elements/1.1/title> ?author_articleTitle .
+			}
+		}"
+		  results = Query.new.query(query)
 		end
 		def sponsors_display(info)
 			sponsors = info.map {|r| {sponsor: r[:sponsor], sponsorTitle: r[:sponsorTitle], sponsorLogo: r[:sponsorLogo], sponsorLink: r[:sponsorLink]}}
@@ -77,6 +82,17 @@ module Lbp
 			# check to see if articles array is actaully empty. If it is, set it to empty array
 
 				articles = articles[0][:article] == nil ? [] : articles
+
+		end
+		def author_articles_display(info)
+			articles = info.map {|r| {article: r[:author_article], articleTitle: r[:author_articleTitle]}}
+
+			articles.uniq!
+			# check to see if articles array is actaully empty. If it is, set it to empty array
+
+				articles = articles[0][:articleTitle] == nil ? [] : articles
+			
+
 
 		end
 		def manifestation_display
@@ -120,7 +136,7 @@ module Lbp
 				?item <http://www.loc.gov/loc.terms/relators/AUT> ?author .
       	?author <http://purl.org/dc/elements/1.1/title> ?author_title .
 			}"
-			
+
 			results = Query.new.query(query)
 		end
 	end

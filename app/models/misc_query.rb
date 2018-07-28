@@ -112,8 +112,34 @@ class MiscQuery < Lbp::Query
          "
 
       result = self.query(query)
+	 end
+	 def author_article_list(author_short_id)
+      query = "
+         SELECT ?article ?articletitle ?article_short_id
+         {
+           ?article a <http://scta.info/resource/article> .
+					 ?article <http://scta.info/property/isArticleOf> <http://scta.info/resource/#{author_short_id}> .
+           ?article <http://purl.org/dc/elements/1.1/title> ?articletitle .
+					 ?article <http://scta.info/property/shortId> ?article_short_id .
+        }
+				"
 
-   end
+      result = self.query(query)
+	 end
+	 def author_members_article_list(author_short_id)
+      query = "
+         SELECT DISTINCT ?article ?articletitle ?article_short_id
+         {
+           ?article a <http://scta.info/resource/article> .
+					 ?article <http://scta.info/property/isArticleOf> ?resource .
+					 ?resource <http://www.loc.gov/loc.terms/relators/AUT> <http://scta.info/resource/#{author_short_id}> .
+           ?article <http://purl.org/dc/elements/1.1/title> ?articletitle .
+					 ?article <http://scta.info/property/shortId> ?article_short_id .
+        }
+				"
+
+      result = self.query(query)
+	 end
    def expression_query
    query = "#{@prefixes}
 

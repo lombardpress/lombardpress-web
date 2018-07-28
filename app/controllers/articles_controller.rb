@@ -23,8 +23,8 @@ class ArticlesController < ApplicationController
 		end
 
 		xml_file_path = article.file_path
-
-		xml_file = open(xml_file_path, {:http_basic_authentication => [ENV["GUN"], ENV["GPW"]]})
+    xml_file = open(xml_file_path)
+		#xml_file = open(xml_file_path, {:http_basic_authentication => [ENV["GUN"], ENV["GPW"]]})
 		nokogiri_doc = Nokogiri::XML(xml_file)
 
 

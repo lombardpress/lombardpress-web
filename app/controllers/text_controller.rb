@@ -30,30 +30,8 @@ class TextController < ApplicationController
 			# TODO need an lbp class for Person
 			elsif @resource.type.short_id == "person"
 				@results = MiscQuery.new.author_expression_list(@resource.short_id)
-				sameas = @resource.value("http://www.w3.org/2002/07/owl#sameAs")
-				dbpediaAddress = sameas
-
-				if dbpediaAddress.nil?
-					result = [];
-				else
-					dbpediaGraph = RDF::Graph.load(dbpediaAddress)
-					query = RDF::Query.new({:person =>
-						{
-							RDF::URI("http://dbpedia.org/ontology/abstract") => :abstract
-							#RDF::URI("http://dbpedia.org/ontology/birthDate") => :birthDate
-						}
-						})
-						result  = query.execute(dbpediaGraph)
-				end
-
-				current_language = I18n.locale
-				@language_result = result.find { |solution| solution.abstract.language == current_language}
-				@language_result = @language_result.nil? ? nil : @language_result[:abstract].to_s + " (Wikipedia Abstract)"
-				@dob = @resource.value("http://rcs.philsem.unibas.ch/resource/birthDate")
-				@pob = @resource.value("http://rcs.philsem.unibas.ch/resource/birthPlace")
-				@dod = @resource.value("http://rcs.philsem.unibas.ch/resource/deathDate")
-				@order = @resource.value("http://rcs.philsem.unibas.ch/resource/religiousOrder")
-				@sinfo = @resource.values("http://rcs.philsem.unibas.ch/resource/sententiariusInfo")
+				@articleresults = MiscQuery.new.author_article_list(@resource.short_id)
+				@article_members_results = MiscQuery.new.author_members_article_list(@resource.short_id)
 				render "text/questions/authorlist"
 			elsif @resource.structure_type.to_s.include? "structureItem"
 				redirect_to "/text/#{params[:resourceid]}"
@@ -64,6 +42,8 @@ class TextController < ApplicationController
 					@info = @resource.info_display
 					@sponsors = @resource.sponsors_display(@info)
 					@articles = @resource.articles_display(@info)
+					@author_articles = @resource.author_articles_display(@info)
+					
 					@questionEditor = @resource.value("http://scta.info/property/questionListEditor")
 					@questionEncoder = @resource.value("http://scta.info/property/questionListEncoder")
 					render "text/questions/questions_with_about"

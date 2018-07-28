@@ -13,14 +13,30 @@
   </div>
 
   <div id="lbp-question-container" class="container col-md-8">
-<%= render "text/questions/question_filter_form" %>
+  <%= render "text/questions/question_filter_form" %>
     <table class="table table-striped table-hover">
+      <h3>Expressions</h3>
       <% @results.each do |result| %>
 
       <% link = "/" + result[:expression].to_s.split('/').last %>
       <% author_link = result[:author].to_s.split("/").last %>
       <tr class="lbp-question-row">
         <td><%= link_to result[:expressiontitle], link %></td>
+      </tr>
+      <% end %>
+    </table>
+    <table class="table table-striped table-hover">
+      <h3>Related Articles</h3>
+      <% @articleresults.each do |result| %>
+      <tr class="lbp-question-row">
+        <% link = "/articles/" + result[:article_short_id] %>
+        <td><%= link_to result[:articletitle], link %></td>
+      </tr>
+      <% end %>
+      <% @article_members_results.each do |result| %>
+      <tr class="lbp-question-row">
+        <% link = "/articles/" + result[:article_short_id] %>
+        <td><%= link_to result[:articletitle], link %></td>
       </tr>
       <% end %>
     </table>
