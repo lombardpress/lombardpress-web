@@ -43,7 +43,7 @@ State.prototype = {
   },
   getReviewInfo: function(){
     var dataFileUrl = this.dataFileUrl
-    var reviewUrl = "http://dll-review-registry.scta.info/api/v1/reviews/?url=" + dataFileUrl + "?society=MAA"
+    var reviewUrl = "https://dll-review-registry.scta.info/api/v1/reviews/?url=" + dataFileUrl + "?society=MAA"
     return promise = new Promise(function(resolve, reject){
       $.get(reviewUrl, function(data){
         var reviewObject = {}
@@ -52,7 +52,7 @@ State.prototype = {
             img_url: data[0]["badge-url"],
             reviewid: data[0]["id"],
             ipfsHash: data[0]["ipfs-hash"],
-            html_link: "http://dll-review-registry.scta.info/reviews/" + data[0]["id"] + ".html",
+            html_link: "https://dll-review-registry.scta.info/reviews/" + data[0]["id"] + ".html",
             rubric_link: data[0]["badge-rubric"],
             summary: data[0]["review-summary"]
           }
@@ -66,7 +66,7 @@ State.prototype = {
   },
   getDataSource: function(){
     var dataFileUrl = this.dataFileUrl
-    var reviewUrl = "http://dll-review-registry.scta.info/api/v1/hash?url=" + dataFileUrl
+    var reviewUrl = "https://dll-review-registry.scta.info/api/v1/hash?url=" + dataFileUrl
     return promise = new Promise(function(resolve, reject){
       $.get(reviewUrl, function(data){
         if (data["ipfs-hash"]){
