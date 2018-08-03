@@ -121,10 +121,7 @@ class MiscQuery < Lbp::Query
 					 ?article <http://scta.info/property/isArticleOf> <http://scta.info/resource/#{author_short_id}> .
            ?article <http://purl.org/dc/elements/1.1/title> ?articletitle .
 					 ?article <http://scta.info/property/shortId> ?article_short_id .
-					 MINUS{
-						 ?article <http://scta.info/property/hasSuccessor> ?successor .
-					 }
-        }
+				}
 				ORDER BY ?articletitle
 				"
 
@@ -139,10 +136,7 @@ class MiscQuery < Lbp::Query
 					 ?resource <http://www.loc.gov/loc.terms/relators/AUT> <http://scta.info/resource/#{author_short_id}> .
            ?article <http://purl.org/dc/elements/1.1/title> ?articletitle .
 					 ?article <http://scta.info/property/shortId> ?article_short_id .
-					 MINUS{
-						 ?article <http://scta.info/property/hasSuccessor> ?successor .
-					 }
-        }
+				}
 				ORDER BY ?articletitle
 				"
 
@@ -190,6 +184,25 @@ class MiscQuery < Lbp::Query
       }"
       result = self.query(query)
    end
+	 def version_history_info(transcription_rdf_id)
+	 	query = "
+	 		SELECT ?version ?version_shortId ?order_number
+	     {
+				 {
+	         <#{transcription_rdf_id}> <http://scta.info/property/hasAncestor> ?version .
+					 ?version <http://scta.info/property/shortId> ?version_shortId .
+	         ?version <http://scta.info/property/orderNumber> ?order_number .
+	       }
+	       UNION
+	       {
+	         <#{transcription_rdf_id}> <http://scta.info/property/hasDescendant> ?version .
+					 ?version <http://scta.info/property/shortId> ?version_shortId .
+	         ?version <http://scta.info/property/orderNumber> ?order_number .
+	       }
+	     }
+	     ORDER BY ?order_number"
+	 		results = self.query(query)
+		end
 
 
 

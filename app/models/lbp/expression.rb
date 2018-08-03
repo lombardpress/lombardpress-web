@@ -57,19 +57,21 @@ module Lbp
          ?sponsor <http://scta.info/property/logo> ?sponsorLogo .
        }
        OPTIONAL {
-        ?article <http://scta.info/property/isArticleOf> <http://scta.info/resource/#{short_id}> .
-        ?article <http://purl.org/dc/elements/1.1/title> ?articleTitle .
-				MINUS{
-					?author_article <http://scta.info/property/hasSuccessor> ?successor .
-				}
-       }
+				 {
+	        ?article <http://scta.info/property/isArticleOf> <http://scta.info/resource/#{short_id}> .
+	        ?article <http://purl.org/dc/elements/1.1/title> ?articleTitle .
+				 }
+				 UNION
+				 {
+					 ?article <http://scta.info/property/isArticleOf> ?member .
+					 ?member <http://scta.info/property/isMemberOf> <http://scta.info/resource/#{short_id}> .
+ 	         ?article <http://purl.org/dc/elements/1.1/title> ?articleTitle .
+				 }
+			}
 			 OPTIONAL {
 				 <http://scta.info/resource/#{short_id}> <http://www.loc.gov/loc.terms/relators/AUT> ?author .
 				 ?author_article <http://scta.info/property/isArticleOf> ?author .
 				 ?author_article <http://purl.org/dc/elements/1.1/title> ?author_articleTitle .
-				 MINUS{
-					 ?author_article <http://scta.info/property/hasSuccessor> ?successor .
-				 }
 			}
 		}"
 		  results = Query.new.query(query)

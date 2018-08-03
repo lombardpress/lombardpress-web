@@ -23,7 +23,7 @@ Rails.application.routes.draw do
   #END
 
 
-  get 'articles/:articleid' => 'articles#show', as: :show_article
+  get 'articles/:articleid(/:transcriptionid)' => 'articles#show', as: :show_article
   get 'articles' => 'articles#index', as: :articles
 
   get 'biography' => 'pages#biography'
