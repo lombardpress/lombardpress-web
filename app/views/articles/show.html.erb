@@ -5,9 +5,9 @@
     <h4>This Article Has Multiple Indexed Versions</h4>
     <% @version_history.each do |result| %>
     <% if @current_order_number.to_s.to_i == result[:order_number].to_s.to_i - 1%>
-    <p>Currently Viewing <%= @current_order_number %></p>
+    <p>Currently Viewing <%= @current_order_number %>: <%= @current_version_label %></p>
     <% end %>
-    <p><a href="/articles/<%= result[:version_shortId] %>"><%= result[:order_number] %></a></p>
+    <p><a href="/articles/<%= result[:version_shortId] %>"><%= result[:order_number] %>: <%= result[:version_label] %></a></p>
     <% if @current_order_number.to_s.to_i == result[:order_number].to_s.to_i + 1%>
     <p>Currently Viewing <%= @current_order_number %></p>
     <% end %>

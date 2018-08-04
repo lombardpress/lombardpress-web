@@ -186,18 +186,20 @@ class MiscQuery < Lbp::Query
    end
 	 def version_history_info(transcription_rdf_id)
 	 	query = "
-	 		SELECT ?version ?version_shortId ?order_number
+	 		SELECT ?version ?version_shortId ?order_number ?version_label
 	     {
 				 {
 	         <#{transcription_rdf_id}> <http://scta.info/property/hasAncestor> ?version .
 					 ?version <http://scta.info/property/shortId> ?version_shortId .
 	         ?version <http://scta.info/property/orderNumber> ?order_number .
+					 ?version <http://scta.info/property/versionLabel> ?version_label .
 	       }
 	       UNION
 	       {
 	         <#{transcription_rdf_id}> <http://scta.info/property/hasDescendant> ?version .
 					 ?version <http://scta.info/property/shortId> ?version_shortId .
 	         ?version <http://scta.info/property/orderNumber> ?order_number .
+					 ?version <http://scta.info/property/versionLabel> ?version_label .
 	       }
 	     }
 	     ORDER BY ?order_number"
