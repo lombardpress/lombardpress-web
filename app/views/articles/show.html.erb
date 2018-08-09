@@ -4,11 +4,11 @@
   <div id="version_wrapper" style="border-top: 1px dotted black; padding-top: 20px; margin-top:20px">
     <h4>This Article Has Multiple Indexed Versions</h4>
     <% @version_history.each do |result| %>
-    <% if @current_order_number.to_s.to_i == result[:order_number].to_s.to_i - 1%>
+    <% if @current_order_number.to_s.to_i == result[:order_number].to_s.to_i + 1%>
     <p>Currently Viewing <%= @current_order_number %>: <%= @current_version_label %></p>
     <% end %>
     <p><a href="/articles/<%= result[:version_shortId] %>"><%= result[:order_number] %>: <%= result[:version_label] %></a></p>
-    <% if @current_order_number.to_s.to_i == result[:order_number].to_s.to_i + 1%>
+    <% if @current_order_number.to_s.to_i == result[:order_number].to_s.to_i - 1%>
     <p>Currently Viewing <%= @current_order_number %></p>
     <% end %>
 

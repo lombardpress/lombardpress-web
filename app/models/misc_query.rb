@@ -191,18 +191,18 @@ class MiscQuery < Lbp::Query
 				 {
 	         <#{transcription_rdf_id}> <http://scta.info/property/hasAncestor> ?version .
 					 ?version <http://scta.info/property/shortId> ?version_shortId .
-	         ?version <http://scta.info/property/orderNumber> ?order_number .
+	         ?version <http://scta.info/property/versionOrderNumber> ?order_number .
 					 ?version <http://scta.info/property/versionLabel> ?version_label .
 	       }
 	       UNION
 	       {
 	         <#{transcription_rdf_id}> <http://scta.info/property/hasDescendant> ?version .
 					 ?version <http://scta.info/property/shortId> ?version_shortId .
-	         ?version <http://scta.info/property/orderNumber> ?order_number .
+	         ?version <http://scta.info/property/versionOrderNumber> ?order_number .
 					 ?version <http://scta.info/property/versionLabel> ?version_label .
 	       }
 	     }
-	     ORDER BY ?order_number"
+	     ORDER BY DESC(?order_number)"
 	 		results = self.query(query)
 		end
 

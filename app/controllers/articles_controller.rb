@@ -35,7 +35,7 @@ class ArticlesController < ApplicationController
 
 
 		xslt = Nokogiri::XSLT(open(xslt_file_path))
-		@current_order_number = transcription.value("http://scta.info/property/orderNumber")
+		@current_order_number = transcription.value("http://scta.info/property/versionOrderNumber")
 		@current_version_label = transcription.value("http://scta.info/property/versionLabel")
 		@transform = xslt.apply_to(nokogiri_doc)
 		@version_history = MiscQuery.new.version_history_info(transcription.to_s)
