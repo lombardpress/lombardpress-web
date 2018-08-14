@@ -46,6 +46,10 @@ Rails.application.routes.draw do
   get "index/:expressionid/quotes/show(/:quoteid)" => 'indices/quotes#show'
   get "index/:expressionid/quotes/categories" => 'indices/quotes#categories'
 
+scope 'codices' do
+  get 'list' => 'codices#list'
+  get '(/:shortid)' => 'codices#show'
+end
 scope 'paragraphs' do
   get 'index' => 'paragraphs#index'
   get 'info' => 'paragraphs#info'

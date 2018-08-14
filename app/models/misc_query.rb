@@ -205,6 +205,27 @@ class MiscQuery < Lbp::Query
 	     ORDER BY DESC(?order_number)"
 	 		results = self.query(query)
 		end
+		def codex_display_list(id)
+ 	 		query = "
+ 	 		SELECT DISTINCT ?expression ?codex_title ?item_expression_title ?item_expression_question_title ?surface_title ?surface_order
+ 	     {
+ 	         <#{id}> <http://purl.org/dc/elements/1.1/title> ?codex_title .
+					 ?manifestation <http://scta.info/property/isOnSurface> ?surface .
+					 ?surface <http://purl.org/dc/elements/1.1/title> ?surface_title .
+					 ?surface <http://scta.info/property/order> ?surface_order .
+					 ?surface <http://scta.info/property/hasISurface> ?isurface .
+					 ?isurface <http://purl.org/dc/elements/1.1/isPartOf> ?icodex .
+					 ?icodex <http://scta.info/property/isCodexItemOf> <#{id}> .
+					 ?manifestation <http://scta.info/property/structureType> <http://scta.info/resource/structureItem> .
+					 ?manifestation <http://scta.info/property/isManifestationOf> ?expression .
+					 ?expression <http://purl.org/dc/elements/1.1/title> ?item_expression_title .
+					 OPTIONAL {
+						 ?expression <http://scta.info/property/questionTitle> ?item_expression_question_title .
+					 }
+				 }
+ 	     ORDER BY ?surface_order"
+ 	 		results = self.query(query)
+ 		end
 
 
 
