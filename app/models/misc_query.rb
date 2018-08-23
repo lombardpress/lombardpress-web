@@ -207,25 +207,41 @@ class MiscQuery < Lbp::Query
 		end
 		def codex_display_list(id)
  	 		query = "
- 	 		SELECT DISTINCT ?expression ?codex_title ?item_expression_title ?item_expression_question_title ?surface_title ?surface_order
+ 	 		SELECT DISTINCT ?expression ?codex_title ?item_expression_title ?item_expression_question_title ?surface ?surface_title ?surface_order ?manifestation ?manifestation_short_id ?status
  	     {
  	         <#{id}> <http://purl.org/dc/elements/1.1/title> ?codex_title .
-					 ?manifestation <http://scta.info/property/isOnSurface> ?surface .
-					 ?surface <http://purl.org/dc/elements/1.1/title> ?surface_title .
-					 ?surface <http://scta.info/property/order> ?surface_order .
-					 ?surface <http://scta.info/property/hasISurface> ?isurface .
-					 ?isurface <http://purl.org/dc/elements/1.1/isPartOf> ?icodex .
+					 OPTIONAL{
 					 ?icodex <http://scta.info/property/isCodexItemOf> <#{id}> .
+					 ?isurface <http://purl.org/dc/elements/1.1/isPartOf> ?icodex .
+					 ?surface <http://scta.info/property/hasISurface> ?isurface .
+					 ?surface <http://scta.info/property/order> ?surface_order .
+					 ?surface <http://purl.org/dc/elements/1.1/title> ?surface_title .
+					 ?manifestation <http://scta.info/property/isOnSurface> ?surface .
 					 ?manifestation <http://scta.info/property/structureType> <http://scta.info/resource/structureItem> .
+					 ?manifestation <http://scta.info/property/shortId> ?manifestation_short_id .
 					 ?manifestation <http://scta.info/property/isManifestationOf> ?expression .
 					 ?expression <http://purl.org/dc/elements/1.1/title> ?item_expression_title .
-					 OPTIONAL {
-						 ?expression <http://scta.info/property/questionTitle> ?item_expression_question_title .
-					 }
+					 ?expression <http://scta.info/property/status> ?status .
+					 	OPTIONAL {
+						 	?expression <http://scta.info/property/questionTitle> ?item_expression_question_title .
+					 	}
+				 	}
 				 }
  	     ORDER BY ?surface_order"
  	 		results = self.query(query)
  		end
+		def all_codex_display_list
+			query = "
+ 	 		SELECT ?codex ?codex_title
+ 	     {
+				 ?codex a <http://scta.info/resource/codex> .
+				 ?codex <http://purl.org/dc/elements/1.1/title> ?codex_title
+				}
+			 ORDER BY ?codex_title"
+ 	    results = self.query(query)
+
+		end
+
 
 
 

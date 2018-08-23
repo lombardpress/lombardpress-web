@@ -1,5 +1,6 @@
 class CodicesController < ApplicationController
   def list
+    @results = MiscQuery.new.all_codex_display_list()
   end
   def show
     if params[:resourceid]
@@ -14,9 +15,15 @@ class CodicesController < ApplicationController
       result[:expression]
       }.each{|_, v|
         v.map!{|h|
-        h[:surface_title].to_s
+          info = {
+            surface_title: h[:surface_title].to_s,
+            surface_short_id: h[:surface].to_s.split("resource/").last()
+          }
+          
+
       }
     }
+
 
 
   end
