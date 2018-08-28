@@ -137,5 +137,16 @@ $("#collapseTwo").addClass("in");
         <% end %>
       </table>
     <% end %>
+    <!-- author articles menu -->
+    <% if @author_articles.count > 0 %>
+      <table class="table">
+      <h1 class="center">Author Related Articles</h1>
+      <% @author_articles.each do |article| %>
+          <tr>
+            <td><%= link_to  article[:articleTitle], show_article_path(article[:article].to_s.split("/").last) %></td>
+          </tr>
+        <% end %>
+      </table>
+    <% end %>
   </div>
 </div>

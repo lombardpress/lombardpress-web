@@ -1,6 +1,9 @@
 function showOpenseadragon(id, data){
 	console.log("data:", data)
-	$.get(data.image_url.scheme + "://" + data.image_url.authority + data.image_url.path + "/info.json", function(infojson){
+	//$.get(data.image_url.scheme + "://" + data.image_url.authority + data.image_url.path + "/info.json", function(infojson){
+		// this change is due to some odd change, possible in the RDF library, such that .scheme, .authority,
+		//and .path are not longer being returned but only value
+	$.get(data.image_url.value + "/info.json", function(infojson){
 		infojson["tiles"] = [{"scaleFactors": [1, 2, 4, 8], "width": 300}]
 		var viewer = OpenSeadragon({
 			id: "openseadragon-" + id,

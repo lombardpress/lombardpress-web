@@ -1,0 +1,65 @@
+<div id="lbp-codex-body" class="container" style="padding-top: 20px;">
+  <p><%= @results[0].codex_title %></p>
+  <table class="table table-striped table-hover">
+  <% current_expression = [] %>
+  <% @results.each do |result| %>
+  <% if !current_expression.include? result[:expression]  %>
+  <tr>
+    <td style="width: 125px">
+
+       <a href="#" class="js-show-folio-image" data-surfaceid="<%=@surface_group[result[:expression]][0][:surface_short_id]%>"><%=@surface_group[result[:expression]][0][:surface_title] %></a>-<a href="#" class="js-show-folio-image" data-surfaceid="<%=@surface_group[result[:expression]].last[:surface_short_id]%>"><%= @surface_group[result[:expression]].last[:surface_title] %></a>
+
+    </td>
+    <td style="min-width: 150px">
+      <% if result[:status] != "Not Started" %>
+      <a href="/text/<%= result[:manifestation_short_id] %>"><%= result[:item_expression_title] %></a>
+      <% else %>
+      <%= result[:item_expression_title] %>
+      <% end %>
+    </td>
+      <% if result[:item_expression_question_title] %>
+        <td><%= result[:item_expression_question_title] %></td>
+      <% end %>
+
+    <% end %>
+    <% current_expression << result[:expression] %>
+    </tr>
+  <% end %>
+
+
+</table>
+</div>
+
+<!-- bottom window -->
+<div id="lbp-bottom-window" style="background-color: <%= @config.dark_color %>;">
+	<nav id="lbp-bottom-window-nav-bar">
+		<div class="container-fluid">
+			<div class="navbar-header">
+	      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#lbp-bottom-window-navbar-collapse">
+	        <span class="sr-only">Toggle navigation</span>
+	        <span class="icon-bar"></span>
+	        <span class="icon-bar"></span>
+	        <span class="icon-bar"></span>
+	      </button>
+	    </div>
+			<div class="collapse navbar-collapse" id="lbp-bottom-window-navbar-collapse">
+	    	<ul class="nav navbar-nav">
+					<li>
+						<a class="js-expand-para-comment">Max
+							<span class="dropup">
+								<span class="caret"></span>
+							</span>
+						</a>
+					</li>
+					<li><a class="js-halfsize-para-comment">50%</a></li>
+					<li><a class="js-minimize-para-comment">Min<span class="caret"></span></a></li>
+					<li><a class="js-close-para-comment">Close</span></a></li>
+          <li><a href="#" class="js-toggle-scroll-lock">Lock Scroll</span></a></li>
+					<li><a class="js-toggle-sync">Sync Panels</span></a></li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+	<div id="lbp-bottom-window-container" class="container">
+	</div>
+</div>

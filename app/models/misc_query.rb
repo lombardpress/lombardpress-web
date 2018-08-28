@@ -112,8 +112,36 @@ class MiscQuery < Lbp::Query
          "
 
       result = self.query(query)
+	 end
+	 def author_article_list(author_short_id)
+      query = "
+         SELECT ?article ?articletitle ?article_short_id
+         {
+           ?article a <http://scta.info/resource/article> .
+					 ?article <http://scta.info/property/isArticleOf> <http://scta.info/resource/#{author_short_id}> .
+           ?article <http://purl.org/dc/elements/1.1/title> ?articletitle .
+					 ?article <http://scta.info/property/shortId> ?article_short_id .
+				}
+				ORDER BY ?articletitle
+				"
 
-   end
+      result = self.query(query)
+	 end
+	 def author_members_article_list(author_short_id)
+      query = "
+         SELECT DISTINCT ?article ?articletitle ?article_short_id
+         {
+           ?article a <http://scta.info/resource/article> .
+					 ?article <http://scta.info/property/isArticleOf> ?resource .
+					 ?resource <http://www.loc.gov/loc.terms/relators/AUT> <http://scta.info/resource/#{author_short_id}> .
+           ?article <http://purl.org/dc/elements/1.1/title> ?articletitle .
+					 ?article <http://scta.info/property/shortId> ?article_short_id .
+				}
+				ORDER BY ?articletitle
+				"
+
+      result = self.query(query)
+	 end
    def expression_query
    query = "#{@prefixes}
 
@@ -156,6 +184,64 @@ class MiscQuery < Lbp::Query
       }"
       result = self.query(query)
    end
+	 def version_history_info(transcription_rdf_id)
+	 	query = "
+	 		SELECT ?version ?version_shortId ?order_number ?version_label
+	     {
+				 {
+	         <#{transcription_rdf_id}> <http://scta.info/property/hasAncestor> ?version .
+					 ?version <http://scta.info/property/shortId> ?version_shortId .
+	         ?version <http://scta.info/property/versionOrderNumber> ?order_number .
+					 ?version <http://scta.info/property/versionLabel> ?version_label .
+	       }
+	       UNION
+	       {
+	         <#{transcription_rdf_id}> <http://scta.info/property/hasDescendant> ?version .
+					 ?version <http://scta.info/property/shortId> ?version_shortId .
+	         ?version <http://scta.info/property/versionOrderNumber> ?order_number .
+					 ?version <http://scta.info/property/versionLabel> ?version_label .
+	       }
+	     }
+	     ORDER BY DESC(?order_number)"
+	 		results = self.query(query)
+		end
+		def codex_display_list(id)
+ 	 		query = "
+ 	 		SELECT DISTINCT ?expression ?codex_title ?item_expression_title ?item_expression_question_title ?surface ?surface_title ?surface_order ?manifestation ?manifestation_short_id ?status
+ 	     {
+ 	         <#{id}> <http://purl.org/dc/elements/1.1/title> ?codex_title .
+					 OPTIONAL{
+					 ?icodex <http://scta.info/property/isCodexItemOf> <#{id}> .
+					 ?isurface <http://purl.org/dc/elements/1.1/isPartOf> ?icodex .
+					 ?surface <http://scta.info/property/hasISurface> ?isurface .
+					 ?surface <http://scta.info/property/order> ?surface_order .
+					 ?surface <http://purl.org/dc/elements/1.1/title> ?surface_title .
+					 ?manifestation <http://scta.info/property/isOnSurface> ?surface .
+					 ?manifestation <http://scta.info/property/structureType> <http://scta.info/resource/structureItem> .
+					 ?manifestation <http://scta.info/property/shortId> ?manifestation_short_id .
+					 ?manifestation <http://scta.info/property/isManifestationOf> ?expression .
+					 ?expression <http://purl.org/dc/elements/1.1/title> ?item_expression_title .
+					 ?expression <http://scta.info/property/status> ?status .
+					 	OPTIONAL {
+						 	?expression <http://scta.info/property/questionTitle> ?item_expression_question_title .
+					 	}
+				 	}
+				 }
+ 	     ORDER BY ?surface_order"
+ 	 		results = self.query(query)
+ 		end
+		def all_codex_display_list
+			query = "
+ 	 		SELECT ?codex ?codex_title
+ 	     {
+				 ?codex a <http://scta.info/resource/codex> .
+				 ?codex <http://purl.org/dc/elements/1.1/title> ?codex_title
+				}
+			 ORDER BY ?codex_title"
+ 	    results = self.query(query)
+
+		end
+
 
 
 

@@ -23,7 +23,7 @@ Rails.application.routes.draw do
   #END
 
 
-  get 'articles/:articleid' => 'articles#show', as: :show_article
+  get 'articles/:articleid(/:transcriptionid)' => 'articles#show', as: :show_article
   get 'articles' => 'articles#index', as: :articles
 
   get 'biography' => 'pages#biography'
@@ -46,6 +46,10 @@ Rails.application.routes.draw do
   get "index/:expressionid/quotes/show(/:quoteid)" => 'indices/quotes#show'
   get "index/:expressionid/quotes/categories" => 'indices/quotes#categories'
 
+scope 'codices' do
+  get 'list' => 'codices#list'
+  get '(/:shortid)' => 'codices#show'
+end
 scope 'paragraphs' do
   get 'index' => 'paragraphs#index'
   get 'info' => 'paragraphs#info'

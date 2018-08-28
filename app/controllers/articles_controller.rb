@@ -22,14 +22,23 @@ class ArticlesController < ApplicationController
 			xslt_file_path = "#{Rails.root}/xslt/articles/standard.xsl"
 		end
 
-		xml_file_path = article.file_path
-
-		xml_file = open(xml_file_path, {:http_basic_authentication => [ENV["GUN"], ENV["GPW"]]})
+		if params[:transcriptionid]
+			transcription = Lbp::Resource.find("#{params[:articleid]}/#{params[:transcriptionid]}")
+			xml_file_path = transcription.file_path
+		else
+			transcription = article.canonical_transcription.resource
+			xml_file_path = transcription.file_path
+		end
+    xml_file = open(xml_file_path)
+		#xml_file = open(xml_file_path, {:http_basic_authentication => [ENV["GUN"], ENV["GPW"]]})
 		nokogiri_doc = Nokogiri::XML(xml_file)
 
 
 		xslt = Nokogiri::XSLT(open(xslt_file_path))
-
+		@current_order_number = transcription.value("http://scta.info/property/versionOrderNumber")
+		@current_version_label = transcription.value("http://scta.info/property/versionLabel")
 		@transform = xslt.apply_to(nokogiri_doc)
+		@version_history = MiscQuery.new.version_history_info(transcription.to_s)
+
 	end
 end
