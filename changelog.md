@@ -1,5 +1,11 @@
 Change Log
 
+Version 0.11.0
+- updated article handling to reflect changes in SCTA RDF Schema
+- created codex list and viewing page (no direct link yet to codex route)
+- changed dll review registry calls to use https
+- bundle updates; updates likely caused a changed in rdf query that started returning new results from a SPARQL query which in turn required adjustments in openseadragon-customscript.js
+
 Version 0.10.0
 - improved search form to populate with lists; it is still not idea but better than it was.
 - updated image queries to use new isOnSurface and isOnZone properties on manifestations rather than transcriptions per update in SCTA rdf database
@@ -7,7 +13,6 @@ Version 0.10.0
 Version 0.9.1
 - Mostly a hot fix release that fixes an error in the javascript state
 - also includes the beginnings of a how to cite feature. The feature is operational but not complete
-
 
 Version 0.9.0
 - This is a big release that create the foundation of a lot of new developments and also create the need for further development. The biggest changes include:
