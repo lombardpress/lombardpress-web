@@ -1,0 +1,11 @@
+version: '2'
+services:
+  webapp:
+    build: .
+    command: bundle exec puma -C config/puma.rb -e production
+    volumes:
+      - /var/www/lombardpress-web
+    expose:
+      - "3000"
+    environment:
+      - SECRET_KEY_BASE
