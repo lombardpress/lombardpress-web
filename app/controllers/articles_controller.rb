@@ -29,12 +29,15 @@ class ArticlesController < ApplicationController
 			transcription = article.canonical_transcription.resource
 			xml_file_path = transcription.file_path
 		end
-    xml_file = open(xml_file_path)
-		#xml_file = open(xml_file_path, {:http_basic_authentication => [ENV["GUN"], ENV["GPW"]]})
+
+		xml_file = open(xml_file_path)
 		nokogiri_doc = Nokogiri::XML(xml_file)
+		xml_file.close
 
-
-		xslt = Nokogiri::XSLT(open(xslt_file_path))
+		xslt_file = open(xslt_file_path)
+		xslt = Nokogiri::XSLT(xslt_file)
+		xslt_file.close
+		
 		@current_order_number = transcription.value("http://scta.info/property/versionOrderNumber")
 		@current_version_label = transcription.value("http://scta.info/property/versionLabel")
 		@transform = xslt.apply_to(nokogiri_doc)

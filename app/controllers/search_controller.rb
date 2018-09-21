@@ -27,20 +27,25 @@ class SearchController < ApplicationController
 		else
 			if !params[:expressiontypeid].blank?
 				expressiontypeid = params[:expressiontypeid] ? params[:expressiontypeid] : "all"
-				@results = open("http://exist.scta.info/exist/apps/scta-app/search/expressiontype/#{params[:expressiontypeid]}?query=#{params[:searchterm]}").read
+				uri = "http://exist.scta.info/exist/apps/scta-app/search/expressiontype/#{params[:expressiontypeid]}?query=#{params[:searchterm]}"
+				@results = open(uri) {|f| f.read}
 			elsif !params[:authorid].blank?
-				@results = open("http://exist.scta.info/exist/apps/scta-app/search/author/#{params[:authorid]}?query=#{params[:searchterm]}").read
+				uri = "http://exist.scta.info/exist/apps/scta-app/search/author/#{params[:authorid]}?query=#{params[:searchterm]}"
+				@results = open(uri) {|f| f.read}
 			elsif !params[:workgroupid].blank?
-				@results = open("http://exist.scta.info/exist/apps/scta-app/search/workgroup/#{params[:workgroupid]}?query=#{params[:searchterm]}").read
+				uri = "http://exist.scta.info/exist/apps/scta-app/search/workgroup/#{params[:workgroupid]}?query=#{params[:searchterm]}"
+				@results = open(uri) {|f| f.read}
 			elsif !params[:expressionid].blank?
 				expressionid = params[:expressionid] ? params[:expressionid] : "all"
-				@results = open("http://exist.scta.info/exist/apps/scta-app/search/expression/#{expressionid}?query=#{params[:searchterm]}").read
+				uri = "http://exist.scta.info/exist/apps/scta-app/search/expression/#{expressionid}?query=#{params[:searchterm]}"
+				@results = open(uri) {|f| f.read}
 			else
 				expressionid = "all"
 				if params[:searchterm].blank?
 					@results = "No search term provided"
 				else
-					@results = open("http://exist.scta.info/exist/apps/scta-app/search/expression/#{expressionid}?query=#{params[:searchterm]}").read
+					uri = "http://exist.scta.info/exist/apps/scta-app/search/expression/#{expressionid}?query=#{params[:searchterm]}"
+					@results = open(uri) {|f| f.read}
 				end
 			end
 
