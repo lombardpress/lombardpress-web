@@ -43,7 +43,7 @@ class TextController < ApplicationController
 					@sponsors = @resource.sponsors_display(@info)
 					@articles = @resource.articles_display(@info)
 					@author_articles = @resource.author_articles_display(@info)
-					
+
 					@questionEditor = @resource.value("http://scta.info/property/questionListEditor")
 					@questionEncoder = @resource.value("http://scta.info/property/questionListEncoder")
 					render "text/questions/questions_with_about"
@@ -265,7 +265,8 @@ class TextController < ApplicationController
 	end
 
 	def pdf
-		@response = open("http://print.lombardpress.org/compile?id=#{params[:id]}&output=pdf").read
+		uri = "https://print.lombardpress.org/compile?id=#{params[:id]}&output=pdf"
+		@response= open(uri) {|f| f.read}
 		redirect_to "http://" + JSON.parse(@response)["url"];
 
 	end

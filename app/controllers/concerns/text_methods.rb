@@ -65,7 +65,11 @@ module TextMethods
       if resource.class == Lbp::Transcription
 				return resource
 			else
-				return resource.canonical_transcription.resource
+        begin
+          return resource.canonical_transcription.resource
+        rescue
+          raise ActionController::RoutingError.new('Not Found')
+        end
 			end
 
 		end
