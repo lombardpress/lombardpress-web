@@ -57,6 +57,11 @@
         <p>Quoted by <a class="js-show-slot" data-url="{{this}}">{{this}}</a></p>
       {{/each}}
     {{/if}}
+    {{#if recommended}}
+      {{#each recommended.items}}
+        <p>Recommended <a class="js-show-slot" data-url="http://scta.info/resource/{{this.id}}">http://scta.info/resource/{{this.id}}</a></p>
+      {{/each}}
+    {{/if}}
   </div>
   <div class="lbp-compare-text-wrapper" style="position: absolute; top: 0; z-index: 1; height: 100%; width: 95%; background-color: #BBCEBE; display: none">
     <button type="button" class="close" aria-label="Close">

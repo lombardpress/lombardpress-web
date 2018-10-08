@@ -30,6 +30,14 @@ State.prototype = {
     	});
     })
   },
+  getRecommended: function(){
+    const itemid = this.focus;
+    return promise = new Promise((resolve, reject) => {
+      $.get("http://localhost:3737/view/" + itemid + "/5/json", (data) =>{
+        resolve(data)
+      });
+    });
+  },
   getInboxData: function(){
     var _this = this;
     return promise = new Promise(function(resolve, reject){
