@@ -1,8 +1,8 @@
 Rails.application.routes.draw do
 
   get 'errors/not_found'
-
   get 'errors/internal_server_error'
+
 
   resources :access_requests
 
@@ -21,7 +21,6 @@ Rails.application.routes.draw do
   match "/404", to: "errors#not_found", via: :all
   match "/500", to: "errors#internal_server_error", via: :all
   #END
-
 
   get 'articles/:articleid(/:transcriptionid)' => 'articles#show', as: :show_article
   get 'articles' => 'articles#index', as: :articles
@@ -104,8 +103,16 @@ end
   post 'accesspoints/:id' => 'access_points#create', as: :create_access_point
   delete 'accesspoints/:id' => 'access_points#destroy', as: :delete_access_point
 
+  # BEGIN handling error for route favicon and apple-touch-icon-requests
+  #match '/:png', via: :get, controller: 'errors', action: 'not_found', png: /apple-touch-icon.*\.png/
+  #match '/:ico', via: :get, controller: 'errors', action: 'not_found', png: /favicon.ico/
+  #match ':resourceid' => 'errors#not_found', :constraints => { :filename => /.*/ }
+  # END
+
   ## these route should always go last, all other routes should override it, but if ia resource shortid is used it should take you to the questions page.
-  get ':resourceid' => 'text#questions'
+  #get ':resourceid.png' => 'text#questions'
+  #get ':resourceid' => 'text#questions'
+  match "/:resourceid", to: "text#questions", via: :all
 
 
 
