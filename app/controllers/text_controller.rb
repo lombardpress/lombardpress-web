@@ -16,6 +16,12 @@ class TextController < ApplicationController
 			else
 				@resource = Lbp::Resource.find("http://scta.info/resource/#{params[:resourceid]}")
 			end
+			# error handling
+			# checks to make sure resource is not empty
+			# if empty reroutes to 404 error, avoiding a method not found error below.
+			if !(@resource.results.count > 0)
+				raise ActionController::RoutingError.new('Not Found')
+			end
 
 			if @resource.type.short_id == "workGroup"
 				@results = @resource.parts_display
