@@ -110,7 +110,9 @@ end
   # END
 
   ## these route should always go last, all other routes should override it, but if ia resource shortid is used it should take you to the questions page.
-  get ':resourceid' => 'text#questions'
+  #get ':resourceid.png' => 'text#questions'
+  #get ':resourceid' => 'text#questions'
+  match "/:resourceid", to: "text#questions", via: :all
 
 
 
