@@ -579,7 +579,7 @@ var showSlot = function(url, slot){
     	$("#lbp-bottom-window-container").html( msg + "(" + xhr.status + " " + xhr.statusText + ")");
     }
 		else{
-			$.get("http://localhost:3737/view/" + expressionid + "/5/json", (data2) =>{
+			$.get("https://metallo.scta.info/view/" + expressionid + "/5/json", (data2) =>{
 				data["recommended"] = data2
 				var slotTpl = HandlebarsTemplates['slot'](data);
 				$("#" + slot).html(slotTpl);

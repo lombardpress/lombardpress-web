@@ -33,7 +33,7 @@ State.prototype = {
   getRecommended: function(){
     const itemid = this.focus;
     return promise = new Promise((resolve, reject) => {
-      $.get("http://localhost:3737/view/" + itemid + "/5/json", (data) =>{
+      $.get("https://metallo.scta.info/view/" + itemid + "/5/json", (data) =>{
         resolve(data)
       });
     });
