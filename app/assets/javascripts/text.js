@@ -542,7 +542,7 @@ var showParagraphCollation = function(expressionid, base, comp){
 //paragraph comparision
 var showComparison = function(){
 	state.info.then(function(result){
-		state.getRecommended().then((result2) => {
+		state.getRecommended().then(function(result2){
 
 		result["recommended"] = result2
 
@@ -579,7 +579,7 @@ var showSlot = function(url, slot){
     	$("#lbp-bottom-window-container").html( msg + "(" + xhr.status + " " + xhr.statusText + ")");
     }
 		else{
-			$.get("https://metallo.scta.info/view/" + expressionid + "/5/json", (data2) =>{
+			$.get("https://metallo.scta.info/view/" + expressionid + "/5/json", function(data2) {
 				data["recommended"] = data2
 				var slotTpl = HandlebarsTemplates['slot'](data);
 				$("#" + slot).html(slotTpl);

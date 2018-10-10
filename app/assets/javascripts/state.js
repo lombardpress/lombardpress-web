@@ -31,9 +31,9 @@ State.prototype = {
     })
   },
   getRecommended: function(){
-    const itemid = this.focus;
-    return promise = new Promise((resolve, reject) => {
-      $.get("https://metallo.scta.info/view/" + itemid + "/5/json", (data) =>{
+    var itemid = this.focus;
+    return promise = new Promise(function(resolve, reject) {
+      $.get("https://metallo.scta.info/view/" + itemid + "/5/json", function(data) {
         resolve(data)
       });
     });
