@@ -542,11 +542,16 @@ var showParagraphCollation = function(expressionid, base, comp){
 //paragraph comparision
 var showComparison = function(){
 	state.info.then(function(result){
+		state.getRecommended().then(function(result2){
+
+		result["recommended"] = result2
+
 		var content = HandlebarsTemplates['manifestation_transcription_list'](result);
 		var slot = HandlebarsTemplates['slot'](result);
 		$("#lbp-bottom-window-container").html(content);
 		$("#lbp-text-col-left").html(slot);
 		$("#lbp-text-col-right").html(slot);
+		});
 	});
 	//
 	// $.get("/text/info/" + expressionid, function(data, status, xhr) {
@@ -574,8 +579,11 @@ var showSlot = function(url, slot){
     	$("#lbp-bottom-window-container").html( msg + "(" + xhr.status + " " + xhr.statusText + ")");
     }
 		else{
-			var slotTpl = HandlebarsTemplates['slot'](data);
-			$("#" + slot).html(slotTpl);
+			$.get("https://metallo.scta.info/view/" + expressionid + "/5/json", function(data2) {
+				data["recommended"] = data2
+				var slotTpl = HandlebarsTemplates['slot'](data);
+				$("#" + slot).html(slotTpl);
+			});
 		}
   });
 

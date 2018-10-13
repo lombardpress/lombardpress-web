@@ -57,7 +57,15 @@
         <p>Quoted by <a class="js-show-slot" data-url="{{this}}">{{this}}</a></p>
       {{/each}}
     {{/if}}
+    <p><a target="_blank" href="http://scta.github.io/networks-explorer/?resourceid={{expression_url}}">View Reference Connections</a></p>
+    {{#if recommended}}
+      {{#each recommended.items}}
+        <p>Related by Topic: <a class="js-show-slot" data-url="http://scta.info/resource/{{this.id}}">http://scta.info/resource/{{this.id}} ({{this.distance}})</a></p>
+      {{/each}}
+    {{/if}}
+    <p><a target="_blank" href="http://scta.github.io/networks-explorer/topicconnections.html?resourceid={{expression_url}}">View Topic Connections</a></p>
   </div>
+
   <div class="lbp-compare-text-wrapper" style="position: absolute; top: 0; z-index: 1; height: 100%; width: 95%; background-color: #BBCEBE; display: none">
     <button type="button" class="close" aria-label="Close">
       <span aria-hidden="true">&times;</span>

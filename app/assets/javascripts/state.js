@@ -30,6 +30,14 @@ State.prototype = {
     	});
     })
   },
+  getRecommended: function(){
+    var itemid = this.focus;
+    return promise = new Promise(function(resolve, reject) {
+      $.get("https://metallo.scta.info/view/" + itemid + "/5/json", function(data) {
+        resolve(data)
+      });
+    });
+  },
   getInboxData: function(){
     var _this = this;
     return promise = new Promise(function(resolve, reject){

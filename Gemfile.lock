@@ -9,16 +9,17 @@ GIT
 
 GIT
   remote: https://github.com/lombardpress/lbp.rb.git
-  revision: 377471300a63d3b34a8db3fee741d1e58bea2a20
+  revision: 7d6227e784e5a7521c12010087db1ba9229b25b0
   branch: develop
   specs:
     lbp (0.1.3)
-      nokogiri
-      rdf
-      rdf-rdfxml
-      rdf-vocab
-      rest-client
-      sparql
+      net-http-persistent (~> 3.0.0)
+      nokogiri (= 1.8.5)
+      rdf (~> 2.2.0)
+      rdf-rdfxml (~> 2.2.0)
+      rdf-vocab (~> 2.2.0)
+      rest-client (~> 2.0.0)
+      sparql-client (~> 2.2.0)
       thor
 
 GEM
@@ -102,9 +103,6 @@ GEM
       devise (>= 3.4)
     domain_name (0.5.20180417)
       unf (>= 0.0.5, < 1.0.0)
-    ebnf (1.1.3)
-      rdf (~> 3.0)
-      sxp (~> 1.0)
     erubis (2.7.0)
     eventmachine (1.2.7)
     execjs (2.7.0)
@@ -156,7 +154,7 @@ GEM
     net-http-persistent (3.0.0)
       connection_pool (~> 2.2)
     netrc (0.11.0)
-    nokogiri (1.8.4)
+    nokogiri (1.8.5)
       mini_portile2 (~> 2.3.0)
     orm_adapter (0.5.0)
     osullivan (0.0.3)
@@ -208,26 +206,26 @@ GEM
     rb-fsevent (0.10.3)
     rb-inotify (0.9.10)
       ffi (>= 0.5.0, < 2)
-    rdf (3.0.4)
+    rdf (2.2.12)
       hamster (~> 3.0)
       link_header (~> 0.0, >= 0.0.8)
     rdf-aggregate-repo (2.2.1)
       rdf (>= 2.2, < 4.0)
-    rdf-rdfa (3.0.1)
+    rdf-rdfa (2.2.4)
       haml (~> 5.0)
       htmlentities (~> 4.3)
-      rdf (~> 3.0)
+      rdf (>= 2.2, < 4.0)
       rdf-aggregate-repo (>= 2.2, < 4.0)
-      rdf-xsd (~> 3.0)
+      rdf-xsd (>= 2.2, < 4.0)
     rdf-rdfxml (2.2.1)
       htmlentities (~> 4.3)
       rdf (>= 2.2, < 4.0)
       rdf-rdfa (>= 2.2, < 4.0)
       rdf-xsd (>= 2.2, < 4.0)
-    rdf-vocab (3.0.3)
-      rdf (~> 3.0)
-    rdf-xsd (3.0.1)
-      rdf (~> 3.0)
+    rdf-vocab (2.2.9)
+      rdf (>= 2.2, < 4.0)
+    rdf-xsd (2.2.1)
+      rdf (>= 2.2, < 4.0)
     rdoc (4.3.0)
     responders (2.4.0)
       actionpack (>= 4.2.0, < 5.3)
@@ -250,17 +248,9 @@ GEM
     sdoc (0.4.2)
       json (~> 1.7, >= 1.7.7)
       rdoc (~> 4.0)
-    sparql (3.0.2)
-      builder (~> 3.2)
-      ebnf (~> 1.1)
-      rdf (~> 3.0)
-      rdf-aggregate-repo (>= 2.2, < 4.0)
-      rdf-xsd (~> 3.0)
-      sparql-client (~> 3.0)
-      sxp (~> 1.0)
-    sparql-client (3.0.0)
+    sparql-client (2.2.1)
       net-http-persistent (>= 2.9, < 4)
-      rdf (~> 3.0)
+      rdf (>= 2.2, < 4.0)
     spring (2.0.2)
       activesupport (>= 4.2)
     sprockets (3.7.2)
@@ -275,8 +265,6 @@ GEM
       activesupport (>= 4.0)
       sprockets (>= 3.0.0)
     sqlite3 (1.3.13)
-    sxp (1.0.1)
-      rdf (>= 2.2, < 4.0)
     temple (0.8.0)
     thin (1.7.2)
       daemons (~> 1.0, >= 1.0.9)
