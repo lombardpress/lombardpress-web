@@ -37,6 +37,9 @@ gem 'bootstrap-sass', '~> 3.2.0'
 
 gem 'autoprefixer-rails'
 
+# gem
+gem 'platform-api', '~> 2.2.0'
+
 #gem 'devise'
 gem 'devise', '~> 3'
 gem 'devise-i18n'
