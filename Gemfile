@@ -37,6 +37,9 @@ gem 'bootstrap-sass', '~> 3.2.0'
 
 gem 'autoprefixer-rails'
 
+# gem
+gem 'platform-api', '~> 2.2.0'
+
 #gem 'devise'
 gem 'devise', '~> 3'
 gem 'devise-i18n'
@@ -59,6 +62,7 @@ gem 'osullivan'
 
  gem 'pundit'
 
+gem 'sparql-client', git: "https://github.com/ruby-rdf/sparql-client.git", branch: 'feature/finish-connection'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
@@ -89,6 +93,8 @@ group :development, :test do
   gem 'thin'
   # use letter opener for development email
   gem "letter_opener"
+  # set `export SCOUT_DEV_TRACE=true` to run profiler rails server
+  gem "scout_apm"
 
 end
 
