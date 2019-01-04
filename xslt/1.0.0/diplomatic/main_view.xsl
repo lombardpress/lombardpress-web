@@ -18,7 +18,7 @@
   <xsl:template match="/">
     <!-- title/publication info -->
     <xsl:call-template name="teiHeaderInfo"/>
-
+    <button id="lbp-show-all-lines">Show All Lines</button>
     <!-- transform body of text -->
     <xsl:apply-templates/>
 
@@ -182,7 +182,15 @@
     <span class="lbp-glyph lbp-pilcrow">&#182;</span><xsl:text> </xsl:text>
   </xsl:template>
   <xsl:template match="tei:lb">
-    <br/>
+    <xsl:variable name="followingPageBreak" select="count(./preceding::tei:pb[1]//following::tei:lb)"/>
+    <!--<xsl:message><xsl:value-of select="$followingPageBreak"/></xsl:message>-->
+    
+    <xsl:variable name="followingLineBreak" select="count(.//following::tei:lb)"/>
+    <!--<xsl:message><xsl:value-of select="$followingLineBreak"/></xsl:message>-->
+    <xsl:variable name="lineNumber" select="$followingPageBreak - $followingLineBreak"/>
+    <!--<xsl:message><xsl:value-of select="$lineNumber"/></xsl:message>-->
+    <xsl:variable name="pbNumber" select="./preceding::tei:pb[1]/@n"/>
+    <br/> <a class="lbp-line-number" data-ln="{$lineNumber}" data-pb="{$pbNumber}"><xsl:value-of select="$lineNumber"/></a>
   </xsl:template>
 
 
