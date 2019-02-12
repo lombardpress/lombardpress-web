@@ -4,7 +4,11 @@ class TextController < ApplicationController
 	#TODO this make question list the index page
 	# current division between index and question list is confusing
   def index
-		redirect_to "/text/questions"
+		if params["resourceid"]
+			redirect_to "/text/questions?resourceid=#{params["resourceid"]}"
+		else
+			redirect_to "/text/questions"
+		end
 	end
 	def questions
 		if params[:resourceid] != nil
@@ -39,8 +43,8 @@ class TextController < ApplicationController
 				@articleresults = MiscQuery.new.author_article_list(@resource.short_id)
 				@article_members_results = MiscQuery.new.author_members_article_list(@resource.short_id)
 				render "text/questions/authorlist"
-			elsif @resource.structure_type.to_s.include? "structureItem"
-				redirect_to "/text/#{params[:resourceid]}"
+			elsif @resource.value("http://scta.info/property/structureType").to_s.include? "structureItem"
+				redirect_to "/text/#{@resource.short_id}"
 			elsif params[:resourceid]
 				@results = @resource.structure_items_display
 				@parts = @resource.has_parts_display
