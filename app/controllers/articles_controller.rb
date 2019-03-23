@@ -37,10 +37,15 @@ class ArticlesController < ApplicationController
 		xslt_file = open(xslt_file_path)
 		xslt = Nokogiri::XSLT(xslt_file)
 		xslt_file.close
-		
+
+		xslt_param_array = ["file-path", "'#{transcription.file_path.to_s}'"]
+		@transform = xslt.apply_to(nokogiri_doc, xslt_param_array)
+
+		# version version_history
+		# todo refactor; currently taking four requestsion which is too many
 		@current_order_number = transcription.value("http://scta.info/property/versionOrderNumber")
 		@current_version_label = transcription.value("http://scta.info/property/versionLabel")
-		@transform = xslt.apply_to(nokogiri_doc)
+		@current_review_state = transcription.value("http://scta.info/property/hasReview")
 		@version_history = MiscQuery.new.version_history_info(transcription.to_s)
 
 	end

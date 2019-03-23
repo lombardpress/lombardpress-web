@@ -195,6 +195,13 @@ class TextController < ApplicationController
 			end
 		end
 
+		#version information
+		## TODO: refactor; takes 4 requests which seems like too many
+		@current_order_number = transcript.value("http://scta.info/property/versionOrderNumber")
+		@current_version_label = transcript.value("http://scta.info/property/versionLabel")
+		@current_review_state = transcript.value("http://scta.info/property/hasReview")
+		@version_history = MiscQuery.new.version_history_info(transcript.to_s)
+
 	end
 
 	def xml
