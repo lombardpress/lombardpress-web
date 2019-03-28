@@ -4,6 +4,29 @@ body {padding-bottom: 50px;}
 </style>
 <!-- end of style override -->
 
+<% if @version_history.count > 0 %>
+<div id="version-wrapper" class="alert alert-warning alert-dismissible" role="alert">
+  <p id="version-wrapper-title">This Article Has Multiple Indexed Versions</p>
+  <div id="version-list">
+    <% @version_history.each do |result| %>
+		<% if @current_order_number.to_s.to_i == result[:order_number].to_s.to_i + 1%>
+    <p><%= @current_version_label %>
+			<%= @current_review_state ? " (Peer Reviewed)" : nil %>
+      (Currently Viewing)
+		</p>
+    <% end %>
+    <p><a href="/text/<%= result[:version_shortId] %>"><%= result[:version_label] %></a> <%= result[:review] ? "(Peer Reviewed)" : nil %></p>
+    <% if @current_order_number.to_s.to_i == result[:order_number].to_s.to_i - 1%>
+    <p><%= @current_version_label %>
+		<%= @current_review_state ? " (Peer Reviewed) " : nil %>
+    (Currently Viewing)
+    </p>
+    <% end %>
+  </div>
+<% end %>
+</div>
+<% end %>
+
 <%= render "text_nav_bar" %>
 
 <% if params[:search] != nil %>

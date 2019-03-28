@@ -10,10 +10,12 @@
     <xsl:param name="projectdata">projectdata.xml</xsl:param>
     <xsl:param name="biodir">Biography/</xsl:param>
     <xsl:param name="timelinename">PlaoulTimeLineTEI.xml</xsl:param>
+    <xsl:param name="file-path"/>
     <xsl:template match="/">
-        
-            
+
+
             <div>
+              <div id="lbp-review-display" data-file-url="{$file-path}"/>
               <h1>Event Timeline</h1>
                 <xsl:choose>
                     <xsl:when test="not($eid = 'none')">
@@ -22,7 +24,7 @@
                     <xsl:when test="not($bibQueryId = 'none')">
                         <xsl:apply-templates select="//t:event[t:bibl[@corresp[contains(., $bibQueryId)]]]"/>
                     </xsl:when>
-                    
+
                     <xsl:otherwise>
                         <xsl:choose>
                             <xsl:when test="not($category = 'All')">
@@ -38,14 +40,14 @@
                         </xsl:choose>
                     </xsl:otherwise>
                 </xsl:choose>
-                        
-                    
+
+
 
             </div>
-        
+
     </xsl:template>
     <xsl:template match="t:teiHeader">
-        
+
     </xsl:template>
     <xsl:template match="t:event">
         <div class="event" id="{@xml:id}">
@@ -56,11 +58,11 @@
                     <xsl:if test="./@to">
                         -- <xsl:value-of select="./@to"/>
                     </xsl:if>
-                    
+
                     <xsl:if test="./@notAfter">
                         -- <xsl:value-of select="./@notAfter"/> (Not After)
                     </xsl:if>
-                    
+
                     | <xsl:element name="span">
                         <xsl:attribute name="class">lbp-label</xsl:attribute>
                         <xsl:value-of select="./t:label"/>
@@ -86,13 +88,13 @@
         </div>
     </xsl:template>
     <xsl:template match="t:label">
-        
+
     </xsl:template>
     <xsl:template match="t:desc">
         <p class="eventDescPara"><span style="font-weight: bold;">Event Description: </span><xsl:apply-templates/></p>
     </xsl:template>
-    
-    <xsl:template match="t:bibl">   
+
+    <xsl:template match="t:bibl">
         <p>
             <xsl:variable name="facsRef" select="./@facs"/>
             <xsl:variable name="facs" select="substring-after($facsRef, '#')"/>
@@ -106,14 +108,14 @@
                     <xsl:attribute name="data-bibMainId"><xsl:value-of select="./@corresp"/></xsl:attribute>
                     <xsl:apply-templates/>
                 </xsl:element>
-                
+
             </xsl:when>
             <xsl:otherwise>
                 <xsl:element name="span">
                     <xsl:attribute name="class">bib eventList <xsl:value-of select="./@type"/></xsl:attribute>
                     <xsl:apply-templates/>
                 </xsl:element>
-                
+
             </xsl:otherwise>
         </xsl:choose>
             <xsl:if test="./@corresp">
@@ -135,13 +137,13 @@
         </p>
         <p style="font-size: 12px; margin-top: 0px; padding-left: 15px;"><xsl:value-of select="./t:note"/></p>
     </xsl:template>
-    
-    
+
+
     <xsl:template match="t:event/t:note">
         <p style="margin-top: 3px; border-top: 1px dashed black; padding: 3px;">Event Note: <xsl:apply-templates/></p>
     </xsl:template>
     <xsl:template match="t:bibl/t:note">
-        
+
     </xsl:template>
     <xsl:template match="t:ref[@type='timelineCrossReference']">
         <xsl:variable name="eid" select="substring-after(./@target, '#')"></xsl:variable>
