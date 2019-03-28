@@ -1,5 +1,8 @@
 Change Log
 
+Version 0.12.0
+- includes updated support for version chains and identifying past peer reviewed version of a transcriptions
+
 Version 0.11.0
 - updated article handling to reflect changes in SCTA RDF Schema
 - created codex list and viewing page (no direct link yet to codex route)
